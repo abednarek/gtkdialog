@@ -1,0 +1,29 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Fixed positioning" width-request="440" height-request="280">
+	<vbox border-width="12" spacing="8">
+		<text><label>Children use explicit pixel coordinates.</label></text>
+		<fixed width-request="400" height-request="190">
+			<text x="16" y="18"><label>Name</label></text>
+			<entry x="92" y="12" width-request="210">
+				<default>GTK2 application</default>
+				<variable>FIXED_NAME</variable>
+			</entry>
+			<button x="250" y="125">
+				<label>Close</label>
+				<action>exit:OK</action>
+			</button>
+			<variable>FIXED_AREA</variable>
+		</fixed>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

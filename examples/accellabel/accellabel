@@ -1,0 +1,32 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+ACCEL_LABEL_DIALOG='
+<window title="GTK2 accelerator label" width-request="420">
+	<vbox border-width="12" spacing="10">
+		<menubar>
+			<menu label="_File" use-underline="true">
+				<menuitem stock-id="gtk-quit" accel-key="0x51" accel-mods="4">
+					<variable>ACCEL_QUIT_ITEM</variable>
+					<action>exit:Quit</action>
+				</menuitem>
+			</menu>
+		</menubar>
+		<frame>
+			<vbox border-width="12" spacing="8">
+				<text><label>The label below follows the accelerator installed on File → Quit.</label></text>
+				<accellabel accel-widget="ACCEL_QUIT_ITEM" xalign="0">
+					<label>Quit command</label>
+					<variable>ACCEL_LABEL_VALUE</variable>
+				</accellabel>
+			</vbox>
+			<label>Native GtkAccelLabel</label>
+		</frame>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+
+export ACCEL_LABEL_DIALOG
+exec "$GTKDIALOG" --program=ACCEL_LABEL_DIALOG

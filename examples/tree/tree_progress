@@ -1,0 +1,31 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Tree progress cells" width-request="460" height-request="250">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Progress values remain ordinary tree model data.</label>
+		</text>
+		<tree column-renderer="text|progress"
+			column-type="string|double" exported-column="1">
+			<variable>PROGRESS_TREE</variable>
+			<label>Job|Progress</label>
+			<item>Compile sources|82.4</item>
+			<item>Run tests|46</item>
+			<item>Build package|100</item>
+		</tree>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

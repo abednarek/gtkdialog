@@ -1,0 +1,26 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<dialog title="GTKDialog custom dialog" default-response="ok">
+	<vbox border-width="10" spacing="8">
+		<text><label>Custom content belongs in this area.</label></text>
+		<entry activates-default="true">
+			<variable>SETTING</variable>
+			<default>GTK2 value</default>
+		</entry>
+	</vbox>
+	<button response="cancel"><label>Cancel</label></button>
+	<button response="ok"><label>Apply</label></button>
+	<variable>DIALOG_RESPONSE</variable>
+	<action>echo "Response: $DIALOG_RESPONSE"</action>
+	<action>exit:response</action>
+</dialog>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

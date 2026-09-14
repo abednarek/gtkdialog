@@ -1,0 +1,34 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Tree spin cells" width-request="460" height-request="250">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Select a row, then click its retry count to edit it.</label>
+		</text>
+		<tree column-renderer="text|spin" column-editable="false|true"
+			column-type="string|int64" column-spin-min="0|0"
+			column-spin-max="100|10" column-spin-step="1|1"
+			column-spin-digits="0|0" exported-column="1">
+			<variable>SPIN_TREE</variable>
+			<label>Task|Retries</label>
+			<item>Review changes|1</item>
+			<item>Run GTK2 checks|2</item>
+			<item>Prepare package|0</item>
+			<action signal="cell-edited">echo "Retries: $SPIN_TREE"</action>
+		</tree>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

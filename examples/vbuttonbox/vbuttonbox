@@ -1,0 +1,22 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Vertical button box" width-request="320" height-request="260">
+	<vbox>
+		<text><label>A centred vertical group of related actions.</label></text>
+		<vbuttonbox layout-style="center" spacing="6">
+			<button><label>New</label><action>echo "New selected"</action></button>
+			<button><label>Open</label><action>echo "Open selected"</action></button>
+			<button cancel></button>
+		</vbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

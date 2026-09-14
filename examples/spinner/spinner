@@ -1,0 +1,27 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 spinner" resizable="false">
+	<vbox border-width="12" spacing="8">
+		<hbox spacing="8">
+			<spinner active="true" width-request="32" height-request="32">
+				<variable>BUSY</variable>
+			</spinner>
+			<text>
+				<label>Working with an indeterminate task…</label>
+			</text>
+		</hbox>
+		<hbuttonbox layout-style="end">
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

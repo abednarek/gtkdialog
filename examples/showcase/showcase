@@ -1,0 +1,1792 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+SHOWCASE_IMAGE=$script_dir/../../data/icons/hicolor/32x32/apps/gtkdialog.png
+SHOWCASE_CANVAS_IMAGE=$script_dir/../playmusic/cover.png
+SHOWCASE_PLAY_ICON=$script_dir/../playmusic/playmusic64.png
+SHOWCASE_PROFILE_IMAGE=$script_dir/../pfeme/pfeme48.png
+SHOWCASE_OUTPUT_DIR=${TMPDIR:-/tmp}
+SHOWCASE_CELL_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-cellview.txt
+SHOWCASE_CANVAS_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-canvas.png
+SHOWCASE_CHOOSER_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-chooser.txt
+SHOWCASE_CHOOSER_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-chooser-input-$$.txt
+SHOWCASE_CHOOSER_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-chooser-status-$$.txt
+SHOWCASE_ICON_LIST=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-icon-list-$$.txt
+SHOWCASE_ICON_COMMAND_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-icon-command-$$.txt
+SHOWCASE_ICON_FILE_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-icon-file-$$.txt
+SHOWCASE_MENU_STATE=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-menu-state-$$.txt
+SHOWCASE_MENU_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-menu-output-$$.txt
+SHOWCASE_TOOL_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-tool-output-$$.txt
+SHOWCASE_MENU_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-menu-status-$$.txt
+SHOWCASE_RECENT_DATA=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-recent-data-$$
+SHOWCASE_RECENT_DOCUMENT=$SHOWCASE_RECENT_DATA/recent-document.txt
+SHOWCASE_RECENT_URI=file://$SHOWCASE_RECENT_DOCUMENT
+SHOWCASE_RECENT_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-recent.txt
+SHOWCASE_JSON_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-tree.json
+SHOWCASE_SCROLL_LOG=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-scroll-$$.log
+SHOWCASE_STATE_RESULT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-state-$$.txt
+SHOWCASE_TERMINAL_DEMO=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-terminal-demo-$$.sh
+SHOWCASE_TERMINAL_EXIT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-terminal-exit-$$.sh
+SHOWCASE_TERMINAL_FEED=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-terminal-feed-$$.sh
+SHOWCASE_TERMINAL_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-terminal-status-$$.txt
+SHOWCASE_STATUS_ICON_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-status-icon-$$.txt
+SHOWCASE_STATUS_ICON_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-status-icon-output-$$.txt
+SHOWCASE_PLUG_LAUNCHER=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-plug-$$.sh
+SHOWCASE_GTKDIALOG=$GTKDIALOG
+export SHOWCASE_IMAGE SHOWCASE_CANVAS_IMAGE SHOWCASE_PLAY_ICON SHOWCASE_PROFILE_IMAGE
+export SHOWCASE_CELL_OUTPUT SHOWCASE_CANVAS_OUTPUT
+export SHOWCASE_CHOOSER_OUTPUT SHOWCASE_CHOOSER_INPUT SHOWCASE_CHOOSER_STATUS
+export SHOWCASE_ICON_LIST SHOWCASE_ICON_COMMAND_OUTPUT SHOWCASE_ICON_FILE_OUTPUT
+export SHOWCASE_MENU_STATE SHOWCASE_MENU_OUTPUT SHOWCASE_TOOL_OUTPUT SHOWCASE_MENU_STATUS
+export SHOWCASE_RECENT_DOCUMENT SHOWCASE_RECENT_URI SHOWCASE_RECENT_OUTPUT
+export SHOWCASE_JSON_OUTPUT
+export SHOWCASE_SCROLL_LOG SHOWCASE_STATE_RESULT
+export SHOWCASE_TERMINAL_DEMO SHOWCASE_TERMINAL_EXIT SHOWCASE_TERMINAL_FEED
+export SHOWCASE_TERMINAL_STATUS
+export SHOWCASE_STATUS_ICON_INPUT SHOWCASE_STATUS_ICON_OUTPUT
+export SHOWCASE_PLUG_LAUNCHER SHOWCASE_GTKDIALOG
+
+: > "$SHOWCASE_SCROLL_LOG"
+showcase_line=1
+while [ "$showcase_line" -le 40 ]; do
+	printf '%02d  Existing application log entry\n' "$showcase_line" \
+		>> "$SHOWCASE_SCROLL_LOG"
+	showcase_line=$((showcase_line + 1))
+done
+printf '%s\n' 'Target is sensitive and visible' > "$SHOWCASE_STATE_RESULT"
+printf '%s\n' '/etc/hosts' > "$SHOWCASE_CHOOSER_INPUT"
+printf '%s\n' 'Chooser is ready; activate or select a file' > "$SHOWCASE_CHOOSER_STATUS"
+printf '%s\n' "$SHOWCASE_IMAGE" "$SHOWCASE_CANVAS_IMAGE" \
+	"$SHOWCASE_PLAY_ICON" "$SHOWCASE_PROFILE_IMAGE" > "$SHOWCASE_ICON_LIST"
+printf '%s\n' true > "$SHOWCASE_MENU_STATE"
+printf '%s\n' 'The shared input file initially contains true' > "$SHOWCASE_MENU_STATUS"
+mkdir "$SHOWCASE_RECENT_DATA" || exit 1
+printf '%s\n' 'A deterministic recent document for the GTK2 showcase.' \
+	> "$SHOWCASE_RECENT_DOCUMENT"
+printf '%s\n' \
+	'<?xml version="1.0" encoding="UTF-8"?>' \
+	'<xbel version="1.0" xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks" xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info">' \
+	"  <bookmark href=\"$SHOWCASE_RECENT_URI\" added=\"2026-09-14T00:00:00Z\" modified=\"2026-09-14T00:00:00Z\" visited=\"2026-09-14T00:00:00Z\">" \
+	'    <info><metadata owner="http://freedesktop.org"><mime:mime-type type="text/plain"/><bookmark:applications><bookmark:application name="gtkdialog-showcase" exec="&apos;gtkdialog-showcase %u&apos;" modified="2026-09-14T00:00:00Z" count="1"/></bookmark:applications></metadata></info>' \
+	'  </bookmark>' \
+	'</xbel>' > "$SHOWCASE_RECENT_DATA/recently-used.xbel"
+XDG_DATA_HOME=$SHOWCASE_RECENT_DATA
+export XDG_DATA_HOME
+printf '%s\n' \
+	'printf "\033[1;34mGTKDialog embedded VTE\033[0m\n"' \
+	'printf "shell pid: %s\n" "$$"' \
+	'printf "working directory: "' \
+	'pwd' \
+	'uname -srm' > "$SHOWCASE_TERMINAL_DEMO"
+printf '%s\n' 'exit' > "$SHOWCASE_TERMINAL_EXIT"
+cp "$SHOWCASE_TERMINAL_DEMO" "$SHOWCASE_TERMINAL_FEED"
+printf '%s\n' 'The initial shell is running' > "$SHOWCASE_TERMINAL_STATUS"
+printf '%s\n' icon:dialog-information > "$SHOWCASE_STATUS_ICON_INPUT"
+printf '%s\n' \
+	'#!/bin/sh' \
+	'socket_id=$1' \
+	'gtkdialog_bin=$2' \
+	'SHOWCASE_PLUG_DIALOG="<plug socket-id=\"$socket_id\" title=\"GTKDialog XEmbed plug\"><vbox border-width=\"12\" spacing=\"10\"><text><label>Native GtkPlug client</label></text><entry><default>Editable content from a second gtkdialog process</default><variable>SHOWCASE_PLUG_TEXT</variable></entry><hbuttonbox layout-style=\"end\"><button cancel></button></hbuttonbox></vbox><action>echo \"GtkPlug attached to $socket_id\"</action><variable>SHOWCASE_PLUG_DIALOG</variable></plug>"' \
+	'export SHOWCASE_PLUG_DIALOG' \
+	'exec "$gtkdialog_bin" --program=SHOWCASE_PLUG_DIALOG' \
+	> "$SHOWCASE_PLUG_LAUNCHER"
+chmod +x "$SHOWCASE_PLUG_LAUNCHER"
+trap 'rm -f -- "$SHOWCASE_SCROLL_LOG" "$SHOWCASE_STATE_RESULT" "$SHOWCASE_CHOOSER_INPUT" "$SHOWCASE_CHOOSER_STATUS" "$SHOWCASE_ICON_LIST" "$SHOWCASE_ICON_COMMAND_OUTPUT" "$SHOWCASE_ICON_FILE_OUTPUT" "$SHOWCASE_MENU_STATE" "$SHOWCASE_MENU_OUTPUT" "$SHOWCASE_TOOL_OUTPUT" "$SHOWCASE_MENU_STATUS" "$SHOWCASE_RECENT_DOCUMENT" "$SHOWCASE_RECENT_DATA/recently-used.xbel" "$SHOWCASE_TERMINAL_DEMO" "$SHOWCASE_TERMINAL_EXIT" "$SHOWCASE_TERMINAL_FEED" "$SHOWCASE_TERMINAL_STATUS" "$SHOWCASE_STATUS_ICON_INPUT" "$SHOWCASE_STATUS_ICON_OUTPUT" "$SHOWCASE_PLUG_LAUNCHER"; rmdir "$SHOWCASE_RECENT_DATA" 2>/dev/null || :' 0
+
+SHOWCASE_WIDGET_CONTEXT_MENU='
+<popupmenu>
+	<menuitem stock-id="gtk-clear">
+		<label>Clear the entry</label>
+		<action>clear:SHOWCASE_CONTEXT_ENTRY</action>
+	</menuitem>
+	<menuitem stock-id="gtk-refresh">
+		<label>Restore its initial text</label>
+		<action>refresh:SHOWCASE_CONTEXT_ENTRY</action>
+	</menuitem>
+	<menuitemseparator></menuitemseparator>
+	<menuitem stock-id="gtk-edit">
+		<label>Focus the entry</label>
+		<action>grabfocus:SHOWCASE_CONTEXT_ENTRY</action>
+	</menuitem>
+</popupmenu>
+'
+
+SHOWCASE_TREE_CONTEXT_MENU='
+<popupmenu>
+	<menuitem stock-id="gtk-add">
+		<label>Expand all rows</label>
+		<action>expandall:SHOWCASE_CONTEXT_TREE</action>
+	</menuitem>
+	<menuitem stock-id="gtk-remove">
+		<label>Collapse all rows</label>
+		<action>collapseall:SHOWCASE_CONTEXT_TREE</action>
+	</menuitem>
+	<menuitemseparator></menuitemseparator>
+	<menuitem stock-id="gtk-delete">
+		<label>Remove selected row</label>
+		<action>removeselected:SHOWCASE_CONTEXT_TREE</action>
+	</menuitem>
+</popupmenu>
+'
+
+SHOWCASE_JSON_CONTEXT_MENU='
+<popupmenu>
+	<menuitem stock-id="gtk-add">
+		<label>Expand complete hierarchy</label>
+		<action>expandall:SHOWCASE_JSON_TREE</action>
+	</menuitem>
+	<menuitem stock-id="gtk-remove">
+		<label>Collapse complete hierarchy</label>
+		<action>collapseall:SHOWCASE_JSON_TREE</action>
+	</menuitem>
+	<menuitemseparator></menuitemseparator>
+	<menuitem stock-id="gtk-save">
+		<label>Save hierarchy as JSON</label>
+		<action>save:SHOWCASE_JSON_TREE</action>
+	</menuitem>
+</popupmenu>
+'
+export SHOWCASE_WIDGET_CONTEXT_MENU SHOWCASE_TREE_CONTEXT_MENU
+export SHOWCASE_JSON_CONTEXT_MENU
+
+SHOWCASE_STATUS_ICON_MENU='
+<popupmenu>
+	<menuitem stock-id="gtk-home">
+		<label>Present showcase</label>
+		<action>presentwindow:MAIN_DIALOG</action>
+	</menuitem>
+	<menuitem stock-id="gtk-save">
+		<label>Save current source</label>
+		<action>save:SHOWCASE_STATUS_ICON</action>
+	</menuitem>
+	<menuitemseparator></menuitemseparator>
+	<menuitem stock-id="gtk-quit">
+		<label>Quit showcase</label>
+		<action>exit:Quit</action>
+	</menuitem>
+</popupmenu>
+'
+export SHOWCASE_STATUS_ICON_MENU
+
+SHOWCASE_TREE_ATTRIBUTES=
+SHOWCASE_TREE_ROWS='<item>Review changes|Ada|true|100|0|Primary+r|false</item>
+					<item>Run GTK2 checks|Linus|true|72.5|2|Primary+t|true</item>
+					<item>Prepare package|Grace|false|38|1|Primary+p|true</item>
+					<item>Publish release|Margaret|false|0|0|Primary+u|false</item>'
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'JSON-GLib'; then
+	SHOWCASE_JSON_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>This separate tree is loaded from versioned JSON. Expand the release row to inspect nested children.</label></text>
+				</infobar>
+				<tree show-expanders="true" headers-visible="true" rules-hint="true"
+					context-menu="SHOWCASE_JSON_CONTEXT_MENU"
+					column-renderer="icon-text|combo|toggle|progress|spin|accel|spinner|color"
+					column-editable="true|true|true|false|true|true|false|false"
+					column-type="string|string|string|double|int64|string|string|string"
+					column-sizing="190|90|70|85|72|115|60|75"
+					column-spin-min="0|0|0|0|0" column-spin-max="100|100|100|100|10"
+					column-spin-step="1|1|1|1|1" column-spin-digits="0|0|0|0|0"
+					column-spin-climb-rate="||||0.5|||"
+					column-spinner-size="||||||small-toolbar|"
+					column-color-width="|||||||48" column-color-height="|||||||14"
+					exported-column="0" space-expand="true" space-fill="true">
+					<variable>SHOWCASE_JSON_TREE</variable>
+					<label>Nested item|Owner|Enabled|Progress|Retries|Shortcut|Busy|Accent</label>
+					<item combo-column="1">Ada</item>
+					<item combo-column="1">Linus</item>
+					<item combo-column="1">Grace</item>
+					<item combo-column="1">Margaret</item>
+					<input file format="json">'"$script_dir"'/showcase_tree.json</input>
+					<output file format="json">'"$SHOWCASE_JSON_OUTPUT"'</output>
+					<action signal="changed">echo "JSON tree: $SHOWCASE_JSON_TREE"</action>
+					<action signal="cell-edited">echo "JSON tree edited: $SHOWCASE_JSON_TREE"</action>
+					<action signal="cell-toggled">echo "JSON tree toggled: $SHOWCASE_JSON_TREE"</action>
+				</tree>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button><label>Expand all</label><action>expandall:SHOWCASE_JSON_TREE</action></button>
+					<button><label>Collapse all</label><action>collapseall:SHOWCASE_JSON_TREE</action></button>
+				</hbuttonbox>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button><label>Remove selected row</label><action>removeselected:SHOWCASE_JSON_TREE</action></button>
+					<button><label>Clear tree</label><action>clear:SHOWCASE_JSON_TREE</action></button>
+					<button><label>Reload JSON</label><action>refresh:SHOWCASE_JSON_TREE</action></button>
+					<button><label>Save hierarchy as JSON</label><action>save:SHOWCASE_JSON_TREE</action></button>
+				</hbuttonbox>
+			</vbox>'
+else
+	SHOWCASE_JSON_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without JSON-GLib; rebuild with JSON-GLib to activate the nested tree below.</label></text>
+				</infobar>
+				<frame>
+					<edit editable="false" space-expand="true" space-fill="true">
+						<input file>'"$script_dir"'/showcase_tree.json</input>
+						<variable export="false">SHOWCASE_JSON_SOURCE</variable>
+					</edit>
+					<label>JSON source file used by the hierarchical input directive</label>
+				</frame>
+			</vbox>'
+fi
+export SHOWCASE_JSON_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'VTE'; then
+	SHOWCASE_TERMINAL_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>The legacy VTE widget exposes its child PID. Clear resets an active screen and starts a new shell only after the previous child exits.</label></text>
+				</infobar>
+				<terminal argv0="/bin/sh" current-directory-uri="'"$script_dir"'"
+					font-name="Monospace 9" text-background-color="#1d2021"
+					text-foreground-color="#ebdbb2" cursor-background-color="#fabd2f"
+					hscrollbar-policy="2" vscrollbar-policy="1"
+					space-expand="true" space-fill="true">
+					<width>96</width>
+					<height>22</height>
+					<input file>'"$SHOWCASE_TERMINAL_FEED"'</input>
+					<variable>SHOWCASE_TERMINAL</variable>
+					<action signal="child-exited">printf "%s\n" "Child exited; terminal PID is $SHOWCASE_TERMINAL" > "$SHOWCASE_TERMINAL_STATUS"</action>
+					<action signal="child-exited">refresh:SHOWCASE_TERMINAL_STATUS_VIEW</action>
+				</terminal>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button>
+						<label>Send sample commands</label>
+						<action>cp "$SHOWCASE_TERMINAL_DEMO" "$SHOWCASE_TERMINAL_FEED"</action>
+						<action>refresh:SHOWCASE_TERMINAL</action>
+					</button>
+					<button>
+						<label>Clear active screen</label>
+						<action>clear:SHOWCASE_TERMINAL</action>
+					</button>
+					<button>
+						<label>Exit child</label>
+						<action>cp "$SHOWCASE_TERMINAL_EXIT" "$SHOWCASE_TERMINAL_FEED"</action>
+						<action>refresh:SHOWCASE_TERMINAL</action>
+					</button>
+					<button>
+						<label>Clear / restart</label>
+						<action>clear:SHOWCASE_TERMINAL</action>
+						<action>printf "%s\n" "Clear requested; terminal PID is $SHOWCASE_TERMINAL" > "$SHOWCASE_TERMINAL_STATUS"</action>
+						<action>refresh:SHOWCASE_TERMINAL_STATUS_VIEW</action>
+					</button>
+				</hbuttonbox>
+				<entry editable="false">
+					<input file>'"$SHOWCASE_TERMINAL_STATUS"'</input>
+					<variable>SHOWCASE_TERMINAL_STATUS_VIEW</variable>
+				</entry>
+			</vbox>'
+else
+	SHOWCASE_TERMINAL_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without VTE; rebuild with GTK2 VTE support to activate the embedded terminal.</label></text>
+				</infobar>
+				<text><label>The terminal page is optional and does not affect the GTK2-only core.</label></text>
+			</vbox>'
+fi
+export SHOWCASE_TERMINAL_PAGE
+
+SHOWCASE_ASSISTANT='
+<assistant title="GTKDialog guided setup" width-request="460">
+	<vbox page-title="Welcome" page-type="intro" complete="true"
+		border-width="16" spacing="10">
+		<text>
+			<label>This secondary window is a native GTK2 GtkAssistant.</label>
+		</text>
+	</vbox>
+	<vbox page-title="Project details" page-type="content" complete="true"
+		border-width="16" spacing="10">
+		<text><label>Enter a project name:</label></text>
+		<entry>
+			<default>GTKDialog application</default>
+			<variable>SHOWCASE_PROJECT</variable>
+		</entry>
+	</vbox>
+	<vbox page-title="Ready" page-type="confirm" complete="true"
+		border-width="16" spacing="10">
+		<text><label>The main showcase remains open when this assistant closes.</label></text>
+	</vbox>
+	<action>closewindow:SHOWCASE_ASSISTANT</action>
+	<action signal="cancel">closewindow:SHOWCASE_ASSISTANT</action>
+	<action signal="close">closewindow:SHOWCASE_ASSISTANT</action>
+	<variable>SHOWCASE_ASSISTANT</variable>
+</assistant>
+'
+export SHOWCASE_ASSISTANT
+
+SHOWCASE_ABOUT='
+<aboutdialog program-name="GTKDialog GTK2 widget showcase" version="0.9.0-dev"
+	comments="A GTK2-only demonstration of gtkdialog widgets."
+	copyright="Copyright (C) GTKDialog contributors and Artur Bednarek"
+	license="GNU General Public License version 2 or later"
+	wrap-license="true">
+	<item role="author">GTKDialog contributors</item>
+	<item role="author">Artur Bednarek</item>
+	<item role="documenter">Documentation contributors</item>
+	<variable>SHOWCASE_ABOUT</variable>
+	<action>closewindow:SHOWCASE_ABOUT</action>
+</aboutdialog>
+'
+export SHOWCASE_ABOUT
+
+SHOWCASE_DIALOG='
+<dialog title="GTKDialog custom dialog" default-response="ok">
+	<vbox border-width="12" spacing="8">
+		<text><label>This content and the response buttons occupy native GtkDialog areas.</label></text>
+		<text visible="false"><label>Dialog source</label>
+			<variable export="false">SHOWCASE_DIALOG</variable></text>
+	</vbox>
+	<button response="cancel"><label>Cancel</label></button>
+	<button response="ok"><label>Continue</label></button>
+	<variable>SHOWCASE_DIALOG_RESPONSE</variable>
+	<action>echo "Dialog response: $SHOWCASE_DIALOG_RESPONSE"</action>
+	<action>closewindow:SHOWCASE_DIALOG_RESPONSE</action>
+</dialog>
+'
+export SHOWCASE_DIALOG
+
+SHOWCASE_MESSAGE='
+<messagedialog title="GTKDialog GTK2 widget showcase"
+	message-type="question" buttons="yes-no" default-response="yes"
+	secondary-text="The main showcase remains open after this dialog closes.">
+	<label>Continue exploring the native GTK2 widgets?</label>
+	<variable>SHOWCASE_MESSAGE</variable>
+	<action>closewindow:SHOWCASE_MESSAGE</action>
+</messagedialog>
+'
+export SHOWCASE_MESSAGE
+
+MAIN_DIALOG='
+<window title="GTKDialog GTK2 widget showcase" width-request="940"
+	height-request="680" border-width="0">
+	<vbox spacing="0">
+		<menubar>
+			<menu label="_File" use-underline="true">
+				<menuitem stock-id="gtk-new">
+					<action>echo "New selected"</action>
+				</menuitem>
+				<menuitem stock-id="gtk-open">
+					<action>echo "Open selected"</action>
+				</menuitem>
+				<recentchoosermenu local-only="true" show-not-found="false"
+					show-numbers="true" limit="8" filter-name="Documents"
+					filter-pattern="*.txt;*.md;*.pdf">
+					<label>Recent documents</label>
+					<variable>SHOWCASE_RECENT_MENU_URI</variable>
+					<action>printf "%s\n" "Recent menu: $SHOWCASE_RECENT_MENU_URI" > "$SHOWCASE_CHOOSER_STATUS"</action>
+					<action>refresh:SHOWCASE_CHOOSER_STATUS_VIEW</action>
+				</recentchoosermenu>
+				<menuitem stock-id="gtk-save">
+					<action>echo "Save selected"</action>
+				</menuitem>
+				<menuitemseparator></menuitemseparator>
+				<menuitem stock-id="gtk-quit" accel-key="0x51" accel-mods="4">
+					<variable>SHOWCASE_QUIT_ITEM</variable>
+					<action>exit:Quit</action>
+				</menuitem>
+			</menu>
+			<menu label="_Edit" use-underline="true">
+				<menuitem stock-id="gtk-cut"></menuitem>
+				<menuitem stock-id="gtk-copy"></menuitem>
+				<menuitem stock-id="gtk-paste"></menuitem>
+			</menu>
+			<menu label="_View" use-underline="true">
+				<menuitem label="Text and files"></menuitem>
+				<menuitem label="Selection widgets"></menuitem>
+				<menuitem label="Icon view image input"></menuitem>
+				<menuitem label="Tree renderers"></menuitem>
+				<menuitem label="Tree styling"></menuitem>
+				<menuitem label="Tree images and colours"></menuitem>
+				<menuitem label="Tree states"></menuitem>
+				<menuitem label="Tree JSON"></menuitem>
+				<menuitem label="Layout containers"></menuitem>
+				<menuitem label="Widget state actions"></menuitem>
+				<menuitem label="Live scrolling logs"></menuitem>
+				<menuitem label="Menu and toolbar state input"></menuitem>
+				<menuitem label="Embedded VTE terminal"></menuitem>
+				<menuitem label="XEmbed socket"></menuitem>
+				<menuitem label="Status icon"></menuitem>
+			</menu>
+			<menu label="_Help" use-underline="true">
+				<menuitem stock-id="gtk-about">
+					<action>launch:SHOWCASE_ABOUT</action>
+				</menuitem>
+				<menuitem label="Show custom dialog">
+					<action>launch:SHOWCASE_DIALOG</action>
+				</menuitem>
+				<menuitem label="Show question">
+					<action>launch:SHOWCASE_MESSAGE</action>
+				</menuitem>
+			</menu>
+		</menubar>
+
+		<toolbar toolbar-style="both-horizontal" show-arrow="true"
+			space-expand="false" space-fill="false">
+			<toolbutton stock-id="gtk-new" is-important="true"
+				tooltip-text="Create a document">
+				<label>New</label>
+				<action>echo "New selected"</action>
+			</toolbutton>
+			<toolbutton stock-id="gtk-open" is-important="true"
+				tooltip-text="Open a document">
+				<label>Open</label>
+				<action>echo "Open selected"</action>
+			</toolbutton>
+			<toolbutton stock-id="gtk-save" is-important="true"
+				tooltip-text="Save the document">
+				<label>Save</label>
+				<action>echo "Save selected"</action>
+			</toolbutton>
+			<separatortoolitem></separatortoolitem>
+			<toggletoolbutton stock-id="gtk-bold" tooltip-text="Bold text">
+				<label>Bold</label>
+				<variable>SHOWCASE_BOLD</variable>
+			</toggletoolbutton>
+			<toggletoolbutton stock-id="gtk-italic" tooltip-text="Italic text">
+				<label>Italic</label>
+				<variable>SHOWCASE_ITALIC</variable>
+			</toggletoolbutton>
+			<separatortoolitem></separatortoolitem>
+			<radiotoolbutton stock-id="gtk-justify-left" tooltip-text="Align left">
+				<label>Left</label>
+				<variable>SHOWCASE_LEFT</variable>
+				<default>true</default>
+			</radiotoolbutton>
+			<radiotoolbutton stock-id="gtk-justify-center" tooltip-text="Align centre">
+				<label>Centre</label>
+				<variable>SHOWCASE_CENTRE</variable>
+			</radiotoolbutton>
+			<separatortoolitem></separatortoolitem>
+			<menutoolbutton stock-id="gtk-go-down" is-important="true"
+				tooltip-text="Choose a workspace">
+				<menuitem label="Writing workspace"></menuitem>
+				<menuitem label="Media workspace"></menuitem>
+				<menuitem label="Compact workspace"></menuitem>
+				<label>Workspace</label>
+			</menutoolbutton>
+			<separatortoolitem></separatortoolitem>
+			<toolitem expand="true" homogeneous="false"
+				tooltip-text="An ordinary entry embedded in a GtkToolItem">
+				<entry width-request="145">
+					<default>Search demo</default>
+					<variable>SHOWCASE_TOOLBAR_SEARCH</variable>
+					<action signal="activate">echo "Toolbar search: $SHOWCASE_TOOLBAR_SEARCH"</action>
+				</entry>
+				<variable>SHOWCASE_SEARCH_ITEM</variable>
+			</toolitem>
+		</toolbar>
+
+		<notebook labels="Text and files|Selection|Icon input|Tree renderers|Tree styling|Tree images|Tree states|Tree JSON|Popup menus|Classic controls|State actions|Paned layout|Choosers|Drawing areas|Layout canvas|Live logs|Scrolling|Toolbars|Menu state|Tool palette|Terminal|XEmbed socket|Dialogs|Colour selector|Font selector|HSV selector|Status and accelerators"
+			scrollable="true" space-expand="true" space-fill="true">
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info" default-response="ok">
+					<text>
+						<label>This tab combines text widgets with a native file chooser.</label>
+					</text>
+					<button response="close"><label>Dismiss</label></button>
+					<button response="ok"><label>Continue</label></button>
+					<variable>SHOWCASE_INFO_RESPONSE</variable>
+					<action>echo "Info response: $SHOWCASE_INFO_RESPONSE"</action>
+				</infobar>
+				<grid rows="5" columns="2" row-spacing="8" column-spacing="12"
+					space-expand="true" space-fill="true">
+					<text row="0" column="0" x-options="fill" y-options="none"
+						size-group="showcase-labels" size-group-mode="horizontal">
+						<label>Title</label>
+					</text>
+					<entry row="0" column="1">
+						<default>GTKDialog application</default>
+						<variable>SHOWCASE_TITLE</variable>
+					</entry>
+					<text row="1" column="0" x-options="fill" y-options="none"
+						size-group="showcase-labels" size-group-mode="horizontal">
+						<label>Author</label>
+					</text>
+					<entry row="1" column="1" completion="true"
+						completion-minimum-key-length="1">
+						<default>GTK2 user</default>
+						<item>GTK2 user</item>
+						<item>Application developer</item>
+						<item>Shell script author</item>
+						<variable>SHOWCASE_AUTHOR</variable>
+					</entry>
+					<text row="2" column="0" x-options="fill" y-options="none"
+						size-group="showcase-labels" size-group-mode="horizontal">
+						<label>Attachment</label>
+					</text>
+					<filechooserbutton row="2" column="1" title="Choose an attachment"
+						filter-name="Documents" filter-pattern="*.txt;*.md;*.pdf">
+						<variable>SHOWCASE_FILE</variable>
+					</filechooserbutton>
+					<text row="3" column="0" x-options="fill" y-options="none"
+						size-group="showcase-labels" size-group-mode="horizontal">
+						<label>Workspace</label>
+					</text>
+					<filechooserbutton row="3" column="1" action="select-folder"
+						title="Choose a workspace folder" current-folder="/tmp">
+						<default>/tmp</default>
+						<variable>SHOWCASE_FOLDER</variable>
+						<action>echo "Folder: $SHOWCASE_FOLDER"</action>
+					</filechooserbutton>
+					<text row="4" column="0" x-options="fill" y-options="none"
+						size-group="showcase-labels" size-group-mode="horizontal">
+						<label>Notes</label>
+					</text>
+					<edit row="4" column="1" x-options="expand|fill"
+						y-options="expand|fill">
+						<default>
+"This multi-line editor, the entries and their labels are arranged by the native grid widget.
+
+The labels share their width through a named GTK2 size group."
+						</default>
+						<variable>SHOWCASE_NOTES</variable>
+						<height>210</height>
+					</edit>
+				</grid>
+			</vbox>
+
+			<hpaned position="430" child1-resize="true" child1-shrink="false"
+				child2-resize="true" child2-shrink="false" border-width="10">
+				<vbox spacing="8">
+					<frame>
+						<iconview selection-mode="single" icon-size="48" columns="3"
+							item-width="105" space-expand="true" space-fill="true">
+							<item stock="gtk-directory">Projects</item>
+							<item stock="gtk-preferences">Settings</item>
+							<item stock="gtk-help">Help</item>
+							<item stock="gtk-about">About</item>
+							<item stock="gtk-network">Network</item>
+							<item stock="gtk-print">Print</item>
+							<height>245</height>
+							<variable>SHOWCASE_ICON</variable>
+							<default>Projects</default>
+							<action>echo "Icon: $SHOWCASE_ICON"</action>
+						</iconview>
+						<label>Icon view with labels</label>
+					</frame>
+					<frame>
+						<iconview selection-mode="multiple" icon-size="48" columns="4"
+							item-width="72" text-column="-1" row-spacing="4">
+							<item stock="gtk-home">Home</item>
+							<item stock="gtk-directory">Folder</item>
+							<item stock="gtk-file">File</item>
+							<item stock="gtk-cdrom">Disc</item>
+							<height>125</height>
+							<variable>SHOWCASE_GALLERY</variable>
+							<action signal="selection-changed">echo "Gallery: $SHOWCASE_GALLERY"</action>
+						</iconview>
+						<label>Image-only multi-selection</label>
+					</frame>
+				</vbox>
+				<frame>
+					<vbox spacing="8">
+						<calendar show-week-numbers="true">
+							<variable>SHOWCASE_DATE</variable>
+							<default>2026-09-12</default>
+							<action>echo "Date: $SHOWCASE_DATE"</action>
+						</calendar>
+						<cellview stock="gtk-dialog-info" icon-size="32"
+							use-markup="true" fit-model="true" background="#eef5ff">
+							<label>"<b>Stock image</b> and Pango markup"</label>
+							<variable>SHOWCASE_CELL_STOCK</variable>
+							<output file>'"$SHOWCASE_CELL_OUTPUT"'</output>
+						</cellview>
+						<cellview icon-name="folder" icon-size="24" fit-model="true">
+							<label>Themed icon name</label>
+							<variable>SHOWCASE_CELL_THEME</variable>
+						</cellview>
+						<cellview image-name="'"$SHOWCASE_IMAGE"'" icon-size="28"
+							background="#f3f3e8">
+							<label>Image loaded from a file</label>
+							<variable>SHOWCASE_CELL_FILE</variable>
+						</cellview>
+						<hbuttonbox layout-style="start" spacing="6">
+							<button><label>Clear row</label><action>clear:SHOWCASE_CELL_STOCK</action></button>
+							<button><label>Refresh row</label><action>refresh:SHOWCASE_CELL_STOCK</action></button>
+							<button><label>Save text</label><action>save:SHOWCASE_CELL_STOCK</action></button>
+						</hbuttonbox>
+						<hbox spacing="12">
+							<text><label>Zoom</label></text>
+							<scalebutton range-min="25" range-max="200" range-step="25"
+								range-value="100" digits="0">
+								<variable>SHOWCASE_ZOOM</variable>
+							</scalebutton>
+							<text><label>Volume</label></text>
+							<volumebutton digits="2">
+								<variable>SHOWCASE_VOLUME</variable>
+								<default>0.65</default>
+							</volumebutton>
+							<spinner active="true">
+								<variable>SHOWCASE_BUSY</variable>
+							</spinner>
+						</hbox>
+						<alignment xalign="0.5" yalign="0.5" xscale="0" yscale="0">
+							<linkbutton uri="https://www.gtk.org/" visited="false">
+								<label>GTK project website</label>
+								<variable>SHOWCASE_LINK</variable>
+							</linkbutton>
+						</alignment>
+					</vbox>
+					<label>Calendar, cell views and compact controls</label>
+				</frame>
+				<variable>SHOWCASE_HORIZONTAL_DIVIDER</variable>
+			</hpaned>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Image input mode treats every command or file line as an image filename. Hidden text labels remain the exported selection values.</label></text>
+				</infobar>
+				<hpaned position="455" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<vbox spacing="6" space-expand="true" space-fill="true">
+							<iconview input-mode="image" text-column="-1"
+								selection-mode="single" icon-size="96" columns="2"
+								item-width="170" row-spacing="10"
+								space-expand="true" space-fill="true">
+								<input>printf "%s\n" "$SHOWCASE_IMAGE" "$SHOWCASE_CANVAS_IMAGE"</input>
+								<default>'"$SHOWCASE_IMAGE"'</default>
+								<variable>SHOWCASE_COMMAND_IMAGES</variable>
+								<output file>'"$SHOWCASE_ICON_COMMAND_OUTPUT"'</output>
+								<action signal="selection-changed">echo "Command image: $SHOWCASE_COMMAND_IMAGES"</action>
+							</iconview>
+							<hbuttonbox layout-style="center" spacing="6" space-expand="false">
+								<button><label>Clear</label><action>clear:SHOWCASE_COMMAND_IMAGES</action></button>
+								<button><label>Reload command</label><action>refresh:SHOWCASE_COMMAND_IMAGES</action></button>
+								<button><label>Save labels</label><action>save:SHOWCASE_COMMAND_IMAGES</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>Command input · single selection</label>
+					</frame>
+					<frame>
+						<vbox spacing="6" space-expand="true" space-fill="true">
+							<iconview input-mode="image" text-column="-1"
+								selection-mode="multiple" icon-size="80" columns="2"
+								item-width="170" row-spacing="10"
+								space-expand="true" space-fill="true">
+								<input file>'"$SHOWCASE_ICON_LIST"'</input>
+								<variable>SHOWCASE_FILE_IMAGES</variable>
+								<output file>'"$SHOWCASE_ICON_FILE_OUTPUT"'</output>
+								<action signal="selection-changed">echo "File images: $SHOWCASE_FILE_IMAGES"</action>
+							</iconview>
+							<hbuttonbox layout-style="center" spacing="6" space-expand="false">
+								<button><label>Remove selected</label><action>removeselected:SHOWCASE_FILE_IMAGES</action></button>
+								<button><label>Reload file</label><action>refresh:SHOWCASE_FILE_IMAGES</action></button>
+								<button><label>Save labels</label><action>save:SHOWCASE_FILE_IMAGES</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>File input · multiple selection</label>
+					</frame>
+				</hpaned>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text>
+						<label>Edit text, combo, toggle, spin and accelerator cells while progress and spinner cells render live state.</label>
+					</text>
+				</infobar>
+				<tree '"$SHOWCASE_TREE_ATTRIBUTES"' column-renderer="text|combo|toggle|progress|spin|accel|spinner"
+					column-editable="true|true|true|false|true|true|false"
+					column-type="string|string|string|double|int64|string|string"
+					column-progress-text-xalign="|||0.5|||"
+					column-spin-min="0|0|0|0|0"
+					column-spin-max="100|100|100|100|10"
+					column-spin-step="1|1|1|1|1"
+					column-spin-digits="0|0|0|0|0"
+					column-spin-climb-rate="||||0.5||"
+					column-accel-mode="|||||gtk|"
+					column-spinner-size="||||||small-toolbar"
+					exported-column="0" space-expand="true" space-fill="true">
+					<variable>SHOWCASE_TASK</variable>
+					<label>Task|Owner|Enabled|Progress|Retries|Shortcut|Busy</label>
+					<item combo-column="1">Ada</item>
+					<item combo-column="1">Linus</item>
+					<item combo-column="1">Grace</item>
+					<item combo-column="1">Margaret</item>
+					'"$SHOWCASE_TREE_ROWS"'
+					<action signal="cell-edited">echo "Edited task: $SHOWCASE_TASK"</action>
+					<action signal="cell-toggled">echo "Toggled task: $SHOWCASE_TASK"</action>
+					<action signal="accel-edited">echo "Edited shortcut: $SHOWCASE_TASK"</action>
+					<action signal="accel-cleared">echo "Cleared shortcut"</action>
+				</tree>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Column styling is optional and combines with per-row and per-cell JSON styling without changing stored values.</label></text>
+				</infobar>
+				<tree selected-row="0" rules-hint="true"
+					column-renderer="icon-text|text|progress|toggle"
+					column-type="string|string|double|string"
+					column-stock-id="gtk-edit|||"
+					column-background="#eef5ff|#fff4cc|#f3f3e8|#eeeeec"
+					column-foreground="#204a87|#8f5902||"
+					column-font="Sans 9|Serif 9||"
+					column-weight="bold|normal||"
+					column-style="normal|italic||"
+					column-underline="single|none||"
+					column-strikethrough="false|false||"
+					column-xalign="0|0|0.5|0.5"
+					column-yalign="0.5|0.5|0.5|0.5"
+					column-xpad="8|8|4|4" column-ypad="4|4|4|4"
+					column-ellipsize="end|end||"
+					column-wrap-mode="word-char|word-char||"
+					column-wrap-width="210|260||"
+					column-text-align="left|left||"
+					column-sizing="220|275|130|90"
+					space-expand="true" space-fill="true">
+					<variable>SHOWCASE_STYLED_TREE</variable>
+					<label>Styled task|Description|Progress|Enabled</label>
+					<item>Typography|Bold, blue and underlined first column|85|true</item>
+					<item>Wrapping|A longer description demonstrates word-character wrapping inside a constrained GTK2 text renderer.|45|false</item>
+					<item>Selection|Select rows to see the normal GTK2 theme selection colours remain readable.|20|true</item>
+				</tree>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Image renderers accept themed icons, stock IDs or files; colour and markup renderers remain explicit opt-in choices.</label></text>
+				</infobar>
+				<hpaned position="475" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false" space-expand="true">
+					<frame>
+						<tree selected-row="0" column-renderer="icon-text|pixbuf|pixbuf"
+							column-pixbuf-source="icon-name|stock-id|file"
+							column-pixbuf-size="24|24|32"
+							column-icon-name="folder||"
+							column-sizing="220|95|95" space-expand="true" space-fill="true">
+							<variable>SHOWCASE_IMAGE_TREE</variable>
+							<label>Icon and text|Stock|File</label>
+							<item>Open project|gtk-open|'"$SHOWCASE_IMAGE"'</item>
+							<item>Save project|gtk-save|'"$SHOWCASE_IMAGE"'</item>
+							<item>Inspect details|gtk-info|'"$SHOWCASE_IMAGE"'</item>
+						</tree>
+						<label>icon-text and pixbuf sources</label>
+					</frame>
+					<vbox spacing="8">
+						<frame>
+							<tree selected-row="0" column-renderer="text|color"
+								column-color-width="|70" column-color-height="|18"
+								column-sizing="180|120">
+								<variable>SHOWCASE_COLOR_TREE</variable>
+								<label>Semantic colour|Swatch</label>
+								<item>Success|#4e9a06</item>
+								<item>Warning|orange</item>
+								<item>Error|#cc0000</item>
+								<item>Accent|steelblue</item>
+							</tree>
+							<label>Cached colour swatches</label>
+						</frame>
+						<frame>
+							<tree selected-row="0" column-renderer="markup"
+								column-sizing="330">
+								<variable>SHOWCASE_MARKUP_TREE</variable>
+								<label>Explicit Pango markup</label>
+								<input>printf "\074b\076Bold\074/b\076 and \074i\076italic\074/i\076\n\074span foreground=\042#204a87\042\076Coloured text\074/span\076\n"</input>
+							</tree>
+							<label>Markup with unchanged model text</label>
+						</frame>
+					</vbox>
+					<variable>SHOWCASE_TREE_MEDIA_DIVIDER</variable>
+				</hpaned>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Radio cells keep one active row per sibling group. The lower tree exposes renderer-specific GTK2 settings.</label></text>
+				</infobar>
+				<frame>
+					<tree selected-row="0" column-renderer="text|radio|toggle"
+						column-editable="false|true|true"
+						column-sizing="260|120|120">
+						<variable>SHOWCASE_STATE_TREE</variable>
+						<label>Profile|Primary|Optional feature</label>
+						<item>Stable|true|true</item>
+						<item>Testing|false|false</item>
+						<item>Experimental|false|false</item>
+						<action signal="cell-toggled">echo "Tree state changed: $SHOWCASE_STATE_TREE"</action>
+					</tree>
+					<label>Editable radio and toggle cells</label>
+				</frame>
+				<frame>
+					<tree selected-row="0"
+						column-renderer="text|progress|spin|accel|spinner|toggle"
+						column-type="string|double|double|string|string|string"
+						column-progress-orientation="|right-to-left||||"
+						column-progress-pulse="|-1||||"
+						column-progress-text="|Building||||"
+						column-progress-text-xalign="|0.25||||"
+						column-progress-text-yalign="|0.5||||"
+						column-spin-climb-rate="||0.5|||"
+						column-accel-mode="|||other||"
+						column-spinner-size="||||button|"
+						column-toggle-inconsistent="|||||true"
+						column-sizing="180|145|100|145|85|85">
+						<variable>SHOWCASE_OPTION_TREE</variable>
+						<label>Task|Progress|Rate|Shortcut|Busy|Mixed</label>
+						<item>Renderer options|68|3|Primary+o|true|false</item>
+					</tree>
+					<label>Progress, spin, accelerator, spinner and mixed state options</label>
+				</frame>
+			</vbox>
+
+			'"$SHOWCASE_JSON_PAGE"'
+
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="info">
+					<text><label>Context menus are opt-in. Right-click either widget, or focus it and press Shift+F10.</label></text>
+				</infobar>
+				<frame>
+					<vbox border-width="8" spacing="8">
+						<text><label>The same popup-menu contract applies to ordinary GTK2 widgets.</label></text>
+						<entry context-menu="SHOWCASE_WIDGET_CONTEXT_MENU">
+							<default>Right-click to clear, restore or focus this entry</default>
+							<variable>SHOWCASE_CONTEXT_ENTRY</variable>
+						</entry>
+						<button context-menu="SHOWCASE_WIDGET_CONTEXT_MENU">
+							<label>This button opens the same menu</label>
+							<action>echo "Popup-menu demo button activated"</action>
+						</button>
+					</vbox>
+					<label>Generic widget context menu</label>
+				</frame>
+				<frame>
+					<tree context-menu="SHOWCASE_TREE_CONTEXT_MENU" selected-row="0"
+						selection-mode="multiple" rules-hint="true"
+						space-expand="true" space-fill="true">
+						<variable>SHOWCASE_CONTEXT_TREE</variable>
+						<label>Item|Type|State</label>
+						<item stock-id="gtk-directory">Documentation|folder|ready</item>
+						<item stock-id="gtk-file">release-notes.txt|file|edited</item>
+						<item stock-id="gtk-file">gtkdialog.xml|file|ready</item>
+						<item stock-id="gtk-file">showcase.sh|file|testing</item>
+						<action signal="changed">echo "Context tree: $SHOWCASE_CONTEXT_TREE"</action>
+					</tree>
+					<label>Row-aware tree menu; right-click selects the target row first</label>
+				</frame>
+				<text>
+					<label>A menu can also be the complete program root: run examples/popupmenu/popupmenu directly from a desktop launcher.</label>
+				</text>
+			</vbox>
+
+			<hpaned position="450" child1-resize="true" child1-shrink="false"
+				child2-resize="true" child2-shrink="false" border-width="10">
+				<vbox spacing="8">
+					<frame>
+						<hbox spacing="10" border-width="6">
+							<vbox spacing="6">
+							<checkbox active="true">
+								<label>Enable background updates</label>
+								<variable>SHOWCASE_UPDATES</variable>
+							</checkbox>
+							<radiobutton active="true">
+								<label>Balanced mode</label>
+								<variable>SHOWCASE_MODE_BALANCED</variable>
+							</radiobutton>
+							<radiobutton>
+								<label>Performance mode</label>
+								<variable>SHOWCASE_MODE_FAST</variable>
+							</radiobutton>
+							<comboboxtext active="1">
+								<item>Low priority</item>
+								<item>Normal priority</item>
+								<item>High priority</item>
+								<variable>SHOWCASE_PRIORITY</variable>
+							</comboboxtext>
+							</vbox>
+							<vscrollbar range-min="0" range-max="100" range-step="1"
+								range-page="10" range-page-size="25" range-value="30"
+								inverted="true">
+								<variable>SHOWCASE_VERTICAL_SCROLLBAR</variable>
+							</vscrollbar>
+						</hbox>
+						<label>Choices</label>
+					</frame>
+					<frame>
+						<grid rows="6" columns="2" row-spacing="6" column-spacing="10"
+							border-width="6">
+							<text row="0" column="0"><label>Threads</label></text>
+							<spinbutton row="0" column="1" range-min="1" range-max="32"
+								range-step="1" range-value="4" numeric="true">
+								<variable>SHOWCASE_THREADS</variable>
+							</spinbutton>
+							<text row="1" column="0"><label>Quality</label></text>
+							<hscale row="1" column="1" range-min="0" range-max="100"
+								range-step="5" range-value="75" digits="0" draw-value="true">
+								<variable>SHOWCASE_QUALITY</variable>
+							</hscale>
+							<text row="2" column="0"><label>Accent</label></text>
+							<colorbutton row="2" column="1" use-alpha="true">
+								<default>#4f81bd|52000</default>
+								<variable>SHOWCASE_COLOR</variable>
+							</colorbutton>
+							<text row="3" column="0"><label>Interface font</label></text>
+							<fontbutton row="3" column="1" show-style="true"
+								show-size="true" use-font="true">
+								<default>Sans 10</default>
+								<variable>SHOWCASE_FONT</variable>
+							</fontbutton>
+							<text row="4" column="0"><label>Position</label></text>
+							<hscrollbar row="4" column="1" range-min="0" range-max="100"
+								range-step="1" range-page="10" range-page-size="20"
+								range-value="45">
+								<variable>SHOWCASE_HORIZONTAL_SCROLLBAR</variable>
+								<action>echo "Horizontal scrollbar: $SHOWCASE_HORIZONTAL_SCROLLBAR"</action>
+							</hscrollbar>
+							<text row="5" column="0"><label>Inverted</label></text>
+							<hscrollbar row="5" column="1" range-min="-50" range-max="50"
+								range-step="5" range-page="20" range-page-size="10"
+								range-value="-15" inverted="true">
+								<variable>SHOWCASE_INVERTED_SCROLLBAR</variable>
+							</hscrollbar>
+						</grid>
+						<label>Values and appearance</label>
+					</frame>
+				</vbox>
+				<vbox spacing="8">
+					<frame>
+						<list selection-mode="1" selected-row="1">
+							<item>Queued</item>
+							<item>Running</item>
+							<item>Completed</item>
+							<item>Paused</item>
+							<variable>SHOWCASE_STATE</variable>
+							<height>115</height>
+						</list>
+						<label>Simple list</label>
+					</frame>
+					<frame>
+						<table exported-column="0" selected-row="0"
+							column-header-active="true|true|true">
+							<label>Package|Version|State</label>
+							<item>gtkdialog|0.9.0-dev|ready</item>
+							<item>GTK+|2.24|linked</item>
+							<item>GLib|runtime|linked</item>
+							<variable>SHOWCASE_PACKAGE</variable>
+							<height>135</height>
+						</table>
+						<label>Legacy table (GtkCList)</label>
+					</frame>
+					<hbox spacing="8">
+						<progressbar text="Demonstration progress" fraction="0.68"
+							show-text="true" space-expand="true" space-fill="true">
+							<variable>SHOWCASE_PROGRESS</variable>
+						</progressbar>
+						<arrow arrow-type="up" shadow-type="in" width-request="20" tooltip-text="GtkArrow: up / in"></arrow>
+						<arrow arrow-type="down" shadow-type="out" width-request="20" tooltip-text="GtkArrow: down / out"></arrow>
+						<arrow arrow-type="left" shadow-type="etched-in" width-request="20" tooltip-text="GtkArrow: left / etched-in"></arrow>
+						<arrow arrow-type="right" shadow-type="none" width-request="20" tooltip-text="GtkArrow: right / none"></arrow>
+					</hbox>
+				</vbox>
+				<variable>SHOWCASE_CLASSIC_DIVIDER</variable>
+			</hpaned>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text>
+						<label>Classic GTK2 widgets retain their historical actions. The 0.8.5 value conditions complement active, sensitive and visible state tests.</label>
+					</text>
+				</infobar>
+				<hpaned position="455" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<vbox border-width="10" spacing="10">
+							<checkbox active="true">
+								<label>Keep the condition target sensitive</label>
+								<variable>SHOWCASE_ACTION_CHECK</variable>
+								<action>echo "Checkbox active: $SHOWCASE_ACTION_CHECK"</action>
+							</checkbox>
+							<togglebutton active="false">
+								<label>Independent GtkToggleButton</label>
+								<variable>SHOWCASE_ACTION_TOGGLE</variable>
+								<action>echo "Toggle button active: $SHOWCASE_ACTION_TOGGLE"</action>
+							</togglebutton>
+							<expander expanded="false">
+								<vbox border-width="8" spacing="6">
+									<text><label>The expander contains an ordinary child hierarchy.</label></text>
+									<entry>
+										<default>Nested editable value</default>
+										<variable>SHOWCASE_EXPANDER_ENTRY</variable>
+									</entry>
+								</vbox>
+								<label>Expandable details</label>
+								<variable>SHOWCASE_ACTION_EXPANDER</variable>
+								<action>echo "Expander active: $SHOWCASE_ACTION_EXPANDER"</action>
+							</expander>
+							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Activate checkbox</label><action>activate:SHOWCASE_ACTION_CHECK</action></button>
+								<button><label>Activate toggle</label><action>activate:SHOWCASE_ACTION_TOGGLE</action></button>
+								<button><label>Activate expander</label><action>activate:SHOWCASE_ACTION_EXPANDER</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>activate on legacy state widgets</label>
+					</frame>
+					<frame>
+						<vbox border-width="10" spacing="10">
+							<text><label>Enter true, yes, a non-zero integer, false, no or zero:</label></text>
+							<entry>
+								<default>yes</default>
+								<variable>SHOWCASE_BOOLEAN_TEXT</variable>
+							</entry>
+							<button>
+								<label>Condition-controlled target</label>
+								<variable>SHOWCASE_CONDITION_TARGET</variable>
+							</button>
+							<button>
+								<label>Apply checkbox to sensitivity</label>
+								<action condition="active_is_true(SHOWCASE_ACTION_CHECK)">enable:SHOWCASE_CONDITION_TARGET</action>
+								<action condition="active_is_false(SHOWCASE_ACTION_CHECK)">disable:SHOWCASE_CONDITION_TARGET</action>
+							</button>
+							<button>
+								<label>Apply text value to visibility</label>
+								<action condition="variable_is_true(SHOWCASE_BOOLEAN_TEXT)">show:SHOWCASE_CONDITION_TARGET</action>
+								<action condition="variable_is_false(SHOWCASE_BOOLEAN_TEXT)">hide:SHOWCASE_CONDITION_TARGET</action>
+							</button>
+							<button>
+								<label>Inspect target state</label>
+								<action>: > "$SHOWCASE_STATE_RESULT"</action>
+								<action condition="sensitive_is_true(SHOWCASE_CONDITION_TARGET)">printf "%s" "Target is sensitive" >> "$SHOWCASE_STATE_RESULT"</action>
+								<action condition="sensitive_is_false(SHOWCASE_CONDITION_TARGET)">printf "%s" "Target is insensitive" >> "$SHOWCASE_STATE_RESULT"</action>
+								<action condition="visible_is_true(SHOWCASE_CONDITION_TARGET)">printf "%s\n" " and visible" >> "$SHOWCASE_STATE_RESULT"</action>
+								<action condition="visible_is_false(SHOWCASE_CONDITION_TARGET)">printf "%s\n" " and hidden" >> "$SHOWCASE_STATE_RESULT"</action>
+								<action>refresh:SHOWCASE_STATE_STATUS</action>
+							</button>
+							<entry editable="false">
+								<input file>'"$SHOWCASE_STATE_RESULT"'</input>
+								<variable>SHOWCASE_STATE_STATUS</variable>
+							</entry>
+						</vbox>
+						<label>conditional action results</label>
+					</frame>
+				</hpaned>
+			</vbox>
+
+			<vpaned position="255" child1-resize="true" child1-shrink="false"
+				child2-resize="true" child2-shrink="false" border-width="10">
+				<hbox spacing="12">
+					<aspectframe xalign="0.5" yalign="0.5" ratio="1.7778"
+						obey-child="false">
+						<eventbox width-request="360" height-request="190">
+							<text><label>Content constrained to a 16:9 aspect ratio</label></text>
+						</eventbox>
+						<label>Aspect frame preview</label>
+						<variable>SHOWCASE_ASPECT_LABEL</variable>
+					</aspectframe>
+					<alignment xalign="0.5" yalign="0.5" xscale="0" yscale="0"
+						top-padding="12" bottom-padding="12"
+						left-padding="20" right-padding="20">
+						<frame>
+							<vbox spacing="8">
+								<text><label>This panel stays centred.</label></text>
+								<vbuttonbox layout-style="center" spacing="5">
+									<button>
+										<label>Guided setup</label>
+										<input file stock="gtk-execute"></input>
+										<action>launch:SHOWCASE_ASSISTANT</action>
+									</button>
+									<button>
+										<label>Show question</label>
+										<input file stock="gtk-dialog-question"></input>
+										<action>launch:SHOWCASE_MESSAGE</action>
+									</button>
+								</vbuttonbox>
+							</vbox>
+							<label>Alignment and vertical button box</label>
+						</frame>
+					</alignment>
+					<frame>
+						<fixed width-request="230" height-request="170">
+							<text x="12" y="14"><label>Absolute GTK2 layout</label></text>
+							<button x="20" y="60"><label>Left</label></button>
+							<button x="125" y="110"><label>Right</label></button>
+							<variable>SHOWCASE_FIXED</variable>
+						</fixed>
+						<label>Fixed positions</label>
+					</frame>
+				</hbox>
+				<frame>
+					<vbox spacing="8">
+						<text>
+							<label>The lower pane combines automatic and spanning grid cells with a button-box layout.</label>
+						</text>
+						<grid rows="2" columns="4" homogeneous="true"
+							row-spacing="5" column-spacing="5">
+							<button><label>Automatic 1</label></button>
+							<button><label>Automatic 2</label></button>
+							<button><label>Automatic 3</label></button>
+							<button><label>Automatic 4</label></button>
+							<button row="1" column="0" column-span="2" x-options="expand|fill"><label>Two-column span</label></button>
+							<button row="1" column="2" column-span="2" x-padding="12"><label>Padded span</label></button>
+						</grid>
+						<hbuttonbox layout-style="spread" spacing="8">
+							<button>
+								<label>One</label>
+								<action>echo "Button one selected"</action>
+							</button>
+							<button>
+								<label>Two</label>
+								<action>echo "Button two selected"</action>
+							</button>
+							<button>
+								<label>Three</label>
+								<action>echo "Button three selected"</action>
+							</button>
+						</hbuttonbox>
+					</vbox>
+					<label>Button box</label>
+				</frame>
+				<variable>SHOWCASE_VERTICAL_DIVIDER</variable>
+			</vpaned>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text>
+						<label>The compatibility chooser remains an embedded open-existing-file view. Folder mode is demonstrated by the file chooser button on the first page.</label>
+					</text>
+				</infobar>
+				<hpaned position="470" space-expand="true" space-fill="true">
+					<chooser default-file="/etc/hosts"
+						fs-filters-mime="text/plain"
+						fs-filters="*.txt|*.md|*.conf">
+						<default>/tmp</default>
+						<variable>SHOWCASE_CHOSEN_FILE</variable>
+						<output file>'"$SHOWCASE_CHOOSER_OUTPUT"'</output>
+						<input file>'"$SHOWCASE_CHOOSER_INPUT"'</input>
+						<action signal="selection-changed">printf "%s\n" "Selection changed: $SHOWCASE_CHOSEN_FILE" > "$SHOWCASE_CHOOSER_STATUS"</action>
+						<action signal="selection-changed">refresh:SHOWCASE_CHOOSER_STATUS_VIEW</action>
+						<action when="current-folder-changed">printf "%s\n" "Folder changed; selection: $SHOWCASE_CHOSEN_FILE" > "$SHOWCASE_CHOOSER_STATUS"</action>
+						<action when="current-folder-changed">refresh:SHOWCASE_CHOOSER_STATUS_VIEW</action>
+						<action>printf "%s\n" "File activated: $SHOWCASE_CHOSEN_FILE" > "$SHOWCASE_CHOOSER_STATUS"</action>
+						<action>refresh:SHOWCASE_CHOOSER_STATUS_VIEW</action>
+					</chooser>
+					<recentchooser local-only="true" show-not-found="false"
+						limit="12" filter-name="Documents"
+						filter-pattern="*.txt;*.md;*.pdf">
+						<variable>SHOWCASE_RECENT_URI</variable>
+						<default>'"$SHOWCASE_RECENT_URI"'</default>
+						<output file>'"$SHOWCASE_RECENT_OUTPUT"'</output>
+						<action signal="selection-changed">echo "Recent: $SHOWCASE_RECENT_URI"</action>
+						<action>echo "Activated recent resource: $SHOWCASE_RECENT_URI"</action>
+					</recentchooser>
+				</hpaned>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button><label>Reload /etc/hosts</label><action>refresh:SHOWCASE_CHOSEN_FILE</action></button>
+					<button><label>Select through dialog</label><action>fileselect:SHOWCASE_CHOSEN_FILE</action></button>
+					<button><label>Clear file selection</label><action>clear:SHOWCASE_CHOSEN_FILE</action></button>
+					<button><label>Save file selection</label><action>save:SHOWCASE_CHOSEN_FILE</action></button>
+					<button><label>Clear recent selection</label><action>clear:SHOWCASE_RECENT_URI</action></button>
+					<button><label>Save recent selection</label><action>save:SHOWCASE_RECENT_URI</action></button>
+				</hbuttonbox>
+				<entry editable="false">
+					<input file>'"$SHOWCASE_CHOOSER_STATUS"'</input>
+					<variable>SHOWCASE_CHOOSER_STATUS_VIEW</variable>
+				</entry>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text>
+						<label>Native rulers frame one source image shown at natural size, fitted without distortion and stretched to fill.</label>
+					</text>
+				</infobar>
+				<hruler lower="0" upper="100" position="42" max-size="100"
+					metric="pixels" height-request="28">
+					<variable>SHOWCASE_HORIZONTAL_RULER</variable>
+				</hruler>
+				<hbox spacing="6" space-expand="true" space-fill="true">
+					<vruler lower="0" upper="30" position="18" max-size="30"
+						metric="centimeters" width-request="28">
+						<variable>SHOWCASE_VERTICAL_RULER</variable>
+					</vruler>
+				<hbox homogeneous="true" spacing="10" space-expand="true" space-fill="true">
+					<frame>
+						<drawingarea scale-mode="none" background="#30343b">
+							<width>240</width>
+							<height>300</height>
+							<input file>'"$SHOWCASE_CANVAS_IMAGE"'</input>
+							<variable>SHOWCASE_CANVAS_NONE</variable>
+							<action signal="button-press-event">echo "Natural canvas: $PTR_X,$PTR_Y button $PTR_BTN"</action>
+						</drawingarea>
+						<label>Natural size · none</label>
+					</frame>
+					<frame>
+						<drawingarea scale-mode="fit" interpolation="bilinear"
+							background="#263849">
+							<width>240</width>
+							<height>300</height>
+							<input file>'"$SHOWCASE_CANVAS_IMAGE"'</input>
+							<variable>SHOWCASE_CANVAS_FIT</variable>
+							<action signal="button-press-event">echo "Fitted canvas: $PTR_X,$PTR_Y button $PTR_BTN"</action>
+						</drawingarea>
+						<label>Aspect-preserving · fit/bilinear</label>
+					</frame>
+					<frame>
+						<drawingarea scale-mode="stretch" interpolation="nearest"
+							background="#493226">
+							<width>240</width>
+							<height>300</height>
+							<input file>'"$SHOWCASE_CANVAS_IMAGE"'</input>
+							<output file>'"$SHOWCASE_CANVAS_OUTPUT"'</output>
+							<variable>SHOWCASE_CANVAS_STRETCH</variable>
+							<action signal="button-press-event">echo "Stretched canvas: $PTR_X,$PTR_Y button $PTR_BTN"</action>
+						</drawingarea>
+						<label>Full allocation · stretch/nearest</label>
+					</frame>
+				</hbox>
+				</hbox>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button><label>Print ruler positions</label><action>echo "Rulers: $SHOWCASE_HORIZONTAL_RULER px · $SHOWCASE_VERTICAL_RULER cm"</action></button>
+					<button><label>Clear ruler markers</label><action>clear:SHOWCASE_HORIZONTAL_RULER</action><action>clear:SHOWCASE_VERTICAL_RULER</action></button>
+					<button><label>Clear stretched</label><action>clear:SHOWCASE_CANVAS_STRETCH</action></button>
+					<button><label>Reload stretched</label><action>refresh:SHOWCASE_CANVAS_STRETCH</action></button>
+					<button><label>Save original raster</label><action>save:SHOWCASE_CANVAS_STRETCH</action></button>
+				</hbuttonbox>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkLayout provides a larger scrollable coordinate space.</label></text>
+				</infobar>
+				<layout width="1200" height="800" space-expand="true" space-fill="true">
+					<button x="40" y="35"><label>40, 35</label></button>
+					<button x="760" y="120"><label>760, 120</label></button>
+					<frame x="150" y="520" width-request="300" height-request="150">
+						<text><label>A child near the lower edge of the virtual canvas</label></text>
+						<label>Scrollable coordinates</label>
+					</frame>
+					<variable>SHOWCASE_LAYOUT</variable>
+					<width>860</width>
+					<height>500</height>
+				</layout>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text>
+						<label>Both legacy text views follow appended data while they remain at the bottom. Scroll either view upward to preserve its distance from the end.</label>
+					</text>
+				</infobar>
+				<hpaned position="450" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<text scrollable="true" scroll-to-bottom="true"
+							hscrollbar-policy="2" vscrollbar-policy="1"
+							shadow-type="1" selectable="true">
+							<input file>'"$SHOWCASE_SCROLL_LOG"'</input>
+							<variable>SHOWCASE_SCROLL_TEXT</variable>
+							<height>390</height>
+						</text>
+						<label>Scrollable text label · 0.8.5 bottom gravity</label>
+					</frame>
+					<frame>
+						<edit editable="false" scroll-to-bottom="true"
+							hscrollbar-policy="2" vscrollbar-policy="1"
+							wrap-mode="word-char">
+							<input file>'"$SHOWCASE_SCROLL_LOG"'</input>
+							<variable>SHOWCASE_SCROLL_EDIT</variable>
+							<height>390</height>
+						</edit>
+						<label>Read-only edit view · 0.8.5 bottom gravity</label>
+					</frame>
+				</hpaned>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button>
+						<label>Append now</label>
+						<action>printf "%s\n" "$(date +%H:%M:%S)  manually appended line" >> "$SHOWCASE_SCROLL_LOG"</action>
+						<action>refresh:SHOWCASE_SCROLL_TEXT</action>
+						<action>refresh:SHOWCASE_SCROLL_EDIT</action>
+					</button>
+				</hbuttonbox>
+				<timer visible="false" interval="1">
+					<variable export="false">SHOWCASE_SCROLL_TIMER</variable>
+					<action>printf "%s\n" "$(date +%H:%M:%S)  live timer entry" >> "$SHOWCASE_SCROLL_LOG"</action>
+					<action>refresh:SHOWCASE_SCROLL_TEXT</action>
+					<action>refresh:SHOWCASE_SCROLL_EDIT</action>
+				</timer>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>A public GtkViewport exposes the native scrolling bridge explicitly. GtkScrolledWindow reuses its adjustments instead of adding another viewport.</label></text>
+				</infobar>
+				<scrolledwindow hscrollbar-policy="never" vscrollbar-policy="automatic"
+					shadow-type="none" space-expand="true" space-fill="true">
+					<viewport shadow-type="in">
+					<vbox border-width="12" spacing="14">
+						<text><label>Top of a deliberately tall child box</label></text>
+						<entry><default>Scrollable form value</default><variable>SHOWCASE_SCROLL_ENTRY</variable></entry>
+						<fixed width-request="700" height-request="360">
+							<button x="30" y="30"><label>Fixed child</label></button>
+							<button x="520" y="270"><label>Far corner</label></button>
+						</fixed>
+						<text><label>Bottom of the child box</label></text>
+					</vbox>
+						<variable>SHOWCASE_VIEWPORT</variable>
+					</viewport>
+					<variable>SHOWCASE_SCROLLED</variable>
+					<width>860</width>
+					<height>500</height>
+				</scrolledwindow>
+			</vbox>
+
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="info">
+					<text>
+						<label>The first toolbar is a normal GtkToolbar. The second is the same class inside a detachable GtkHandleBox.</label>
+					</text>
+				</infobar>
+				<frame>
+					<vbox spacing="6" border-width="6">
+						<text><label>Normal toolbar: its border, spacing and allocation come directly from GtkToolbar.</label></text>
+						<toolbar toolbar-style="both" show-arrow="true" icon-size="2"
+							space-expand="false" space-fill="false">
+							<toolbutton stock-id="gtk-new"><label>New</label><action>echo "Plain New"</action></toolbutton>
+							<toolbutton stock-id="gtk-open"><label>Open</label><action>echo "Plain Open"</action></toolbutton>
+							<separatortoolitem></separatortoolitem>
+							<toggletoolbutton stock-id="gtk-bold"><label>Bold</label><variable>SHOWCASE_PLAIN_BOLD</variable></toggletoolbutton>
+							<radiotoolbutton stock-id="gtk-justify-left"><label>Left</label><default>true</default><variable>SHOWCASE_PLAIN_LEFT</variable></radiotoolbutton>
+							<radiotoolbutton stock-id="gtk-justify-right"><label>Right</label><variable>SHOWCASE_PLAIN_RIGHT</variable></radiotoolbutton>
+							<separatortoolitem draw="false" expand="true"></separatortoolitem>
+							<menutoolbutton stock-id="gtk-index">
+								<menuitem label="First action"><action>echo "Plain menu one"</action></menuitem>
+								<menuitem label="Second action"><action>echo "Plain menu two"</action></menuitem>
+								<label>Menu</label>
+							</menutoolbutton>
+							<toolitem expand="false" homogeneous="false">
+								<entry width-request="150"><default>Embedded entry</default><variable>SHOWCASE_PLAIN_ENTRY</variable></entry>
+								<variable>SHOWCASE_PLAIN_ITEM</variable>
+							</toolitem>
+						</toolbar>
+					</vbox>
+					<label>Direct toolbar</label>
+				</frame>
+				<frame>
+					<vbox spacing="6" border-width="6">
+						<text><label>Handle box: drag the grip at the left edge to detach this icon toolbar into its own window.</label></text>
+						<handlebox handle-position="left" snap-edge="top" shadow-type="etched-out"
+							space-expand="false" space-fill="false">
+							<toolbar toolbar-style="icons" show-arrow="true" icon-size="3">
+								<toolbutton stock-id="gtk-go-back"><label>Back</label><action>echo "Detached Back"</action></toolbutton>
+								<toolbutton stock-id="gtk-go-forward"><label>Forward</label><action>echo "Detached Forward"</action></toolbutton>
+								<separatortoolitem></separatortoolitem>
+								<toggletoolbutton stock-id="gtk-media-play"><label>Run</label><variable>SHOWCASE_HANDLE_RUN</variable></toggletoolbutton>
+								<menutoolbutton stock-id="gtk-preferences">
+									<menuitem label="Compact"></menuitem>
+									<menuitem label="Detailed"></menuitem>
+									<label>Options</label>
+								</menutoolbutton>
+								<separatortoolitem draw="false" expand="true"></separatortoolitem>
+								<toolbutton stock-id="gtk-help"><label>Help</label></toolbutton>
+							</toolbar>
+							<variable>SHOWCASE_TOOLBAR_HANDLE</variable>
+							<action signal="child-detached">echo "Showcase toolbar detached"</action>
+							<action signal="child-attached">echo "Showcase toolbar attached"</action>
+						</handlebox>
+					</vbox>
+					<label>Toolbar hosted by GtkHandleBox</label>
+				</frame>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Legacy check menu items and toggle tool buttons can load, monitor, export and conditionally act on boolean state.</label></text>
+				</infobar>
+				<frame space-expand="false" space-fill="true">
+					<menubar>
+						<menu label="_Input" use-underline="true">
+							<menuitem checkbox="false">
+								<label>Command input (always true)</label>
+								<variable>SHOWCASE_MENU_COMMAND</variable>
+								<input>printf true</input>
+								<action>printf "%s\n" "Command menu item: $SHOWCASE_MENU_COMMAND" > "$SHOWCASE_MENU_STATUS"</action>
+								<action>refresh:SHOWCASE_MENU_STATUS_VIEW</action>
+							</menuitem>
+							<menuitem checkbox="false" file-monitor="true" auto-refresh="true">
+								<label>File-monitored option</label>
+								<variable>SHOWCASE_MENU_FILE</variable>
+								<input file>'"$SHOWCASE_MENU_STATE"'</input>
+								<output file>'"$SHOWCASE_MENU_OUTPUT"'</output>
+							</menuitem>
+						</menu>
+						<menu label="_Mode" use-underline="true">
+							<menuitem radiobutton="true"><label>Compact</label><variable>SHOWCASE_MENU_COMPACT</variable></menuitem>
+							<menuitem radiobutton="false"><label>Detailed</label><variable>SHOWCASE_MENU_DETAILED</variable></menuitem>
+						</menu>
+						<menu label="_Conditions" use-underline="true">
+							<menuitem label="Report monitored option">
+								<action condition="active_is_true(SHOWCASE_MENU_FILE)">printf "%s\n" "Conditional menu action: enabled" > "$SHOWCASE_MENU_STATUS"</action>
+								<action condition="active_is_false(SHOWCASE_MENU_FILE)">printf "%s\n" "Conditional menu action: disabled" > "$SHOWCASE_MENU_STATUS"</action>
+								<action>refresh:SHOWCASE_MENU_STATUS_VIEW</action>
+							</menuitem>
+						</menu>
+					</menubar>
+					<label>Check and radio menu items</label>
+				</frame>
+				<frame space-expand="false" space-fill="true">
+					<toolbar toolbar-style="both" show-arrow="true" icon-size="2">
+						<toggletoolbutton stock-id="gtk-yes" file-monitor="true" auto-refresh="true">
+							<label>Shared file state</label>
+							<variable>SHOWCASE_TOOL_FILE</variable>
+							<input file>'"$SHOWCASE_MENU_STATE"'</input>
+							<output file>'"$SHOWCASE_TOOL_OUTPUT"'</output>
+							<action condition="active_is_true(SHOWCASE_TOOL_FILE)">printf "%s\n" "Conditional tool action: enabled" > "$SHOWCASE_MENU_STATUS"</action>
+							<action condition="active_is_false(SHOWCASE_TOOL_FILE)">printf "%s\n" "Conditional tool action: disabled" > "$SHOWCASE_MENU_STATUS"</action>
+							<action>refresh:SHOWCASE_MENU_STATUS_VIEW</action>
+						</toggletoolbutton>
+						<separatortoolitem></separatortoolitem>
+						<toolbutton stock-id="gtk-refresh">
+							<label>Reload command</label>
+							<action>refresh:SHOWCASE_MENU_COMMAND</action>
+						</toolbutton>
+						<toolbutton stock-id="gtk-info">
+							<label>Pointer signal</label>
+							<action signal="button-press-event">printf "%s\n" "GtkWidget button-press-event received" > "$SHOWCASE_MENU_STATUS"</action>
+							<action signal="button-press-event">refresh:SHOWCASE_MENU_STATUS_VIEW</action>
+						</toolbutton>
+					</toolbar>
+					<label>Toggle tool input and a generic widget signal</label>
+				</frame>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button>
+						<label>Write true</label>
+						<action>printf "%s\n" true > "$SHOWCASE_MENU_STATE"</action>
+					</button>
+					<button>
+						<label>Write false</label>
+						<action>printf "%s\n" false > "$SHOWCASE_MENU_STATE"</action>
+					</button>
+					<button>
+						<label>Reload file inputs</label>
+						<action>refresh:SHOWCASE_MENU_FILE</action>
+						<action>refresh:SHOWCASE_TOOL_FILE</action>
+					</button>
+					<button>
+						<label>Save both states</label>
+						<action>save:SHOWCASE_MENU_FILE</action>
+						<action>save:SHOWCASE_TOOL_FILE</action>
+					</button>
+				</hbuttonbox>
+				<entry editable="false" space-expand="false">
+					<input file>'"$SHOWCASE_MENU_STATUS"'</input>
+					<variable>SHOWCASE_MENU_STATUS_VIEW</variable>
+				</entry>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Expand and collapse groups; exclusive groups close one another and retain normal tool-item actions.</label></text>
+				</infobar>
+				<scrolledwindow hscrollbar-policy="never"
+					vscrollbar-policy="automatic" shadow-type="in"
+					space-expand="true" space-fill="true">
+					<toolpalette orientation="vertical" toolbar-style="both">
+						<toolitemgroup exclusive="true" expand="true">
+							<toolbutton stock-id="gtk-new"><label>New project</label><action>echo "Palette New"</action></toolbutton>
+							<toolbutton stock-id="gtk-open"><label>Open project</label><action>echo "Palette Open"</action></toolbutton>
+							<toolbutton stock-id="gtk-save" palette-new-row="true"><label>Save project</label><action>echo "Palette Save"</action></toolbutton>
+							<label>Project</label>
+							<variable>SHOWCASE_PROJECT_TOOLS</variable>
+						</toolitemgroup>
+						<toolitemgroup exclusive="true" collapsed="false">
+							<toggletoolbutton stock-id="gtk-bold"><label>Bold</label><variable>SHOWCASE_PALETTE_BOLD</variable></toggletoolbutton>
+							<toggletoolbutton stock-id="gtk-italic"><label>Italic</label><variable>SHOWCASE_PALETTE_ITALIC</variable></toggletoolbutton>
+							<toolbutton stock-id="gtk-justify-left" palette-new-row="true"><label>Align left</label></toolbutton>
+							<label>Formatting</label>
+							<variable>SHOWCASE_FORMAT_TOOLS</variable>
+						</toolitemgroup>
+						<toolitemgroup exclusive="true" collapsed="true" header-relief="half">
+							<radiotoolbutton stock-id="gtk-sort-ascending"><label>Ascending</label><default>true</default><variable>SHOWCASE_PALETTE_ASC</variable></radiotoolbutton>
+							<radiotoolbutton stock-id="gtk-sort-descending"><label>Descending</label><variable>SHOWCASE_PALETTE_DESC</variable></radiotoolbutton>
+							<menutoolbutton stock-id="gtk-go-down" palette-new-row="true">
+								<menuitem label="Local"></menuitem>
+								<menuitem label="Archive"></menuitem>
+								<label>Destination</label>
+							</menutoolbutton>
+							<toolitem homogeneous="false" palette-fill="true" palette-new-row="true">
+								<entry><default>Tool item child</default><variable>SHOWCASE_PALETTE_ENTRY</variable></entry>
+							</toolitem>
+							<label>Sorting and destination</label>
+							<variable>SHOWCASE_DESTINATION_TOOLS</variable>
+						</toolitemgroup>
+						<variable>SHOWCASE_TOOL_PALETTE</variable>
+					</toolpalette>
+				</scrolledwindow>
+			</vbox>
+
+			'"$SHOWCASE_TERMINAL_PAGE"'
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Direct GtkSocket hosts arbitrary XEmbed clients; GtkPlug lets a second gtkdialog process become a client.</label></text>
+				</infobar>
+				<hbox homogeneous="true" spacing="10" space-expand="true" space-fill="true">
+					<frame>
+						<socket width-request="400" height-request="280">
+							<variable>SHOWCASE_SOCKET_ID</variable>
+							<action>echo "External client attached to $SHOWCASE_SOCKET_ID"</action>
+							<action signal="plug-removed">echo "External client detached from $SHOWCASE_SOCKET_ID"</action>
+						</socket>
+						<label>Reusable host for xterm or another XEmbed client</label>
+					</frame>
+					<frame>
+						<socket width-request="400" height-request="280">
+							<variable>SHOWCASE_PLUG_SOCKET_ID</variable>
+							<action signal="realize">sh "$SHOWCASE_PLUG_LAUNCHER" "$SHOWCASE_PLUG_SOCKET_ID" "$SHOWCASE_GTKDIALOG" &</action>
+							<action>echo "Gtkdialog plug attached to $SHOWCASE_PLUG_SOCKET_ID"</action>
+							<action signal="plug-removed">echo "Gtkdialog plug detached from $SHOWCASE_PLUG_SOCKET_ID"</action>
+						</socket>
+						<label>GtkPlug client in a second gtkdialog process</label>
+					</frame>
+				</hbox>
+				<hbuttonbox layout-style="center" spacing="8" space-expand="false">
+					<button>
+						<label>Start xterm if installed</label>
+						<input file stock="gtk-execute"></input>
+						<action>xterm -into $SHOWCASE_SOCKET_ID -title Gtkdialog-XEmbed-showcase &</action>
+					</button>
+					<button>
+						<label>Restart gtkdialog plug</label>
+						<input file stock="gtk-execute"></input>
+						<action>sh "$SHOWCASE_PLUG_LAUNCHER" "$SHOWCASE_PLUG_SOCKET_ID" "$SHOWCASE_GTKDIALOG" &</action>
+					</button>
+					<button>
+						<label>Print socket ID</label>
+						<action>echo "Socket ID: $SHOWCASE_SOCKET_ID"</action>
+					</button>
+				</hbuttonbox>
+				<text><label>Each host survives client removal. The host and plug remain separate processes with independent lifecycle and output.</label></text>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info" default-response="ok">
+					<text><label>Information bars remain inside the parent window and may expose named response values.</label></text>
+					<button response="ok"><label>Understood</label></button>
+					<variable>SHOWCASE_INFO_DEMO</variable>
+					<action>echo "Info response: $SHOWCASE_INFO_DEMO"</action>
+				</infobar>
+				<infobar message-type="warning" default-response="cancel">
+					<text><label>Warning: this is non-modal content, not a secondary window.</label></text>
+					<button response="cancel"><label>Dismiss</label></button>
+					<button response="apply"><label>Apply anyway</label></button>
+					<variable>SHOWCASE_WARNING_DEMO</variable>
+					<action>echo "Warning response: $SHOWCASE_WARNING_DEMO"</action>
+				</infobar>
+				<infobar message-type="question" default-response="yes">
+					<text><label>Question bars can use standard Yes and No responses.</label></text>
+					<button response="no"><label>No</label></button>
+					<button response="yes"><label>Yes</label></button>
+					<variable>SHOWCASE_QUESTION_DEMO</variable>
+					<action>echo "Question response: $SHOWCASE_QUESTION_DEMO"</action>
+				</infobar>
+				<infobar message-type="error" default-response="close">
+					<text><label>Error styling can report a problem without terminating the application.</label></text>
+					<button response="close"><label>Close notice</label></button>
+					<variable>SHOWCASE_ERROR_DEMO</variable>
+					<action>echo "Error response: $SHOWCASE_ERROR_DEMO"</action>
+				</infobar>
+				<frame>
+					<vbox border-width="8" spacing="8">
+						<text><label>These buttons launch four native top-level GTK2 dialog types while the showcase remains open.</label></text>
+						<hbuttonbox layout-style="spread" spacing="8">
+							<button><label>Assistant</label><input file stock="gtk-execute"></input><action>launch:SHOWCASE_ASSISTANT</action></button>
+							<button><label>Custom dialog</label><input file stock="gtk-properties"></input><action>launch:SHOWCASE_DIALOG</action></button>
+							<button><label>Question dialog</label><input file stock="gtk-dialog-question"></input><action>launch:SHOWCASE_MESSAGE</action></button>
+							<button><label>About dialog</label><input file stock="gtk-about"></input><action>launch:SHOWCASE_ABOUT</action></button>
+						</hbuttonbox>
+					</vbox>
+					<label>Assistant, GtkDialog, GtkMessageDialog and GtkAboutDialog</label>
+				</frame>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkColorSelection is embedded directly with opacity and the shared palette. Compact GtkColorButton controls remain available for forms.</label></text>
+				</infobar>
+				<hpaned position="625" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<colorselection has-opacity-control="true" has-palette="true">
+							<default>#4f81bd|49152</default>
+							<variable>SHOWCASE_FULL_COLOR</variable>
+							<action>echo "Colour with alpha: $SHOWCASE_FULL_COLOR"</action>
+						</colorselection>
+						<label>Embedded selector with palette and opacity</label>
+					</frame>
+					<frame>
+						<vbox border-width="10" spacing="12">
+							<text><label>Solid colour exports #rrggbb</label></text>
+							<colorbutton use-alpha="false">
+								<default>#78a641</default>
+								<variable>SHOWCASE_SOLID_COLOR</variable>
+							</colorbutton>
+							<text><label>Opacity exports #rrggbb|alpha</label></text>
+							<colorbutton use-alpha="true">
+								<default>#4f81bd|49152</default>
+								<variable>SHOWCASE_COMPACT_COLOR</variable>
+							</colorbutton>
+							<button><label>Print all values</label><action>echo "Full: $SHOWCASE_FULL_COLOR · solid: $SHOWCASE_SOLID_COLOR · compact alpha: $SHOWCASE_COMPACT_COLOR"</action></button>
+						</vbox>
+						<label>Compact alternatives</label>
+					</frame>
+					<variable>SHOWCASE_COLOR_DIVIDER</variable>
+				</hpaned>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkFontSelection embeds the native GTK2 family, face, size and preview controls. GtkFontButton remains the compact form control.</label></text>
+				</infobar>
+				<hpaned position="650" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<fontselection font-name="Sans 12"
+							preview-text="GTKDialog native GTK2 font preview">
+							<variable>SHOWCASE_FULL_FONT</variable>
+							<action>echo "Selected font: $SHOWCASE_FULL_FONT"</action>
+						</fontselection>
+						<label>Embedded family, face and size selector</label>
+					</frame>
+					<frame>
+						<vbox border-width="10" spacing="12">
+							<text><label>Compact button with font preview</label></text>
+							<fontbutton font-name="Sans 12" use-font="true"
+								show-style="true" show-size="true">
+								<variable>SHOWCASE_COMPACT_FONT</variable>
+							</fontbutton>
+							<text><label>Compact button with font and size preview</label></text>
+							<fontbutton font-name="Serif Bold 14" use-font="true"
+								use-size="true" show-style="true" show-size="true">
+								<variable>SHOWCASE_SIZED_FONT</variable>
+							</fontbutton>
+							<button><label>Print all values</label><action>echo "Full: $SHOWCASE_FULL_FONT · compact: $SHOWCASE_COMPACT_FONT · sized: $SHOWCASE_SIZED_FONT"</action></button>
+						</vbox>
+						<label>Compact alternatives</label>
+					</frame>
+					<variable>SHOWCASE_FONT_DIVIDER</variable>
+				</hpaned>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkHSV exposes the native GTK2 hue ring and saturation/value triangle. Values use the stable H|S|V format with every component from 0 to 1.</label></text>
+				</infobar>
+				<hpaned position="590" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<hsv hsv-size="370" ring-width="42">
+							<default>0.58|0.75|0.9</default>
+							<variable>SHOWCASE_HSV</variable>
+							<action>refresh:SHOWCASE_HSV_VALUE</action>
+						</hsv>
+						<label>Large selector: 370 px / 42 px ring</label>
+					</frame>
+					<frame>
+						<vbox border-width="10" spacing="10">
+							<text><label>Current locale-independent value</label></text>
+							<entry editable="false">
+								<variable>SHOWCASE_HSV_VALUE</variable>
+								<default>0.58|0.75|0.9</default>
+								<input>printf "%s" "$SHOWCASE_HSV"</input>
+							</entry>
+							<text><label>A second selector can use independent native metrics.</label></text>
+							<hsv hsv-size="150" ring-width="16">
+								<default>0.08|0.85|0.95</default>
+								<variable>SHOWCASE_HSV_COMPACT</variable>
+							</hsv>
+							<hbuttonbox layout-style="spread" spacing="8">
+								<button><label>Print values</label><action>echo "HSV: $SHOWCASE_HSV · compact: $SHOWCASE_HSV_COMPACT"</action></button>
+								<button><label>Clear main</label><action>clear:SHOWCASE_HSV</action><action>refresh:SHOWCASE_HSV_VALUE</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>Value and compact variant</label>
+					</frame>
+					<variable>SHOWCASE_HSV_DIVIDER</variable>
+				</hpaned>
+			</vbox>
+
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="info">
+					<text><label>GtkStatusIcon lives in the desktop notification area rather than inside this window. Its zero-size logical widget keeps normal gtkdialog variables, state actions and window ownership.</label></text>
+				</infobar>
+				<statusicon title="GTKDialog GTK2 showcase"
+					tooltip-markup="&lt;b&gt;GTKDialog GTK2 showcase&lt;/b&gt;\nLeft click to present; right click for actions"
+					context-menu="SHOWCASE_STATUS_ICON_MENU">
+					<variable>SHOWCASE_STATUS_ICON</variable>
+					<input file>'"$SHOWCASE_STATUS_ICON_INPUT"'</input>
+					<output file>'"$SHOWCASE_STATUS_ICON_OUTPUT"'</output>
+					<action>presentwindow:MAIN_DIALOG</action>
+					<action signal="popup-menu">echo "Status icon popup requested"</action>
+				</statusicon>
+				<frame>
+					<grid rows="5" columns="2" row-spacing="8" column-spacing="14"
+						border-width="10" space-expand="true" space-fill="true">
+						<text row="0" column="0"><label>Current source</label></text>
+						<entry row="0" column="1" editable="false">
+							<variable>SHOWCASE_STATUS_ICON_SOURCE</variable>
+							<input>cat "$SHOWCASE_STATUS_ICON_INPUT"</input>
+						</entry>
+						<button row="1" column="0"><label>Theme icon</label><input file stock="gtk-info"></input><action>printf icon:dialog-information > "$SHOWCASE_STATUS_ICON_INPUT"</action><action>refresh:SHOWCASE_STATUS_ICON</action><action>refresh:SHOWCASE_STATUS_ICON_SOURCE</action></button>
+						<button row="1" column="1"><label>Stock warning</label><input file stock="gtk-dialog-warning"></input><action>printf stock:gtk-dialog-warning > "$SHOWCASE_STATUS_ICON_INPUT"</action><action>refresh:SHOWCASE_STATUS_ICON</action><action>refresh:SHOWCASE_STATUS_ICON_SOURCE</action></button>
+						<button row="2" column="0"><label>Project image file</label><input file stock="gtk-open"></input><action>printf "file:%s" "$SHOWCASE_IMAGE" > "$SHOWCASE_STATUS_ICON_INPUT"</action><action>refresh:SHOWCASE_STATUS_ICON</action><action>refresh:SHOWCASE_STATUS_ICON_SOURCE</action></button>
+						<button row="2" column="1"><label>Clear image</label><input file stock="gtk-clear"></input><action>clear:SHOWCASE_STATUS_ICON</action></button>
+						<accellabel row="3" column="0" column-span="2"
+							accel-widget="SHOWCASE_QUIT_ITEM" xalign="0">
+							<label>File → Quit keyboard accelerator</label>
+							<variable>SHOWCASE_ACCEL_LABEL</variable>
+						</accellabel>
+						<hbuttonbox row="4" column="0" column-span="2" layout-style="spread" spacing="8">
+							<button><label>Hide</label><action>hide:SHOWCASE_STATUS_ICON</action></button>
+							<button><label>Show</label><action>show:SHOWCASE_STATUS_ICON</action></button>
+							<button><label>Activate</label><action>activate:SHOWCASE_STATUS_ICON</action></button>
+							<button><label>Save source</label><action>save:SHOWCASE_STATUS_ICON</action></button>
+						</hbuttonbox>
+					</grid>
+					<label>Status icon sources, state actions and a native accelerator label</label>
+				</frame>
+				<text><label>The visible tray icon depends on the active desktop notification-area host. Right-click it to exercise the positioned popup menu.</label></text>
+			</vbox>
+		</notebook>
+
+		<hbuttonbox layout-style="end" spacing="8" border-width="8"
+			space-expand="false" space-fill="true">
+			<button>
+				<label>Guided setup</label>
+				<input file stock="gtk-execute"></input>
+				<action>launch:SHOWCASE_ASSISTANT</action>
+			</button>
+			<button>
+				<label>Custom dialog</label>
+				<input file stock="gtk-properties"></input>
+				<action>launch:SHOWCASE_DIALOG</action>
+			</button>
+			<button>
+				<label>Show question</label>
+				<input file stock="gtk-dialog-question"></input>
+				<action>launch:SHOWCASE_MESSAGE</action>
+			</button>
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+		<statusbar has-resize-grip="true" space-expand="false" space-fill="true">
+			<label>Ready — native GTK2 widgets in one application</label>
+		</statusbar>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --styles="$script_dir/showcase.gtkrc" --program=MAIN_DIALOG ;;
+esac

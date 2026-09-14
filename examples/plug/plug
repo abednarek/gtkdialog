@@ -1,0 +1,28 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+case ${1-} in
+	''|*[!0-9]*)
+		echo "usage: $0 SOCKET_ID" >&2
+		exit 2
+		;;
+esac
+
+PLUG_DIALOG="
+<plug socket-id=\"$1\">
+	<vbox border-width=\"12\" spacing=\"8\">
+		<text><label>Gtkdialog is running as an XEmbed client.</label></text>
+		<entry>
+			<default>Editable content from the plug process</default>
+			<variable>PLUG_TEXT</variable>
+		</entry>
+		<button cancel></button>
+	</vbox>
+	<action>echo \"gtkdialog plug attached to socket $1\"</action>
+	<variable>PLUG_DIALOG</variable>
+</plug>
+"
+
+export PLUG_DIALOG
+exec "$GTKDIALOG" --program=PLUG_DIALOG

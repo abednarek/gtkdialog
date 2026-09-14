@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>gtkdialog: assistant widget reference</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+<style type="text/css">
+body { font-size: 14px; font-family: arial, verdana, sans-serif; background-color: #e0e0e8; }
+h1 { font-size: 24px; } h2 { font-size: 18px; }
+a:link, a:visited, a:active { text-decoration: none; }
+a:hover { color: #8080ff; text-decoration: underline; }
+hr { color: #a8a8b0; background-color: #a8a8b0; height: 1px; border: 0; }
+pre { background-color: #e8e8f0; border: 1px dotted #b8b8c0; padding: 10px; }
+table.wiki { border-color: #c8c8d0; border-width: 0 0 2px 2px; border-style: solid; border-collapse: collapse; }
+td.wiki, th.wiki { border-color: #c8c8d0; border-width: 2px 2px 0 0; border-style: solid; }
+th.wiki { background-color: #e8e8f0; }
+</style></head><body bgcolor="#e0e0e8">
+<table bgcolor="#b8b8c0" cellpadding="0px" cellspacing="1px"><tr><td>
+<table bgcolor="#ffffff" cellpadding="0px" cellspacing="10px"><tr><td>
+<h1> assistant widget </h1>
+<p>A top-level GTK+ 2 <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkAssistant.html">GtkAssistant</a>
+for guided multi-page tasks.</p><hr>
+<h2> Definition </h2>
+<pre>
+&lt;assistant tag_attr="value"...&gt;
+	page-widget...
+	&lt;default&gt;page-number&lt;/default&gt;
+	&lt;variable&gt;varname&lt;/variable&gt;
+	&lt;input&gt;command&lt;/input&gt;
+	&lt;input file&gt;filename&lt;/input&gt;
+	&lt;action&gt;activity&lt;/action&gt;...
+	&lt;action signal="type"&gt;activity&lt;/action&gt;...
+	&lt;output file&gt;filename&lt;/output&gt;
+&lt;/assistant&gt;
+</pre>
+<p>The assistant replaces the normal top-level <code>window</code>; it cannot
+be nested inside one. Each direct child is one page. Its variable contains the
+zero-based current page number.</p>
+<h2> Page Attributes </h2>
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
+<tr><td class="wiki">page-title</td><td class="wiki">Page heading</td><td class="wiki">Text</td></tr>
+<tr><td class="wiki">page-type</td><td class="wiki">Page role and navigation</td><td class="wiki"><code>content</code>, <code>intro</code>, <code>confirm</code>, <code>summary</code> or <code>progress</code></td></tr>
+<tr><td class="wiki">complete</td><td class="wiki">Whether navigation may continue</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+</table>
+<h2> Actions and signals </h2>
+<p>The default action signal is <code>apply</code>. Explicit
+<code>apply</code>, <code>cancel</code>, <code>close</code> and
+<code>prepare</code> signals are supported. <code>clear</code> and
+<code>removeselected</code> return to page zero; <code>refresh</code> reads a
+page number and <code>save</code> writes it.</p>
+<h2> Common Contract </h2>
+
+<p>Common directives, GtkWidget signals, state and general functions, and action
+conditions are documented in the <a href="syntax.html#common-widget-contract">common
+widget contract</a>. The sections above describe the facilities specific to this
+tag.</p>
+
+<h2> Example </h2>
+<pre>
+&lt;assistant title="Setup"&gt;
+	&lt;vbox page-title="Welcome" page-type="intro" complete="true"&gt;
+		&lt;text&gt;&lt;label&gt;Welcome&lt;/label&gt;&lt;/text&gt;
+	&lt;/vbox&gt;
+	&lt;vbox page-title="Ready" page-type="confirm" complete="true"&gt;
+		&lt;text&gt;&lt;label&gt;Ready to finish&lt;/label&gt;&lt;/text&gt;
+	&lt;/vbox&gt;
+	&lt;variable&gt;CURRENT_PAGE&lt;/variable&gt;
+	&lt;action&gt;exit:Apply&lt;/action&gt;
+&lt;/assistant&gt;
+</pre>
+<p>This widget requires GTK+ 2.10 or later and was introduced in gtkdialog
+version 0.9.0.</p>
+<hr>
+<!-- reference-navigation-start -->
+<p class="reference-navigation">
+<strong>Reference:</strong>
+<a href="aboutdialog.html">aboutdialog</a>,
+<a href="accellabel.html">accellabel</a>,
+<a href="alignment.html">alignment</a>,
+<a href="arrow.html">arrow</a>,
+<a href="aspectframe.html">aspectframe</a>,
+<a href="assistant.html">assistant</a>,
+<a href="button.html">button</a>,
+<a href="calendar.html">calendar</a>,
+<a href="cellview.html">cellview</a>,
+<a href="checkbox.html">checkbox</a>,
+<a href="chooser.html">chooser</a>,
+<a href="colorbutton.html">colorbutton</a>,
+<a href="colorselection.html">colorselection</a>,
+<a href="combobox.html">combobox</a>,
+<a href="comboboxentry.html">comboboxentry</a>,
+<a href="comboboxtext.html">comboboxtext</a>,
+<a href="dialog.html">dialog</a>,
+<a href="drawingarea.html">drawingarea</a>,
+<a href="edit.html">edit</a>,
+<a href="entry.html">entry</a>,
+<a href="eventbox.html">eventbox</a>,
+<a href="expander.html">expander</a>,
+<a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="fixed.html">fixed</a>,
+<a href="fontbutton.html">fontbutton</a>,
+<a href="fontselection.html">fontselection</a>,
+<a href="frame.html">frame</a>,
+<a href="grid.html">grid</a>,
+<a href="gvim.html">gvim</a>,
+<a href="handlebox.html">handlebox</a>,
+<a href="hbox.html">hbox</a>,
+<a href="hbuttonbox.html">hbuttonbox</a>,
+<a href="hpaned.html">hpaned</a>,
+<a href="hruler.html">hruler</a>,
+<a href="hscale.html">hscale</a>,
+<a href="hscrollbar.html">hscrollbar</a>,
+<a href="hseparator.html">hseparator</a>,
+<a href="hsv.html">hsv</a>,
+<a href="iconview.html">iconview</a>,
+<a href="infobar.html">infobar</a>,
+<a href="layout.html">layout</a>,
+<a href="linkbutton.html">linkbutton</a>,
+<a href="list.html">list</a>,
+<a href="menu.html">menu</a>,
+<a href="menubar.html">menubar</a>,
+<a href="menuitem.html">menuitem</a>,
+<a href="menuitemseparator.html">menuitemseparator</a>,
+<a href="menutoolbutton.html">menutoolbutton</a>,
+<a href="messagedialog.html">messagedialog</a>,
+<a href="notebook.html">notebook</a>,
+<a href="pixmap.html">pixmap</a>,
+<a href="plug.html">plug</a>,
+<a href="popupmenu.html">popupmenu</a>,
+<a href="progressbar.html">progressbar</a>,
+<a href="radiobutton.html">radiobutton</a>,
+<a href="radiotoolbutton.html">radiotoolbutton</a>,
+<a href="recentchooser.html">recentchooser</a>,
+<a href="recentchoosermenu.html">recentchoosermenu</a>,
+<a href="scalebutton.html">scalebutton</a>,
+<a href="scrolledwindow.html">scrolledwindow</a>,
+<a href="separator.html">separator</a>,
+<a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sizegroup.html">sizegroup</a>,
+<a href="socket.html">socket</a>,
+<a href="spinbutton.html">spinbutton</a>,
+<a href="spinner.html">spinner</a>,
+<a href="statusbar.html">statusbar</a>,
+<a href="statusicon.html">statusicon</a>,
+<a href="syntax.html">syntax</a>,
+<a href="table.html">table</a>,
+<a href="terminal.html">terminal</a>,
+<a href="text.html">text</a>,
+<a href="timer.html">timer</a>,
+<a href="togglebutton.html">togglebutton</a>,
+<a href="toggletoolbutton.html">toggletoolbutton</a>,
+<a href="toolbar.html">toolbar</a>,
+<a href="toolbutton.html">toolbutton</a>,
+<a href="toolitem.html">toolitem</a>,
+<a href="toolitemgroup.html">toolitemgroup</a>,
+<a href="toolpalette.html">toolpalette</a>,
+<a href="tree.html">tree</a>,
+<a href="vbox.html">vbox</a>,
+<a href="vbuttonbox.html">vbuttonbox</a>,
+<a href="viewport.html">viewport</a>,
+<a href="volumebutton.html">volumebutton</a>,
+<a href="vpaned.html">vpaned</a>,
+<a href="vruler.html">vruler</a>,
+<a href="vscale.html">vscale</a>,
+<a href="vscrollbar.html">vscrollbar</a>,
+<a href="vseparator.html">vseparator</a>,
+<a href="window.html">window</a>
+</p>
+<!-- reference-navigation-end -->
+
+
+<p>&nbsp;</p>
+</td></tr>
+<tr><td>
+<!-- reference-footer-start -->
+<table width="100%" cellpadding="0px" cellspacing="0px">
+<tr>
+<td class="footer" width="25%" align="center">Historical documentation: <a href="mailto:thunorsif@hotmail.com">Thunor</a></td>
+<td class="footer" width="25%" align="center">Maintainer: <a href="mailto:artur@unix.org.pl">Artur Bednarek</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/abednarek/gtkdialog">Project Page</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/oshazard/gtkdialog">Archived Upstream</a></td>
+</tr>
+</table>
+<!-- reference-footer-end -->
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

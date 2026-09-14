@@ -1,0 +1,24 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+ARROW_DIALOG='
+<window title="GTK2 directional arrows" width-request="420">
+	<vbox border-width="12" spacing="10">
+		<text><label>GtkArrow is a lightweight directional indicator. Its direction and relief are ordinary GTK2 properties.</label></text>
+		<frame>
+			<hbox homogeneous="true" border-width="12" spacing="12">
+				<vbox><arrow arrow-type="up" shadow-type="in" height-request="36"></arrow><text><label>Up / in</label></text></vbox>
+				<vbox><arrow arrow-type="down" shadow-type="out" height-request="36"></arrow><text><label>Down / out</label></text></vbox>
+				<vbox><arrow arrow-type="left" shadow-type="etched-in" height-request="36"></arrow><text><label>Left / etched</label></text></vbox>
+				<vbox><arrow arrow-type="right" shadow-type="none" height-request="36"></arrow><text><label>Right / none</label></text></vbox>
+			</hbox>
+			<label>Native GtkArrow variants</label>
+		</frame>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+
+export ARROW_DIALOG
+exec "$GTKDIALOG" --program=ARROW_DIALOG

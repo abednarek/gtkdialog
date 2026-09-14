@@ -1,0 +1,32 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+RECENT_MENU_DIALOG='
+<window title="GTK2 recent chooser menu" width-request="420"
+	height-request="140">
+	<vbox>
+		<menubar>
+			<menu label="_File" use-underline="true">
+				<recentchoosermenu show-numbers="true" limit="10"
+					local-only="true" filter-name="Documents"
+					filter-pattern="*.txt;*.md;*.pdf">
+					<label>Recent documents</label>
+					<variable>RECENT_URI</variable>
+					<action>echo "Selected URI: $RECENT_URI"</action>
+				</recentchoosermenu>
+				<menuitem stock-id="gtk-quit">
+					<action>exit:Quit</action>
+				</menuitem>
+			</menu>
+		</menubar>
+		<text>
+			<label>Open File → Recent documents to select a desktop recent resource.</label>
+		</text>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+
+export RECENT_MENU_DIALOG
+exec "$GTKDIALOG" --program=RECENT_MENU_DIALOG

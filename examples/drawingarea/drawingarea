@@ -1,0 +1,67 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-drawingarea.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+CANVAS_IMAGE=$demo_dir/canvas.ppm
+ALT_IMAGE=$demo_dir/alternate.ppm
+SAVED_IMAGE=$demo_dir/saved.png
+export CANVAS_IMAGE ALT_IMAGE SAVED_IMAGE
+
+{
+	printf 'P3\n6 4\n255\n'
+	printf '29 78 216  29 78 216  66 133 244  66 133 244  91 155 213  91 155 213\n'
+	printf '29 78 216  66 133 244  255 255 255  255 255 255  91 155 213  54 111 153\n'
+	printf '54 111 153  91 155 213  255 255 255  255 255 255  66 133 244  29 78 216\n'
+	printf '91 155 213  91 155 213  66 133 244  66 133 244  29 78 216  29 78 216\n'
+} > "$CANVAS_IMAGE"
+{
+	printf 'P3\n6 4\n255\n'
+	printf '220 50 47  220 50 47  244 180 0  244 180 0  67 160 71  67 160 71\n'
+	printf '220 50 47  244 180 0  255 255 255  255 255 255  67 160 71  15 157 88\n'
+	printf '15 157 88  67 160 71  255 255 255  255 255 255  244 180 0  220 50 47\n'
+	printf '67 160 71  67 160 71  244 180 0  244 180 0  220 50 47  220 50 47\n'
+} > "$ALT_IMAGE"
+
+MAIN_DIALOG='
+<window title="Native GTK2 drawing area" width-request="580">
+	<vbox border-width="12" spacing="10">
+		<text>
+			<label>Raster canvas with aspect-preserving scaling and pointer actions.</label>
+		</text>
+		<drawingarea scale-mode="fit" interpolation="nearest"
+			background="#20242a" file-monitor="true" auto-refresh="true">
+			<width>540</width>
+			<height>270</height>
+			<input file>'"$CANVAS_IMAGE"'</input>
+			<output file>'"$SAVED_IMAGE"'</output>
+			<variable>CANVAS_SOURCE</variable>
+			<action signal="button-press-event">echo "Canvas click: $PTR_X,$PTR_Y button $PTR_BTN"</action>
+		</drawingarea>
+		<hbuttonbox>
+			<button>
+				<label>Alternate</label>
+				<action>cp "$ALT_IMAGE" "$CANVAS_IMAGE"</action>
+				<action function="refresh">CANVAS_SOURCE</action>
+			</button>
+			<button>
+				<label>Save PNG</label>
+				<action function="save">CANVAS_SOURCE</action>
+			</button>
+			<button>
+				<label>Clear</label>
+				<action function="clear">CANVAS_SOURCE</action>
+			</button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

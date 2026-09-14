@@ -1,0 +1,27 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 link button" resizable="false">
+	<vbox border-width="12" spacing="8">
+		<text>
+			<label>GtkLinkButton uses the desktop URI handler.</label>
+		</text>
+		<linkbutton uri="https://www.gtk.org/" visited="false">
+			<label>Visit the GTK website</label>
+			<variable>GTK_WEBSITE</variable>
+			<action>echo "Opening: $GTK_WEBSITE"</action>
+		</linkbutton>
+		<hbuttonbox layout-style="end">
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

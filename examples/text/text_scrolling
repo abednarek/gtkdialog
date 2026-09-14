@@ -1,0 +1,47 @@
+#!/bin/sh
+
+GTKDIALOG=${GTKDIALOG:-gtkdialog}
+example_tmp=$(mktemp -d)
+trap 'rm -rf -- "$example_tmp"' EXIT HUP INT TERM
+scroll_file=$example_tmp/scrolling-text
+export scroll_file
+
+line=1
+while [ "$line" -le 18 ]; do
+	printf 'Initial line %02d\n' "$line"
+	line=$((line + 1))
+done > "$scroll_file"
+
+MAIN_DIALOG='
+<window title="Scrollable text and edit" width-request="620">
+  <vbox border-width="10" spacing="8">
+    <text use-markup="true" xalign="0">
+      <label>"<b>Read-only scrolling text</b> — legacy text stays unchanged unless scrollable is true"</label>
+    </text>
+    <text scrollable="true" scroll-to-bottom="true" width="580" height="140"
+          hscrollbar-policy="2" vscrollbar-policy="1" shadow-type="1" xalign="0">
+      <variable>SCROLLING_TEXT</variable>
+      <input file>'"$scroll_file"'</input>
+    </text>
+    <text use-markup="true" xalign="0"><label>"<b>Editable text with bottom gravity</b>"</label></text>
+    <edit scroll-to-bottom="true" wrap-mode="2">
+      <variable>SCROLLING_EDIT</variable>
+      <width>580</width><height>140</height>
+      <input file>'"$scroll_file"'</input>
+    </edit>
+    <hbox homogeneous="true" spacing="8">
+      <button><label>Append line</label>
+        <action>printf "Appended line\n" >> "$scroll_file"</action>
+        <action function="refresh">SCROLLING_TEXT</action>
+        <action function="refresh">SCROLLING_EDIT</action>
+      </button>
+      <button ok></button>
+    </hbox>
+  </vbox>
+</window>'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program MAIN_DIALOG ;;
+esac

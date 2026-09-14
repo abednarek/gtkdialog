@@ -1,0 +1,24 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<!-- Comments may appear before, after and between widgets. -->
+<window title="XML Comments" window-position="1">
+	<vbox border-width="20">
+		<!-- Comments inside quoted strings remain visible text. -->
+		<text>
+			<label>"The parser ignores XML comments outside strings."</label>
+		</text>
+		<!---->
+		<button ok></button>
+	</vbox>
+</window>
+<!-- Comments cannot be nested. -->
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) echo "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

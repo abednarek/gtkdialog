@@ -1,0 +1,18 @@
+GTKDialog development topics
+============================
+
+- Preserve the existing widget-initialization order until dependencies between
+  widgets are explicitly modelled and covered by ordering regressions. Changing
+  this order can alter synchronous actions in existing applications.
+
+- Keep the legacy <chooser> and <gvim> tags compatible. They remain supported
+  for existing applications, but should not be redesigned without compatibility
+  evidence.
+
+- Extend dedicated attributes only where GTK+ 2 constructor arguments, child
+  packing, internal helper widgets or non-string property types cannot use the
+  generic writable-property path documented in doc/reference/syntax.html.
+
+- Bring the introductory Texinfo manual to feature parity with the maintained
+  HTML reference. The HTML pages are the authoritative user documentation in
+  the meantime.

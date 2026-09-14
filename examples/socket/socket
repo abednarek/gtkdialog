@@ -1,0 +1,58 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+socket_demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-socket.XXXXXX") || exit 1
+SOCKET_PID_FILE=$socket_demo_dir/client.pid
+export SOCKET_PID_FILE
+
+cleanup()
+{
+	if test -s "$SOCKET_PID_FILE"; then
+		client_pid=$(sed -n '1p' "$SOCKET_PID_FILE")
+		case $client_pid in
+			''|*[!0-9]*) ;;
+			*) kill "$client_pid" 2>/dev/null || : ;;
+		esac
+	fi
+	rm -rf "$socket_demo_dir"
+}
+trap cleanup EXIT HUP INT TERM
+
+MAIN_DIALOG='
+<window title="GTK2 XEmbed socket" width-request="720" height-request="500">
+	<vbox border-width="12" spacing="10">
+		<text>
+			<label>An external xterm is embedded in the direct GtkSocket below.</label>
+		</text>
+		<frame space-expand="true" space-fill="true">
+			<socket width-request="680" height-request="380">
+				<variable>SOCKET_ID</variable>
+				<action signal="realize">xterm -into $SOCKET_ID -title Gtkdialog-XEmbed-demo & echo $! > $SOCKET_PID_FILE</action>
+				<action>echo "XEmbed client attached to $SOCKET_ID"</action>
+				<action signal="plug-removed">echo "XEmbed client detached from $SOCKET_ID"</action>
+			</socket>
+			<label>Direct XEmbed host</label>
+		</frame>
+		<text>
+			<label>Gtkdialog owns the socket; this wrapper records and stops the demonstration client.</label>
+		</text>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*)
+		if ! command -v xterm >/dev/null 2>&1; then
+			echo "This example requires the XEmbed-capable xterm client." >&2
+			exit 1
+		fi
+		"$GTKDIALOG" --program=MAIN_DIALOG
+		;;
+esac

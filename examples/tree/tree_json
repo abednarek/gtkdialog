@@ -1,0 +1,40 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+if ! "$GTKDIALOG" --version 2>/dev/null | grep -q 'JSON-GLib'; then
+	echo 'This example requires gtkdialog built with JSON-GLib support.' >&2
+	exit 77
+fi
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+input_file=$script_dir/tree_json_data.json
+
+TREE_JSON_DIALOG='
+<window title="Hierarchical JSON Tree" width-request="560" height-request="360">
+	<vbox border-width="10" spacing="8">
+		<text xalign="0">
+			<label>Nested rows loaded from a versioned JSON document</label>
+		</text>
+		<tree show-expanders="true" headers-visible="true"
+			rules-hint="true" space-expand="true" space-fill="true">
+			<variable>TREE_JSON_VALUE</variable>
+			<label>Name|Size|State</label>
+			<input file format="json">'"$input_file"'</input>
+			<action>echo "Selected: $TREE_JSON_VALUE"</action>
+		</tree>
+		<hbuttonbox layout-style="end" spacing="8">
+			<button><label>Expand all</label><action>expandall:TREE_JSON_VALUE</action></button>
+			<button><label>Collapse all</label><action>collapseall:TREE_JSON_VALUE</action></button>
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export TREE_JSON_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$TREE_JSON_DIALOG" ;;
+	*) "$GTKDIALOG" --program=TREE_JSON_DIALOG ;;
+esac

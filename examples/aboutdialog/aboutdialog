@@ -1,0 +1,23 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<aboutdialog program-name="GTKDialog GTK2" version="0.9.0-dev"
+	comments="Build GTK+ 2 interfaces from a compact XML description."
+	copyright="Copyright (C) GTKDialog contributors"
+	license="GNU General Public License version 2 or later"
+	wrap-license="true">
+	<item role="author">GTKDialog contributors</item>
+	<item role="documenter">Documentation contributors</item>
+	<variable>ABOUT_RESPONSE</variable>
+	<action>echo "Response: $ABOUT_RESPONSE"</action>
+	<action>exit:response</action>
+</aboutdialog>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

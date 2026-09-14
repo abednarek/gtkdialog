@@ -1,0 +1,28 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Shell Input Redirection" window-position="1">
+	<vbox border-width="20">
+		<text xalign="0">
+			<label>"The following value is produced by: wc -l </etc/passwd"</label>
+		</text>
+		<entry editable="false">
+			<variable>LINE_COUNT</variable>
+			<input>wc -l </etc/passwd</input>
+		</entry>
+		<button>
+			<label>Refresh</label>
+			<action>refresh:LINE_COUNT</action>
+		</button>
+		<button ok></button>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) echo "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

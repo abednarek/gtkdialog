@@ -1,0 +1,29 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Scrollable layout" width-request="520" height-request="360">
+	<vbox border-width="10" spacing="8">
+		<text><label>Scroll to inspect the complete 1000 by 700 pixel canvas.</label></text>
+		<layout width="1000" height="700" space-expand="true" space-fill="true">
+			<button x="30" y="30"><label>Upper left</label></button>
+			<button x="760" y="80"><label>Upper right</label></button>
+			<button x="120" y="560"><label>Lower left</label></button>
+			<entry x="700" y="590" width-request="220">
+				<default>Lower-right content</default>
+				<variable>LAYOUT_TEXT</variable>
+			</entry>
+			<variable>LAYOUT_AREA</variable>
+			<width>480</width>
+			<height>280</height>
+		</layout>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

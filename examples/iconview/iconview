@@ -1,0 +1,52 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-iconview.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+for colour in red green blue; do
+	case $colour in
+		red) pixel='220 50 47' ;;
+		green) pixel='67 160 71' ;;
+		blue) pixel='66 133 244' ;;
+	esac
+	{
+		printf 'P3\n2 2\n255\n'
+		printf '%s  %s\n%s  %s\n' "$pixel" "$pixel" "$pixel" "$pixel"
+	} > "$demo_dir/$colour.ppm"
+done
+printf '%s\n' "$demo_dir/red.ppm" "$demo_dir/green.ppm" \
+	"$demo_dir/blue.ppm" > "$demo_dir/images"
+
+MAIN_DIALOG='
+<window title="Native GTK2 icon view" width-request="500" height-request="430">
+	<vbox border-width="10" spacing="8">
+		<text><label>Select an item, then double-click to accept it.</label></text>
+		<iconview selection-mode="single" icon-size="48" columns="3"
+			item-width="110">
+			<item stock="gtk-directory">Projects</item>
+			<item stock="gtk-preferences">Settings</item>
+			<item stock="gtk-help">Help</item>
+			<variable>SELECTED_ICON</variable>
+			<default>Projects</default>
+			<action>exit:Selected</action>
+		</iconview>
+		<text><label>Images loaded from a file list without visible labels:</label></text>
+		<iconview input-mode="image" text-column="-1" icon-size="64"
+			columns="3" item-width="100">
+			<input file>'"$demo_dir"'/images</input>
+			<variable>SELECTED_IMAGE</variable>
+		</iconview>
+		<hbuttonbox>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

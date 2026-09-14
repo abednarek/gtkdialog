@@ -1,0 +1,27 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Horizontal button box" width-request="460">
+	<vbox>
+		<text>
+			<label>Help is secondary; Cancel and OK form the main group.</label>
+		</text>
+		<hbuttonbox layout-style="end" spacing="8">
+			<button secondary="true">
+				<label>Help</label>
+				<action>echo "Help selected"</action>
+			</button>
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

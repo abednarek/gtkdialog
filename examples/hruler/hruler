@@ -1,0 +1,25 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+RULER_POSITION=35
+RULER_DIALOG='
+<window title="Native GTK2 horizontal ruler" width-request="460">
+	<vbox border-width="12" spacing="10">
+		<text><label>Move the scale to update the ruler position.</label></text>
+		<hscale range-min="0" range-max="100" range-step="1">
+			<variable>RULER_POSITION</variable>
+			<default>35</default>
+			<action>refresh:HORIZONTAL_RULER</action>
+		</hscale>
+		<hruler lower="0" upper="100" max-size="100" metric="pixels">
+			<variable>HORIZONTAL_RULER</variable>
+			<input>printf "%s" "$RULER_POSITION"</input>
+		</hruler>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+
+export RULER_POSITION RULER_DIALOG
+exec "$GTKDIALOG" --program=RULER_DIALOG

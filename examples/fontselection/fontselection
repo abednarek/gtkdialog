@@ -1,0 +1,23 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 font selection">
+	<vbox border-width="12" spacing="10">
+		<text><label>An embedded family, face and size selector</label></text>
+		<fontselection preview-text="GTKDialog font preview">
+			<default>Sans 12</default>
+			<variable>SELECTED_FONT</variable>
+			<action>echo "Font: $SELECTED_FONT"</action>
+		</fontselection>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

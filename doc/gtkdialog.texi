@@ -1,0 +1,1929 @@
+\input texinfo   @c -*-texinfo-*-
+@include version.texi
+@c %**start of header
+@setfilename gtkdialog.info
+@settitle NAME-OF-MANUAL VERSION
+@c %**end of header
+
+@copying
+This manual documents version @value{VERSION} of the Gtkdialog utility.
+
+Copyright @copyright{} 2003-2007 Laszlo Pere. 
+Copyright @copyright{} 2026 Artur Bednarek.
+
+WARNING: This documentation is very incomplete and has not been updated
+since at least 2007 although it is still informative for beginners.
+
+@quotation
+Permission is granted to copy, distribute and/or modify this
+document under the terms of the GNU Free Documentation License,
+Version 1.1 or any later version published by the Free Software
+Foundation; with no Invariant Sections, with no Front-Cover Texts,
+and with no Back-Cover Texts.  
+@end quotation
+@end copying
+
+@titlepage
+@title Gtkdialog User's Manual
+@subtitle Incomplete introduction
+@c subtitle SUBTITLE-IF-ANY
+@c subtitle SECOND-SUBTITLE
+@author Laszlo Pere
+@author Artur Bednarek
+
+@c  The following two commands
+@c  start the copyright page.
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@c Published by ...
+@end titlepage
+                                                                           
+@c So the toc is printed in the right place.
+@contents
+                                                                           
+@ifnottex
+@node Top
+@top Gtkdialog User's Manual
+                                                                           
+@insertcopying
+@end ifnottex
+                                                                           
+@menu
+* Getting Gtkdialog::      How to find, download and install the program.
+* Introduction::           A brief description of the package.
+* Invoking the Program::   How to call the program from various languages.
+* Widgets::    		   The elements of dialog boxes.
+* Containers::		   Dialog elements grouping widgets together.
+* Actions::		   What is happening when something happening.
+@end menu
+
+
+@node Getting Gtkdialog
+@chapter Getting Gtkdialog
+@section Download 
+The maintained GTK+ 2 source is hosted at
+@uref{https://github.com/abednarek/gtkdialog}.  The archived upstream
+history is available at @uref{https://github.com/oshazard/gtkdialog}.
+
+@section How to Install the Program
+The program can be installed using the standard @command{configure},
+@command{make} and @command{make install} command sequence.  Builds should
+be kept outside the source directory.  A Git checkout must first be prepared
+with @command{autoreconf -fi}; a release archive already contains the generated
+files.  Further details can be found in the @file{README.md} and @file{INSTALL}
+files included with the source.
+
+
+@section Copying
+Copyright @copyright{} 2003-2007 Laszlo Pere. 
+Copyright @copyright{} 2026 Artur Bednarek.
+
+The gtkdialog is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2.0 of the License, or (at
+your option) any later version.
+
+The program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this software.  The complete version 2 license text is in the @file{COPYING}
+file included with the source.
+
+@node Introduction 
+@chapter Introduction
+Gtkdialog is a small utility program based on the GTK+ library. The
+program mainly made for GUI development for shell scripts but can be
+used with many other programming languages. The programmer can easily
+create GUI not just for any shell script or UNIX command but for any
+interpreted or compiled program capable to start child process and use
+pipes.
+
+@node Invoking the Program
+@chapter Invoking the Program
+@section Examples
+Our first example program shows how to call the @command{gtkdialog}
+from a BASH script. 
+
+@example
+#! /bin/bash
+
+export MAIN_DIALOG='
+ <vbox>
+  <text>
+    <label>This is a label...</label>
+  </text>
+  <hbox>
+   <button ok></button>
+   <button cancel></button>
+  </hbox>
+ </vbox>'
+
+gtkdialog --program MAIN_DIALOG
+@end example
+
+This example uses a very plain way to open a dialog box. We store the
+description of the dialog box in the @code{MAIN_DIALOG} environment
+variable which is exported to the child processes with the BASH
+@code{export} built-in. Then we call the @code{gtkdialog} program with
+the @option{--program} option which is followed by the name of the
+variable holding the dialog box description. It is simple and easy to
+write BASH scripts in this manner.
+
+A similar calling method can be used when user input is needed. The
+@command{gtkdialog} send the state of the widgets to the standard
+output when exiting and this is how we can get user input for the BASH
+program. The  next example code show the reading process.
+@example
+#! /bin/bash
+
+export DIALOG='
+<vbox>
+  <entry>
+    <variable>ENTRY</variable>
+  </entry>
+  <hbox>
+    <button ok></button>
+    <button cancel></button>
+  </hbox>
+</vbox>'
+
+I=$IFS; IFS=""
+for STATEMENTS in  $(gtkdialog --program DIALOG); do
+  eval $STATEMENTS
+done
+IFS=$I
+
+if [ "$EXIT" = "OK" ]; then 
+  echo "You entered: $ENTRY."
+else
+  echo "You pressed the Cancel button."
+fi
+@end example
+
+In the example script we use the @code{for} built-in to go through the
+list @code{gtkdialog} produced. Changing the field separator (IFS) is
+a little bit disturbing but necessary since this is the only way to
+protect the space characters in user input. 
+
+In larger software projects it may be a good idea to break the code to
+separate files. Since @code{gtkdialog} can read the description
+program from file it is easy to write self executable programs with
+it. This is how the next example constructed.
+
+@example
+#! /usr/local/bin/gtkdialog -f
+<vbox>
+  <checkbox>
+    <label>This is a checkbox</label>
+    <variable>CHECK1</variable>
+  </checkbox>
+  <checkbox>
+    <label>Another one</label>
+    <variable>CHECK2</variable>
+  </checkbox>
+  <button>
+    <label>OK</label>
+  </button>
+</vbox>
+@end example
+
+When used in this fashion the state of the widgets can get from
+the standard output of the script as usually.
+
+
+@node Widgets
+@chapter Widgets
+The dialog description language is a simple XML like language capable 
+to denote any complex dialog box containing widgets and boxes. 
+
+Comments can be placed before or after the dialog and between widget
+definitions using @code{<!-- comment -->}. Comments cannot be nested.
+Comment markers inside a double-quoted string are treated as ordinary
+text. Parser error line numbers include lines inside comments and
+double-quoted strings and attributes.
+
+Widgets are simple GUI elements such as buttons, entry fields, lists,
+etc. Widget can have attributes, states and actions (@pxref{Actions}).
+
+The widgets are grouped together with containers (@pxref{Containers}),
+horizontal and vertical boxes or frames. Every widget should placed 
+in one of the containers, no widgets can be alone for it is dangerous 
+outside.
+
+@menu
+* Assistant::			Multi-page guided tasks
+* About dialog::		Application information and credits
+* Dialog::			Custom content and response buttons
+* Drawing area::		Raster canvas and pointer actions
+* Message dialog::		Standard messages and questions
+* Icon view::			Selectable icon collections
+* Cell view::			One compact model row
+* Recent chooser::		Recently used resources
+* Recent chooser menu::	Recent resources in a menu
+* Scrollbars::			Standalone range positions
+* Rulers::			Measured GTK2 ranges
+* Scale and volume buttons::	Compact numeric controls
+* Aspect frame::		Fixed-proportion content
+* Static label::                Labels containing static text
+* Multiline edit::              Editable text in a scrolled window
+* Pushbutton::			Pushbutton widgets
+* Pre-defined pushbuttons::	Pushbuttons with pixmap and text label
+* Entry::			One line text entry widgets
+* Checkbox::			Checkbox widgets
+* Calendar::			Calendar date selection widget
+* Link button::			Clickable URI widget
+* Chooser::			Embedded file selection
+* File chooser button::		Embedded file or folder selection
+* Info bar::			Non-modal messages and responses
+* Spinner::			Animated activity indicator
+* XEmbed socket and plug::	External X11 application embedding
+* Pixmap::			Static pixmap widgets
+* Menus::                       Making menubars, menus and menuitems
+* Trees::                       Complex widget for trees
+@end menu
+
+@c -----------------------------------------------------------------
+@node Assistant
+@section Assistant
+
+The top-level @code{<assistant></assistant>} element creates a native GTK+ 2
+multi-page assistant.  It replaces @code{<window>} as the program root and
+cannot be nested inside another window.  Each direct child becomes one page.
+
+Page widgets accept @code{page-title}, a Boolean @code{complete} state and
+@code{page-type}: @code{content}, @code{intro}, @code{confirm},
+@code{summary} or @code{progress}.  The assistant variable and
+file output contain the zero-based current page number.  Defaults and inputs
+select a page.
+
+The default action signal is @code{apply}.  The @code{apply}, @code{cancel},
+@code{close} and @code{prepare} signals may also be named explicitly.
+
+@example
+<assistant title="Setup">
+  <vbox page-title="Welcome" page-type="intro" complete="true">
+    <text><label>Welcome</label></text>
+  </vbox>
+  <vbox page-title="Ready" page-type="confirm" complete="true">
+    <text><label>Ready to finish</label></text>
+  </vbox>
+  <variable>CURRENT_PAGE</variable>
+  <action>exit:Apply</action>
+</assistant>
+@end example
+
+The widget requires GTK+ 2.10 or later.
+
+@c -----------------------------------------------------------------
+@node About dialog
+@section About dialog
+
+The top-level @code{<aboutdialog></aboutdialog>} element creates a native
+GTK+ 2 application-information dialog.  It replaces the normal
+@code{<window>} root, cannot be nested, and does not accept child widgets.
+
+Standard writable GtkAboutDialog properties are tag attributes.  Common
+properties include @code{program-name}, @code{version}, @code{comments},
+@code{copyright}, @code{website}, @code{website-label}, @code{license},
+@code{wrap-license}, @code{translator-credits} and @code{logo-icon-name}.
+Changing @code{program-name} also lets GTK form the native window title.
+
+Each @code{<item>} adds one person to the credits.  Its optional
+@code{role} attribute accepts @code{author} (the default),
+@code{documenter} or @code{artist}.
+
+The variable and file output contain the latest response.  The native Close
+button normally returns @code{cancel}; closing through the window manager
+returns @code{delete-event}.  The default action signal is @code{response},
+and its value is updated before actions run.  Responses do not implicitly
+exit or close a launched dialog, so use an explicit @code{exit} or
+@code{closewindow} action.
+
+@example
+<aboutdialog program-name="GTKDialog GTK2" version="0.9.0-dev"
+             comments="Build GTK+ 2 interfaces from XML.">
+  <item role="author">GTKDialog contributors</item>
+  <item role="documenter">Documentation contributors</item>
+  <variable>ABOUT_RESPONSE</variable>
+  <action>exit:response</action>
+</aboutdialog>
+@end example
+
+The widget requires GTK+ 2.6 or later.  The @code{wrap-license} property
+requires GTK+ 2.8; @code{program-name} is translated to the older GTK name
+API when building against GTK+ 2.6 or 2.10.
+
+@c -----------------------------------------------------------------
+@node Dialog
+@section Dialog
+
+The top-level @code{<dialog></dialog>} element creates a native GTK+ 2
+dialog with separate content and action areas.  It replaces the normal
+@code{<window>} root and cannot be nested inside another window.
+
+Direct children without a @code{response} tag attribute are placed in the
+content area.  A direct @code{<button>} child whose @code{response} attribute
+is a response name or integer is placed in the action area.  Named responses
+include @code{ok}, @code{cancel}, @code{close}, @code{yes}, @code{no},
+@code{apply}, @code{help}, @code{accept} and @code{reject}.
+
+The @code{default-response} tag attribute selects the default action button.
+The dialog variable and file output contain the latest response.  The default
+action signal is @code{response}, and the value is updated before actions run.
+A response does not implicitly exit or close the dialog; use an explicit
+@code{exit} or @code{closewindow} action.
+
+@example
+<dialog title="Settings" default-response="ok">
+  <vbox><text><label>Apply these settings?</label></text></vbox>
+  <button response="cancel"><label>Cancel</label></button>
+  <button response="ok"><label>Apply</label></button>
+  <variable>DIALOG_RESPONSE</variable>
+  <action>exit:response</action>
+</dialog>
+@end example
+
+@c -----------------------------------------------------------------
+@node Drawing area
+@section Drawing area
+
+The @code{<drawingarea></drawingarea>} element creates a native GTK+ 2 raster
+canvas.  A file input loads an image directly.  A command input reads an image
+filename from its first output line.  The @code{<default>} directive supplies
+an initial image filename, and the variable contains the filename of the last
+image loaded successfully.
+
+The @code{scale-mode} tag attribute accepts @code{none}, @code{fit} or
+@code{stretch}.  @code{none} draws at the original size from the top-left;
+@code{fit} preserves the aspect ratio and centres the image; @code{stretch}
+fills the canvas.  Scaled images use @code{bilinear} interpolation by default;
+@code{nearest}, @code{tiles}, @code{bilinear} or @code{hyper} may be selected
+with @code{interpolation}.  The @code{background} attribute accepts a GTK
+colour specification.  Width and height directives define the canvas size;
+without them a loaded image supplies its natural dimension, with a 320 by 180
+blank fallback.
+
+@example
+<drawingarea scale-mode="fit" background="#20242a">
+  <width>480</width><height>270</height>
+  <input file>/tmp/preview.png</input>
+  <output file>/tmp/saved-preview.png</output>
+  <variable>PREVIEW_IMAGE</variable>
+  <action signal="button-press-event">
+    echo "$PTR_X,$PTR_Y button $PTR_BTN"
+  </action>
+</drawingarea>
+@end example
+
+@code{refresh} reloads the declared sources, @code{clear} removes the image,
+and @code{save} writes the original unscaled raster using the filename
+extension selected by the output target.  The @code{expose-event} signal is
+emitted after the current raster has been drawn.  Normal button actions receive
+the existing @code{PTR_X}, @code{PTR_Y}, @code{PTR_BTN} and related pointer
+environment values.  The drawing area owns its source and scaled pixbufs and
+releases both with the widget.
+
+@c -----------------------------------------------------------------
+@node Message dialog
+@section Message dialog
+
+The top-level @code{<messagedialog></messagedialog>} element creates a native
+GTK+ 2 message dialog.  Like @code{<assistant>}, it replaces the normal
+@code{<window>} root and cannot be nested inside another window.
+
+The @code{message-type} attribute accepts @code{info}, @code{warning},
+@code{question}, @code{error} or @code{other}.  The @code{buttons} attribute
+accepts @code{none}, @code{ok}, @code{close}, @code{cancel}, @code{yes-no} or
+@code{ok-cancel}.  A @code{secondary-text} attribute adds explanatory text,
+and @code{default-response} selects the button activated by Enter.  The
+@code{<label>} directive supplies the primary message; use the normal
+@code{title} tag attribute for the window title.
+
+The variable and file output contain the latest named response, such as
+@code{yes}, @code{no}, @code{ok} or @code{cancel}.  The default action signal
+is @code{response}, and the variable is updated before its actions run.  A
+response does not implicitly exit gtkdialog or close a launched dialog; use
+the normal @code{exit} or @code{closewindow} action explicitly.
+
+@example
+<messagedialog title="Confirm" message-type="question"
+               buttons="yes-no" default-response="yes"
+               secondary-text="The project remains GTK2-only.">
+  <label>Continue?</label>
+  <variable>ANSWER</variable>
+  <action>echo "$ANSWER"</action>
+  <action>exit:response</action>
+</messagedialog>
+@end example
+
+@c -----------------------------------------------------------------
+@node Icon view
+@section Icon view
+
+The @code{<iconview></iconview>} element creates a native GTK+ 2 icon view.
+Each @code{<item>} supplies a label and may specify a GTK stock icon,
+an @code{icon-name} from the current icon theme, or an @code{image-name} or
+@code{image-file}.
+File and command inputs append one text-only item per line.  With
+@code{input-mode="image"}, each line is loaded as an image filename and is
+also used as the item's value.  The normal GtkIconView property
+@code{text-column="-1"} hides item labels without changing those values.
+
+The variable contains the selected label.  In @code{multiple} selection mode,
+selected labels are separated by newlines.  A default selects the matching
+label.  The @code{clear} action removes all items, @code{removeselected}
+removes selected items, and @code{save} writes every current label to the
+output file.
+
+@example
+<iconview selection-mode="single" icon-size="48" columns="3">
+  <item stock="gtk-directory">Projects</item>
+  <item stock="gtk-preferences">Settings</item>
+  <variable>SELECTED_ICON</variable>
+  <default>Projects</default>
+  <action>echo "$SELECTED_ICON"</action>
+</iconview>
+@end example
+
+For an image-only view populated from a file, use for example:
+
+@example
+<iconview input-mode="image" text-column="-1" icon-size="96">
+  <input file>/tmp/image-list</input>
+  <variable>SELECTED_IMAGE</variable>
+</iconview>
+@end example
+
+The default action signal is @code{item-activated};
+@code{selection-changed} may be named explicitly.  The widget requires
+GTK+ 2.6 or later.
+
+@c -----------------------------------------------------------------
+@node Cell view
+@section Cell view
+
+The @code{<cellview></cellview>} element creates a native GTK+ 2 cell view
+containing one model row.  It is a compact, non-interactive presentation of
+text with an optional GTK stock icon, themed @code{icon-name}, or
+@code{image-name}/@code{image-file}.  The @code{icon-size} attribute is a
+positive pixel size and defaults to 24.  Set @code{use-markup="true"} to
+interpret the text as Pango markup.
+
+The @code{<default>} directive overrides @code{<label>}.  File and command
+inputs replace the current text with their complete contents, and the
+displayed text is exported as the widget value.  @code{refresh} restores the
+declared image and reloads the text, @code{clear} removes both fields, and
+@code{save} writes the current text to the output file.
+
+@example
+<cellview stock="gtk-dialog-info" icon-size="32" use-markup="true">
+  <label>"<b>Ready</b>"</label>
+  <input file>/tmp/application-status</input>
+  <output file>/tmp/saved-status</output>
+  <variable>STATUS</variable>
+</cellview>
+@end example
+
+The object-valued model and tree-path-valued displayed row are owned by
+gtkdialog rather than exposed as textual properties.  GtkCellView has no
+type-specific default signal; normal GtkWidget signals remain available.
+The widget requires GTK+ 2.6 or later.
+
+@c -----------------------------------------------------------------
+@node Recent chooser
+@section Recent chooser
+
+The @code{<recentchooser></recentchooser>} element creates an embeddable
+GTK+ 2 chooser backed by the desktop's recent-resource manager.  It displays
+the current user's recent resources; @code{<item>} does not populate this
+shared history.
+
+The variable and output file contain the selected URI.  When the standard
+@code{select-multiple} property is true, selected URIs are separated by
+newlines.  Defaults and file or command inputs accept the same format.
+The @code{clear} and @code{removeselected} actions unselect resources without
+removing them from desktop history.
+
+Common GtkRecentChooser properties include @code{local-only},
+@code{show-private}, @code{show-not-found}, @code{show-tips},
+@code{show-icons}, @code{select-multiple}, @code{limit} and
+@code{sort-type}.  The custom @code{filter-name}, @code{filter-pattern} and
+@code{filter-mime-type} attributes add one optional recent-resource filter;
+pattern and MIME lists are separated with commas or semicolons.
+
+@example
+<recentchooser local-only="true" show-not-found="false" limit="12"
+               filter-name="Documents"
+               filter-pattern="*.txt;*.md;*.pdf">
+  <variable>RECENT_URI</variable>
+  <action>echo "$RECENT_URI"</action>
+</recentchooser>
+@end example
+
+The default action signal is @code{item-activated};
+@code{selection-changed} may be named explicitly.  The widget requires
+GTK+ 2.10 or later.
+
+@c -----------------------------------------------------------------
+@node Recent chooser menu
+@section Recent chooser menu
+
+The @code{<recentchoosermenu></recentchoosermenu>} element creates a labelled
+menu item whose submenu is a native GTK+ 2 recent chooser menu.  It is valid
+where an ordinary menu item is accepted, including a @code{<menu>} in a menu
+bar or popup menu.  The enclosing item owns the chooser and its filters.
+
+The @code{<label>} directive names the submenu entry.  The recent chooser
+properties @code{local-only}, @code{show-private}, @code{show-not-found},
+@code{show-tips}, @code{show-icons}, @code{limit} and @code{sort-type} are
+available, together with the menu-specific @code{show-numbers} property.
+The optional @code{filter-name}, @code{filter-pattern} and
+@code{filter-mime-type} attributes use the same syntax as
+@code{<recentchooser>}.  A recent chooser menu has a single current URI and
+does not support multiple selection.
+
+@example
+<menu label="File">
+  <recentchoosermenu show-numbers="true" limit="10"
+                     filter-pattern="*.txt;*.md;*.pdf">
+    <label>Recent documents</label>
+    <variable>RECENT_URI</variable>
+    <action>echo "$RECENT_URI"</action>
+  </recentchoosermenu>
+</menu>
+@end example
+
+Defaults and file or command inputs establish a logical current URI without
+marking a visible menu entry.  Activating an entry replaces that value with
+the URI reported by GTK+.  @code{refresh}, @code{save}, @code{clear} and
+@code{removeselected} do not alter the desktop recent-resource history.  The
+default signal is @code{item-activated}; @code{selection-changed} may be named
+explicitly for GTK+ operations that emit it.  The widget requires GTK+ 2.10
+or later.
+
+@c -----------------------------------------------------------------
+@node Scrollbars
+@section Scrollbars
+
+The @code{<hscrollbar></hscrollbar>} and
+@code{<vscrollbar></vscrollbar>} elements create standalone GTK+ 2
+scrollbars.  They expose a numeric position without creating a surrounding
+scrolled window.  The custom @code{range-min}, @code{range-max},
+@code{range-step}, @code{range-page}, @code{range-page-size} and
+@code{range-value} attributes construct their private GtkAdjustment.
+
+The page size controls the thumb extent and reduces the greatest usable
+position to @code{range-max - range-page-size}.  Bounds and all values must
+be complete finite numbers, the increments must be positive, and page size
+must fit inside the range.  The standard GtkRange @code{inverted} property
+is also available.
+
+Variables, defaults, command or file inputs and output files contain the
+numeric position in a locale-independent decimal representation.
+@code{refresh} reloads the inputs and @code{save} writes the current value.
+File monitoring and automatic refresh use the common widget contract.
+
+@example
+<hscrollbar range-min="0" range-max="100" range-step="1"
+            range-page="10" range-page-size="20" range-value="35">
+  <variable>SCROLL_POSITION</variable>
+  <action>echo "$SCROLL_POSITION"</action>
+</hscrollbar>
+@end example
+
+The default action signal is @code{value-changed}.  The GtkRange signals
+@code{adjust-bounds}, @code{change-value} and @code{move-slider} may be
+named explicitly.  Both widgets are available throughout GTK+ 2.
+
+@c -----------------------------------------------------------------
+@node Rulers
+@section Rulers
+
+The @code{<hruler></hruler>} and @code{<vruler></vruler>} elements expose
+GTK+ 2 horizontal and vertical rulers.  Their writable native
+@code{lower}, @code{upper}, @code{position} and @code{max-size} properties
+describe the displayed range.  The native @code{metric} property accepts
+@code{pixels}, @code{inches} or @code{centimeters}.
+
+The exported variable, @code{default}, command and file input, and saved
+output contain the current position as a locale-independent number.
+@code{refresh} reloads input, while @code{clear} moves the marker to the
+current lower bound.  File monitoring and applicable common state and signal
+actions are supported.  GtkRuler has no type-specific action signal, so an
+action must name a common GtkWidget signal explicitly.
+
+@example
+<hruler lower="0" upper="100" position="35"
+        max-size="100" metric="pixels">
+  <variable>HORIZONTAL_POSITION</variable>
+</hruler>
+<vruler lower="0" upper="30" position="12"
+        max-size="30" metric="centimeters">
+  <variable>VERTICAL_POSITION</variable>
+</vruler>
+@end example
+
+GtkRuler is deprecated by GTK, but remains a working GTK+ 2 widget and is
+provided for GTK2-native drawing and measurement layouts.
+
+@c -----------------------------------------------------------------
+@node Scale and volume buttons
+@section Scale and volume buttons
+
+The @code{<scalebutton></scalebutton>} element creates a compact GTK+ 2
+scale button.  Its @code{range-min}, @code{range-max}, @code{range-step} and
+@code{range-value} attributes define the adjustment.  The optional
+@code{icons} attribute is a comma- or semicolon-separated list of themed icon
+names.  @code{icon-size} accepts a GTK icon-size number.
+
+The @code{<volumebutton></volumebutton>} element uses GTK's standard volume
+adjustment and icons.  Both widgets accept @code{digits} (0 through 16) to
+control exported formatting.  Their variables, defaults, inputs and output
+files contain a numeric value.  @code{clear} and @code{removeselected} set
+the value to the adjustment minimum.
+
+@example
+<scalebutton range-min="0" range-max="10" range-step="0.5"
+             range-value="4" digits="1">
+  <variable>ZOOM</variable>
+  <action>echo "$ZOOM"</action>
+</scalebutton>
+<volumebutton digits="2">
+  <variable>VOLUME</variable>
+  <default>0.75</default>
+</volumebutton>
+@end example
+
+The default and explicit action signal is @code{value-changed}.  Both widgets
+require GTK+ 2.12 or later.
+
+@c -----------------------------------------------------------------
+@node Aspect frame
+@section Aspect frame
+
+The @code{<aspectframe></aspectframe>} element creates a native GTK+ 2 aspect
+frame and requires exactly one direct child.  The @code{xalign} and
+@code{yalign} attributes place that child from 0 through 1.  A positive
+@code{ratio} specifies width divided by height.  When @code{obey-child} is
+true, GTK derives the ratio from the child's request; when false, the declared
+ratio is enforced.
+
+The label directive, variable, default, first line of input and file output
+use the frame label.  @code{clear} and @code{removeselected} clear that label.
+
+@example
+<aspectframe xalign="0.5" yalign="0.5" ratio="1.7778"
+             obey-child="false">
+  <text width-request="320" height-request="180">
+    <label>16:9 content</label>
+  </text>
+  <label>Preview</label>
+  <variable>ASPECT_LABEL</variable>
+</aspectframe>
+@end example
+
+The widget is available throughout GTK+ 2.
+
+@c -----------------------------------------------------------------
+@node Static label 
+@section Static label
+Label is a static text widget created with @code{<text></text>} 
+tag. 
+
+The text in a static label, can be set with the
+@code{<label>@var{string}</label>} or the 
+@code{<input file>@var{filename}</input>} expression.
+
+The historical label is not placed in a scrolled window.  Set
+@code{scrollable="true"} to opt into a GTK+ 2 @code{GtkScrolledWindow}.
+The @code{width} and @code{height} attributes or directives set its minimum
+size, which defaults to 200 by 100 pixels.  @code{hscrollbar-policy} and
+@code{vscrollbar-policy} accept 0 (always), 1 (automatic) or 2 (never), and
+@code{shadow-type} accepts the GTK+ 2 numeric values 0 through 4.
+
+For a scrolling text label, @code{scroll-to-bottom="true"} keeps newly added
+content visible while the view is already at the bottom.  If the user scrolls
+up, refreshes preserve the current distance from the bottom.
+
+@example
+<text scrollable="true" scroll-to-bottom="true"
+      width="320" height="120" xalign="0">
+  <variable>LOG</variable>
+  <input file>/path/to/log</input>
+</text>
+@end example
+
+@c -----------------------------------------------------------------
+@node Multiline edit
+@section Multiline edit
+
+The @code{<edit></edit>} element creates a GTK+ 2 @code{GtkTextView} in a
+scrolled window.  It accepts initial @code{default} text, command and file
+input, a variable, width and height directives, and file output.  The
+@code{refresh}, @code{save}, @code{clear} and @code{removeselected} functions
+operate on its text buffer.
+
+Set @code{scroll-to-bottom="true"} for the same bottom-gravity behaviour as a
+scrollable text label.  The scroll state and its signal handlers are owned by
+the scrolled window and disappear when its window is closed, including
+windows that are later launched again.
+
+@c -----------------------------------------------------------------
+@node Pushbutton
+@section Pushbutton
+The pushbutton is a clickable widget defined with the 
+@code{<button></button>} tags. 
+
+@subsection @code{<label></label>}
+The @code{<label>@var{string}</label>} directive sets the text label of
+the pushbutton. If no label and pixmap is given for the button,
+gtkdialog will use @var{OK} as default.
+
+@subsection @code{<input file></input>}
+When creating buttons, the @command{<input file>@var{filename}</input>}
+tag can be used to insert a pixmap into the button. The @var{filename}
+must be a pixmap file. Gtkdialog will find this file with the
+@command{locate} utility if necessary.
+
+The pushbuttons can contain a label and a pixmap simultaneously. For
+this you have to use the @code{<label></label>} and the 
+@code{<input file></input>} as the next example shows:
+
+@example
+<button>
+  <input file>/usr/share/GUIcompletion/button_save.xpm</input>
+  <label>The label</label>
+</button>
+@end example
+
+@subsection @code{<action></action>}
+The @code{<action>@var{command}</action>} directive tells the gtkdialog
+what to do, when the button is pressed. If the action is not given
+explicitly the gtkdialog uses the default action, which is to exit
+the program. In this case the printed variable list will 
+contain a variable named @var{EXIT}, with the label of the activated 
+button as value.
+
+The buttons can handle more than one actions simultaneously. If there
+are more @code{<action></action>} directive for the given button, they
+will be executed one by one, in the right order.
+
+@subsection @code{<sensitive></sensitive>}
+The @code{<sensitive>@var{state}</sensitive>} directive specifies whether
+the button initially accepts user input.  False, no, zero and the deprecated
+value @code{disabled} make it insensitive without hiding it.  The historical
+@code{<visible>disabled</visible>} spelling remains accepted as a deprecated
+alias.  Initial visibility is instead controlled by the
+@code{visible="false"} widget attribute.
+
+@c -----------------------------------------------------------------
+@node Pre-defined pushbuttons
+@section Pre-defined pushbuttons
+Gtkdialog supports a few pre-defined pushbuttons for simplify the creation 
+of dialog boxes. The pre-defined buttons can be used the same manner the
+normal pushbuttons, but they have a default text, pixmap and output variable.
+Here is the list of available pre-defined pushbuttons:
+
+@itemize @bullet
+ @item @code{<button ok></button>}
+ @item @code{<button cancel></button>}
+ @item @code{<button help></button>}
+ @item @code{<button yes></button>}
+ @item @code{<button no></button>}
+@end itemize
+
+@c -----------------------------------------------------------------
+@node Entry
+@section Entry
+The entry widget is a simple text input field, which can be used to
+get a string from the user. 
+
+@subsection @code{<default></default>}
+The @code{<default>@var{string}</default>} directive sets the
+default content of the entry.
+
+@subsection Sensitivity and password display
+The @code{<sensitive>@var{state}</sensitive>} directive specifies whether
+the entry initially accepts user input.  Use the GTK+ 2 property attribute
+@code{visibility="false"} to mask text in a password entry.  The historical
+@code{<visible>disabled</visible>} and @code{<visible>password</visible>}
+spellings remain accepted for compatibility, but the former controls
+sensitivity rather than visibility.
+
+@subsection @code{<action></action>}
+The entry widgets are activating actions after their contents are
+changed. 
+
+@subsection Completion
+The optional @code{completion="true"} attribute adds native GTK+ 2 entry
+completion.  Each @code{<item>} supplies one suggestion.  File and command
+inputs marked with @code{completion="true"} supply one suggestion per line;
+unmarked inputs keep their existing behavior and set the entry text from
+their first line.  The @code{completion-minimum-key-length} attribute sets
+how many characters must be entered before suggestions appear and defaults
+to one.
+
+@example
+<entry completion="true" completion-minimum-key-length="1">
+  <item>Development</item>
+  <item>Documentation</item>
+  <input file completion="true">/tmp/suggestions</input>
+  <variable>CATEGORY</variable>
+</entry>
+@end example
+
+Refreshing the entry rebuilds the suggestion model.  Completion requires
+GTK+ 2.4 or later.
+
+@c -----------------------------------------------------------------
+@node Checkbox
+@section Checkbox
+The checkbox is a simple widget with a label and a check mark which 
+can be turned on and off by the user. Checkboxes are made with the
+@code{<checkbox></checkbox>} directive.
+
+@subsection @code{<label></label>}
+The label is the text shown beside the check mark. Every checkbox
+should have a label.
+
+@subsection @code{<default></default>}
+The initial state of the checkbox can be set by the 
+@code{<default>@var{state}</default>} directive, where the @var{state}
+can be either @code{yes} or @code{no}.
+
+@subsection @code{<action></action>}
+The @code{<action></action>} directive tells the gtkdialog what to do,
+when the state of the checkbox is changed. As every widgets, the
+checkbox can hold multiply actions which are executed serially in the
+order they are written.
+
+Actions of checkboxes can be written as conditional instructions with 
+@command{if true} and @command{if false} prefixes as in the next 
+example:
+
+@example
+<checkbox>
+	<label>This is a checkbox...</label>
+	<variable>CHECKBOX</variable>
+	<action>echo Checkbox is $CHECKBOX now.</action>
+	<action>if true enable:ENTRY</action>
+	<action>if false disable:ENTRY</action>
+</checkbox>
+@end example
+
+If an action using one of these legacy prefixes also has a
+@code{condition} attribute, the explicit condition is evaluated last and its
+result determines whether the action is executed.  This historical precedence
+is retained for compatibility.
+
+@subsection @code{<sensitive></sensitive>}
+The @code{<sensitive>@var{state}</sensitive>} directive specifies whether
+the checkbox initially accepts user input.  An insensitive checkbox remains
+visible but is shaded and cannot be changed.  The historical
+@code{<visible>disabled</visible>} spelling remains accepted as a deprecated
+alias; initial visibility uses the @code{visible="false"} widget attribute.
+
+@subsection @code{<variable></variable>}
+The value of a checkbox can be @code{true} or @code{false} and depends 
+only on its state.
+
+The @code{activate} action function toggles a checkbox or toggle button.
+For a radio button it selects the target without clearing an already active
+member of its group.
+
+@c -----------------------------------------------------------------
+@node Calendar
+@section Calendar
+
+The @code{<calendar></calendar>} widget presents a native GTK+ 2 calendar.
+Its variable and file output use the locale-independent
+@code{YYYY-MM-DD} format.  The @code{<default>}, command
+@code{<input>} and @code{<input file>} directives accept that same format.
+
+An action without an explicit signal runs when the user selects a day.
+The named signals @code{day-selected}, @code{day-selected-double-click}
+and @code{month-changed} are also available.  Programmatic refresh and
+initialisation do not run actions when
+@code{block-function-signals="true"} is used.
+
+The custom Boolean attributes @code{show-heading}, @code{show-day-names},
+@code{no-month-change} and @code{show-week-numbers} control the standard
+GTK+ calendar display flags.
+
+@example
+<calendar show-week-numbers="true">
+  <variable>SELECTED_DATE</variable>
+  <default>2026-09-12</default>
+  <action>echo "$SELECTED_DATE"</action>
+</calendar>
+@end example
+
+@c -----------------------------------------------------------------
+@node Link button
+@section Link button
+
+The @code{<linkbutton></linkbutton>} widget displays a clickable URI using the
+native GTK+ 2 link button.  The required @code{uri} tag attribute supplies the
+initial target and @code{<label>} supplies optional display text.  Without a
+label, GTK+ displays the URI.
+
+A @code{<default>}, command @code{<input>} or @code{<input file>} can replace
+the URI.  The widget variable and file output contain the current URI.  The
+default action signal is @code{clicked}; GTK+ also opens the URI using the
+desktop URI handler.
+
+@example
+<linkbutton uri="https://www.gtk.org/">
+  <label>GTK website</label>
+  <variable>GTK_URI</variable>
+  <action>echo "$GTK_URI"</action>
+</linkbutton>
+@end example
+
+The widget requires GTK+ 2.18 or later.
+
+@c -----------------------------------------------------------------
+@node Chooser
+@section Chooser
+
+The @code{<chooser></chooser>} widget embeds a GTK+ 2 open-file view directly
+in a window.  Its variable and file output contain the selected local
+pathname, or an empty string when nothing is selected.  For backward
+compatibility, @code{<default>} names the initially displayed folder rather
+than a selected file.  Command @code{<input>} and @code{<input file>} select a
+pathname; the @code{default-file} tag attribute supplies an initial selection
+and overrides both the folder and initial input selection.
+
+The @code{fs-filters-mime} and @code{fs-filters} attributes contain
+pipe-separated MIME types or shell patterns.  Every entry becomes a separate
+filter.  The default action signal is @code{file-activated}; explicit chooser
+signals include @code{selection-changed}, @code{update-preview} and
+@code{current-folder-changed}.  The historical @code{when="type"} action
+attribute remains an alias for @code{signal="type"}.
+
+The @code{refresh}, @code{save}, @code{clear}, @code{removeselected} and
+@code{fileselect} functions read, store, clear or replace the selection.
+
+@example
+<chooser default-file="/tmp/report.txt" fs-filters="*.txt|*.md">
+  <default>/tmp</default>
+  <variable>SELECTED_FILE</variable>
+  <action>echo "$SELECTED_FILE"</action>
+</chooser>
+@end example
+
+The widget remains in open-existing-file mode and requires GTK+ 2.4 or later.
+
+@c -----------------------------------------------------------------
+@node File chooser button
+@section File chooser button
+
+The @code{<filechooserbutton></filechooserbutton>} widget embeds a native
+GTK+ 2 file or folder selector.  Its variable and file output contain the
+selected local pathname, or an empty string when nothing is selected.
+@code{<default>}, command @code{<input>} and @code{<input file>} select a
+pathname.
+
+The @code{action} tag attribute accepts @code{open}, the default, or
+@code{select-folder}.  @code{title} and @code{current-folder} configure the
+chooser.  One filter can be described with @code{filter-name}, a semicolon-
+or comma-separated @code{filter-pattern} list and a similarly separated
+@code{filter-mime-type} list.
+
+The default action signal is @code{file-set}.  The @code{refresh},
+@code{save}, @code{clear} and @code{removeselected} action functions read,
+store or clear the selection.
+
+@example
+<filechooserbutton title="Select an image"
+  filter-name="Images" filter-pattern="*.png;*.jpg">
+  <variable>SELECTED_IMAGE</variable>
+  <action>echo "$SELECTED_IMAGE"</action>
+</filechooserbutton>
+@end example
+
+The widget requires GTK+ 2.6 or later.
+
+@c -----------------------------------------------------------------
+@node Info bar
+@section Info bar
+
+The @code{<infobar></infobar>} container presents non-modal information,
+warnings, questions or errors using the native GTK+ 2 info bar.  The
+@code{message-type} attribute accepts @code{info}, @code{warning},
+@code{question}, @code{error} or @code{other}.
+
+Direct children form its content.  A direct button with a @code{response}
+tag attribute is placed in the action area.  Named responses include
+@code{ok}, @code{cancel}, @code{close}, @code{yes}, @code{no}, @code{apply},
+@code{help}, @code{accept} and @code{reject}; integer response identifiers
+are also accepted.  @code{default-response} selects the default response.
+
+The variable and file output contain the most recent response.  The default
+action signal is @code{response}; the variable is updated before the action
+runs.
+
+@example
+<infobar message-type="warning" default-response="ok">
+  <text><label>Continue?</label></text>
+  <button response="cancel"><label>Cancel</label></button>
+  <button response="ok"><label>Continue</label></button>
+  <variable>INFO_RESPONSE</variable>
+</infobar>
+@end example
+
+The widget requires GTK+ 2.18 or later.
+
+@c -----------------------------------------------------------------
+@node Spinner
+@section Spinner
+
+The @code{<spinner></spinner>} widget displays the native animated GTK+ 2
+activity indicator.  Its state and variable are Boolean: @code{true} animates
+the spinner and @code{false} stops it.  The custom @code{active} tag attribute
+sets the initial state.
+
+The @code{<default>}, command @code{<input>} and @code{<input file>}
+directives also accept a Boolean state.  The @code{refresh} action rereads
+configured input, @code{save} writes the current state, and @code{clear} or
+@code{removeselected} stops the spinner.  A spinner has no default action
+signal, but common widget signals such as @code{realize}, @code{show} and
+pointer events remain available explicitly.  The @code{active_is_true} and
+@code{active_is_false} action conditions inspect its current state.
+
+@example
+<spinner active="true">
+  <variable>BUSY</variable>
+</spinner>
+@end example
+
+The widget requires GTK+ 2.20 or later.
+
+@c -----------------------------------------------------------------
+@node XEmbed socket and plug
+@section XEmbed socket and plug
+
+The @code{<socket></socket>} widget creates a direct GTK+ 2
+@code{GtkSocket} that can host an external XEmbed client.  Its variable is
+empty before realization and contains the unsigned decimal X11 window ID
+afterward.  The ID is exported before a @code{realize} action runs.
+
+The default action signal is @code{plug-added}; @code{plug-removed} can be
+selected explicitly.  Gtkdialog keeps the socket alive after a client
+disconnects so another client can attach.  It does not launch, own or stop the
+external process.  Because command actions are synchronous, a long-running
+client launched from an action must run in the background.
+
+@example
+<socket width-request="640" height-request="400">
+  <variable>SOCKET_ID</variable>
+  <action signal="realize">xterm -into "$SOCKET_ID" &</action>
+  <action>echo "XEmbed client attached"</action>
+  <action signal="plug-removed">echo "XEmbed client detached"</action>
+</socket>
+@end example
+
+The widget requires GTK+ 2 with the X11 backend and an XEmbed-capable client.
+It is not available as a GTK3 or Wayland integration.
+
+The @code{<plug></plug>} top-level element is the client counterpart.  Its
+@code{socket-id} attribute accepts the unsigned decimal ID of an existing
+XEmbed socket.  It contains one normal gtkdialog widget hierarchy and uses
+the existing window lifecycle, state, title input/output and general actions.
+The default action signal is @code{embedded}.
+
+@example
+<plug socket-id="123456">
+  <vbox>
+    <text><label>Embedded gtkdialog interface</label></text>
+  </vbox>
+  <action>echo "gtkdialog plug attached"</action>
+  <variable>EMBEDDED_DIALOG</variable>
+</plug>
+@end example
+
+The socket ID must be known before the plug is parsed.  A host action can
+therefore construct the plug program in a shell variable and start a second
+gtkdialog process.  Destroying the plug removes only that client; gtkdialog
+does not take ownership of the host process.
+
+@c -----------------------------------------------------------------
+@node Pixmap
+@section Pixmap
+The @code{<pixmap></pixmap>} defines a static pixmap widget. 
+
+@subsection @code{<input file></input>}
+
+The widget must have an input file defined with the 
+@code{<input file>@var{filename}</input>} tags. The @var{filename} 
+is the graphic image file for the pixmap. Gtkdialog will load this
+file if it can be opened for read, or will try to find a file with
+similar name (using the @code{locate} utility program) if the file
+is unreadable.  
+
+The next example defines a static pixmap:
+
+@example
+<pixmap>
+  <input file>help.png</input>
+</pixmap>
+@end example
+
+@c -----------------------------------------------------------------
+@node Menus 
+@section Menubar 
+The @code{<menubar></menubar>} defines menu bar which can be placed 
+as any other screen elements. In the menubar widget you have to create
+menus with the @code{<menu></menu>} tag, and inside the menu
+must be at least one menu item created by the
+@code{<menuitem></menuitem>} tag.
+
+The next example shows how to create a simple menubar with only one
+menu:
+
+@example
+<menubar>
+  <menu>
+    <menuitem>
+      <label>gtk-open</label>
+    </menuitem>
+    <menuitem>
+      <label>gtk-save</label>
+    </menuitem>
+    <menuitem>
+      <label>gtk-quit</label>
+      <action>EXIT="quit"</action>
+    </menuitem>
+    <label>File</label>
+  </menu>
+</menubar>
+@end example
+
+@c -----------------------------------------------------------------
+@node Trees
+@section The tree
+OK, it is not complete, but the next example seems to be just fine.
+
+@example
+<vbox>
+  <tree>
+    <label>Device    |Directory        |File         </label>
+    <item>Hard drive |/usr/            |letter.tex    </item>
+    <item>Hard drive |/etc/            |inittab       </item>
+    <item>Hard drive |/etc/            |fstab         </item>
+    <item>Network    |alpha:/home      |quota.user    </item>
+    <item>Network    |alpha:/home      |quota.group   </item>
+    <item>Network    |beta:/home/pipas |tmp           </item>
+    <item>Network    |beta:/home/pipas |latexfiles    </item>
+    <item>Network    |beta:/home/pipas |book          </item>
+    <item>Network    |beta:/home/pipas |bin           </item>
+    <item>Network    |beta:/home/pipas |documentation </item>
+  </tree>
+  <button ok></button>
+</vbox>
+@end example
+
+When JSON-GLib was found while building gtkdialog, a tree can load nested rows
+from a versioned JSON document.  Add @code{format="json"} to either
+@code{<input>} or @code{<input file>}; without that explicit attribute the
+historical pipe-separated format is unchanged.  The XML @code{<label>} still
+declares the data columns.  Each JSON row requires a positional @code{values}
+array and may contain mutually exclusive @code{icon-name} or @code{stock-id},
+a Boolean @code{expanded} state, and a recursive @code{children} array.
+
+@example
+@{
+  "version": 1,
+  "rows": [
+    @{
+      "icon-name": "folder",
+      "values": ["Projects", 2, true],
+      "expanded": true,
+      "children": [
+        @{"stock-id": "gtk-file", "values": ["README", 1, false]@}
+      ]
+    @}
+  ]
+@}
+@end example
+
+JSON values may be strings, numbers, Booleans or @code{null}.  Missing trailing
+values use model defaults; extra values reject the complete document.  Use a
+decimal string for an unsigned 64-bit value that may exceed the signed JSON
+integer range.  Input is validated completely before its first row is added,
+and nesting is limited to 256 levels.
+
+Use @code{<output file format="json">} to save the hierarchy, values, icons and
+current expansion state in the same versioned format.  Normal
+@code{<output file>} retains its historical flat format.  The JSON feature is
+reported by @code{gtkdialog --version}; @file{examples/tree/tree_json} provides
+a runnable example.
+
+Text-rendered columns can opt into in-place editing with the
+@code{column-editable} tag attribute.  Its pipe-separated Boolean values
+correspond to the declared column labels; omitted values remain
+non-editable, preserving the traditional tree behaviour.  An action with
+@code{signal="cell-edited"} runs after the model has accepted the new value.
+The existing @code{column-type} conversion rules also apply to edited
+numeric cells.
+
+@example
+<tree column-editable="true|false">
+  <variable>EDITABLE_TREE</variable>
+  <label>Name|Owner</label>
+  <item>Draft|Ada</item>
+  <action signal="cell-edited">echo "$EDITABLE_TREE"</action>
+</tree>
+@end example
+
+The @code{column-renderer} attribute can replace an individual text cell
+with a native GTK+ 2 toggle renderer.  Use @code{toggle} for that column and
+enable changes with the corresponding @code{column-editable} value.  The
+default renderer remains @code{text}.  A changed toggle stores
+@code{true}/@code{false} in a string column (or @code{1}/@code{0} in a
+numeric column) and emits @code{cell-toggled} after updating the model.
+
+@example
+<tree column-renderer="text|toggle" column-editable="false|true"
+      exported-column="1">
+  <variable>SERVICES</variable>
+  <label>Service|Enabled</label>
+  <item>Indexer|false</item>
+  <action signal="cell-toggled">echo "$SERVICES"</action>
+</tree>
+@end example
+
+On GTK+ 2.6 and later, @code{column-renderer="progress"} displays a
+column's numeric value as a native progress bar.  Displayed values are
+rounded and limited to 0--100 without modifying the model, saved output or
+exported tree variable.
+
+@example
+<tree column-renderer="text|progress" column-type="string|double"
+      exported-column="1">
+  <variable>JOBS</variable>
+  <label>Job|Progress</label>
+  <item>Compile|65.5</item>
+</tree>
+@end example
+
+On GTK+ 2.6 and later, @code{column-renderer="combo"} edits a column from
+a native drop-down list.  Declare each choice with an @code{<item>} whose
+zero-based @code{combo-column} names the data column.  These choice items
+are not tree rows.  Enable the corresponding @code{column-editable} value;
+after a choice is stored, the existing @code{cell-edited} action signal is
+emitted.  By default only declared choices can be selected.  Set the
+corresponding pipe-separated @code{column-combo-has-entry} value to
+@code{true} to permit an arbitrary typed value as well.
+
+@example
+<tree column-renderer="text|combo" column-editable="false|true"
+      exported-column="1">
+  <variable>TASKS</variable>
+  <label>Task|State</label>
+  <item combo-column="1">Planned</item>
+  <item combo-column="1">Running</item>
+  <item combo-column="1">Done</item>
+  <item>Compile|Running</item>
+  <action signal="cell-edited">echo "$TASKS"</action>
+</tree>
+@end example
+
+On GTK+ 2.10 and later, @code{column-renderer="spin"} edits numeric values
+with a native spin button.  The pipe-separated @code{column-spin-min},
+@code{column-spin-max}, @code{column-spin-step} and
+@code{column-spin-digits} attributes configure each data column.  Their
+defaults are 0, 100, 1 and 0 respectively.  Enable editing with
+@code{column-editable}; committing the value updates the normal tree model
+and emits @code{cell-edited}.
+
+@example
+<tree column-renderer="text|spin" column-editable="false|true"
+      column-type="string|int64" column-spin-min="0|0"
+      column-spin-max="100|10" column-spin-step="1|1"
+      column-spin-digits="0|0" exported-column="1">
+  <variable>TASKS</variable>
+  <label>Task|Retries</label>
+  <item>Compile|2</item>
+  <action signal="cell-edited">echo "$TASKS"</action>
+</tree>
+@end example
+
+On GTK+ 2.10 and later, @code{column-renderer="accel"} displays and edits
+keyboard accelerators in string columns.  Values use an XML-safe GTK+
+accelerator spelling, for example @code{Primary+O} or
+@code{Primary+Shift+O}.  Enable the corresponding @code{column-editable}
+value.  A captured key combination emits
+@code{accel-edited}; Backspace clears the cell and emits
+@code{accel-cleared}.
+
+@example
+<tree column-renderer="text|accel" column-editable="false|true"
+      exported-column="1">
+  <variable>SHORTCUTS</variable>
+  <label>Action|Shortcut</label>
+  <item>Open|Primary+o</item>
+  <item>Save|Primary+s</item>
+  <action signal="accel-edited">echo "$SHORTCUTS"</action>
+  <action signal="accel-cleared">echo "cleared"</action>
+</tree>
+@end example
+
+On GTK+ 2.20 and later, @code{column-renderer="spinner"} displays a native
+activity indicator.  The value in that model column controls whether the
+indicator is active, using the same Boolean forms as a toggle renderer.  The
+animation does not modify the model, saved output or exported tree variable,
+and stops when its tree is destroyed.
+
+@example
+<tree column-renderer="text|spinner" exported-column="1">
+  <variable>TASKS</variable>
+  <label>Task|Busy</label>
+  <item>Download metadata|true</item>
+  <item>Validate cache|false</item>
+</tree>
+@end example
+
+@section Embedded Colour Selection
+
+The @code{<colorselection>} widget exposes a complete GTK+ 2
+@code{GtkColorSelection} directly inside a window.  It complements the
+compact @code{<colorbutton>} without changing that established tag.
+
+The @code{has-palette} property shows GTK's shared colour palette and
+@code{has-opacity-control} shows the alpha controls.  Its exported value and
+@code{default}, command input, file input and saved output use the existing
+colour-button format: @code{#rrggbb}, or @code{#rrggbb|alpha} when opacity is
+enabled.  Alpha is a decimal integer in the range 0--65535.
+
+The default action signal is the native @code{color-changed} signal.  The
+selector also supports refresh, save, file monitoring, width and height size
+requests, and all applicable common widget actions.
+
+@example
+<colorselection has-opacity-control="true" has-palette="true">
+  <default>#4f81bd|49152</default>
+  <variable>ACCENT_COLOUR</variable>
+  <action>echo "$ACCENT_COLOUR"</action>
+</colorselection>
+@end example
+
+@section Embedded Font Selection
+
+The @code{<fontselection>} widget exposes a complete GTK+ 2
+@code{GtkFontSelection} directly inside a window.  It complements the compact
+@code{<fontbutton>} without changing that established tag.
+
+Its exported value, @code{default}, @code{font-name}, command input, file
+input and saved output use a complete Pango font description such as
+@code{Sans Bold 12}.  The @code{preview-text} property changes the sample text
+shown by the native selector.  The selected font must be available to the
+active GTK display.
+
+GtkFontSelection has no dedicated change signal in GTK+ 2.  Gtkdialog
+therefore provides the logical @code{font-changed} signal as this widget's
+default action signal.  It is emitted when the family, face or size changes,
+and by refresh only when the resulting font value differs.  The selector also
+supports save, file monitoring, width and height size requests, and all
+applicable common widget actions.
+
+@example
+<fontselection preview-text="GTKDialog preview">
+  <default>Sans Bold 12</default>
+  <variable>INTERFACE_FONT</variable>
+  <action>echo "$INTERFACE_FONT"</action>
+</fontselection>
+@end example
+
+@section HSV Selector
+
+The @code{<hsv>} tag exposes the GTK+ 2 @code{GtkHSV} colour component
+selector.  Its value is written as three locale-independent numbers in the
+inclusive 0 to 1 range, separated by vertical bars:
+@code{hue|saturation|value}.  The same representation is used by
+@code{default}, command and file input, the exported variable and saved
+output.
+
+The @code{hsv-size} and @code{ring-width} tag attributes configure the native
+selector geometry.  Ring width must be positive and less than half of the
+overall size.  The native @code{changed} signal is the default action signal.
+The widget supports refresh, save, clear, file monitoring and applicable
+common widget actions; clear resets the value to @code{0|0|1}.
+
+@example
+<hsv hsv-size="240" ring-width="28">
+  <variable>HSV_VALUE</variable>
+  <default>0.58|0.75|0.9</default>
+  <action>echo "$HSV_VALUE"</action>
+</hsv>
+@end example
+
+@section Accelerator Label
+
+The @code{<accellabel>} tag exposes GTK+ 2 @code{GtkAccelLabel}.  It displays
+ordinary label text together with the keyboard accelerator installed on
+another gtkdialog widget.  Set @code{accel-widget} to the variable name of
+that target; a @code{<menuitem>} with @code{accel-key} and @code{accel-mods}
+is the usual target.  The target may be written before or after the label in
+the same window because gtkdialog completes the binding after constructing
+the widget tree.
+
+The exported value is the label text, not the accelerator suffix rendered by
+GTK.  The widget supports @code{label}, @code{default}, command and file
+input, file monitoring, refresh, save, clear and applicable common widget
+actions.  Writable GtkAccelLabel and GtkLabel properties remain available as
+tag attributes.  GtkAccelLabel has no type-specific default action signal;
+explicit actions use the common GtkWidget signals.
+
+@example
+<menubar>
+  <menu label="_File" use-underline="true">
+    <menuitem label="Quit" accel-key="0x51" accel-mods="4">
+      <variable>QUIT_ITEM</variable>
+      <action>exit:Quit</action>
+    </menuitem>
+  </menu>
+</menubar>
+<accellabel accel-widget="QUIT_ITEM" xalign="0">
+  <label>Quit command</label>
+  <variable>QUIT_ACCEL_LABEL</variable>
+</accellabel>
+@end example
+
+@section Directional Arrow
+
+The decorative @code{<arrow>} tag exposes GTK+ 2 @code{GtkArrow}.  Its
+@code{arrow-type} property accepts @code{up}, @code{down}, @code{left},
+@code{right} or @code{none}; @code{shadow-type} controls the native relief.
+Alignment and padding use the inherited @code{xalign}, @code{yalign},
+@code{xpad} and @code{ypad} GtkMisc properties.
+
+An optional variable exports an empty value and names the arrow for common
+show, hide, enable, disable, state-condition and explicit GtkWidget signal
+actions.  The widget has no type-specific input, output or default signal.
+
+@example
+<hbox homogeneous="true">
+  <arrow arrow-type="left" shadow-type="in"></arrow>
+  <arrow arrow-type="right" shadow-type="out"></arrow>
+</hbox>
+@end example
+
+@section Notification-area Status Icon
+
+The @code{<statusicon>} tag creates a GTK+ 2 @code{GtkStatusIcon}.  GTK status
+icons are not window children, so gtkdialog owns each one through a zero-size
+logical widget in the containing window.  Closing or relaunching that window
+therefore destroys or recreates the corresponding icon without changing the
+general variable and action model.
+
+Use @code{icon-name} for a themed icon, @code{stock-id} for a GTK stock icon,
+or @code{image-file} for a file.  Defaults, command/file input, the exported
+variable and saved output use @code{icon:name}, @code{stock:name} or
+@code{file:path}; a bare value is an icon name.  A @code{label} is a fallback
+tooltip, while @code{tooltip-text}, @code{tooltip-markup}, @code{title} and
+@code{blinking} expose the corresponding GTK2 facilities.
+
+The default signal is @code{activate}.  Explicit
+@code{button-press-event}, @code{button-release-event}, @code{popup-menu} and
+@code{size-changed} actions follow the native status-icon signals.  A
+@code{context-menu} names a @code{<popupmenu>} program and GTK positions that
+menu at the notification icon.  Common show, hide, enable, disable, refresh,
+save, clear, activate and state-condition actions operate through the logical
+widget.  The feature requires GTK+ 2.10 or later.
+
+@example
+<statusicon icon-name="dialog-information"
+            tooltip-text="GTKDialog is running"
+            context-menu="TRAY_MENU">
+  <variable>TRAY_ICON</variable>
+  <action>presentwindow:MAIN_DIALOG</action>
+</statusicon>
+@end example
+
+@c -----------------------------------------------------------------
+@node Containers
+@chapter Containers
+
+@section Viewport
+
+The @code{<viewport>} container exposes a GTK+ 2 @code{GtkViewport} and
+requires exactly one direct child.  It is useful when the scrolling bridge
+must be explicit rather than inserted automatically by
+@code{<scrolledwindow>}.
+
+When a viewport is placed directly in a @code{<scrolledwindow>}, GTK+ connects
+the viewport to the surrounding horizontal and vertical adjustments.  No
+additional viewport is created.  The standard @code{shadow-type} property
+accepts values such as @code{none}, @code{in}, @code{out},
+@code{etched-in} and @code{etched-out}.
+
+The @code{<variable>} directive optionally names the container for common
+visibility and sensitivity functions and exports an empty value.  The
+@code{<width>} and @code{<height>} directives set its size request.  A
+viewport has no type-specific input or output contract; its child keeps its
+normal value and actions.  The object-valued @code{hadjustment} and
+@code{vadjustment} properties are managed internally and are not accepted as
+textual properties.
+
+@example
+<scrolledwindow hscrollbar-policy="never"
+  vscrollbar-policy="automatic">
+  <viewport shadow-type="in">
+    <vbox>
+      <text><label>Scrollable content</label></text>
+      <text height-request="500"><label>Long child</label></text>
+    </vbox>
+    <variable>VIEWPORT</variable>
+  </viewport>
+</scrolledwindow>
+@end example
+
+@section Grid
+
+The @code{<grid>} container is a GTK+ 2 GtkTable under a distinct XML name,
+so the existing @code{<table>} data widget remains compatible.  It arranges
+direct child widgets in rows and columns.  The @code{rows} and @code{columns}
+attributes set the initial dimensions; children without explicit positions
+are placed from left to right in XML order and wrap after @code{columns}.
+
+Direct children accept zero-based @code{row} and @code{column} positions,
+positive @code{row-span} and @code{column-span} values, and pixel
+@code{x-padding} and @code{y-padding}.  The @code{x-options} and
+@code{y-options} attributes combine @code{expand}, @code{shrink} and
+@code{fill}, separated by spaces, commas or @code{|}; @code{none} selects no
+options.  Their default is @code{expand|fill}.  Standard GtkTable properties
+such as @code{row-spacing}, @code{column-spacing} and @code{homogeneous} are
+also available.
+
+@example
+<grid rows="2" columns="2" row-spacing="8" column-spacing="12">
+  <text row="0" column="0" x-options="fill" y-options="none">
+    <label>Name</label>
+  </text>
+  <entry row="0" column="1"><variable>NAME</variable></entry>
+  <hbuttonbox row="1" column="0" column-span="2" layout-style="end">
+    <button cancel></button>
+    <button ok></button>
+  </hbuttonbox>
+</grid>
+@end example
+
+@section Alignment
+
+The @code{<alignment>} container positions and optionally scales one direct
+child widget within the space allocated to it.  It requires exactly one
+direct child; use an hbox or vbox when several widgets must be aligned as a
+group.
+
+The @code{xalign} and @code{yalign} tag attributes select the child's
+horizontal and vertical position.  Values range from @code{0} at the left or
+top through @code{0.5} at the centre to @code{1} at the right or bottom.
+The @code{xscale} and @code{yscale} attributes select how much of the
+available extra space the child receives, from @code{0} for its requested
+size to @code{1} for all available space.  GTK+ 2.4 and later also provide
+@code{top-padding}, @code{bottom-padding}, @code{left-padding} and
+@code{right-padding}.
+
+@example
+<alignment xalign="1" yalign="1" xscale="0" yscale="0"
+  right-padding="12" bottom-padding="12">
+  <button ok></button>
+</alignment>
+@end example
+
+@section Horizontal and vertical button boxes
+
+The @code{<hbuttonbox>} and @code{<vbuttonbox>} containers arrange related
+buttons using the standard GTK+ 2 button-box layout.  They preserve the XML
+order of their direct children.  Use @code{layout-style} with
+@code{default}, @code{spread}, @code{edge}, @code{start}, @code{end} or
+@code{center} to select their placement.  The @code{center} style requires
+GTK+ 2.12 or later.  Omitting the attribute retains the toolkit's configured
+default.
+
+A direct child with @code{secondary="true"} is placed separately from the
+main group according to the selected GTK+ layout.  This is commonly used for
+a Help button beside a group of confirmation buttons.
+
+@example
+<hbuttonbox layout-style="end" spacing="8">
+  <button secondary="true">
+    <label>Help</label>
+  </button>
+  <button cancel></button>
+  <button ok></button>
+</hbuttonbox>
+@end example
+
+@section Toolbars and tool items
+
+GTK+ 2.4 and later provide the @code{<toolbar>} container.  Its direct
+children must be @code{<toolbutton>}, @code{<toggletoolbutton>},
+@code{<radiotoolbutton>}, @code{<menutoolbutton>} or
+@code{<toolitem>} or @code{<separatortoolitem>} widgets, and their XML order
+is retained.  The
+toolbar's @code{toolbar-style}
+attribute accepts @code{icons}, @code{text}, @code{both} or
+@code{both-horizontal}.  Its @code{orientation} is @code{horizontal} or
+@code{vertical}.  Omitting either attribute retains the GTK+ default.
+When a vertical toolbar is packed into a vbox, use
+@code{space-expand="true"} on the toolbar to allocate the available height;
+otherwise GTK+ may place excess items behind its overflow arrow.
+
+A toolbutton accepts a @code{<label>} directive and an ordinary
+@code{<action>}, whose default signal is @code{clicked}.  GTK+ properties
+such as @code{stock-id}, @code{icon-name}, @code{tooltip-text} and
+@code{is-important} can be supplied as tag attributes when supported by the
+installed GTK+ 2 version.  The @code{activate} action function also clicks a
+named toolbutton.
+
+A menutoolbutton combines a normal clickable tool button with a separate
+arrow that opens a menu.  Put one or more @code{<menuitem>}, nested
+@code{<menu>} or @code{<menuitemseparator>} widgets directly inside it,
+followed by the tool button's directives.  Its main button uses the
+@code{clicked} signal and can be invoked with @code{activate}; choosing an
+entry runs that menu item's actions.  Menutoolbuttons require GTK+ 2.6 or
+later.
+
+A toggletoolbutton has a Boolean state.  Its @code{<default>} and
+@code{<input>} directives set that state, and its variable value is
+@code{true} or @code{false}.  Its default action signal is @code{toggled}.
+The @code{activate} action function changes its state.
+
+Radiotoolbuttons in one toolbar form an implicit exclusive group.
+Each toolbar starts a new group, including toolbars built by imperative loops
+or launched dialogs.  A radiotoolbutton uses the same Boolean directives,
+output and @code{toggled} action signal as a toggletoolbutton.  Activating an
+unselected member selects it without allowing the selected member to be
+cleared by another activation.
+
+A separator tool item draws a separator by default.  The GTK+ properties
+@code{draw="false"} and @code{expand="true"} turn it into flexible space.
+
+A general @code{<toolitem>} embeds exactly one ordinary gtkdialog widget in a
+toolbar.  The embedded widget keeps its normal variable, input, output and
+action behaviour; put interaction actions on that child.  The tool item can
+be named separately for shared show, hide, enable and disable actions.  GTK+
+properties such as @code{expand}, @code{homogeneous},
+@code{visible-horizontal}, @code{visible-vertical} and @code{is-important}
+can be supplied as tag attributes.  General tool items require GTK+ 2.4 or
+later.
+
+@example
+<toolbar toolbar-style="both-horizontal">
+  <toolbutton stock-id="gtk-new" is-important="true">
+    <label>New</label>
+    <action>echo new</action>
+  </toolbutton>
+  <separatortoolitem></separatortoolitem>
+  <menutoolbutton stock-id="gtk-open">
+    <menuitem>
+      <label>Recent document</label>
+      <action>echo recent</action>
+    </menuitem>
+    <menuitemseparator></menuitemseparator>
+    <menu>
+      <menuitem><label>Example one</label></menuitem>
+      <menuitem><label>Example two</label></menuitem>
+      <label>Examples</label>
+    </menu>
+    <label>Open</label>
+    <action>echo open</action>
+  </menutoolbutton>
+  <separatortoolitem></separatortoolitem>
+  <toolitem expand="true" homogeneous="false">
+    <entry>
+      <default>Search toolbar</default>
+      <variable>TOOLBAR_SEARCH</variable>
+    </entry>
+  </toolitem>
+  <toggletoolbutton stock-id="gtk-bold">
+    <label>Bold</label>
+    <variable>BOLD</variable>
+  </toggletoolbutton>
+  <radiotoolbutton stock-id="gtk-justify-left">
+    <label>Left</label>
+  </radiotoolbutton>
+  <radiotoolbutton stock-id="gtk-justify-center">
+    <label>Center</label>
+  </radiotoolbutton>
+  <separatortoolitem></separatortoolitem>
+  <toolbutton stock-id="gtk-quit" is-important="true">
+    <label>Quit</label>
+    <action>exit:Quit</action>
+  </toolbutton>
+</toolbar>
+@end example
+
+@section Size groups
+
+GTK+ 2.4 and later can give unrelated widgets the same requested width,
+height or both without changing the container hierarchy.  Give each member
+the same @code{size-group} tag attribute.  The optional
+@code{size-group-mode} is @code{horizontal}, @code{vertical} or @code{both};
+it defaults to @code{both}.
+
+Size-group names are local to one constructed window, including one
+execution of a launched window.  The first occurrence of a name selects its
+mode.  A later member using the same name with another mode produces a
+warning and retains the first mode.
+
+@example
+<hbox>
+  <text size-group="field-labels" size-group-mode="horizontal">
+    <label>Name</label>
+  </text>
+  <entry></entry>
+</hbox>
+<hbox>
+  <text size-group="field-labels" size-group-mode="horizontal">
+    <label>E-mail address</label>
+  </text>
+  <entry></entry>
+</hbox>
+@end example
+
+@section Horizontal and vertical panes
+
+The @code{<hpaned>} and @code{<vpaned>} containers divide an area into
+two adjustable panes.  An hpaned places its first direct child on the
+left and its second direct child on the right.  A vpaned places the first
+child above the second child.  Both containers require exactly two direct
+child widgets.
+
+The @code{position} tag attribute sets the initial divider position in
+pixels from the left or top edge.  If a @code{<variable>} is given, its
+value is the current divider position.  The same numeric value can be set
+with @code{<default>} or loaded with @code{<input>} and written with
+@code{<output file>} by a @code{save} action.
+
+The paned tag accepts @code{child1-resize}, @code{child1-shrink},
+@code{child2-resize} and @code{child2-shrink} attributes.
+The resize attributes control whether the corresponding pane changes size
+when the complete paned widget is resized.  The shrink attributes control
+whether the divider may make it smaller than the child's requested size.
+By default the first pane does not resize, the second pane does, and both
+panes may shrink, matching GTK+ 2.
+
+@example
+<hpaned position="180" child1-resize="false" child1-shrink="false"
+  child2-resize="true" child2-shrink="true">
+  <vbox>
+    <text><label>Navigation</label></text>
+  </vbox>
+  <vbox>
+    <text><label>Contents</label></text>
+  </vbox>
+  <variable>DIVIDER</variable>
+</hpaned>
+@end example
+
+@c -----------------------------------------------------------------
+@node Actions
+@chapter Actions
+When the user changes the state of a widget, gtkdialog checks if there
+is something to do with it. If the tampered widget have one or more
+actions, the program will execute them for the new situation to be
+handled.
+
+Every widget can have multiply actions, a list of commands must be
+executed when the widget changed. Gtkdialog executes the axtions in
+the order they found in the dialog description program, so one can
+write a complet program as a series of instructions.
+
+@menu
+* Action conditions:: Conditions that decide whether an action runs
+* Start and exit::	Actions that starts programs and exits dialogs
+* Widget manipulation:: Actions affect widgets
+@end menu
+
+@c -----------------------------------------------------------------
+@node Action conditions
+@section Action conditions
+
+The optional @code{condition} attribute controls whether an action runs.
+@code{active_is_true}/@code{active_is_false},
+@code{sensitive_is_true}/@code{sensitive_is_false} and
+@code{visible_is_true}/@code{visible_is_false} inspect the corresponding state
+of the widget named by their argument.  @code{variable_is_true} and
+@code{variable_is_false} inspect that widget's current textual value without
+starting a shell or using an intermediate file.  @code{command_is_true} and
+@code{command_is_false} read the first output line of a command, while
+@code{file_is_true} and @code{file_is_false} read the first line of a file.
+
+Boolean values are @code{true}, @code{yes} or a complete non-zero decimal
+integer for true, and @code{false}, @code{no} or a complete decimal zero for
+false.  Other values satisfy neither recognised condition.  Unknown conditions
+are reported and ignored for historical compatibility; missing variables and
+recognised but inapplicable conditions are false.  A final closing parenthesis,
+when present, ends the argument and following text is ignored.  Without a
+closing parenthesis, the rest of the attribute remains the argument.
+
+Classic state-taking widget inputs use a different historical conversion.
+For @code{button}/@code{togglebutton}, @code{checkbox}, @code{expander},
+check/radio @code{menuitem}, @code{radiobutton} and @code{timer}, @code{true},
+@code{yes}, or a numeric prefix whose value is exactly one enables the state;
+every other value disables it.
+
+@example
+<action condition="variable_is_true(ENABLED)">refresh:RESULT</action>
+@end example
+
+@c -----------------------------------------------------------------
+@node Start and exit
+@section Start and exit
+
+@subsection Start programs
+
+If the action of a widget is created with the simple 
+@code{<action>@var{command}</action>} directive, gtkdialog will execute
+it in a subshell. That means it will start up @code{/bin/sh} to handle 
+the operation. Here is how the subshell operation works:
+@enumerate
+ @item First gtkdialog updates the environment variables holds the
+ state and value of the widgets. This is how the child process will
+ know what is happening in the GUI called it.
+ 
+ @item Next the include file is checked. If the gtkdialog started
+ with the @option{-i @var{file}} option gtkdialog will ask the
+ subshell to include the @var{file} before the execution of command.
+
+ This strange method is needed for the action driven programs, where
+ the subshell have to load the shell functions from the calling script.
+
+ @item At the third step gtkdialog starts the command and waits for
+ it to complete. (Commands usually can be run in the background by 
+ writing a @code{&} as last character, so the subshell will not wait 
+ the program to complete.)
+@end enumerate
+
+Shell input redirection can be used directly inside @code{<action>} and
+shell @code{<input>} directives, for example
+@code{<input>wc -l </etc/passwd</input>}. Gtkdialog invokes
+@code{/bin/sh}; commands which require Bash must invoke it explicitly.
+
+The @option{--event-driven @var{file}} option loads @var{file} with
+@code{/bin/sh}, then starts a new gtkdialog process using the variables
+exported by that file. The file must be valid POSIX shell and should define
+data and functions without launching gtkdialog itself. It is also used as the
+new process's include file when executing shell actions and inputs.
+Options controlling the dialog source and presentation, such as
+@option{--file}, @option{--program}, @option{--geometry},
+@option{--space-expand}, @option{--space-fill} and @option{--styles}, are
+preserved for the new process. Packing states accept only
+@code{true}/@code{yes}/@code{1} or @code{false}/@code{no}/@code{0}; an invalid
+state is ignored with a warning.
+
+@subsection Exit dialog
+
+The @code{Exit:@var{Value}} command exits @command{gtkdialog}
+immediately. The @var{Value} will be printed to standard output as the
+value of the variable named @var{EXIT}.
+
+@c -----------------------------------------------------------------
+@node Widget manipulation
+@section Widget manipulation
+
+@subsection @code{Closewindow:@var{Name}}
+The command closes the named window opened by the @code{Launch:}
+command. The program remain active if there are more windows active.
+
+@subsection @code{Launch:@var{Name}}
+The command opens a new window using the environment variable
+@code{Widget}.
+
+@subsection @code{Disable:@var{Name}}
+The command disables the given widget if it is enabled. If the widget
+is disabled when the command is activated, nothing happens.
+
+The disabled widgets are insensitive to user actions, their shapes are
+indicating they are temporary unavailable.
+
+@subsection @code{Enable:@var{Name}}
+The command enables the given widget if it is diabled. If the widget
+is enabled nothing happens.
+
+@subsection @code{Refresh:@var{Name}}
+The command refresh the named widget. If the widget have one or more
+input actions, they will be called by @command{gtkdialog}.
+
+@subsection @code{Save:@var{Name}}
+Some widgets can hold much data. (Currently only the edit widget
+capable to perform this action.)
+
+The @code{Save:} action will save the data found in the named widget
+to the filename found in @code{<output file>} attribute.
+
+FIXME: This function is not working now, need to be fixed.
+
+@subsection @code{Fileselect:@var{Widget}}
+@subsection @code{Clear:@var{Widget}}
+@subsection @code{RemoveSelected:@var{Widget}}
+
+
+@bye

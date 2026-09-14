@@ -1,0 +1,29 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="GTKDialog recent resources" width-request="620"
+	height-request="420">
+	<vbox border-width="10" spacing="8">
+		<text><label>Select a resource from the desktop recent history.</label></text>
+		<recentchooser local-only="true" show-not-found="false" limit="12"
+			filter-name="Documents" filter-pattern="*.txt;*.md;*.pdf"
+			space-expand="true" space-fill="true">
+			<variable>RECENT_URI</variable>
+			<action signal="selection-changed">echo "Selected: $RECENT_URI"</action>
+			<action>echo "Activated: $RECENT_URI"</action>
+		</recentchooser>
+		<hbuttonbox layout-style="end" spacing="8">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

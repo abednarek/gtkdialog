@@ -1,0 +1,25 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 aspect frame" width-request="480" height-request="340">
+	<vbox border-width="10" spacing="8">
+		<aspectframe xalign="0.5" yalign="0.5" ratio="1.7778"
+			obey-child="false">
+			<eventbox width-request="320" height-request="180">
+				<text><label>Content kept at 16:9</label></text>
+			</eventbox>
+			<label>16:9 preview</label>
+			<variable>ASPECT_LABEL</variable>
+		</aspectframe>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

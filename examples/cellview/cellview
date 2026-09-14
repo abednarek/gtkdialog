@@ -1,0 +1,56 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-cellview.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+STATUS_FILE=$demo_dir/status
+STATUS_OUTPUT=$demo_dir/saved-status
+export STATUS_FILE STATUS_OUTPUT
+printf '<b>Waiting for work</b>' > "$STATUS_FILE"
+
+MAIN_DIALOG='
+<window title="Native GTK2 cell view" width-request="460">
+	<vbox border-width="12" spacing="10">
+		<text>
+			<label>A GtkCellView presents one model row as text and an optional image.</label>
+		</text>
+		<cellview stock="gtk-dialog-info" icon-size="32" use-markup="true"
+			fit-model="true" background="#eef5ff">
+			<label>"<b>Fallback status</b>"</label>
+			<input file>'"$STATUS_FILE"'</input>
+			<output file>'"$STATUS_OUTPUT"'</output>
+			<variable>CELL_STATUS</variable>
+		</cellview>
+		<cellview icon-name="folder" icon-size="24">
+			<default>Project resources</default>
+			<variable>CELL_RESOURCE</variable>
+		</cellview>
+		<hbuttonbox>
+			<button>
+				<label>Working</label>
+				<action>printf "&lt;b&gt;Work in progress&lt;/b&gt;" > "$STATUS_FILE"</action>
+				<action function="refresh">CELL_STATUS</action>
+			</button>
+			<button>
+				<label>Complete</label>
+				<action>printf "&lt;b&gt;Work completed&lt;/b&gt;" > "$STATUS_FILE"</action>
+				<action function="refresh">CELL_STATUS</action>
+				<action function="save">CELL_STATUS</action>
+			</button>
+			<button>
+				<label>Clear</label>
+				<action function="clear">CELL_STATUS</action>
+			</button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

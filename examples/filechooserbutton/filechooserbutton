@@ -1,0 +1,32 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 file chooser button" resizable="false">
+	<vbox border-width="12" spacing="8">
+		<text>
+			<label>Select an image file or a folder.</label>
+		</text>
+		<filechooserbutton title="Select an image"
+			filter-name="Images" filter-pattern="*.png;*.jpg;*.jpeg"
+			filter-mime-type="image/png;image/jpeg">
+			<variable>SELECTED_FILE</variable>
+			<action>echo "Selected file: $SELECTED_FILE"</action>
+		</filechooserbutton>
+		<filechooserbutton action="select-folder" title="Select a folder">
+			<variable>SELECTED_FOLDER</variable>
+		</filechooserbutton>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 info bar" resizable="false">
+	<vbox border-width="12" spacing="8">
+		<infobar message-type="warning" default-response="ok">
+			<text><label>The operation needs confirmation.</label></text>
+			<button response="cancel"><label>Cancel</label></button>
+			<button response="ok"><label>Continue</label></button>
+			<variable>INFO_RESPONSE</variable>
+			<action>echo "Response: $INFO_RESPONSE"</action>
+		</infobar>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

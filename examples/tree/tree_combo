@@ -1,0 +1,35 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Tree combo cells" width-request="460" height-request="250">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Select a row, then click its state to choose a new value.</label>
+		</text>
+		<tree column-renderer="text|combo"
+			column-editable="false|true" exported-column="1">
+			<variable>COMBO_TREE</variable>
+			<label>Task|State</label>
+			<item combo-column="1">Planned</item>
+			<item combo-column="1">Running</item>
+			<item combo-column="1">Done</item>
+			<item>Review changes|Done</item>
+			<item>Run GTK2 checks|Running</item>
+			<item>Prepare package|Planned</item>
+			<action signal="cell-edited">echo "State: $COMBO_TREE"</action>
+		</tree>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

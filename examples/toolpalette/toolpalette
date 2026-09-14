@@ -1,0 +1,38 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="GTK2 tool palette" width-request="420" height-request="440">
+	<vbox border-width="10" spacing="8">
+		<text><label>Expand or collapse the native tool groups.</label></text>
+		<scrolledwindow hscrollbar-policy="never" vscrollbar-policy="automatic"
+			shadow-type="in" space-expand="true" space-fill="true">
+			<toolpalette orientation="vertical" toolbar-style="both">
+				<toolitemgroup exclusive="true" expand="true">
+					<toolbutton stock-id="gtk-new"><label>New</label></toolbutton>
+					<toolbutton stock-id="gtk-open"><label>Open</label></toolbutton>
+					<toolbutton stock-id="gtk-save"><label>Save</label></toolbutton>
+					<label>Files</label>
+					<variable>FILE_TOOLS</variable>
+				</toolitemgroup>
+				<toolitemgroup collapsed="false">
+					<toggletoolbutton stock-id="gtk-bold"><label>Bold</label></toggletoolbutton>
+					<toggletoolbutton stock-id="gtk-italic"><label>Italic</label></toggletoolbutton>
+					<toolbutton stock-id="gtk-justify-left" palette-new-row="true"><label>Align left</label></toolbutton>
+					<label>Formatting</label>
+					<variable>FORMAT_TOOLS</variable>
+				</toolitemgroup>
+				<variable>TOOL_PALETTE</variable>
+			</toolpalette>
+		</scrolledwindow>
+		<button ok></button>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

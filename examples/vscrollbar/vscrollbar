@@ -1,0 +1,28 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 vertical scrollbar">
+	<vbox border-width="12" spacing="10">
+		<text><label>Standalone GtkVScrollbar value</label></text>
+		<hbox homogeneous="true">
+			<text><label>0</label></text>
+			<vscrollbar range-min="0" range-max="200" range-step="2"
+				range-page="20" range-page-size="40" range-value="80"
+				height-request="220" inverted="true">
+				<variable>VERTICAL_POSITION</variable>
+				<action>echo "$VERTICAL_POSITION"</action>
+			</vscrollbar>
+			<text><label>160</label></text>
+		</hbox>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

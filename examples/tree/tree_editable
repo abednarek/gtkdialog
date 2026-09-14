@@ -1,0 +1,31 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Editable tree cells" width-request="440" height-request="240">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Select a row, then click its task name to edit it.</label>
+		</text>
+		<tree column-editable="true|false" exported-column="0">
+			<variable>EDITABLE_TREE</variable>
+			<label>Task|Owner</label>
+			<item>Review changes|Ada</item>
+			<item>Update documentation|Linus</item>
+			<item>Prepare release|Grace</item>
+			<action signal="cell-edited">echo "Edited task: $EDITABLE_TREE"</action>
+		</tree>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

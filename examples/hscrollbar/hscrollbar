@@ -1,0 +1,23 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 horizontal scrollbar" width-request="420">
+	<vbox border-width="12" spacing="10">
+		<text><label>Drag the thumb; its size represents 20 units.</label></text>
+		<hscrollbar range-min="0" range-max="100" range-step="1"
+			range-page="10" range-page-size="20" range-value="35">
+			<variable>HORIZONTAL_POSITION</variable>
+			<action>echo "$HORIZONTAL_POSITION"</action>
+		</hscrollbar>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

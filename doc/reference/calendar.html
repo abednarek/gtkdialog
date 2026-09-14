@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>gtkdialog: calendar widget reference</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+<style type="text/css">
+	body { font-size: 14px; font-family: arial, verdana, sans-serif; background-color: #e0e0e8; }
+	h1 { font-size: 24px; }
+	h2 { font-size: 18px; }
+	a:link, a:visited, a:active { text-decoration: none; }
+	a:hover { color: #8080ff; text-decoration: underline; }
+	hr { color: #a8a8b0; background-color: #a8a8b0; height: 1px; border: 0; }
+	pre { background-color: #e8e8f0; border: 1px dotted #b8b8c0; padding: 10px; }
+	table.wiki { border-color: #c8c8d0; border-width: 0 0 2px 2px; border-style: solid; border-collapse: collapse; }
+	td.wiki, th.wiki { border-color: #c8c8d0; border-width: 2px 2px 0 0; border-style: solid; }
+	th.wiki { background-color: #e8e8f0; }
+</style>
+</head>
+<body bgcolor="#e0e0e8">
+<table bgcolor="#b8b8c0" cellpadding="0px" cellspacing="1px"><tr><td>
+<table bgcolor="#ffffff" cellpadding="0px" cellspacing="10px"><tr><td>
+
+<h1> calendar widget </h1>
+
+<p>A GTK+ 2 <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkCalendar.html">GtkCalendar</a>
+for selecting one date.</p>
+
+<hr>
+
+<h2> Definition </h2>
+
+<pre>
+&lt;calendar tag_attr="value"...&gt;
+	&lt;default&gt;YYYY-MM-DD&lt;/default&gt;
+	&lt;variable&gt;varname&lt;/variable&gt;
+	&lt;input&gt;command&lt;/input&gt;
+	&lt;input file&gt;filename&lt;/input&gt;
+	&lt;sensitive&gt;state&lt;/sensitive&gt;
+	&lt;action&gt;activity&lt;/action&gt;...
+	&lt;action signal="type"&gt;activity&lt;/action&gt;...
+	&lt;action function="type"&gt;parameter&lt;/action&gt;...
+	&lt;output file&gt;filename&lt;/output&gt;
+&lt;/calendar&gt;
+</pre>
+
+<p>The variable value and file output are always formatted as
+<code>YYYY-MM-DD</code>. Input and default dates must use exactly four year
+digits, two month digits and two day digits. Invalid dates are ignored with a
+warning.</p>
+
+<h2> Tag Attributes </h2>
+
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
+<tr><td class="wiki">show-heading</td><td class="wiki">Show the month and year heading</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">show-day-names</td><td class="wiki">Show weekday names</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">no-month-change</td><td class="wiki">Prevent interactive month changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">show-week-numbers</td><td class="wiki">Show week numbers</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">block-function-signals</td><td class="wiki">Do not run actions for programmatic changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">file-monitor</td><td class="wiki">Emit a signal when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">auto-refresh</td><td class="wiki">Refresh when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+</table>
+
+<p>Writable GtkCalendar and ancestor properties can also be supplied as tag
+attributes. Availability follows the installed GTK+ 2 version.</p>
+
+<h2> Actions and signals </h2>
+
+<p>The default action signal is <code>day-selected</code>. Explicit
+<code>day-selected</code>, <code>day-selected-double-click</code> and
+<code>month-changed</code> signals are supported. The current date is saved
+before an action is executed, so the widget variable contains the new value.
+The <code>refresh</code> and <code>save</code> action functions read configured
+input and write configured file output in the usual way.</p>
+
+<h2> Common Contract </h2>
+
+<p>Common directives, GtkWidget signals, state and general functions, and action
+conditions are documented in the <a href="syntax.html#common-widget-contract">common
+widget contract</a>. The sections above describe the facilities specific to this
+tag.</p>
+
+<h2> Example </h2>
+
+<pre>
+&lt;calendar show-week-numbers="true"&gt;
+	&lt;variable&gt;SELECTED_DATE&lt;/variable&gt;
+	&lt;default&gt;2026-09-12&lt;/default&gt;
+	&lt;output file&gt;/tmp/selected-date&lt;/output&gt;
+	&lt;action&gt;echo "Selected $SELECTED_DATE"&lt;/action&gt;
+&lt;/calendar&gt;
+</pre>
+
+<p>This widget was introduced in version 0.9.0.</p>
+
+<hr>
+<!-- reference-navigation-start -->
+<p class="reference-navigation">
+<strong>Reference:</strong>
+<a href="aboutdialog.html">aboutdialog</a>,
+<a href="accellabel.html">accellabel</a>,
+<a href="alignment.html">alignment</a>,
+<a href="arrow.html">arrow</a>,
+<a href="aspectframe.html">aspectframe</a>,
+<a href="assistant.html">assistant</a>,
+<a href="button.html">button</a>,
+<a href="calendar.html">calendar</a>,
+<a href="cellview.html">cellview</a>,
+<a href="checkbox.html">checkbox</a>,
+<a href="chooser.html">chooser</a>,
+<a href="colorbutton.html">colorbutton</a>,
+<a href="colorselection.html">colorselection</a>,
+<a href="combobox.html">combobox</a>,
+<a href="comboboxentry.html">comboboxentry</a>,
+<a href="comboboxtext.html">comboboxtext</a>,
+<a href="dialog.html">dialog</a>,
+<a href="drawingarea.html">drawingarea</a>,
+<a href="edit.html">edit</a>,
+<a href="entry.html">entry</a>,
+<a href="eventbox.html">eventbox</a>,
+<a href="expander.html">expander</a>,
+<a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="fixed.html">fixed</a>,
+<a href="fontbutton.html">fontbutton</a>,
+<a href="fontselection.html">fontselection</a>,
+<a href="frame.html">frame</a>,
+<a href="grid.html">grid</a>,
+<a href="gvim.html">gvim</a>,
+<a href="handlebox.html">handlebox</a>,
+<a href="hbox.html">hbox</a>,
+<a href="hbuttonbox.html">hbuttonbox</a>,
+<a href="hpaned.html">hpaned</a>,
+<a href="hruler.html">hruler</a>,
+<a href="hscale.html">hscale</a>,
+<a href="hscrollbar.html">hscrollbar</a>,
+<a href="hseparator.html">hseparator</a>,
+<a href="hsv.html">hsv</a>,
+<a href="iconview.html">iconview</a>,
+<a href="infobar.html">infobar</a>,
+<a href="layout.html">layout</a>,
+<a href="linkbutton.html">linkbutton</a>,
+<a href="list.html">list</a>,
+<a href="menu.html">menu</a>,
+<a href="menubar.html">menubar</a>,
+<a href="menuitem.html">menuitem</a>,
+<a href="menuitemseparator.html">menuitemseparator</a>,
+<a href="menutoolbutton.html">menutoolbutton</a>,
+<a href="messagedialog.html">messagedialog</a>,
+<a href="notebook.html">notebook</a>,
+<a href="pixmap.html">pixmap</a>,
+<a href="plug.html">plug</a>,
+<a href="popupmenu.html">popupmenu</a>,
+<a href="progressbar.html">progressbar</a>,
+<a href="radiobutton.html">radiobutton</a>,
+<a href="radiotoolbutton.html">radiotoolbutton</a>,
+<a href="recentchooser.html">recentchooser</a>,
+<a href="recentchoosermenu.html">recentchoosermenu</a>,
+<a href="scalebutton.html">scalebutton</a>,
+<a href="scrolledwindow.html">scrolledwindow</a>,
+<a href="separator.html">separator</a>,
+<a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sizegroup.html">sizegroup</a>,
+<a href="socket.html">socket</a>,
+<a href="spinbutton.html">spinbutton</a>,
+<a href="spinner.html">spinner</a>,
+<a href="statusbar.html">statusbar</a>,
+<a href="statusicon.html">statusicon</a>,
+<a href="syntax.html">syntax</a>,
+<a href="table.html">table</a>,
+<a href="terminal.html">terminal</a>,
+<a href="text.html">text</a>,
+<a href="timer.html">timer</a>,
+<a href="togglebutton.html">togglebutton</a>,
+<a href="toggletoolbutton.html">toggletoolbutton</a>,
+<a href="toolbar.html">toolbar</a>,
+<a href="toolbutton.html">toolbutton</a>,
+<a href="toolitem.html">toolitem</a>,
+<a href="toolitemgroup.html">toolitemgroup</a>,
+<a href="toolpalette.html">toolpalette</a>,
+<a href="tree.html">tree</a>,
+<a href="vbox.html">vbox</a>,
+<a href="vbuttonbox.html">vbuttonbox</a>,
+<a href="viewport.html">viewport</a>,
+<a href="volumebutton.html">volumebutton</a>,
+<a href="vpaned.html">vpaned</a>,
+<a href="vruler.html">vruler</a>,
+<a href="vscale.html">vscale</a>,
+<a href="vscrollbar.html">vscrollbar</a>,
+<a href="vseparator.html">vseparator</a>,
+<a href="window.html">window</a>
+</p>
+<!-- reference-navigation-end -->
+
+
+<p>&nbsp;</p>
+</td></tr>
+<tr><td>
+<!-- reference-footer-start -->
+<table width="100%" cellpadding="0px" cellspacing="0px">
+<tr>
+<td class="footer" width="25%" align="center">Historical documentation: <a href="mailto:thunorsif@hotmail.com">Thunor</a></td>
+<td class="footer" width="25%" align="center">Maintainer: <a href="mailto:artur@unix.org.pl">Artur Bednarek</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/abednarek/gtkdialog">Project Page</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/oshazard/gtkdialog">Archived Upstream</a></td>
+</tr>
+</table>
+<!-- reference-footer-end -->
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

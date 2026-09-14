@@ -1,0 +1,32 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Horizontal panes" width-request="520" height-request="260">
+	<hpaned position="210" child1-resize="false" child1-shrink="false"
+		child2-resize="true" child2-shrink="true">
+		<frame>
+			<vbox>
+				<text><label>Fixed navigation pane</label></text>
+				<list><item>Home</item><item>Documents</item></list>
+			</vbox>
+			<label>Navigation</label>
+		</frame>
+		<frame>
+			<vbox>
+				<text><label>Drag the divider to resize this pane.</label></text>
+				<button ok></button>
+			</vbox>
+			<label>Contents</label>
+		</frame>
+		<variable>HPANED_POSITION</variable>
+	</hpaned>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

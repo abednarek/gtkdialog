@@ -1,0 +1,28 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 calendar" resizable="false">
+	<vbox border-width="12" spacing="8">
+		<text>
+			<label>Select a date. The value is exported as YYYY-MM-DD.</label>
+		</text>
+		<calendar show-week-numbers="true">
+			<variable>SELECTED_DATE</variable>
+			<default>2026-09-12</default>
+			<action>echo "Selected: $SELECTED_DATE"</action>
+		</calendar>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

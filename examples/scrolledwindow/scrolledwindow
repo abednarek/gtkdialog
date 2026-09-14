@@ -1,0 +1,31 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="General scrolled window" width-request="460" height-request="340">
+	<vbox border-width="10" spacing="8">
+		<text><label>The complete child vbox is inside a GtkScrolledWindow.</label></text>
+		<scrolledwindow hscrollbar-policy="never" vscrollbar-policy="automatic"
+			shadow-type="in" space-expand="true" space-fill="true">
+			<vbox border-width="8" spacing="10">
+				<text><label>Section one</label></text>
+				<entry><default>First value</default><variable>SCROLL_FIRST</variable></entry>
+				<text height-request="180"><label>Flexible central content</label></text>
+				<text><label>Section two</label></text>
+				<entry><default>Second value</default><variable>SCROLL_SECOND</variable></entry>
+				<button ok></button>
+			</vbox>
+			<variable>SCROLLED_AREA</variable>
+			<width>420</width>
+			<height>240</height>
+		</scrolledwindow>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

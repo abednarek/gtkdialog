@@ -1,0 +1,29 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 viewport" width-request="440" height-request="300">
+	<vbox border-width="12" spacing="10">
+		<text><label>An explicit viewport inside a scrolled window</label></text>
+		<scrolledwindow hscrollbar-policy="never" vscrollbar-policy="automatic">
+			<viewport shadow-type="out">
+				<vbox border-width="10" spacing="12">
+					<text><label>Top of the viewport</label></text>
+					<entry><default>Scrollable form value</default></entry>
+					<text height-request="360"><label>Tall child content</label></text>
+					<text><label>Bottom of the viewport</label></text>
+				</vbox>
+				<variable>VIEWPORT_CONTAINER</variable>
+			</viewport>
+		</scrolledwindow>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

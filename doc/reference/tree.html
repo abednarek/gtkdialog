@@ -1,0 +1,549 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+<title>gtkdialog: tree widget reference</title>
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+
+<style type="text/css">
+	body {
+		font-size: 14px;
+		font-family: arial, verdana, sans-serif;
+		background-color: #e0e0e8;
+	}
+	h1 {
+		font-size: 24px;
+	}
+	h2 {
+		font-size: 18px;
+	}
+	a:link {
+		text-decoration: none;
+	}
+	a:visited {
+		text-decoration: none;
+	}
+	a:active {
+		text-decoration: none;
+	}
+	a:hover {
+		color: #8080ff;
+		text-decoration: underline;
+	}
+	hr {
+		color: #a8a8b0;
+		background-color: #a8a8b0;
+		height: 1px;
+		border: 0;
+	}
+	pre {
+		background-color: #e8e8f0;
+		/*width: 500px;*/
+		border: 1px dotted #b8b8c0;
+		padding: 10px;
+	}
+	sup {
+		font-size: 10px;
+	}
+	table.wiki {
+		/*border-color: #ff0000;*/
+		border-color: #c8c8d0;
+		border-width: 0px 0px 2px 2px;
+		border-style: solid;
+		border-collapse: collapse;
+		border-spacing: 0px;
+	}
+	td.wiki, th.wiki {
+		/*border-color: #00ff00;*/
+		border-color: #c8c8d0;
+		border-width: 2px 2px 0px 0px;
+		border-style: solid;
+	}
+	th.wiki {
+		background-color: #e8e8f0;
+	}
+	.footer {
+		font-size: 14px;
+	}
+</style>
+
+</head>
+<body bgcolor="#e0e0e8">
+
+<!--<table width="978" align="center" bgcolor="#b8b8c0" cellpadding="0px" cellspacing="1px">-->
+	<table bgcolor="#b8b8c0" cellpadding="0px" cellspacing="1px">
+		<tr>
+			<td>
+				<table bgcolor="#ffffff" cellpadding="0px" cellspacing="10px">
+					<tr>
+						<td>
+
+<h1> tree widget </h1>
+
+<p>Shared directives, GtkWidget signals, state and general functions, and
+action conditions are summarized in the <a href="syntax.html#common-widget-contract">common
+widget contract</a>. The sections below document this tag's specific surface.</p>
+
+A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeView</a> packed inside a <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkScrolledWindow.html">GtkScrolledWindow</a>
+
+<hr>
+
+<h2> Definition </h2>
+
+<pre>
+&lt;tree tag_attr="value"...&gt;
+	&lt;label&gt;text&lt;/label&gt;
+	&lt;variable&gt;varname&lt;/variable&gt;
+	&lt;height&gt;value&lt;/height&gt;
+	&lt;width&gt;value&lt;/width&gt;
+	&lt;input&gt;command&lt;/input&gt;...
+	&lt;input icon-column="index"&gt;command&lt;/input&gt;...
+	&lt;input stock-column="index"&gt;command&lt;/input&gt;...
+	&lt;input format="json"&gt;command&lt;/input&gt;...
+	&lt;input file&gt;filename&lt;/input&gt;...
+	&lt;input file icon-column="index"&gt;filename&lt;/input&gt;...
+	&lt;input file stock-column="index"&gt;filename&lt;/input&gt;...
+	&lt;input file format="json"&gt;filename&lt;/input&gt;...
+	&lt;sensitive&gt;state&lt;/sensitive&gt;
+	&lt;action&gt;activity&lt;/action&gt;...
+	&lt;action signal="type"&gt;activity&lt;/action&gt;...
+	&lt;action function="type"&gt;parameter&lt;/action&gt;...
+	&lt;item&gt;data&lt;/item&gt;...
+	&lt;item combo-column="index"&gt;choice&lt;/item&gt;...
+	&lt;item icon-name="image"&gt;data&lt;/item&gt;...
+	&lt;item stock-id="gtk-image"&gt;data&lt;/item&gt;...
+	&lt;output file&gt;filename&lt;/output&gt;
+	&lt;output file format="json"&gt;filename&lt;/output&gt;
+&lt;/tree&gt;
+</pre>
+
+<p>"..." denotes acceptance of multiples of the same thing.</p>
+
+<h2> Tag Attributes </h2>
+
+<p>See the <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html#GtkTreeView.object-hierarchy">GtkTreeView</a> widget and ancestor class properties.</p>
+
+<p>The following custom tag attributes are available:</p>
+
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Value</b> </th><th class="wiki"> <b>Since</b> </th></tr>
+<tr><td class="wiki"> space-expand </td><td class="wiki"> Pack widget expanding into space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> space-fill </td><td class="wiki"> Pack widget filling space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> block-function-signals </td><td class="wiki"> Block signal emissions from functions </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> file-monitor </td><td class="wiki"> Emit signal when input file(s) change </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> auto-refresh </td><td class="wiki"> Auto refresh when input file(s) change </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> context-menu </td><td class="wiki"> Popup menu program to open on right click, the Menu key or Shift+F10 </td><td class="wiki"> Name of an exported environment variable containing a <code>&lt;popupmenu&gt;</code> program </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> hscrollbar-policy </td><td class="wiki"> Policy for the horizontal scrollbar </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code> (always, automatic, never) </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> vscrollbar-policy </td><td class="wiki"> Policy for the vertical scrollbar </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code> (always, automatic, never) </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> exported-column </td><td class="wiki"> The column to export data from </td><td class="wiki"> An integer from <code>0</code> to the last data column; invalid values use <code>0</code> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> selected-row </td><td class="wiki"> The row to select on initialisation and refresh </td><td class="wiki"> An integer &gt;= <code>0</code>; invalid values are ignored </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> column-header-active </td><td class="wiki"> Active state of column header(s) </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ... </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> column-visible </td><td class="wiki"> Visible state of column(s) </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ... </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> column-resizeable </td><td class="wiki"> Resizeable state of column(s) </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ... </td><td class="wiki"> 0.8.4 </td></tr>
+<tr><td class="wiki"> column-sizing </td><td class="wiki"> Sizing mode of column(s) </td><td class="wiki"> <i>mode0</i> <code>|</code> <i>mode1</i> <code>|</code> ... (<code>0</code> default, <code>1</code> autosize or &gt;= <code>2</code> fixed width in pixels) </td><td class="wiki"> 0.8.4 </td></tr>
+<tr><td class="wiki"> auto-sort </td><td class="wiki"> Automatically sort after loading data </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> sort-column </td><td class="wiki"> The initial sort column when auto-sorting </td><td class="wiki"> An integer from <code>0</code> to the last data column; invalid values use <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> sort-type </td><td class="wiki"> The initial sort direction when auto-sorting </td><td class="wiki"> <code>0</code>, <code>1</code> (ascending, descending); invalid values use <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> column-type </td><td class="wiki"> Data type of column(s) </td><td class="wiki"> <i>type0</i> <code>|</code> <i>type1</i> <code>|</code> ... (<code>string</code>, <code>int64</code>, <code>uint64</code> or <code>double</code>); malformed, overflowing or non-finite numeric data uses <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> column-renderer </td><td class="wiki"> Renderer used by each data column </td><td class="wiki"> <i>renderer0</i> <code>|</code> <i>renderer1</i> <code>|</code> ... (<code>text</code>, <code>markup</code>, <code>color</code>, <code>pixbuf</code>, <code>icon-text</code>, <code>toggle</code>, <code>radio</code>, <code>progress</code>, <code>combo</code>, <code>spin</code>, <code>accel</code> or <code>spinner</code>); omitted or unknown values use <code>text</code>. Progress and combo require GTK+ 2.6; spin and accel require GTK+ 2.10; spinner requires GTK+ 2.20. A spinner reads the column as a Boolean activity state and does not change its value </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-editable </td><td class="wiki"> Whether each text, toggle, combo, spin or accel renderer can change its model value </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ...; omitted values are <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-combo-has-entry </td><td class="wiki"> Whether each combo renderer accepts typed values in addition to its declared choices </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ...; omitted values are <code>false</code>. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-min </td><td class="wiki"> Minimum value for each spin renderer </td><td class="wiki"> Pipe-separated finite numbers; omitted values use <code>0</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-max </td><td class="wiki"> Maximum value for each spin renderer </td><td class="wiki"> Pipe-separated finite numbers greater than their minimum; omitted values use <code>100</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-step </td><td class="wiki"> Increment for each spin renderer </td><td class="wiki"> Pipe-separated positive finite numbers; omitted values use <code>1</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-digits </td><td class="wiki"> Decimal places displayed by each spin renderer </td><td class="wiki"> Pipe-separated integers from <code>0</code> through <code>20</code>; omitted values use <code>0</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-climb-rate </td><td class="wiki"> Acceleration rate for each spin renderer </td><td class="wiki"> Pipe-separated non-negative finite numbers; omitted values use the GTK+ default. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-accel-mode </td><td class="wiki"> Accelerator interpretation for each accel renderer </td><td class="wiki"> <code>gtk</code> (default) or <code>other</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-progress-orientation </td><td class="wiki"> Direction for each progress renderer </td><td class="wiki"> <code>left-to-right</code>, <code>right-to-left</code>, <code>bottom-to-top</code> or <code>top-to-bottom</code>. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-progress-pulse </td><td class="wiki"> Activity pulse position for each progress renderer </td><td class="wiki"> Pipe-separated integers greater than or equal to <code>-1</code>; <code>-1</code> disables activity mode. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-progress-text </td><td class="wiki"> Text overlaid on each progress renderer </td><td class="wiki"> Pipe-separated strings; omitted values use the GTK+ percentage display </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-progress-text-xalign, column-progress-text-yalign </td><td class="wiki"> Progress text alignment </td><td class="wiki"> Pipe-separated numbers from <code>0</code> through <code>1</code>. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spinner-size </td><td class="wiki"> Icon size used by each spinner renderer </td><td class="wiki"> <code>menu</code>, <code>small-toolbar</code>, <code>large-toolbar</code>, <code>button</code>, <code>dnd</code> or <code>dialog</code>. Requires GTK+ 2.20 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-toggle-inconsistent </td><td class="wiki"> Display each toggle or radio renderer in its mixed state </td><td class="wiki"> Pipe-separated Boolean values; omitted values are <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-color-width, column-color-height </td><td class="wiki"> Swatch dimensions for each color renderer </td><td class="wiki"> Pipe-separated integers from <code>1</code> through <code>512</code>; omitted values use <code>36</code> by <code>14</code> pixels </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-pixbuf-source </td><td class="wiki"> Interpretation of values in pixbuf-rendered columns </td><td class="wiki"> <code>icon-name</code> (default), <code>stock-id</code> or <code>file</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-pixbuf-size </td><td class="wiki"> Maximum image size for pixbuf and icon-text renderers </td><td class="wiki"> Pipe-separated integers from <code>1</code> through <code>512</code>; omitted values use <code>16</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-icon-name </td><td class="wiki"> Default themed icon for each icon-text column </td><td class="wiki"> Pipe-separated GTK icon names </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-stock-id </td><td class="wiki"> Default stock icon for each icon-text column </td><td class="wiki"> Pipe-separated GTK stock IDs </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-pixbuf-file </td><td class="wiki"> Default image file for each icon-text column </td><td class="wiki"> Pipe-separated filenames </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-background </td><td class="wiki"> Cell background colour for each column </td><td class="wiki"> Pipe-separated GTK colour specifications; empty values keep the theme default </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-foreground </td><td class="wiki"> Text colour for each text-based column </td><td class="wiki"> Pipe-separated GTK colour specifications; empty values keep the theme default </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-font </td><td class="wiki"> Font description for each text-based column </td><td class="wiki"> Pipe-separated Pango font descriptions </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-weight </td><td class="wiki"> Font weight for each text-based column </td><td class="wiki"> <code>light</code>, <code>normal</code>, <code>bold</code> or an integer from <code>1</code> through <code>1000</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-style </td><td class="wiki"> Font style for each text-based column </td><td class="wiki"> <code>normal</code>, <code>oblique</code> or <code>italic</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-underline </td><td class="wiki"> Underline style for each text-based column </td><td class="wiki"> <code>none</code>, <code>single</code>, <code>double</code>, <code>low</code> or <code>error</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-strikethrough </td><td class="wiki"> Whether text is struck through in each column </td><td class="wiki"> Pipe-separated Boolean values </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-xalign, column-yalign </td><td class="wiki"> Horizontal and vertical renderer alignment for each column </td><td class="wiki"> Pipe-separated numbers from <code>0</code> through <code>1</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-xpad, column-ypad </td><td class="wiki"> Horizontal and vertical renderer padding for each column </td><td class="wiki"> Pipe-separated non-negative pixel counts </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-ellipsize </td><td class="wiki"> Ellipsisation mode for each text-based column </td><td class="wiki"> <code>none</code>, <code>start</code>, <code>middle</code> or <code>end</code>; requires GTK+ 2.6 </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-wrap-mode </td><td class="wiki"> Wrapping mode for each text-based column </td><td class="wiki"> <code>word</code>, <code>char</code> or <code>word-char</code>; requires GTK+ 2.8 </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-wrap-width </td><td class="wiki"> Wrapping width for each text-based column </td><td class="wiki"> Pipe-separated pixel counts, or <code>-1</code> to disable wrapping; requires GTK+ 2.8 </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-text-align </td><td class="wiki"> Paragraph alignment for each text-based column </td><td class="wiki"> <code>left</code>, <code>center</code> or <code>right</code>; requires GTK+ 2.10 </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-sort-function </td><td class="wiki"> The sorting algorithm for each column </td><td class="wiki"> <i>func0</i> <code>|</code> <i>func1</i> <code>|</code> ... (<code>0</code> default, <code>1</code> strnatcmp or <code>2</code> strcasenatcmp); invalid values use <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> selection-mode </td><td class="wiki"> Selection method </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code>, <code>3</code> or <code>none</code>, <code>single</code>, <code>browse</code>, <code>multiple</code>; invalid values use <code>single</code> </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> icon-name </td><td class="wiki"> Default GTK theme icon name for all rows </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> stock-id </td><td class="wiki"> Default GTK stock icon ID for all rows </td><td class="wiki"> <code>gtk-about</code>, <code>gtk-add</code>, ... (<a href="https://www.csparks.com/gtk2-html-2.24.33/gtk2-Stock-Items.html#GTK-STOCK-ABOUT:CAPS">full list</a>) </td><td class="wiki"> </td></tr>
+</table>
+
+<h2> Directives </h2>
+
+<p>Some of these may have tag attribute equivalents.</p>
+
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Contents</b> </th><th class="wiki"> <b>Since</b> </th></tr>
+<tr><td class="wiki"> label </td><td class="wiki"> Column header labels </td><td class="wiki"> <i>label0</i> <code>|</code> <i>label1</i> <code>|</code> ... </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> variable export="false" </td><td class="wiki"> Variable name, not exported to shell </td><td class="wiki"> </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> height<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Initial minimum height </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> width<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Initial minimum width </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input icon-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input stock-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input format="json" </td><td class="wiki"> Hierarchical JSON data input source </td><td class="wiki"> Shell command; requires JSON-GLib support </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input file icon-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Filename; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input file stock-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Filename; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input file format="json" </td><td class="wiki"> Hierarchical JSON data input source </td><td class="wiki"> Filename; requires JSON-GLib support </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action function="<i>type</i>" </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Execute command on default signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Execute command on signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> action function="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> item </td><td class="wiki"> Input data for all declared columns </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i> <code>|</code> ... (no fixed column limit) </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> item combo-column="<i>index</i>" </td><td class="wiki"> Choice for a combo-rendered data column; it is not inserted as a tree row </td><td class="wiki"> Choice text; index is from <code>0</code> to the last data column. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> item icon-name="<i>image</i>" </td><td class="wiki"> Input data </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i>  <code>|</code> ... </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> item stock-id="<i>gtk-image</i>" </td><td class="wiki"> Input data </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i>  <code>|</code> ... </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> output file </td><td class="wiki"> Data output target </td><td class="wiki"> Filename </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> output file format="json" </td><td class="wiki"> Hierarchical JSON data output target </td><td class="wiki"> Filename; requires JSON-GLib support </td><td class="wiki"> 0.9.0 </td></tr>
+</table>
+
+<h2> Hierarchical JSON Format </h2>
+
+<p>The legacy pipe-separated input and output formats remain the default. JSON
+is selected only by adding <code>format="json"</code> to an input or output
+directive. The optional feature is listed as <code>JSON-GLib</code> by
+<code>gtkdialog --version</code> when it is available.</p>
+
+<p>A JSON document is a versioned object containing a <code>rows</code> array.
+Each row requires a positional <code>values</code> array matching the columns
+declared by the XML <code>label</code>. Missing trailing values use the model
+defaults; supplying more values than declared columns rejects the entire
+document. Values may be strings, numbers, Booleans or <code>null</code>. Use a
+decimal string for a <code>uint64</code> value that may exceed the signed JSON
+integer range. Numeric columns accept only values that can be converted
+completely, without overflow, to their declared <code>column-type</code>;
+otherwise the complete JSON document is rejected before any row is inserted.
+This stricter rule applies only to JSON input. The legacy pipe-separated input
+keeps its historical conversion to zero.</p>
+
+<pre>
+{
+  "version": 1,
+  "rows": [
+    {
+      "icon-name": "folder",
+      "values": ["Projects", 2, true],
+      "expanded": true,
+      "children": [
+        {
+          "stock-id": "gtk-file",
+          "values": ["README", 1, false]
+        }
+      ]
+    }
+  ]
+}
+</pre>
+
+<p>The optional <code>icon-name</code> and <code>stock-id</code> members select
+the row icon and are mutually exclusive. If neither is present, the tree's
+default icon is used. The optional Boolean <code>expanded</code> member controls
+the initial expansion state, and the optional <code>children</code> array uses
+the same row format recursively. Nesting is limited to 256 levels. JSON input
+is completely validated before any row from that document is inserted.</p>
+
+<p>An optional <code>style</code> object applies presentation defaults to every
+cell in its row. An optional <code>cells</code> array contains a style object or
+<code>null</code> for each data column; cell properties override the row style,
+which in turn overrides the corresponding <code>column-*</code> setting. The
+following properties are accepted: <code>background</code>,
+<code>foreground</code>, <code>font</code>, <code>weight</code>,
+<code>style</code>, <code>underline</code>, <code>strikethrough</code>,
+<code>xalign</code>, <code>yalign</code>, <code>xpad</code>,
+<code>ypad</code>, <code>ellipsize</code>, <code>wrap-mode</code>,
+<code>wrap-width</code>, <code>text-align</code>, <code>icon-name</code>,
+<code>stock-id</code>, <code>pixbuf-file</code> and <code>pixbuf-size</code>.
+The three image source properties are mutually exclusive. Text-only properties are
+ignored by non-text renderers. GTK theme colours remain in control while a row
+is selected so that focus and selection stay readable.</p>
+
+<pre>
+{
+  "values": ["Build", 73, true],
+  "style": {"background": "#f5f5f5"},
+  "cells": [
+    {"foreground": "#204a87", "weight": "bold"},
+    {"xalign": 1.0},
+    null
+  ]
+}
+</pre>
+
+<p>JSON output preserves the row hierarchy, values, icons, styles and current
+expansion state. These optional members remain part of version 1: older builds
+that do not recognise them still load the row values and hierarchy. A legacy
+<code>&lt;output file&gt;</code> continues to use its historical flat format and
+behavior.</p>
+
+<h2> Signals </h2>
+
+<p>The default signal is "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html#GtkTreeView-row-activated">row-activated</a>", emitted when the user double-clicks a row and also when a row is selected and one of the keys Space, Shift+Space, Return or Enter is pressed.</p>
+
+<p>The "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeSelection.html#GtkTreeSelection-changed">changed</a>" signal is emitted when the selection has changed (please see link about this).</p>
+
+<p>The "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html#GtkTreeView-cursor-changed">cursor-changed</a>" signal is emitted when the position of the cursor (focused cell) has changed.</p>
+
+<p>The "cell-edited" signal is emitted after an in-place text or combo edit has updated the model. It is available only for columns enabled by <code>column-editable</code>; the tree variable reflects the edited selection when actions run.</p>
+
+<p>A <code>combo</code> renderer presents choices declared by <code>&lt;item combo-column="<i>index</i>"&gt;</code>. Choice items belong to the renderer model and are not inserted as tree rows. Unless the corresponding <code>column-combo-has-entry</code> value is true, only declared choices can be selected.</p>
+
+<p>A <code>spin</code> renderer presents a native spin button while editing. Its range, increment and decimal places are configured by the corresponding <code>column-spin-min</code>, <code>column-spin-max</code>, <code>column-spin-step</code> and <code>column-spin-digits</code> values.</p>
+
+<p>An <code>accel</code> renderer displays and edits XML-safe GTK+ accelerator names such as <code>Primary+O</code> or <code>Primary+Shift+O</code> in a string column. Capturing a key combination updates the model and emits <code>accel-edited</code>. Pressing Backspace clears the value and emits <code>accel-cleared</code>.</p>
+
+<p>The "cell-toggled" signal is emitted after an activatable <code>toggle</code> or <code>radio</code> renderer has updated the model. String columns store <code>true</code> or <code>false</code>; numeric columns store <code>1</code> or <code>0</code>. An editable <code>radio</code> renderer permits one active value among rows with the same parent; activating a row clears that column in its siblings. Clicking the already active row leaves it active.</p>
+
+<p>A <code>progress</code> renderer presents its column value as a native progress bar. Values are rounded to the nearest integer and limited to the display range from <code>0</code> to <code>100</code>; the underlying model and exported value are not changed.</p>
+
+<p>A <code>pixbuf</code> renderer interprets the model value as an icon name,
+stock ID or filename according to <code>column-pixbuf-source</code>. An
+<code>icon-text</code> renderer keeps the model value as text and places an
+image before it. The first icon-text column also honours the existing row
+<code>icon-name</code> and <code>stock-id</code> metadata. Loaded images are
+cached within the current model generation. The <code>clear</code> and
+<code>refresh</code> functions discard both successful and failed cached
+loads, allowing changed or newly created files to be read.</p>
+
+<p>A <code>markup</code> renderer treats a string column as explicit Pango
+markup. The stored and exported value remains the original markup string;
+plain text remains the default renderer, so existing data is never interpreted
+as markup unless this renderer is requested.</p>
+
+<p>A <code>color</code> renderer treats a string column as a GTK+ colour
+specification and displays a solid swatch. The original text remains in the
+model and output. Swatches are cached within the current model generation and
+discarded by <code>clear</code> or <code>refresh</code>; an invalid colour
+produces a warning and an empty cell.</p>
+
+<p>The "file-changed" signal is emitted if file-monitor is true and the input file being monitored has changed.</p>
+
+<p>The following signals are connected-up for all widgets:</p>
+
+<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-button-press-event">button-press-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-button-release-event">button-release-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-configure-event">configure-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-enter-notify-event">enter-notify-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-leave-notify-event">leave-notify-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-focus-in-event">focus-in-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-focus-out-event">focus-out-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-hide">hide</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-show">show</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-realize">realize</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-key-press-event">key-press-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-key-release-event">key-release-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-map-event">map-event</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWidget.html#GtkWidget-unmap-event">unmap-event</a>
+
+<h2> Functions </h2>
+
+<p>The following functions can be performed upon this widget by any widget capable of emitting signals:</p>
+
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
+<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> show </td><td class="wiki"> Show widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> hide </td><td class="wiki"> Hide widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> grabfocus </td><td class="wiki"> Grab input focus </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> save<sup><a href="#note2">[2]</a></sup> </td><td class="wiki"> Save widget data </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> removeselected </td><td class="wiki"> Remove selected widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> expandall </td><td class="wiki"> Expand every row that has children </td><td class="wiki"> Variable name </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> collapseall </td><td class="wiki"> Collapse every expanded row </td><td class="wiki"> Variable name </td><td class="wiki"> 0.9.0 </td></tr>
+</table>
+
+<p><code>expandall</code> and <code>collapseall</code> operate on the current
+tree model independently of its input format. They are most useful with
+hierarchical JSON data. The <code>show-expanders</code> property controls only
+whether GTK draws the per-row expander buttons; it does not disable these
+functions.</p>
+
+<p>The following general functions can be performed by any widget capable of emitting signals:</p>
+
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
+<tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
+</table>
+
+<h2> Conditions </h2>
+
+<p>The following conditions can be used within the condition attribute of action directives:</p>
+
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Argument</b> </th><th class="wiki"> <b>Since</b> </th></tr>
+<tr><td class="wiki"> active_is_true(<i>argument</i>) </td><td class="wiki"> Active state of toggle widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> active_is_false(<i>argument</i>) </td><td class="wiki"> Active state of toggle widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> command_is_true(<i>argument</i>) </td><td class="wiki"> Output of shell command </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> command_is_false(<i>argument</i>) </td><td class="wiki"> Output of shell command </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> file_is_true(<i>argument</i>) </td><td class="wiki"> Contents of a file </td><td class="wiki"> Filename </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> file_is_false(<i>argument</i>) </td><td class="wiki"> Contents of a file </td><td class="wiki"> Filename </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> sensitive_is_true(<i>argument</i>) </td><td class="wiki"> Sensitive state of widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> sensitive_is_false(<i>argument</i>) </td><td class="wiki"> Sensitive state of widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> visible_is_true(<i>argument</i>) </td><td class="wiki"> Visible state of widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> visible_is_false(<i>argument</i>) </td><td class="wiki"> Visible state of widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> variable_is_true(<i>argument</i>) </td><td class="wiki"> Current textual value of widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.5 </td></tr>
+<tr><td class="wiki"> variable_is_false(<i>argument</i>) </td><td class="wiki"> Current textual value of widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.5 </td></tr>
+</table>
+
+<p>true means "true", "yes" or a complete non-zero decimal integer, while false means "false", "no" or a complete decimal integer equal to zero. Other output is neither true nor false.</p>
+
+<h2> Notes </h2>
+
+<p>When <code>context-menu</code> is set, right-clicking a row selects it
+before the popup actions run. In multiple-selection mode, right-clicking an
+already selected row preserves the complete selection; right-clicking another
+row replaces it. Right-clicking empty space and keyboard invocation preserve
+the current selection. See the <a href="popupmenu.html">popupmenu
+reference</a> for the menu definition.</p>
+
+<p>With multiple selection, the widget variable contains the selected values
+in row order, separated by newline characters.</p>
+
+<p>The <code>removeselected</code> function removes every selected row when
+multiple selection is enabled.</p>
+
+<p><a name="note1"></a>1. This widget has a default dimension of 200x100 which can be overridden with the height and/or width directives.</p>
+
+<p><a name="note2"></a>2. When saving, due to the multiple input data formats, the columns are output in the following raw state: <i>icon-name</i> <code>|</code> <i>stock-id</i> <code>|</code> <i>data0</i> <code>|</code> <i>data1</i>  <code>|</code> ...</p>
+
+<hr>
+<!-- reference-navigation-start -->
+<p class="reference-navigation">
+<strong>Reference:</strong>
+<a href="aboutdialog.html">aboutdialog</a>,
+<a href="accellabel.html">accellabel</a>,
+<a href="alignment.html">alignment</a>,
+<a href="arrow.html">arrow</a>,
+<a href="aspectframe.html">aspectframe</a>,
+<a href="assistant.html">assistant</a>,
+<a href="button.html">button</a>,
+<a href="calendar.html">calendar</a>,
+<a href="cellview.html">cellview</a>,
+<a href="checkbox.html">checkbox</a>,
+<a href="chooser.html">chooser</a>,
+<a href="colorbutton.html">colorbutton</a>,
+<a href="colorselection.html">colorselection</a>,
+<a href="combobox.html">combobox</a>,
+<a href="comboboxentry.html">comboboxentry</a>,
+<a href="comboboxtext.html">comboboxtext</a>,
+<a href="dialog.html">dialog</a>,
+<a href="drawingarea.html">drawingarea</a>,
+<a href="edit.html">edit</a>,
+<a href="entry.html">entry</a>,
+<a href="eventbox.html">eventbox</a>,
+<a href="expander.html">expander</a>,
+<a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="fixed.html">fixed</a>,
+<a href="fontbutton.html">fontbutton</a>,
+<a href="fontselection.html">fontselection</a>,
+<a href="frame.html">frame</a>,
+<a href="grid.html">grid</a>,
+<a href="gvim.html">gvim</a>,
+<a href="handlebox.html">handlebox</a>,
+<a href="hbox.html">hbox</a>,
+<a href="hbuttonbox.html">hbuttonbox</a>,
+<a href="hpaned.html">hpaned</a>,
+<a href="hruler.html">hruler</a>,
+<a href="hscale.html">hscale</a>,
+<a href="hscrollbar.html">hscrollbar</a>,
+<a href="hseparator.html">hseparator</a>,
+<a href="hsv.html">hsv</a>,
+<a href="iconview.html">iconview</a>,
+<a href="infobar.html">infobar</a>,
+<a href="layout.html">layout</a>,
+<a href="linkbutton.html">linkbutton</a>,
+<a href="list.html">list</a>,
+<a href="menu.html">menu</a>,
+<a href="menubar.html">menubar</a>,
+<a href="menuitem.html">menuitem</a>,
+<a href="menuitemseparator.html">menuitemseparator</a>,
+<a href="menutoolbutton.html">menutoolbutton</a>,
+<a href="messagedialog.html">messagedialog</a>,
+<a href="notebook.html">notebook</a>,
+<a href="pixmap.html">pixmap</a>,
+<a href="plug.html">plug</a>,
+<a href="popupmenu.html">popupmenu</a>,
+<a href="progressbar.html">progressbar</a>,
+<a href="radiobutton.html">radiobutton</a>,
+<a href="radiotoolbutton.html">radiotoolbutton</a>,
+<a href="recentchooser.html">recentchooser</a>,
+<a href="recentchoosermenu.html">recentchoosermenu</a>,
+<a href="scalebutton.html">scalebutton</a>,
+<a href="scrolledwindow.html">scrolledwindow</a>,
+<a href="separator.html">separator</a>,
+<a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sizegroup.html">sizegroup</a>,
+<a href="socket.html">socket</a>,
+<a href="spinbutton.html">spinbutton</a>,
+<a href="spinner.html">spinner</a>,
+<a href="statusbar.html">statusbar</a>,
+<a href="statusicon.html">statusicon</a>,
+<a href="syntax.html">syntax</a>,
+<a href="table.html">table</a>,
+<a href="terminal.html">terminal</a>,
+<a href="text.html">text</a>,
+<a href="timer.html">timer</a>,
+<a href="togglebutton.html">togglebutton</a>,
+<a href="toggletoolbutton.html">toggletoolbutton</a>,
+<a href="toolbar.html">toolbar</a>,
+<a href="toolbutton.html">toolbutton</a>,
+<a href="toolitem.html">toolitem</a>,
+<a href="toolitemgroup.html">toolitemgroup</a>,
+<a href="toolpalette.html">toolpalette</a>,
+<a href="tree.html">tree</a>,
+<a href="vbox.html">vbox</a>,
+<a href="vbuttonbox.html">vbuttonbox</a>,
+<a href="viewport.html">viewport</a>,
+<a href="volumebutton.html">volumebutton</a>,
+<a href="vpaned.html">vpaned</a>,
+<a href="vruler.html">vruler</a>,
+<a href="vscale.html">vscale</a>,
+<a href="vscrollbar.html">vscrollbar</a>,
+<a href="vseparator.html">vseparator</a>,
+<a href="window.html">window</a>
+</p>
+<!-- reference-navigation-end -->
+
+
+<p>&nbsp;</p>
+</td></tr>
+<tr><td>
+<!-- reference-footer-start -->
+<table width="100%" cellpadding="0px" cellspacing="0px">
+<tr>
+<td class="footer" width="25%" align="center">Historical documentation: <a href="mailto:thunorsif@hotmail.com">Thunor</a></td>
+<td class="footer" width="25%" align="center">Maintainer: <a href="mailto:artur@unix.org.pl">Artur Bednarek</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/abednarek/gtkdialog">Project Page</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/oshazard/gtkdialog">Archived Upstream</a></td>
+</tr>
+</table>
+<!-- reference-footer-end -->
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Copyright (C) 2026 Artur Bednarek <artur@unix.org.pl>
+# Distributed under the GNU General Public License version 2 or later.
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+DESKTOP_MENU='
+<popupmenu>
+	<menuitem icon-name="folder">
+		<label>Open home directory</label>
+		<action>xdg-open "$HOME"</action>
+		<action>exit:open-home</action>
+	</menuitem>
+	<menu label="Utilities">
+		<menuitem stock-id="gtk-info">
+			<label>Show gtkdialog version</label>
+			<action>gtkdialog --version</action>
+		</menuitem>
+	</menu>
+	<menuitemseparator></menuitemseparator>
+	<menuitem stock-id="gtk-quit">
+		<label>Close menu</label>
+		<action>exit:close</action>
+	</menuitem>
+</popupmenu>
+'
+export DESKTOP_MENU
+
+case ${1-} in
+	-d | --dump) printf '%s\n' "$DESKTOP_MENU" ;;
+	*) "$GTKDIALOG" --program=DESKTOP_MENU ;;
+esac

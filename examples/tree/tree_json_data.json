@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "rows": [
+    {
+      "icon-name": "folder",
+      "values": ["Projects", "2 items", "Ready"],
+      "style": {"background": "#f5f5f5"},
+      "cells": [
+        {"foreground": "#204a87", "weight": "bold"},
+        null,
+        {"foreground": "#4e9a06"}
+      ],
+      "expanded": true,
+      "children": [
+        {
+          "icon-name": "folder",
+          "values": ["GTKDialog", "3 items", "In progress"],
+          "expanded": true,
+          "children": [
+            {"stock-id": "gtk-file", "values": ["README", "12 KB", "Ready"]},
+            {
+              "stock-id": "gtk-file",
+              "values": ["ChangeLog", "28 KB", "Ready"],
+              "cells": [
+                {"style": "italic"},
+                null,
+                {"foreground": "#4e9a06"}
+              ]
+            },
+            {"icon-name": "folder", "values": ["src", "54 files", "In progress"]}
+          ]
+        },
+        {
+          "icon-name": "folder",
+          "values": ["Appearance tests", "5 views", "Ready"]
+        }
+      ]
+    },
+    {
+      "icon-name": "folder",
+      "values": ["Documentation", "63 pages", "Ready"]
+    }
+  ]
+}

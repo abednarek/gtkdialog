@@ -1,0 +1,33 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Tree accelerator cells" width-request="480" height-request="250">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Select a row, click its shortcut, then press a new key combination.</label>
+		</text>
+		<tree column-renderer="text|accel"
+			column-editable="false|true" exported-column="1">
+			<variable>ACCEL_TREE</variable>
+			<label>Action|Shortcut</label>
+			<item>Open|Primary+o</item>
+			<item>Save|Primary+s</item>
+			<item>Quit|Primary+q</item>
+			<action signal="accel-edited">echo "Shortcut: $ACCEL_TREE"</action>
+			<action signal="accel-cleared">echo "Shortcut cleared"</action>
+		</tree>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# The chooser remains in GTK_FILE_CHOOSER_ACTION_OPEN mode for compatibility.
+# The historical action attribute when="type" remains accepted as an alias
+# for signal="type".
+
+[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Chooser Widget Example" resizable="false">
+	<vbox border-width="10">
+		<chooser default-file="/etc/hosts"
+			fs-filters-mime="text/plain" fs-filters="*.txt|*.md">
+			<variable>CHOOSER</variable>
+			<default>/tmp</default>
+			<width>600</width>
+			<height>400</height>
+			<action when="current-folder-changed">echo current-folder-changed</action>
+			<action when="file-activated">echo file-activated</action>
+			<action signal="selection-changed">echo selection-changed</action>
+			<action signal="update-preview">echo update-preview</action>
+		</chooser>
+		<hbox>
+			<button ok></button>
+			<button cancel></button>
+		</hbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) echo "$MAIN_DIALOG" ;;
+	*) $GTKDIALOG --program=MAIN_DIALOG ;;
+esac

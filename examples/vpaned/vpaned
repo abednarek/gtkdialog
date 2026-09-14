@@ -1,0 +1,28 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Vertical panes" width-request="480" height-request="360">
+	<vbox>
+		<vpaned position="190" child1-resize="true" child1-shrink="false"
+			child2-resize="true" child2-shrink="true">
+			<edit>
+				<default>Editable upper pane</default>
+			</edit>
+			<frame>
+				<text><label>Output or status pane</label></text>
+				<label>Status</label>
+			</frame>
+			<variable>VPANED_POSITION</variable>
+		</vpaned>
+		<button ok></button>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

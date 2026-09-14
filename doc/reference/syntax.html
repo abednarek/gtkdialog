@@ -1,0 +1,455 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+<title>gtkdialog: dialog syntax reference</title>
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+
+<style type="text/css">
+	body {
+		font-size: 14px;
+		font-family: arial, verdana, sans-serif;
+		background-color: #e0e0e8;
+	}
+	h1 {
+		font-size: 24px;
+	}
+	h2 {
+		font-size: 18px;
+	}
+	a:link {
+		text-decoration: none;
+	}
+	a:visited {
+		text-decoration: none;
+	}
+	a:active {
+		text-decoration: none;
+	}
+	a:hover {
+		color: #8080ff;
+		text-decoration: underline;
+	}
+	hr {
+		color: #a8a8b0;
+		background-color: #a8a8b0;
+		height: 1px;
+		border: 0;
+	}
+	pre {
+		background-color: #e8e8f0;
+		border: 1px dotted #b8b8c0;
+		padding: 10px;
+	}
+	.footer {
+		font-size: 14px;
+	}
+</style>
+
+</head>
+<body bgcolor="#e0e0e8">
+
+	<table bgcolor="#b8b8c0" cellpadding="0px" cellspacing="1px">
+		<tr>
+			<td>
+				<table bgcolor="#ffffff" cellpadding="0px" cellspacing="10px">
+					<tr>
+						<td>
+
+<h1> dialog syntax </h1>
+
+<p>Gtkdialog uses an XML-like language. Widget definitions may be read from
+an environment variable, a file or standard input.</p>
+
+<hr>
+
+<h2> Comments </h2>
+
+<p>Comments begin with <code>&lt;!--</code> and end with
+<code>--&gt;</code>. They may appear before or after the dialog and between
+widget definitions.</p>
+
+<pre>
+&lt;!-- Main application window. --&gt;
+&lt;window&gt;
+	&lt;vbox&gt;
+		&lt;!-- Primary action. --&gt;
+		&lt;button ok&gt;&lt;/button&gt;
+	&lt;/vbox&gt;
+&lt;/window&gt;
+</pre>
+
+<p>Comments cannot be nested. An unterminated comment is a syntax error.
+Comment markers inside a double-quoted string are treated as ordinary
+text.</p>
+
+<h2> GTK property attributes </h2>
+
+<p>Standard writable GTK properties can be set as widget tag attributes.
+Scalar values must be complete numbers within the range accepted by the GTK
+property; malformed and out-of-range values are ignored with a warning, so
+the property's default value remains in effect. Boolean properties accept
+<code>true</code>, <code>yes</code> or <code>1</code>, and
+<code>false</code>, <code>no</code> or <code>0</code>. These tokens must be
+complete; numeric prefixes such as <code>1junk</code> are not booleans.</p>
+
+<p>This generic conversion covers string, Boolean, signed and unsigned integer,
+floating-point, enumeration and flags properties on the GTK widget that the tag
+creates. Enumeration values accept a registered GTK2 name or nick, for example
+<code>GTK_WIN_POS_CENTER</code> or <code>center</code>, as well as the numeric
+constant. Flags accept a numeric mask or registered names and nicks separated by
+<code>|</code>, for example
+<code>button-press-mask | key-press-mask</code>. Names and nicks are
+case-insensitive.</p>
+
+<p><code>GdkColor</code> properties accept GTK2 colour specifications such as
+<code>#123456</code> or <code>red</code>. Other boxed values and object, pointer
+and parameter properties cannot be expressed by the generic conversion and are
+reported as unsupported. Read-only properties and <code>visible</code> are not
+set here. Constructor arguments, child-packing properties and settings on
+internal helper widgets are exposed only when the individual widget page names
+a dedicated Gtkdialog attribute or directive. Consequently the XML language
+does not claim to expose every item in the GTK2 C API.</p>
+
+<h2> Visibility and sensitivity </h2>
+
+<p>The <code>visible="false"</code> widget attribute controls initial
+visibility. The <code>&lt;sensitive&gt;false&lt;/sensitive&gt;</code> directive
+instead makes a widget insensitive to user input while leaving it visible.
+The historical <code>&lt;visible&gt;disabled&lt;/visible&gt;</code> spelling remains
+accepted as a deprecated alias for <code>&lt;sensitive&gt;</code>; despite its
+name it does not hide the widget. At runtime, the <code>show</code> and
+<code>hide</code> functions control visibility, while <code>enable</code> and
+<code>disable</code> control sensitivity.</p>
+
+<h2 id="common-widget-contract"> Common widget contract </h2>
+
+<p>Every normal XML widget backed by a GtkWidget has the following Gtkdialog
+facilities. This shared contract also applies to newly added widgets; their
+individual reference pages describe only the additional operations that are
+meaningful for their value or native GTK+ class. Declarative helpers such as
+<code>sizegroup</code> are not GtkWidgets and are explicitly excluded.</p>
+
+<ul>
+<li>A <code>&lt;variable&gt;</code> directive names the widget. The
+<code>export="false"</code> attribute prevents that value from being exported
+to the shell. Gtkdialog assigns an internal name when the directive is
+omitted.</li>
+<li>The <code>&lt;sensitive&gt;</code> directive controls initial sensitivity.
+The <code>visible</code> tag attribute controls initial visibility.</li>
+<li>The optional <code>context-menu</code> tag attribute names an exported
+environment variable containing a <code>&lt;popupmenu&gt;</code> program. Widgets
+which receive button events open that menu on right click; wrap windowless
+content in an <a href="eventbox.html">eventbox</a> when it needs a clickable
+area. A focused widget opens the menu from the keyboard Menu key or Shift+F10.
+The menu is created on first use and remains owned by the originating
+widget.</li>
+<li>An <code>&lt;action signal="type"&gt;</code> may run a shell command or a
+Gtkdialog function. The <code>function</code> and <code>condition</code>
+attributes may be combined with it. An action without <code>signal</code>
+requires the widget to define a default signal.</li>
+<li>The common signals are <code>button-press-event</code>,
+<code>button-release-event</code>, <code>configure-event</code>,
+<code>enter-notify-event</code>, <code>leave-notify-event</code>,
+<code>focus-in-event</code>, <code>focus-out-event</code>, <code>hide</code>,
+<code>show</code>, <code>realize</code>, <code>key-press-event</code>,
+<code>key-release-event</code>, <code>map-event</code> and
+<code>unmap-event</code>. Tool buttons forward pointer, keyboard and focus
+events from their internal GTK+ button to the logical XML widget.</li>
+<li>The common state functions are <code>enable</code>, <code>disable</code>,
+<code>show</code>, <code>hide</code> and <code>grabfocus</code> with a widget
+variable as their parameter. <code>activate</code> is available only when the
+native widget is activatable; for check and toggle controls it changes their
+Boolean state, and for radio controls it selects the requested member.</li>
+<li>The general action functions are <code>break</code>, <code>command</code>,
+<code>exit</code>, <code>closewindow</code>, <code>launch</code> and
+<code>presentwindow</code>. The last three window functions require a window
+variable where applicable.</li>
+<li><code>sensitive_is_true</code>/<code>sensitive_is_false</code>,
+<code>visible_is_true</code>/<code>visible_is_false</code> and
+<code>variable_is_true</code>/<code>variable_is_false</code> accept any live
+widget variable. <code>active_is_true</code>/<code>active_is_false</code>
+require a widget with a Boolean active state. Command and file conditions do
+not depend on the originating widget.</li>
+</ul>
+
+<p><code>&lt;default&gt;</code>, <code>&lt;input&gt;</code>,
+<code>&lt;input file&gt;</code>, <code>&lt;output file&gt;</code>,
+<code>refresh</code>, <code>save</code>, <code>clear</code> and
+<code>removeselected</code> are <em>not</em> inherited. They are available only
+when the individual widget reference describes their value semantics.
+Likewise, <code>file-monitor</code> and <code>auto-refresh</code> require a
+widget with implemented file input. <code>block-function-signals</code> affects
+only functions that can change widget state and emit a signal.</p>
+
+<h2> Widget variables </h2>
+
+<p>A declared <code>&lt;variable&gt;</code> name is not length-limited by
+Gtkdialog. Names that are printed or exported must be valid shell identifiers:
+the first character is a letter or underscore, followed by letters, digits or
+underscores.</p>
+
+<p>Duplicate names are supported for compatibility with launched windows.
+Every live widget keeps its own internal mapping, while actions that address a
+name operate on the most recently declared active widget. Closing that widget
+makes the previous active declaration addressable again. Output contains one
+value per name, from that same active widget. Unique names remain recommended
+when widgets are addressed by actions.</p>
+
+<h2> Action conditions </h2>
+
+<p>The <code>condition</code> attribute accepts
+<code>active_is_true</code>/<code>active_is_false</code>,
+<code>sensitive_is_true</code>/<code>sensitive_is_false</code> and
+<code>visible_is_true</code>/<code>visible_is_false</code> with a widget
+variable name. <code>variable_is_true</code>/<code>variable_is_false</code>
+test the current textual value of any widget directly. It also accepts <code>command_is_true</code>/
+<code>command_is_false</code> and <code>file_is_true</code>/
+<code>file_is_false</code>. For historical compatibility, an unknown condition
+is reported and otherwise ignored, text after the final closing parenthesis is
+ignored, and a missing closing parenthesis makes the rest of the attribute the
+argument. A recognised but inapplicable condition is false.</p>
+
+<p>Toggle widgets also retain the legacy <code>if true</code> and
+<code>if false</code> prefixes inside action contents. These test the active
+state of the widget emitting the signal. When a prefixed action also has a
+<code>condition</code> attribute, the explicit condition is evaluated last and
+its result takes precedence for historical compatibility.</p>
+
+<h2> Shell redirection </h2>
+
+<p>The contents of <code>&lt;action&gt;</code> and shell
+<code>&lt;input&gt;</code> directives are passed to the shell. Input
+redirection operators may be written directly, including without a space
+after the operator.</p>
+
+<pre>
+&lt;input&gt;wc -l &lt;/etc/passwd&lt;/input&gt;
+&lt;action&gt;sort &lt;input.txt &gt;output.txt&lt;/action&gt;
+</pre>
+
+<p>The exact shell language remains determined by the command being run.
+Gtkdialog uses <code>/bin/sh</code> for ordinary commands; Bash-specific
+syntax must explicitly invoke Bash.</p>
+
+<pre>
+&lt;action&gt;bash -c "wc -l &lt;(printf test)"&lt;/action&gt;
+</pre>
+
+<p>Ordinary shell actions, shell input directives and command conditions are
+executed synchronously. A long-running command therefore blocks event
+processing in the GTK main loop until the command finishes. The progressbar
+input command is the exception: its output is consumed asynchronously by the
+GTK main loop.</p>
+
+<p>Boolean command and file results accept <code>true</code>, <code>yes</code>,
+<code>false</code>, <code>no</code>, or a complete decimal integer. Zero is
+false and every other representable integer is true; malformed or overflowing
+numeric text is neither.</p>
+
+<p>The older state-taking <code>&lt;input&gt;</code> implementations of
+<code>button</code>/<code>togglebutton</code>, <code>checkbox</code>,
+<code>expander</code>, check/radio <code>menuitem</code>,
+<code>radiobutton</code> and <code>timer</code> retain their historical rule:
+<code>true</code>, <code>yes</code>, or a numeric prefix whose value is exactly
+one enables the state; every other value disables it. This intentionally
+differs from the non-zero rule used by action conditions.</p>
+
+<h2> Keyboard event variables </h2>
+
+<p>Actions handling key press and release events receive <code>KEY_VAL</code>,
+<code>KEY_SYM</code>, <code>KEY_UNI</code>, <code>KEY_MOD</code> and
+<code>KEY_RAW</code>. <code>KEY_SYM</code> is an empty string when GDK has no
+symbolic name for the key value.</p>
+
+<h2> Imperative construction </h2>
+
+<p>The legacy imperative directives execute while the dialog's widget tree is
+being constructed. Assignments store numeric values in process environment
+variables. Variable names use shell identifier syntax: a letter or underscore,
+followed by letters, digits or underscores.</p>
+
+<pre>
+&lt;command assignment="n := 1"&gt;&lt;/command&gt;
+&lt;while condition="n != 4"&gt;
+	&lt;text&gt;&lt;label&gt;Repeated widget&lt;/label&gt;&lt;/text&gt;
+	&lt;command assignment="n := n + 1"&gt;&lt;/command&gt;
+&lt;/while&gt;
+&lt;if condition="n = 4"&gt;
+	&lt;text&gt;&lt;label&gt;Final widget&lt;/label&gt;&lt;/text&gt;
+&lt;/if&gt;
+</pre>
+
+<p>Expressions support decimal numbers, variables, addition, subtraction,
+multiplication, division, equality and inequality. Multiplication and division
+bind more tightly than addition and subtraction. A condition is false when its
+numeric value is zero and true otherwise. Undefined or malformed numeric values,
+division by zero and non-finite results produce a warning and evaluate as zero.
+Widgets produced by a true branch or by successive loop iterations are retained
+in their surrounding container.</p>
+
+<h2> Diagnostics </h2>
+
+<p><code>--no-warning</code> suppresses warning-level diagnostics emitted by
+gtkdialog, including validation and child-command status warnings. Fatal
+parser and runtime errors are still reported, as is text written directly to
+standard error by a child command.</p>
+
+<h2> File monitoring </h2>
+
+<p>Widgets supporting the <code>file-monitor</code> or
+<code>auto-refresh</code> tag attribute may also specify
+<code>rate-limit</code> as a non-negative number of milliseconds. An invalid
+value is ignored and the GIO monitor's default remains in effect.</p>
+<p>File monitoring follows the named path when a writer atomically replaces
+the file with <code>rename()</code>, including repeated replacements. A
+monitor may also be established before the named file exists and notices its
+later creation.</p>
+
+<h2> Event-driven files </h2>
+
+<p><code>--event-driven FILE</code> loads <code>FILE</code> with
+<code>/bin/sh</code>, then starts a new gtkdialog process with the variables
+exported by that file. The file should therefore be valid POSIX shell and
+should define data and functions without launching gtkdialog itself. Its path
+may contain spaces or shell metacharacters.</p>
+
+<p>The same file is installed as the new process's <code>--include</code> file,
+so it is loaded again before shell action and input commands. Bash-specific
+functions should be invoked through an explicit <code>bash -c</code> command.</p>
+
+<p>Dialog source and presentation options are preserved when the new process
+is started, including <code>--file</code>, <code>--program</code>,
+<code>--geometry</code>, <code>--space-expand</code>,
+<code>--space-fill</code> and <code>--styles</code>. Packing states accept only
+<code>true</code>, <code>yes</code> or <code>1</code>, and
+<code>false</code>, <code>no</code> or <code>0</code>. An invalid state is
+ignored with a warning.</p>
+
+<h2> Error locations </h2>
+
+<p>Line numbers in parser errors include newlines inside comments,
+double-quoted directive contents and double-quoted tag attributes.</p>
+
+<hr>
+<!-- reference-navigation-start -->
+<p class="reference-navigation">
+<strong>Reference:</strong>
+<a href="aboutdialog.html">aboutdialog</a>,
+<a href="accellabel.html">accellabel</a>,
+<a href="alignment.html">alignment</a>,
+<a href="arrow.html">arrow</a>,
+<a href="aspectframe.html">aspectframe</a>,
+<a href="assistant.html">assistant</a>,
+<a href="button.html">button</a>,
+<a href="calendar.html">calendar</a>,
+<a href="cellview.html">cellview</a>,
+<a href="checkbox.html">checkbox</a>,
+<a href="chooser.html">chooser</a>,
+<a href="colorbutton.html">colorbutton</a>,
+<a href="colorselection.html">colorselection</a>,
+<a href="combobox.html">combobox</a>,
+<a href="comboboxentry.html">comboboxentry</a>,
+<a href="comboboxtext.html">comboboxtext</a>,
+<a href="dialog.html">dialog</a>,
+<a href="drawingarea.html">drawingarea</a>,
+<a href="edit.html">edit</a>,
+<a href="entry.html">entry</a>,
+<a href="eventbox.html">eventbox</a>,
+<a href="expander.html">expander</a>,
+<a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="fixed.html">fixed</a>,
+<a href="fontbutton.html">fontbutton</a>,
+<a href="fontselection.html">fontselection</a>,
+<a href="frame.html">frame</a>,
+<a href="grid.html">grid</a>,
+<a href="gvim.html">gvim</a>,
+<a href="handlebox.html">handlebox</a>,
+<a href="hbox.html">hbox</a>,
+<a href="hbuttonbox.html">hbuttonbox</a>,
+<a href="hpaned.html">hpaned</a>,
+<a href="hruler.html">hruler</a>,
+<a href="hscale.html">hscale</a>,
+<a href="hscrollbar.html">hscrollbar</a>,
+<a href="hseparator.html">hseparator</a>,
+<a href="hsv.html">hsv</a>,
+<a href="iconview.html">iconview</a>,
+<a href="infobar.html">infobar</a>,
+<a href="layout.html">layout</a>,
+<a href="linkbutton.html">linkbutton</a>,
+<a href="list.html">list</a>,
+<a href="menu.html">menu</a>,
+<a href="menubar.html">menubar</a>,
+<a href="menuitem.html">menuitem</a>,
+<a href="menuitemseparator.html">menuitemseparator</a>,
+<a href="menutoolbutton.html">menutoolbutton</a>,
+<a href="messagedialog.html">messagedialog</a>,
+<a href="notebook.html">notebook</a>,
+<a href="pixmap.html">pixmap</a>,
+<a href="plug.html">plug</a>,
+<a href="popupmenu.html">popupmenu</a>,
+<a href="progressbar.html">progressbar</a>,
+<a href="radiobutton.html">radiobutton</a>,
+<a href="radiotoolbutton.html">radiotoolbutton</a>,
+<a href="recentchooser.html">recentchooser</a>,
+<a href="recentchoosermenu.html">recentchoosermenu</a>,
+<a href="scalebutton.html">scalebutton</a>,
+<a href="scrolledwindow.html">scrolledwindow</a>,
+<a href="separator.html">separator</a>,
+<a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sizegroup.html">sizegroup</a>,
+<a href="socket.html">socket</a>,
+<a href="spinbutton.html">spinbutton</a>,
+<a href="spinner.html">spinner</a>,
+<a href="statusbar.html">statusbar</a>,
+<a href="statusicon.html">statusicon</a>,
+<a href="syntax.html">syntax</a>,
+<a href="table.html">table</a>,
+<a href="terminal.html">terminal</a>,
+<a href="text.html">text</a>,
+<a href="timer.html">timer</a>,
+<a href="togglebutton.html">togglebutton</a>,
+<a href="toggletoolbutton.html">toggletoolbutton</a>,
+<a href="toolbar.html">toolbar</a>,
+<a href="toolbutton.html">toolbutton</a>,
+<a href="toolitem.html">toolitem</a>,
+<a href="toolitemgroup.html">toolitemgroup</a>,
+<a href="toolpalette.html">toolpalette</a>,
+<a href="tree.html">tree</a>,
+<a href="vbox.html">vbox</a>,
+<a href="vbuttonbox.html">vbuttonbox</a>,
+<a href="viewport.html">viewport</a>,
+<a href="volumebutton.html">volumebutton</a>,
+<a href="vpaned.html">vpaned</a>,
+<a href="vruler.html">vruler</a>,
+<a href="vscale.html">vscale</a>,
+<a href="vscrollbar.html">vscrollbar</a>,
+<a href="vseparator.html">vseparator</a>,
+<a href="window.html">window</a>
+</p>
+<!-- reference-navigation-end -->
+
+
+<p>&nbsp;</p>
+</td></tr>
+<tr><td>
+<!-- reference-footer-start -->
+<table width="100%" cellpadding="0px" cellspacing="0px">
+<tr>
+<td class="footer" width="25%" align="center">Historical documentation: <a href="mailto:thunorsif@hotmail.com">Thunor</a></td>
+<td class="footer" width="25%" align="center">Maintainer: <a href="mailto:artur@unix.org.pl">Artur Bednarek</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/abednarek/gtkdialog">Project Page</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/oshazard/gtkdialog">Archived Upstream</a></td>
+</tr>
+</table>
+<!-- reference-footer-end -->
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

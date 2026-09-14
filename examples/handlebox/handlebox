@@ -1,0 +1,29 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Detachable GTK2 toolbar" width-request="520">
+	<vbox spacing="8">
+		<handlebox handle-position="left" snap-edge="top" shadow-type="out"
+			space-expand="true" space-fill="true">
+			<toolbar toolbar-style="both-horizontal">
+				<toolbutton stock-id="gtk-new"><label>New</label></toolbutton>
+				<toolbutton stock-id="gtk-open"><label>Open</label></toolbutton>
+				<toolbutton stock-id="gtk-save"><label>Save</label></toolbutton>
+			</toolbar>
+			<variable>TOOLBAR_HANDLE</variable>
+			<action signal="child-detached">echo "Toolbar detached"</action>
+			<action signal="child-attached">echo "Toolbar attached"</action>
+		</handlebox>
+		<text><label>Drag the handle to detach the toolbar; move it back to reattach.</label></text>
+		<button ok></button>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

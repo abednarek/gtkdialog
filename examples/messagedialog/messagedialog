@@ -1,0 +1,20 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<messagedialog title="GTKDialog question" message-type="question"
+	buttons="yes-no" default-response="yes"
+	secondary-text="The selected response is returned through MESSAGE_RESPONSE.">
+	<label>Continue with the GTK2-only application?</label>
+	<variable>MESSAGE_RESPONSE</variable>
+	<action>echo "Response: $MESSAGE_RESPONSE"</action>
+	<action>exit:response</action>
+</messagedialog>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

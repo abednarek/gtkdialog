@@ -1,0 +1,39 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Grid" width-request="460">
+	<vbox>
+		<grid rows="3" columns="2" row-spacing="8" column-spacing="12"
+			border-width="12">
+			<text row="0" column="0" x-options="fill" y-options="none">
+				<label>Name</label>
+			</text>
+			<entry row="0" column="1">
+				<variable>NAME</variable>
+			</entry>
+			<text row="1" column="0" x-options="fill" y-options="none">
+				<label>Description</label>
+			</text>
+			<edit row="1" column="1" x-options="expand|fill"
+				y-options="expand|fill">
+				<variable>DESCRIPTION</variable>
+				<height>120</height>
+			</edit>
+			<hbuttonbox row="2" column="0" column-span="2"
+				layout-style="end" spacing="8">
+				<button cancel></button>
+				<button ok></button>
+			</hbuttonbox>
+			<variable>FORM_GRID</variable>
+		</grid>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

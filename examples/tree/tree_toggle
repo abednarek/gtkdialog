@@ -1,0 +1,32 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Tree toggle cells" width-request="440" height-request="240">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Click a checkbox to update its value.</label>
+		</text>
+		<tree column-renderer="text|toggle"
+			column-editable="false|true" exported-column="1">
+			<variable>TOGGLE_TREE</variable>
+			<label>Service|Enabled</label>
+			<item>Search index|true</item>
+			<item>File monitor|false</item>
+			<item>Notifications|true</item>
+			<action signal="cell-toggled">echo "Enabled: $TOGGLE_TREE"</action>
+		</tree>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

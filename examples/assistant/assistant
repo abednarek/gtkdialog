@@ -1,0 +1,31 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<assistant title="Native GTK2 assistant" width-request="420">
+	<vbox page-title="Welcome" page-type="intro" complete="true"
+		border-width="12" spacing="8">
+		<text><label>This assistant demonstrates native GTK2 pages.</label></text>
+	</vbox>
+	<vbox page-title="Details" page-type="content" complete="true"
+		border-width="12" spacing="8">
+		<text><label>Enter a project name:</label></text>
+		<entry><variable>PROJECT_NAME</variable></entry>
+	</vbox>
+	<vbox page-title="Ready" page-type="confirm" complete="true"
+		border-width="12" spacing="8">
+		<text><label>The assistant is ready to finish.</label></text>
+	</vbox>
+	<variable>ASSISTANT_PAGE</variable>
+	<action>exit:Apply</action>
+	<action signal="cancel">exit:Cancel</action>
+	<action signal="close">exit:Close</action>
+</assistant>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

@@ -1,0 +1,76 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 toolbar" width-request="820">
+	<vbox>
+		<toolbar toolbar-style="both-horizontal" show-arrow="true">
+			<toolbutton stock-id="gtk-new" is-important="true"
+			  tooltip-text="Create a new item">
+				<label>New</label>
+				<action>echo "New selected"</action>
+			</toolbutton>
+			<toolbutton stock-id="gtk-open" is-important="true"
+			  tooltip-text="Open an item">
+				<label>Open</label>
+				<action>echo "Open selected"</action>
+			</toolbutton>
+			<separatortoolitem></separatortoolitem>
+			<menutoolbutton stock-id="gtk-open" is-important="true"
+			  tooltip-text="Open a recent item or run the main action">
+				<menuitem>
+					<label>Recent report</label>
+					<action>echo "Recent report selected"</action>
+				</menuitem>
+				<menuitem>
+					<label>Recent notes</label>
+					<action>echo "Recent notes selected"</action>
+				</menuitem>
+				<label>Recent</label>
+				<action>echo "Open selected"</action>
+			</menutoolbutton>
+			<separatortoolitem></separatortoolitem>
+			<toolitem expand="true" homogeneous="false"
+			  tooltip-text="An ordinary entry embedded in the toolbar">
+				<entry width-request="170">
+					<default>Search toolbar</default>
+					<variable>TOOLBAR_SEARCH</variable>
+					<action signal="activate">echo "Search: $TOOLBAR_SEARCH"</action>
+				</entry>
+			</toolitem>
+			<separatortoolitem></separatortoolitem>
+			<toggletoolbutton stock-id="gtk-bold" is-important="true"
+			  tooltip-text="Toggle bold mode">
+				<label>Bold</label>
+				<variable>BOLD_MODE</variable>
+				<action>echo "Bold mode: $BOLD_MODE"</action>
+			</toggletoolbutton>
+			<separatortoolitem></separatortoolitem>
+			<radiotoolbutton stock-id="gtk-justify-left" is-important="true"
+			  tooltip-text="Align left">
+				<label>Left</label>
+				<variable>ALIGN_LEFT</variable>
+				<default>true</default>
+			</radiotoolbutton>
+			<radiotoolbutton stock-id="gtk-justify-center" is-important="true"
+			  tooltip-text="Align center">
+				<label>Center</label>
+				<variable>ALIGN_CENTER</variable>
+			</radiotoolbutton>
+			<separatortoolitem></separatortoolitem>
+			<toolbutton stock-id="gtk-quit" is-important="true"
+			  tooltip-text="Close this example">
+				<label>Quit</label>
+				<action>exit:Quit</action>
+			</toolbutton>
+		</toolbar>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

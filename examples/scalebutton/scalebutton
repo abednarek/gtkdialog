@@ -1,0 +1,22 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 scale button" width-request="300">
+	<vbox border-width="12" spacing="10">
+		<text><label>Open the button and adjust the numeric value.</label></text>
+		<scalebutton range-min="0" range-max="10" range-step="0.5"
+			range-value="4" digits="1">
+			<variable>SCALE_VALUE</variable>
+		</scalebutton>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

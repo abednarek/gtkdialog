@@ -1,0 +1,23 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+VERTICAL_RULER_DIALOG='
+<window title="Native GTK2 vertical ruler" width-request="240">
+	<vbox border-width="12" spacing="10">
+		<text><label>A vertical ruler measured in centimetres.</label></text>
+		<hbox>
+			<vruler lower="0" upper="30" position="12" max-size="30"
+				metric="centimeters" height-request="260">
+				<variable>VERTICAL_POSITION</variable>
+			</vruler>
+			<drawingarea width-request="140" height-request="260"
+				background-color="#f4f2e8"></drawingarea>
+		</hbox>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+
+export VERTICAL_RULER_DIALOG
+exec "$GTKDIALOG" --program=VERTICAL_RULER_DIALOG

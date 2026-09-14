@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# Copyright (C) 2026 Artur Bednarek <artur@unix.org.pl>
+# Distributed under the GNU General Public License version 2 or later.
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+ROW_MENU='
+<popupmenu>
+	<menuitem stock-id="gtk-add">
+		<label>Expand all</label>
+		<action>expandall:FILES</action>
+	</menuitem>
+	<menuitem stock-id="gtk-remove">
+		<label>Collapse all</label>
+		<action>collapseall:FILES</action>
+	</menuitem>
+	<menuitemseparator></menuitemseparator>
+	<menuitem stock-id="gtk-delete">
+		<label>Remove selected row</label>
+		<action>removeselected:FILES</action>
+	</menuitem>
+</popupmenu>
+'
+
+MAIN_DIALOG='
+<window title="Tree context menu" width-request="460" height-request="280">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Right-click a row, or press Shift+F10, to open its menu.</label>
+		</text>
+		<tree context-menu="ROW_MENU" selected-row="0" show-expanders="true"
+			space-expand="true" space-fill="true">
+			<variable>FILES</variable>
+			<label>Name|Kind</label>
+			<item stock-id="gtk-directory">Documents|directory</item>
+			<item stock-id="gtk-file">notes.txt|file</item>
+			<item stock-id="gtk-file">report.pdf|file</item>
+		</tree>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+export ROW_MENU MAIN_DIALOG
+
+case ${1-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

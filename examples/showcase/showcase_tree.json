@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "rows": [
+    {
+      "icon-name": "folder",
+      "values": ["GTKDialog release", "Ada", true, 72.5, 2, "Primary+r", true, "#3465a4"],
+      "style": {"background": "#eef5ff"},
+      "cells": [
+        {"icon-name": "folder", "foreground": "#204a87", "weight": "bold"},
+        {"font": "Sans 9", "style": "italic"},
+        null,
+        {"xalign": 0.5},
+        {"xalign": 1.0},
+        null,
+        null,
+        {"background": "#ffffff"}
+      ],
+      "expanded": true,
+      "children": [
+        {
+          "stock-id": "gtk-apply",
+          "values": ["Review changes", "Ada", true, 100, 0, "Primary+e", false, "#4e9a06"],
+          "cells": [
+            {"stock-id": "gtk-apply", "foreground": "#4e9a06"},
+            null,
+            null,
+            {"background": "#efffe8"}
+          ]
+        },
+        {
+          "stock-id": "gtk-execute",
+          "values": ["Run GTK2 checks", "Linus", true, 72.5, 2, "Primary+t", true, "orange"],
+          "style": {"background": "#fffaf0"}
+        },
+        {
+          "stock-id": "gtk-execute",
+          "values": ["Prepare package", "Grace", false, 38, 1, "Primary+p", true, "#ad7fa8"],
+          "cells": [
+            {"stock-id": "gtk-execute", "weight": "bold"},
+            null,
+            null,
+            {"foreground": "#5c3566"}
+          ]
+        }
+      ]
+    },
+    {
+      "stock-id": "gtk-go-up",
+      "values": ["Publish release", "Margaret", false, 0, 0, "Primary+u", false, "#cc0000"],
+      "cells": [
+        {"stock-id": "gtk-go-up", "foreground": "#a40000", "weight": "bold"},
+        null,
+        null,
+        {"background": "#fff0f0"}
+      ]
+    }
+  ]
+}

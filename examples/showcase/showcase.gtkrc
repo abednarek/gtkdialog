@@ -1,0 +1,6 @@
+style "showcase-font"
+{
+	font_name = "Sans 8"
+}
+
+class "*" style "showcase-font"

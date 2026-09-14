@@ -1,0 +1,24 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+HSV_DIALOG='
+<window title="GTK2 HSV selector" width-request="420">
+	<vbox border-width="12" spacing="10">
+		<text><label>Select hue and saturation on the ring, then brightness in the triangle.</label></text>
+		<hsv hsv-size="240" ring-width="28">
+			<variable>HSV_VALUE</variable>
+			<default>0.58|0.75|0.9</default>
+			<action>refresh:HSV_PREVIEW</action>
+		</hsv>
+		<entry editable="false">
+			<variable>HSV_PREVIEW</variable>
+			<input>printf "%s" "$HSV_VALUE"</input>
+		</entry>
+		<button cancel></button>
+	</vbox>
+</window>
+'
+
+export HSV_DIALOG
+exec "$GTKDIALOG" --program=HSV_DIALOG

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 volume button" width-request="300">
+	<vbox border-width="12" spacing="10">
+		<text><label>Open the button and adjust the volume.</label></text>
+		<volumebutton digits="2">
+			<variable>VOLUME_VALUE</variable>
+			<default>0.75</default>
+		</volumebutton>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

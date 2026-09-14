@@ -1,0 +1,30 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Size groups" width-request="420">
+	<vbox>
+		<text><label>Labels in separate rows share one width.</label></text>
+		<hbox>
+			<text size-group="field-labels" size-group-mode="horizontal">
+				<label>Name</label>
+			</text>
+			<entry><default>Ada</default></entry>
+		</hbox>
+		<hbox>
+			<text size-group="field-labels" size-group-mode="horizontal">
+				<label>E-mail address</label>
+			</text>
+			<entry><default>ada@example.net</default></entry>
+		</hbox>
+		<button ok></button>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

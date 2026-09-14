@@ -1,0 +1,30 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Tree spinner cells" width-request="480" height-request="250">
+	<vbox border-width="10" spacing="8">
+		<text>
+			<label>Each busy value controls the activity indicator in its row.</label>
+		</text>
+		<tree column-renderer="text|spinner" exported-column="1">
+			<variable>SPINNER_TREE</variable>
+			<label>Task|Busy</label>
+			<item>Download metadata|true</item>
+			<item>Validate cache|false</item>
+			<item>Prepare package|true</item>
+		</tree>
+		<hbuttonbox layout-style="end">
+			<button cancel></button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

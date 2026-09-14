@@ -1,0 +1,23 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="Native GTK2 colour selection">
+	<vbox border-width="12" spacing="10">
+		<text><label>An embedded selector with palette and opacity controls</label></text>
+		<colorselection has-opacity-control="true" has-palette="true">
+			<default>#4f81bd|49152</default>
+			<variable>SELECTED_COLOUR</variable>
+			<action>echo "Colour: $SELECTED_COLOUR"</action>
+		</colorselection>
+		<hbuttonbox><button ok></button><button cancel></button></hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

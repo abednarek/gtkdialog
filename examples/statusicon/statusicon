@@ -1,0 +1,49 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+STATUS_ICON_MENU='
+<popupmenu>
+	<menuitem stock-id="gtk-home">
+		<label>Present control window</label>
+		<action>presentwindow:STATUS_ICON_DIALOG</action>
+	</menuitem>
+	<menuitem stock-id="gtk-refresh">
+		<label>Activate icon action</label>
+		<action>activate:STATUS_ICON</action>
+	</menuitem>
+	<menuitemseparator></menuitemseparator>
+	<menuitem stock-id="gtk-quit">
+		<action>exit:Quit</action>
+	</menuitem>
+</popupmenu>
+'
+
+STATUS_ICON_DIALOG='
+<window title="GTK2 status icon" width-request="430">
+	<vbox border-width="12" spacing="8">
+		<statusicon icon-name="dialog-information"
+			title="GTKDialog status icon" tooltip-text="GTKDialog GTK2 tray icon"
+			context-menu="STATUS_ICON_MENU">
+			<variable>STATUS_ICON</variable>
+			<action>presentwindow:STATUS_ICON_DIALOG</action>
+			<action signal="popup-menu">echo "Opening status icon menu"</action>
+		</statusicon>
+		<text use-markup="true">
+			<label>&lt;b&gt;GTK2 notification-area icon&lt;/b&gt;
+Left-clicking or programmatically activating the icon presents this window.
+Right-clicking it opens the reusable popup-menu program.</label>
+		</text>
+		<hbuttonbox layout-style="spread" spacing="8">
+			<button><label>Hide icon</label><action>hide:STATUS_ICON</action></button>
+			<button><label>Show icon</label><action>show:STATUS_ICON</action></button>
+			<button><label>Activate</label><action>activate:STATUS_ICON</action></button>
+		</hbuttonbox>
+		<button cancel></button>
+	</vbox>
+	<variable>STATUS_ICON_DIALOG</variable>
+</window>
+'
+
+export STATUS_ICON_MENU STATUS_ICON_DIALOG
+exec "$GTKDIALOG" --program=STATUS_ICON_DIALOG
