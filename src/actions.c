@@ -62,6 +62,12 @@ void action_grabfocus(GtkWidget *widget, char *string);
 void action_presentwindow(GtkWidget *widget, char *string);
 void action_expandall(GtkWidget *widget, char *string);
 void action_collapseall(GtkWidget *widget, char *string);
+void action_imageview_zoomin(GtkWidget *widget, char *string);
+void action_imageview_zoomout(GtkWidget *widget, char *string);
+void action_imageview_zoomreset(GtkWidget *widget, char *string);
+void action_imageview_fit(GtkWidget *widget, char *string);
+void action_imageview_fitwidth(GtkWidget *widget, char *string);
+void action_imageview_fitheight(GtkWidget *widget, char *string);
 void action_shellcommand(GtkWidget *widget, char *string);
 
 /***********************************************************************
@@ -202,12 +208,13 @@ gboolean action_launchwindow(GtkWidget *widget, char *string)
 				* also requires a minor adjustment to this section.
 				**/
 				window = gtk_widget_get_ancestor(existing->Widget, GTK_TYPE_WINDOW);
-				if (window != NULL)
+				if (existing->Type != WIDGET_OFFSCREENWINDOW && window != NULL)
 					gtk_window_present(GTK_WINDOW(window));
-				else if (GTK_IS_MENU(existing->Widget))
+				else if (existing->Type != WIDGET_OFFSCREENWINDOW &&
+					GTK_IS_MENU(existing->Widget))
 					gtk_menu_popup(GTK_MENU(existing->Widget), NULL, NULL,
 						NULL, NULL, 0, gtk_get_current_event_time());
-				else
+				else if (existing->Type != WIDGET_OFFSCREENWINDOW)
 					gtkdialog_warning("%s(): %s is not a presentable window "
 						"or popup menu.", __func__, string);
 
@@ -569,6 +576,46 @@ void action_collapseall(GtkWidget *widget, char *string)
 }
 
 /***********************************************************************
+ * Image-view scaling                                                  *
+ ***********************************************************************/
+
+void action_imageview_zoomin(GtkWidget *widget, char *string)
+{
+	(void)widget;
+	variables_imageview_zoom_in(string);
+}
+
+void action_imageview_zoomout(GtkWidget *widget, char *string)
+{
+	(void)widget;
+	variables_imageview_zoom_out(string);
+}
+
+void action_imageview_zoomreset(GtkWidget *widget, char *string)
+{
+	(void)widget;
+	variables_imageview_zoom_reset(string);
+}
+
+void action_imageview_fit(GtkWidget *widget, char *string)
+{
+	(void)widget;
+	variables_imageview_fit(string);
+}
+
+void action_imageview_fitwidth(GtkWidget *widget, char *string)
+{
+	(void)widget;
+	variables_imageview_fit_width(string);
+}
+
+void action_imageview_fitheight(GtkWidget *widget, char *string)
+{
+	(void)widget;
+	variables_imageview_fit_height(string);
+}
+
+/***********************************************************************
  * Action enable                                                       *
  ***********************************************************************/
 
@@ -783,6 +830,30 @@ int execute_action(GtkWidget *widget, const char *command, const char *type)
 
 			case CommandCollapseAll:
 				action_collapseall(widget, command_string);
+				break;
+
+			case CommandZoomIn:
+				action_imageview_zoomin(widget, command_string);
+				break;
+
+			case CommandZoomOut:
+				action_imageview_zoomout(widget, command_string);
+				break;
+
+			case CommandZoomReset:
+				action_imageview_zoomreset(widget, command_string);
+				break;
+
+			case CommandFit:
+				action_imageview_fit(widget, command_string);
+				break;
+
+			case CommandFitWidth:
+				action_imageview_fitwidth(widget, command_string);
+				break;
+
+			case CommandFitHeight:
+				action_imageview_fitheight(widget, command_string);
 				break;
 
 			case CommandBreak:

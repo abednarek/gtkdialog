@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>gtkdialog: filechooserdialog widget reference</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+<style type="text/css">
+body { font-size: 14px; font-family: arial, verdana, sans-serif; background-color: #e0e0e8; }
+h1 { font-size: 24px; } h2 { font-size: 18px; }
+a:link, a:visited, a:active { text-decoration: none; }
+a:hover { color: #8080ff; text-decoration: underline; }
+hr { color: #a8a8b0; background-color: #a8a8b0; height: 1px; border: 0; }
+pre { background-color: #e8e8f0; border: 1px dotted #b8b8c0; padding: 10px; }
+table.wiki { border-color: #c8c8d0; border-width: 0 0 2px 2px; border-style: solid; border-collapse: collapse; }
+td.wiki, th.wiki { border-color: #c8c8d0; border-width: 2px 2px 0 0; border-style: solid; }
+th.wiki { background-color: #e8e8f0; }
+.footer { font-size: 14px; }
+</style></head><body bgcolor="#e0e0e8">
+<table bgcolor="#b8b8c0" cellpadding="0px" cellspacing="1px"><tr><td>
+<table bgcolor="#ffffff" cellpadding="0px" cellspacing="10px"><tr><td>
+<h1> filechooserdialog </h1>
+<p>A top-level GTK+ 2
+<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkFileChooserDialog.html">GtkFileChooserDialog</a>
+for opening or saving files and selecting or creating folders.</p><hr>
+
+<h2> Definition </h2>
+<pre>
+&lt;filechooserdialog tag_attr="value"...&gt;
+	&lt;default&gt;selection&lt;/default&gt;
+	&lt;variable&gt;response variable&lt;/variable&gt;
+	&lt;input&gt;selection command&lt;/input&gt;
+	&lt;input file&gt;selection filename&lt;/input&gt;
+	&lt;input response="true"&gt;response command&lt;/input&gt;
+	&lt;input file response="true"&gt;response filename&lt;/input&gt;
+	&lt;sensitive&gt;state&lt;/sensitive&gt;
+	&lt;action signal="response"&gt;activity&lt;/action&gt;...
+	&lt;output file&gt;selection filename&lt;/output&gt;
+	&lt;output file response="true"&gt;response filename&lt;/output&gt;
+	&lt;output file current-folder="true"&gt;folder filename&lt;/output&gt;
+&lt;/filechooserdialog&gt;
+</pre>
+<p>This element replaces the normal top-level <code>window</code>. It cannot
+be nested or contain child widgets. The existing embedded
+<a href="chooser.html"><code>chooser</code></a>, compact
+<a href="filechooserbutton.html"><code>filechooserbutton</code></a> and
+<code>fileselect</code> action keep their established behaviour.</p>
+
+<h2> Custom Attributes </h2>
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
+<tr><td class="wiki">action</td><td class="wiki">Chooser mode</td><td class="wiki"><code>open</code>, <code>save</code>, <code>select-folder</code> or <code>create-folder</code></td></tr>
+<tr><td class="wiki">accept-label</td><td class="wiki">Text or stock ID for the accepting button</td><td class="wiki">Text; defaults to the native Open or Save stock button</td></tr>
+<tr><td class="wiki">cancel-label</td><td class="wiki">Text or stock ID for the cancelling button</td><td class="wiki">Text; defaults to the native Cancel stock button</td></tr>
+<tr><td class="wiki">selection-format</td><td class="wiki">Representation used by input and selection output</td><td class="wiki"><code>filename</code> (default) or <code>uri</code></td></tr>
+<tr><td class="wiki">current-folder</td><td class="wiki">Initially displayed local folder</td><td class="wiki">Pathname</td></tr>
+<tr><td class="wiki">current-folder-uri</td><td class="wiki">Initially displayed folder URI</td><td class="wiki">URI</td></tr>
+<tr><td class="wiki">current-name</td><td class="wiki">Suggested name in save or create-folder mode</td><td class="wiki">Basename</td></tr>
+<tr><td class="wiki">default-file</td><td class="wiki">Initial selection applied after input and <code>default</code></td><td class="wiki">Pathname or URI in the selected format</td></tr>
+<tr><td class="wiki">filter-name</td><td class="wiki">Display name of one combined filter</td><td class="wiki">Text</td></tr>
+<tr><td class="wiki">filter-pattern</td><td class="wiki">Patterns in the combined filter</td><td class="wiki">Semicolon- or comma-separated patterns</td></tr>
+<tr><td class="wiki">filter-mime-type</td><td class="wiki">MIME types in the combined filter</td><td class="wiki">Semicolon- or comma-separated types</td></tr>
+<tr><td class="wiki">fs-filters</td><td class="wiki">Additional separately displayed pattern filters</td><td class="wiki">Pipe-separated patterns</td></tr>
+<tr><td class="wiki">fs-filters-mime</td><td class="wiki">Additional separately displayed MIME filters</td><td class="wiki">Pipe-separated MIME types</td></tr>
+<tr><td class="wiki">shortcut-folders</td><td class="wiki">Additional local places in the chooser sidebar</td><td class="wiki">Pipe-separated pathnames</td></tr>
+<tr><td class="wiki">shortcut-folder-uris</td><td class="wiki">Additional URI places in the chooser sidebar</td><td class="wiki">Pipe-separated URIs</td></tr>
+</table>
+<p>Writable GtkFileChooser and GtkWindow properties are also accepted. Useful
+examples include <code>select-multiple</code>, <code>local-only</code>,
+<code>show-hidden</code>, <code>do-overwrite-confirmation</code>,
+<code>create-folders</code>, <code>title</code> and <code>modal</code>.
+Explicit chooser attributes are applied before the initial selection.</p>
+
+<h2> Value, Input and Signals </h2>
+<p>The widget variable contains the last named dialog response, normally
+<code>accept</code> or <code>cancel</code>. The variable is updated before
+actions connected to the default <code>response</code> signal run. A response
+does not implicitly close the dialog: use <code>exit</code> for a root program
+or <code>closewindow</code> for a launched dialog.</p>
+<p>Normal command and file inputs select filenames or URIs. Multiple values
+are separated by newlines and require <code>select-multiple="true"</code>.
+As required by GTK+ 2, entries in one multiple selection must have the same
+parent folder; entries from other folders are reported and ignored.
+An input carrying <code>response="true"</code> instead supplies a named or
+numeric dialog response. Its first initialization stores the response without
+emitting it; a later refresh emits it and runs the normal response actions.
+Input files support the common monitor and automatic-refresh attributes.</p>
+<p>Explicit chooser signals include <code>file-activated</code>,
+<code>selection-changed</code>, <code>update-preview</code> and
+<code>current-folder-changed</code>. The default action signal remains
+<code>response</code>, as for other top-level dialogs.</p>
+
+<h2> Saving, Clearing and Lifecycle </h2>
+<p><code>save</code> writes the current selection to every normal
+<code>output file</code>. Multiple selections are newline-separated without a
+trailing newline. <code>response="true"</code> selects response output, while
+<code>current-folder="true"</code> selects current-folder output; combining
+both selectors on one output is rejected. Folder output follows
+<code>selection-format</code>.</p>
+<p><code>clear</code> removes the selection and stored response. In save and
+create-folder modes it also clears the suggested name.
+<code>removeselected</code> removes only the current selection. The
+<code>fileselect</code> function replaces the selection using the configured
+format.</p>
+<p>GTK owns filters, buttons and chooser internals after construction.
+Gtkdialog frees temporary filename/URI lists and strings returned by the
+chooser exactly once. Closing a launched dialog releases its actions, input
+monitors and GTK objects through the normal top-level lifecycle, while the
+source environment variable is retained for a later relaunch.</p>
+
+<h2> Common Contract </h2>
+<p>Common directives, GtkWidget signals, state and general functions, and
+action conditions are documented in the
+<a href="syntax.html#common-widget-contract">common widget contract</a>.
+The sections above describe facilities specific to this tag.</p>
+
+<h2> Example </h2>
+<pre>
+&lt;filechooserdialog title="Choose source files" action="open"
+    current-folder="/tmp" select-multiple="true"
+    filter-name="C source" filter-pattern="*.c;*.h"&gt;
+  &lt;variable&gt;FILE_DIALOG_RESPONSE&lt;/variable&gt;
+  &lt;output file&gt;/tmp/gtkdialog-selected-files&lt;/output&gt;
+  &lt;action signal="response" function="save"&gt;FILE_DIALOG_RESPONSE&lt;/action&gt;
+  &lt;action signal="response"&gt;exit:response&lt;/action&gt;
+&lt;/filechooserdialog&gt;
+</pre>
+<p>See <code>examples/filechooserdialog/filechooserdialog</code> for a runnable
+example. This widget requires GTK+ 2.4 or later and was introduced in
+gtkdialog version 0.9.0.</p>
+
+<hr>
+<!-- reference-navigation-start -->
+<p class="reference-navigation">
+<strong>Reference:</strong>
+<a href="aboutdialog.html">aboutdialog</a>,
+<a href="accellabel.html">accellabel</a>,
+<a href="alignment.html">alignment</a>,
+<a href="arrow.html">arrow</a>,
+<a href="aspectframe.html">aspectframe</a>,
+<a href="assistant.html">assistant</a>,
+<a href="button.html">button</a>,
+<a href="calendar.html">calendar</a>,
+<a href="cellview.html">cellview</a>,
+<a href="checkbox.html">checkbox</a>,
+<a href="chooser.html">chooser</a>,
+<a href="colorbutton.html">colorbutton</a>,
+<a href="colorselection.html">colorselection</a>,
+<a href="combobox.html">combobox</a>,
+<a href="comboboxentry.html">comboboxentry</a>,
+<a href="comboboxtext.html">comboboxtext</a>,
+<a href="curve.html">curve</a>,
+<a href="dialog.html">dialog</a>,
+<a href="dock.html">dock</a>,
+<a href="dockitem.html">dockitem</a>,
+<a href="drawingarea.html">drawingarea</a>,
+<a href="edit.html">edit</a>,
+<a href="entry.html">entry</a>,
+<a href="eventbox.html">eventbox</a>,
+<a href="expander.html">expander</a>,
+<a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="filechooserdialog.html">filechooserdialog</a>,
+<a href="fixed.html">fixed</a>,
+<a href="fontbutton.html">fontbutton</a>,
+<a href="fontselection.html">fontselection</a>,
+<a href="frame.html">frame</a>,
+<a href="grid.html">grid</a>,
+<a href="gvim.html">gvim</a>,
+<a href="handlebox.html">handlebox</a>,
+<a href="hbox.html">hbox</a>,
+<a href="hbuttonbox.html">hbuttonbox</a>,
+<a href="hpaned.html">hpaned</a>,
+<a href="hruler.html">hruler</a>,
+<a href="hscale.html">hscale</a>,
+<a href="hscrollbar.html">hscrollbar</a>,
+<a href="hseparator.html">hseparator</a>,
+<a href="hsv.html">hsv</a>,
+<a href="iconview.html">iconview</a>,
+<a href="imageview.html">imageview</a>,
+<a href="infobar.html">infobar</a>,
+<a href="layout.html">layout</a>,
+<a href="linkbutton.html">linkbutton</a>,
+<a href="list.html">list</a>,
+<a href="menu.html">menu</a>,
+<a href="menubar.html">menubar</a>,
+<a href="menuitem.html">menuitem</a>,
+<a href="menuitemseparator.html">menuitemseparator</a>,
+<a href="menutoolbutton.html">menutoolbutton</a>,
+<a href="messagedialog.html">messagedialog</a>,
+<a href="notebook.html">notebook</a>,
+<a href="offscreenwindow.html">offscreenwindow</a>,
+<a href="pager.html">pager</a>,
+<a href="pagesetupdialog.html">pagesetupdialog</a>,
+<a href="printdialog.html">printdialog</a>,
+<a href="pixmap.html">pixmap</a>,
+<a href="plug.html">plug</a>,
+<a href="popupmenu.html">popupmenu</a>,
+<a href="progressbar.html">progressbar</a>,
+<a href="radiobutton.html">radiobutton</a>,
+<a href="radiotoolbutton.html">radiotoolbutton</a>,
+<a href="recentchooser.html">recentchooser</a>,
+<a href="recentchoosermenu.html">recentchoosermenu</a>,
+<a href="scalebutton.html">scalebutton</a>,
+<a href="scrolledwindow.html">scrolledwindow</a>,
+<a href="separator.html">separator</a>,
+<a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sheet.html">sheet</a>,
+<a href="sizegroup.html">sizegroup</a>,
+<a href="socket.html">socket</a>,
+<a href="spinbutton.html">spinbutton</a>,
+<a href="spinner.html">spinner</a>,
+<a href="statusbar.html">statusbar</a>,
+<a href="statusicon.html">statusicon</a>,
+<a href="syntax.html">syntax</a>,
+<a href="table.html">table</a>,
+<a href="tasklist.html">tasklist</a>,
+<a href="terminal.html">terminal</a>,
+<a href="text.html">text</a>,
+<a href="timer.html">timer</a>,
+<a href="togglebutton.html">togglebutton</a>,
+<a href="toggletoolbutton.html">toggletoolbutton</a>,
+<a href="toolbar.html">toolbar</a>,
+<a href="toolbutton.html">toolbutton</a>,
+<a href="toolitem.html">toolitem</a>,
+<a href="toolitemgroup.html">toolitemgroup</a>,
+<a href="toolpalette.html">toolpalette</a>,
+<a href="tree.html">tree</a>,
+<a href="vbox.html">vbox</a>,
+<a href="vbuttonbox.html">vbuttonbox</a>,
+<a href="viewport.html">viewport</a>,
+<a href="volumebutton.html">volumebutton</a>,
+<a href="vpaned.html">vpaned</a>,
+<a href="vruler.html">vruler</a>,
+<a href="vscale.html">vscale</a>,
+<a href="vscrollbar.html">vscrollbar</a>,
+<a href="vseparator.html">vseparator</a>,
+<a href="window.html">window</a>,
+<a href="windowselector.html">windowselector</a>
+</p>
+<!-- reference-navigation-end -->
+<p>&nbsp;</p>
+</td></tr>
+<tr><td>
+<!-- reference-footer-start -->
+<table width="100%" cellpadding="0px" cellspacing="0px">
+<tr>
+<td class="footer" width="25%" align="center">Historical documentation: <a href="mailto:thunorsif@hotmail.com">Thunor</a></td>
+<td class="footer" width="25%" align="center">Maintainer: <a href="mailto:artur@unix.org.pl">Artur Bednarek</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/abednarek/gtkdialog">Project Page</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/oshazard/gtkdialog">Archived Upstream</a></td>
+</tr>
+</table>
+<!-- reference-footer-end -->
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

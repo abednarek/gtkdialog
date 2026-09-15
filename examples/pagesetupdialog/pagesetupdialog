@@ -1,0 +1,26 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+PAGE_SETUP_OUTPUT=${GTKDIALOG_PAGE_SETUP_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-page-setup.ini}
+export PAGE_SETUP_OUTPUT
+
+PAGE_SETUP_DIALOG='
+<pagesetupdialog title="GTKDialog page setup"
+	paper-name="iso_a4" orientation="portrait"
+	top-margin="12" bottom-margin="12" left-margin="15" right-margin="15">
+	<variable>PAGE_SETUP_DIALOG</variable>
+	<output file>'"$PAGE_SETUP_OUTPUT"'</output>
+	<action signal="response" function="save">PAGE_SETUP_DIALOG</action>
+	<action signal="response">exit:response</action>
+</pagesetupdialog>
+'
+export PAGE_SETUP_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$PAGE_SETUP_DIALOG" ;;
+	*)
+		"$GTKDIALOG" --program=PAGE_SETUP_DIALOG
+		printf 'Saved page setup to %s\n' "$PAGE_SETUP_OUTPUT"
+		;;
+esac

@@ -94,6 +94,12 @@ static gchar *prefixes[] = {
 	"append",
 	"expandall",
 	"collapseall",
+	"zoomin",
+	"zoomout",
+	"zoomreset",
+	"fit",
+	"fitwidth",
+	"fitheight",
 	NULL
 };
 

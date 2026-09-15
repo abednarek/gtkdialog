@@ -9,6 +9,9 @@
 /* Define to 1 when JSON-GLib is available. */
 #undef HAVE_JSON_GLIB
 
+/* Define to 1 when GtkSpell 2 is available. */
+#undef HAVE_GTKSPELL
+
 /* Define to 1 if you have the <locale.h> header file. */
 #undef HAVE_LOCALE_H
 

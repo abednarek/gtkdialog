@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>gtkdialog: windowselector widget reference</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+<style type="text/css">
+body { font-size: 14px; font-family: arial, verdana, sans-serif; background-color: #e0e0e8; }
+h1 { font-size: 24px; } h2 { font-size: 18px; }
+a:link, a:visited, a:active { text-decoration: none; }
+a:hover { color: #8080ff; text-decoration: underline; }
+hr { color: #a8a8b0; background-color: #a8a8b0; height: 1px; border: 0; }
+pre { background-color: #e8e8f0; border: 1px dotted #b8b8c0; padding: 10px; }
+table.wiki { border-color: #c8c8d0; border-width: 0 0 2px 2px; border-style: solid; border-collapse: collapse; }
+td.wiki, th.wiki { border-color: #c8c8d0; border-width: 2px 2px 0 0; border-style: solid; }
+th.wiki { background-color: #e8e8f0; }
+.footer { font-size: 14px; }
+</style></head><body bgcolor="#e0e0e8">
+<table bgcolor="#b8b8c0" cellpadding="0px" cellspacing="1px"><tr><td>
+<table bgcolor="#ffffff" cellpadding="0px" cellspacing="10px"><tr><td>
+<h1> windowselector widget </h1>
+<p>A native GTK+ 2 X11 window-selection menu backed by the optional libwnck 2
+library. It adds a new tag and does not alter any historical gtkdialog widget.</p><hr>
+<h2> Definition </h2>
+<pre>
+&lt;windowselector tag_attr="value"...&gt;
+	&lt;variable&gt;varname&lt;/variable&gt;
+	&lt;default&gt;window XID&lt;/default&gt;
+	&lt;input&gt;shell command&lt;/input&gt;
+	&lt;input file&gt;filename&lt;/input&gt;
+	&lt;sensitive&gt;state&lt;/sensitive&gt;
+	&lt;action signal="type"&gt;activity&lt;/action&gt;...
+	&lt;output file&gt;filename&lt;/output&gt;
+&lt;/windowselector&gt;
+</pre>
+<h2> Display </h2>
+<p>The selector is a compact GtkMenuBar. Its icon follows the active window;
+opening the menu lists managed windows with their current icons and titles,
+grouped by workspace. Selecting an item activates that window. It detects the
+Gdk screen containing the widget automatically, so no separate screen
+attribute is needed. Standard writable scalar GtkWidget properties remain
+available.</p>
+<h2> Value, Input and Output </h2>
+<p>The variable contains the unsigned decimal XID of the active managed window,
+or an empty string when no window is active. A <code>default</code>, command
+input or file input containing an XID activates that window. Input files use
+the common monitoring and automatic-refresh facilities. The
+<code>refresh</code> function updates libwnck's view and re-reads inputs;
+<code>save</code> writes the current active XID to the first output file.</p>
+<p><code>clear</code> and <code>removeselected</code> intentionally do nothing:
+a generic value operation must never close or modify another application's
+window.</p>
+<h2> Signals </h2>
+<p>The default action signal is <code>active-window-changed</code>. It runs when
+the detected WnckScreen reports a different active window. Explicit GtkWidget
+signal actions remain available through the common contract.</p>
+<h2> Optional Dependency and Ownership </h2>
+<p>Configure with <code>--with-libwnck</code> to enable GTK2
+<code>libwnck-1.0</code> version 2.30 or later. A build without libwnck still
+parses the tag and displays a diagnostic placeholder.</p>
+<p>WnckScreen and WnckWindow are borrowed process-wide objects. WnckSelector
+owns its internal menu, items and bookkeeping, and disconnects its own screen
+and window callbacks across unrealize and destruction. The additional
+active-window callback uses the selector GtkWidget as its tracking object, so
+closing or relaunching the containing window disconnects it automatically.</p>
+<h2> Common Contract </h2>
+<p>Common directives, GtkWidget signals, state and general functions, and action
+conditions are documented in the <a href="syntax.html#common-widget-contract">common
+widget contract</a>. The sections above describe facilities specific to this
+tag.</p>
+<h2> Example </h2>
+<pre>
+&lt;windowselector&gt;
+  &lt;variable&gt;ACTIVE_WINDOW_XID&lt;/variable&gt;
+  &lt;output file&gt;/tmp/active-window-xid&lt;/output&gt;
+  &lt;action signal="active-window-changed"&gt;
+    echo "Active XID: $ACTIVE_WINDOW_XID"
+  &lt;/action&gt;
+&lt;/windowselector&gt;
+</pre>
+<p>See <code>examples/windowselector/windowselector</code> for a complete
+runnable example. This widget was introduced in gtkdialog version 0.9.0.</p>
+<hr>
+<!-- reference-navigation-start -->
+<p class="reference-navigation">
+<strong>Reference:</strong>
+<a href="aboutdialog.html">aboutdialog</a>,
+<a href="accellabel.html">accellabel</a>,
+<a href="alignment.html">alignment</a>,
+<a href="arrow.html">arrow</a>,
+<a href="aspectframe.html">aspectframe</a>,
+<a href="assistant.html">assistant</a>,
+<a href="button.html">button</a>,
+<a href="calendar.html">calendar</a>,
+<a href="cellview.html">cellview</a>,
+<a href="checkbox.html">checkbox</a>,
+<a href="chooser.html">chooser</a>,
+<a href="colorbutton.html">colorbutton</a>,
+<a href="colorselection.html">colorselection</a>,
+<a href="combobox.html">combobox</a>,
+<a href="comboboxentry.html">comboboxentry</a>,
+<a href="comboboxtext.html">comboboxtext</a>,
+<a href="curve.html">curve</a>,
+<a href="dialog.html">dialog</a>,
+<a href="dock.html">dock</a>,
+<a href="dockitem.html">dockitem</a>,
+<a href="drawingarea.html">drawingarea</a>,
+<a href="edit.html">edit</a>,
+<a href="entry.html">entry</a>,
+<a href="eventbox.html">eventbox</a>,
+<a href="expander.html">expander</a>,
+<a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="filechooserdialog.html">filechooserdialog</a>,
+<a href="fixed.html">fixed</a>,
+<a href="fontbutton.html">fontbutton</a>,
+<a href="fontselection.html">fontselection</a>,
+<a href="frame.html">frame</a>,
+<a href="grid.html">grid</a>,
+<a href="gvim.html">gvim</a>,
+<a href="handlebox.html">handlebox</a>,
+<a href="hbox.html">hbox</a>,
+<a href="hbuttonbox.html">hbuttonbox</a>,
+<a href="hpaned.html">hpaned</a>,
+<a href="hruler.html">hruler</a>,
+<a href="hscale.html">hscale</a>,
+<a href="hscrollbar.html">hscrollbar</a>,
+<a href="hseparator.html">hseparator</a>,
+<a href="hsv.html">hsv</a>,
+<a href="iconview.html">iconview</a>,
+<a href="imageview.html">imageview</a>,
+<a href="infobar.html">infobar</a>,
+<a href="layout.html">layout</a>,
+<a href="linkbutton.html">linkbutton</a>,
+<a href="list.html">list</a>,
+<a href="menu.html">menu</a>,
+<a href="menubar.html">menubar</a>,
+<a href="menuitem.html">menuitem</a>,
+<a href="menuitemseparator.html">menuitemseparator</a>,
+<a href="menutoolbutton.html">menutoolbutton</a>,
+<a href="messagedialog.html">messagedialog</a>,
+<a href="notebook.html">notebook</a>,
+<a href="offscreenwindow.html">offscreenwindow</a>,
+<a href="pager.html">pager</a>,
+<a href="pagesetupdialog.html">pagesetupdialog</a>,
+<a href="printdialog.html">printdialog</a>,
+<a href="pixmap.html">pixmap</a>,
+<a href="plug.html">plug</a>,
+<a href="popupmenu.html">popupmenu</a>,
+<a href="progressbar.html">progressbar</a>,
+<a href="radiobutton.html">radiobutton</a>,
+<a href="radiotoolbutton.html">radiotoolbutton</a>,
+<a href="recentchooser.html">recentchooser</a>,
+<a href="recentchoosermenu.html">recentchoosermenu</a>,
+<a href="scalebutton.html">scalebutton</a>,
+<a href="scrolledwindow.html">scrolledwindow</a>,
+<a href="separator.html">separator</a>,
+<a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sheet.html">sheet</a>,
+<a href="sizegroup.html">sizegroup</a>,
+<a href="socket.html">socket</a>,
+<a href="spinbutton.html">spinbutton</a>,
+<a href="spinner.html">spinner</a>,
+<a href="statusbar.html">statusbar</a>,
+<a href="statusicon.html">statusicon</a>,
+<a href="syntax.html">syntax</a>,
+<a href="table.html">table</a>,
+<a href="tasklist.html">tasklist</a>,
+<a href="terminal.html">terminal</a>,
+<a href="text.html">text</a>,
+<a href="timer.html">timer</a>,
+<a href="togglebutton.html">togglebutton</a>,
+<a href="toggletoolbutton.html">toggletoolbutton</a>,
+<a href="toolbar.html">toolbar</a>,
+<a href="toolbutton.html">toolbutton</a>,
+<a href="toolitem.html">toolitem</a>,
+<a href="toolitemgroup.html">toolitemgroup</a>,
+<a href="toolpalette.html">toolpalette</a>,
+<a href="tree.html">tree</a>,
+<a href="vbox.html">vbox</a>,
+<a href="vbuttonbox.html">vbuttonbox</a>,
+<a href="viewport.html">viewport</a>,
+<a href="volumebutton.html">volumebutton</a>,
+<a href="vpaned.html">vpaned</a>,
+<a href="vruler.html">vruler</a>,
+<a href="vscale.html">vscale</a>,
+<a href="vscrollbar.html">vscrollbar</a>,
+<a href="vseparator.html">vseparator</a>,
+<a href="window.html">window</a>,
+<a href="windowselector.html">windowselector</a>
+</p>
+<!-- reference-navigation-end -->
+
+<p>&nbsp;</p>
+</td></tr>
+<tr><td>
+<!-- reference-footer-start -->
+<table width="100%" cellpadding="0px" cellspacing="0px">
+<tr>
+<td class="footer" width="25%" align="center">Historical documentation: <a href="mailto:thunorsif@hotmail.com">Thunor</a></td>
+<td class="footer" width="25%" align="center">Maintainer: <a href="mailto:artur@unix.org.pl">Artur Bednarek</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/abednarek/gtkdialog">Project Page</a></td>
+<td class="footer" width="25%" align="center"><a href="https://github.com/oshazard/gtkdialog">Archived Upstream</a></td>
+</tr>
+</table>
+<!-- reference-footer-end -->
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

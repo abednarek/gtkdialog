@@ -1,0 +1,34 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+PRINT_SETTINGS_OUTPUT=${GTKDIALOG_PRINT_SETTINGS_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-print-settings.ini}
+PRINT_PAGE_OUTPUT=${GTKDIALOG_PRINT_PAGE_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-print-page.ini}
+PRINT_PRINTER_OUTPUT=${GTKDIALOG_PRINT_PRINTER_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-printer.txt}
+export PRINT_SETTINGS_OUTPUT PRINT_PAGE_OUTPUT PRINT_PRINTER_OUTPUT
+
+PRINT_DIALOG='
+<printdialog title="GTKDialog print settings"
+	current-page="0" support-selection="true" has-selection="true"
+	embed-page-setup="true"
+	manual-capabilities="page-set|copies|collate|reverse|scale|preview|number-up|number-up-layout"
+	paper-name="iso_a4" orientation="portrait">
+	<variable>PRINT_DIALOG</variable>
+	<output file>'"$PRINT_SETTINGS_OUTPUT"'</output>
+	<output file page-setup="true">'"$PRINT_PAGE_OUTPUT"'</output>
+	<output file printer="true">'"$PRINT_PRINTER_OUTPUT"'</output>
+	<action signal="response" function="save">PRINT_DIALOG</action>
+	<action signal="response">exit:response</action>
+</printdialog>
+'
+export PRINT_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$PRINT_DIALOG" ;;
+	*)
+		"$GTKDIALOG" --program=PRINT_DIALOG
+		printf 'Saved print settings to %s\n' "$PRINT_SETTINGS_OUTPUT"
+		printf 'Saved page setup to %s\n' "$PRINT_PAGE_OUTPUT"
+		printf 'Saved selected printer name to %s\n' "$PRINT_PRINTER_OUTPUT"
+		;;
+esac

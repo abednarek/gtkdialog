@@ -17,7 +17,9 @@ th.wiki { background-color: #e8e8f0; }
 <table bgcolor="#ffffff" cellpadding="0px" cellspacing="10px"><tr><td>
 <h1> drawingarea widget </h1>
 <p>A GTK+ 2 <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkDrawingArea.html">GtkDrawingArea</a>
-that presents an owned raster image and receives normal pointer actions.</p><hr>
+that presents an owned raster image and receives normal pointer actions.
+Opt-in modes use GooCanvas 1 for interactive object scenes or GtkDatabox 0.9
+for numeric plots without changing the established raster mode.</p><hr>
 <h2> Definition </h2>
 <pre>
 &lt;drawingarea tag_attr="value"...&gt;
@@ -45,6 +47,91 @@ that presents an owned raster image and receives normal pointer actions.</p><hr>
 <code>stretch</code> fills both dimensions. Without width and height directives,
 the successfully loaded image supplies its natural dimension. A blank canvas
 falls back to 320 by 180 pixels.</p>
+<h2> Optional GooCanvas object-scene mode </h2>
+<p>Set <code>goocanvas="true"</code> to create a GooCanvas 1 GTK2 scene. This
+mode requires <code>--with-goocanvas</code> and
+<code>--with-json-glib</code> at configure time. Builds without both create a
+blank placeholder and report the unavailable feature. The
+attribute is opt-in, so raster drawing areas and GtkDatabox plots retain their
+existing behaviour.</p>
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
+<tr><td class="wiki">goocanvas</td><td class="wiki">Enable object-scene mode</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">canvas-left, canvas-top, canvas-right, canvas-bottom</td><td class="wiki">Scrollable scene bounds</td><td class="wiki">Finite numbers; default <code>0, 0, 640, 400</code></td></tr>
+<tr><td class="wiki">scale</td><td class="wiki">Initial scene magnification</td><td class="wiki"><code>0.1</code> to <code>16</code>; default <code>1</code></td></tr>
+</table>
+<p>A file or command input is a complete document of the form
+<code>{"version":1,"items":[...]}</code>. Each <code>&lt;item&gt;</code> is one
+JSON item object; inline items are followed by input documents in directive
+order. Supported types are <code>group</code> with recursive
+<code>children</code>, <code>rect</code>, <code>ellipse</code>,
+<code>text</code>, <code>image</code>, <code>path</code> and
+<code>polyline</code>. Type geometry uses the corresponding names: rectangles
+use <code>x, y, width, height</code>; ellipses use
+<code>center-x, center-y, radius-x, radius-y</code>; text uses
+<code>text, x, y, width, anchor</code>; images use <code>file, x, y</code>;
+paths use SVG-compatible <code>data</code>; and polylines use a flat numeric
+<code>points</code> array plus optional <code>closed</code>.</p>
+<p>All types accept an optional unique <code>id</code>,
+<code>fill-color</code>, <code>stroke-color</code>, <code>line-width</code>,
+<code>opacity</code>, <code>visible</code>, <code>tooltip</code>,
+<code>translate-x</code>, <code>translate-y</code>, <code>scale</code> and
+<code>rotation</code>. Text also accepts a Pango <code>font</code>. An item with
+an ID can emit <code>item-activated</code>; set <code>draggable</code> to true
+to move it with button 1 and emit <code>item-moved</code>. The drawing-area
+variable contains the last activated item ID. Drag translations are written
+back to the owned JSON document, so <code>save</code> persists them.</p>
+<p><code>refresh</code> validates and builds a complete replacement tree before
+displaying it. A malformed document, invalid item or failed image load leaves
+the previous scene intact. <code>clear</code> releases the scene tree and JSON,
+while <code>save</code> writes versioned JSON to the first output file. The
+existing <code>zoomin</code>, <code>zoomout</code> and <code>zoomreset</code>
+functions change whole-scene magnification.</p>
+<h2> Optional GtkDatabox plot mode </h2>
+<p>Set <code>databox="true"</code> to create a GtkDatabox 0.9 GTK2 plot. This
+mode is available when gtkdialog was configured with
+<code>--with-gtkdatabox</code>. A build without that package creates a blank
+placeholder and reports the missing optional feature; ordinary drawing areas
+are unaffected.</p>
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
+<tr><td class="wiki">databox</td><td class="wiki">Enable numeric plot mode</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><td class="wiki">series-types</td><td class="wiki">Renderer for each Y series</td><td class="wiki">Pipe-separated <code>lines</code>, <code>points</code> or <code>bars</code></td></tr>
+<tr><td class="wiki">series-colors</td><td class="wiki">Colour for each Y series</td><td class="wiki">Pipe-separated GTK colour specifications</td></tr>
+<tr><td class="wiki">series-sizes</td><td class="wiki">Line width, point size or bar width</td><td class="wiki">Pipe-separated integers from 1 to 64</td></tr>
+<tr><td class="wiki">show-grid</td><td class="wiki">Draw a plot grid</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td></tr>
+<tr><td class="wiki">grid-color</td><td class="wiki">Grid colour</td><td class="wiki">GTK colour specification</td></tr>
+<tr><td class="wiki">grid-horizontal-lines</td><td class="wiki">Horizontal grid divisions</td><td class="wiki">0 to 100; default 5</td></tr>
+<tr><td class="wiki">grid-vertical-lines</td><td class="wiki">Vertical grid divisions</td><td class="wiki">0 to 100; default 5</td></tr>
+<tr><td class="wiki">grid-line-style</td><td class="wiki">Grid stroke style</td><td class="wiki"><code>dashed</code>, <code>solid</code> or <code>dotted</code></td></tr>
+<tr><td class="wiki">grid-line-width</td><td class="wiki">Grid stroke width</td><td class="wiki">1 to 64</td></tr>
+<tr><td class="wiki">auto-rescale</td><td class="wiki">Fit limits to loaded series</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td></tr>
+<tr><td class="wiki">rescale-border</td><td class="wiki">Relative margin around automatic limits</td><td class="wiki">0.0 to 1.0; default 0.05</td></tr>
+<tr><td class="wiki">min-x, max-x, min-y, max-y</td><td class="wiki">Explicit complete plot limits</td><td class="wiki">Finite numbers</td></tr>
+</table>
+<p>Native GtkDatabox properties are also tag attributes. The most useful are
+<code>enable-selection</code>, <code>enable-zoom</code>,
+<code>scale-type-x</code>, <code>scale-type-y</code> and
+<code>box-shadow</code>. Series option lists repeat cyclically if they contain
+fewer entries than the number of Y columns. Logarithmic axes require positive
+explicit limits. Automatic limits ignore non-positive values on a logarithmic
+axis and apply the requested margin in logarithmic rather than linear space.</p>
+<p>Each non-empty <code>&lt;item&gt;</code>, file-input line or command-output
+line has the format <code>x|y1|y2|...</code>. All rows in one refresh must
+have the same number of columns. Item rows are loaded first, followed by input
+sources in document order. Blank lines and lines beginning with
+<code>#</code> are ignored. Invalid or unavailable input leaves the previous
+valid plot intact. The <code>save</code> function writes the accepted table to
+the first output file, while <code>clear</code> releases every series and its
+data.</p>
+<p>Dragging with the left mouse button creates a selection. The variable is
+empty until then and contains <code>x1|y1|x2|y2</code> afterwards. The default
+action signal is <code>selection-finalized</code>; explicit
+<code>selection-started</code>, <code>selection-changed</code>,
+<code>selection-canceled</code> and <code>zoomed</code> actions are supported.
+The existing <code>zoomin</code>, <code>zoomout</code> and
+<code>zoomreset</code> functions respectively zoom to the current selection,
+step out and restore the complete limits.</p>
 <h2> Value and functions </h2>
 <p>A file input names an image to load. A command input reads an image filename
 from its first output line. Several inputs are evaluated in order and the last
@@ -64,6 +151,15 @@ receive <code>PTR_X</code>, <code>PTR_Y</code>, <code>PTR_BTN</code>,
 <p>The drawing area owns one source pixbuf and at most one cached scaled pixbuf.
 Replacing or clearing the image releases both previous objects, and destroying
 the widget releases the remaining image data and source filename.</p>
+<p>In object-scene mode GooCanvas owns the displayed item hierarchy. The
+drawing area separately owns one matching JSON document and the selected ID;
+each interactive item owns only its event metadata. Replacement first releases
+the old item tree and its metadata, then the old JSON document. Destruction and
+clear follow the same order.</p>
+<p>In plot mode gtkdialog owns every numeric array and every graph reference,
+because GtkDatabox borrows both. Refresh first detaches the previous graphs,
+then releases their objects and arrays. Widget destruction performs the same
+ordered cleanup.</p>
 <h2> Common Contract </h2>
 
 <p>Common directives, GtkWidget signals, state and general functions, and action
@@ -82,6 +178,31 @@ tag.</p>
 	&lt;action signal="button-press-event"&gt;
 		echo "$PTR_X,$PTR_Y button $PTR_BTN"
 	&lt;/action&gt;
+&lt;/drawingarea&gt;
+</pre>
+<pre>
+&lt;drawingarea goocanvas="true" canvas-right="480" canvas-bottom="260"&gt;
+  &lt;item&gt;{"type":"rect","id":"card","x":30,"y":30,
+    "width":150,"height":80,"fill-color":"#f5c211",
+    "stroke-color":"#865e00","draggable":true}&lt;/item&gt;
+  &lt;item&gt;{"type":"text","id":"caption","text":"Drag the card",
+    "x":105,"y":70,"anchor":"center","font":"Sans Bold 12"}&lt;/item&gt;
+  &lt;variable&gt;SCENE_ITEM&lt;/variable&gt;
+  &lt;action&gt;echo "Activated $SCENE_ITEM"&lt;/action&gt;
+  &lt;action signal="item-moved"&gt;echo "Moved $SCENE_ITEM"&lt;/action&gt;
+  &lt;output file format="json"&gt;/tmp/scene.json&lt;/output&gt;
+&lt;/drawingarea&gt;
+</pre>
+<pre>
+&lt;drawingarea databox="true" series-types="lines|points"
+  series-colors="#3584e4|#e66100" series-sizes="2|5"&gt;
+  &lt;width&gt;480&lt;/width&gt;
+  &lt;height&gt;260&lt;/height&gt;
+  &lt;item&gt;0|0|2&lt;/item&gt;
+  &lt;item&gt;1|1|1&lt;/item&gt;
+  &lt;item&gt;2|0|3&lt;/item&gt;
+  &lt;variable&gt;PLOT_SELECTION&lt;/variable&gt;
+  &lt;action&gt;echo "Selected $PLOT_SELECTION"&lt;/action&gt;
 &lt;/drawingarea&gt;
 </pre>
 <p>This widget was introduced in gtkdialog version 0.9.0.</p>
@@ -105,13 +226,17 @@ tag.</p>
 <a href="combobox.html">combobox</a>,
 <a href="comboboxentry.html">comboboxentry</a>,
 <a href="comboboxtext.html">comboboxtext</a>,
+<a href="curve.html">curve</a>,
 <a href="dialog.html">dialog</a>,
+<a href="dock.html">dock</a>,
+<a href="dockitem.html">dockitem</a>,
 <a href="drawingarea.html">drawingarea</a>,
 <a href="edit.html">edit</a>,
 <a href="entry.html">entry</a>,
 <a href="eventbox.html">eventbox</a>,
 <a href="expander.html">expander</a>,
 <a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="filechooserdialog.html">filechooserdialog</a>,
 <a href="fixed.html">fixed</a>,
 <a href="fontbutton.html">fontbutton</a>,
 <a href="fontselection.html">fontselection</a>,
@@ -128,6 +253,7 @@ tag.</p>
 <a href="hseparator.html">hseparator</a>,
 <a href="hsv.html">hsv</a>,
 <a href="iconview.html">iconview</a>,
+<a href="imageview.html">imageview</a>,
 <a href="infobar.html">infobar</a>,
 <a href="layout.html">layout</a>,
 <a href="linkbutton.html">linkbutton</a>,
@@ -139,6 +265,10 @@ tag.</p>
 <a href="menutoolbutton.html">menutoolbutton</a>,
 <a href="messagedialog.html">messagedialog</a>,
 <a href="notebook.html">notebook</a>,
+<a href="offscreenwindow.html">offscreenwindow</a>,
+<a href="pager.html">pager</a>,
+<a href="pagesetupdialog.html">pagesetupdialog</a>,
+<a href="printdialog.html">printdialog</a>,
 <a href="pixmap.html">pixmap</a>,
 <a href="plug.html">plug</a>,
 <a href="popupmenu.html">popupmenu</a>,
@@ -151,6 +281,7 @@ tag.</p>
 <a href="scrolledwindow.html">scrolledwindow</a>,
 <a href="separator.html">separator</a>,
 <a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sheet.html">sheet</a>,
 <a href="sizegroup.html">sizegroup</a>,
 <a href="socket.html">socket</a>,
 <a href="spinbutton.html">spinbutton</a>,
@@ -159,6 +290,7 @@ tag.</p>
 <a href="statusicon.html">statusicon</a>,
 <a href="syntax.html">syntax</a>,
 <a href="table.html">table</a>,
+<a href="tasklist.html">tasklist</a>,
 <a href="terminal.html">terminal</a>,
 <a href="text.html">text</a>,
 <a href="timer.html">timer</a>,
@@ -179,7 +311,8 @@ tag.</p>
 <a href="vscale.html">vscale</a>,
 <a href="vscrollbar.html">vscrollbar</a>,
 <a href="vseparator.html">vseparator</a>,
-<a href="window.html">window</a>
+<a href="window.html">window</a>,
+<a href="windowselector.html">windowselector</a>
 </p>
 <!-- reference-navigation-end -->
 

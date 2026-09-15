@@ -1,0 +1,53 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-databox.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+PLOT_DATA=$demo_dir/plot.dat
+PLOT_SAVED=$demo_dir/saved.dat
+export PLOT_DATA PLOT_SAVED
+
+{
+	printf '%s\n' '0|0|2|1' '1|1|1|2' '2|0|3|1'
+	printf '%s\n' '3|2|2|3' '4|1|4|2' '5|3|3|4'
+} > "$PLOT_DATA"
+
+MAIN_DIALOG='
+<window title="GtkDatabox 0.9 plot" width-request="660">
+	<vbox border-width="12" spacing="8">
+		<text use-markup="true">
+			<label>"<b>Line, point and bar series</b> — drag a rectangle to select and zoom."</label>
+		</text>
+		<drawingarea databox="true" background="#ffffff"
+			series-types="lines|points|bars"
+			series-colors="#3584e4|#e66100|#33a02c"
+			series-sizes="2|5|4" show-grid="true"
+			grid-color="#b7b7b7" grid-horizontal-lines="5"
+			grid-vertical-lines="10" grid-line-style="dotted"
+			enable-selection="true" enable-zoom="true">
+			<width>620</width>
+			<height>330</height>
+			<input file>'"$PLOT_DATA"'</input>
+			<output file>'"$PLOT_SAVED"'</output>
+			<variable>PLOT_SELECTION</variable>
+			<action>echo "Selection: $PLOT_SELECTION"</action>
+			<action signal="zoomed">echo "Visible plot limits changed"</action>
+		</drawingarea>
+		<hbuttonbox>
+			<button><label>Zoom selection</label><action function="zoomin">PLOT_SELECTION</action></button>
+			<button><label>Zoom out</label><action function="zoomout">PLOT_SELECTION</action></button>
+			<button><label>Reset zoom</label><action function="zoomreset">PLOT_SELECTION</action></button>
+			<button><label>Save data</label><action function="save">PLOT_SELECTION</action></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

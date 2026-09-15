@@ -226,6 +226,13 @@ add_tag_attribute_owned(tag_attr *attributes, gchar *name, gchar *value)
 %token         ACCELLABEL PART_ACCELLABEL EACCELLABEL
 %token         ARROW PART_ARROW EARROW
 %token         HSV PART_HSV EHSV
+%token         TASKLIST PART_TASKLIST ETASKLIST
+%token         PAGER PART_PAGER EPAGER
+%token         WINDOWSELECTOR PART_WINDOWSELECTOR EWINDOWSELECTOR
+%token         OFFSCREENWINDOW PART_OFFSCREENWINDOW EOFFSCREENWINDOW
+%token         PAGESETUPDIALOG PART_PAGESETUPDIALOG EPAGESETUPDIALOG
+%token         PRINTDIALOG PART_PRINTDIALOG EPRINTDIALOG
+%token         FILECHOOSERDIALOG PART_FILECHOOSERDIALOG EFILECHOOSERDIALOG
 %token         TOOLITEM PART_TOOLITEM ETOOLITEM
 %token         FIXED PART_FIXED EFIXED
 %token         LAYOUT PART_LAYOUT ELAYOUT
@@ -245,6 +252,11 @@ add_tag_attribute_owned(tag_attr *attributes, gchar *name, gchar *value)
 %token         HRULER PART_HRULER EHRULER
 %token         VRULER PART_VRULER EVRULER
 %token         PLUG PART_PLUG EPLUG
+%token         IMAGEVIEW PART_IMAGEVIEW EIMAGEVIEW
+%token         CURVE PART_CURVE ECURVE
+%token         SHEET PART_SHEET ESHEET
+%token         DOCK PART_DOCK EDOCK
+%token         DOCKITEM PART_DOCKITEM EDOCKITEM
 
 %% 
 window
@@ -320,6 +332,41 @@ window
 	| PART_PLUG tagattr '>' radio_group_scope wlist attr EPLUG {
 		token_store(RGROUP_POP);
 		token_store_attr(PUSH | WIDGET_PLUG, $2);
+		start_up();
+	}
+	| OFFSCREENWINDOW radio_group_scope wlist attr EOFFSCREENWINDOW {
+		token_store(RGROUP_POP);
+		token_store(PUSH | WIDGET_OFFSCREENWINDOW);
+		start_up();
+	}
+	| PART_OFFSCREENWINDOW tagattr '>' radio_group_scope wlist attr
+		EOFFSCREENWINDOW {
+		token_store(RGROUP_POP);
+		token_store_attr(PUSH | WIDGET_OFFSCREENWINDOW, $2);
+		start_up();
+	}
+	| PAGESETUPDIALOG attr EPAGESETUPDIALOG {
+		token_store(PUSH | WIDGET_PAGESETUPDIALOG);
+		start_up();
+	}
+	| PART_PAGESETUPDIALOG tagattr '>' attr EPAGESETUPDIALOG {
+		token_store_attr(PUSH | WIDGET_PAGESETUPDIALOG, $2);
+		start_up();
+	}
+	| PRINTDIALOG attr EPRINTDIALOG {
+		token_store(PUSH | WIDGET_PRINTDIALOG);
+		start_up();
+	}
+	| PART_PRINTDIALOG tagattr '>' attr EPRINTDIALOG {
+		token_store_attr(PUSH | WIDGET_PRINTDIALOG, $2);
+		start_up();
+	}
+	| FILECHOOSERDIALOG attr EFILECHOOSERDIALOG {
+		token_store(PUSH | WIDGET_FILECHOOSERDIALOG);
+		start_up();
+	}
+	| PART_FILECHOOSERDIALOG tagattr '>' attr EFILECHOOSERDIALOG {
+		token_store_attr(PUSH | WIDGET_FILECHOOSERDIALOG, $2);
 		start_up();
 	}
   ;
@@ -672,6 +719,42 @@ wlist
 		token_store(PUSH | WIDGET_FRAME); 
 		token_store(SUM);      
 	}
+	| DOCKITEM radio_group_scope wlist attr EDOCKITEM {
+		token_store(RGROUP_POP);
+		token_store(PUSH | WIDGET_DOCKITEM);
+	}
+	| wlist DOCKITEM radio_group_scope wlist attr EDOCKITEM {
+		token_store(RGROUP_POP);
+		token_store(PUSH | WIDGET_DOCKITEM);
+		token_store(SUM);
+	}
+	| PART_DOCKITEM tagattr '>' radio_group_scope wlist attr EDOCKITEM {
+		token_store(RGROUP_POP);
+		token_store_attr(PUSH | WIDGET_DOCKITEM, $2);
+	}
+	| wlist PART_DOCKITEM tagattr '>' radio_group_scope wlist attr EDOCKITEM {
+		token_store(RGROUP_POP);
+		token_store_attr(PUSH | WIDGET_DOCKITEM, $3);
+		token_store(SUM);
+	}
+	| DOCK radio_group_scope wlist attr EDOCK {
+		token_store(RGROUP_POP);
+		token_store(PUSH | WIDGET_DOCK);
+	}
+	| wlist DOCK radio_group_scope wlist attr EDOCK {
+		token_store(RGROUP_POP);
+		token_store(PUSH | WIDGET_DOCK);
+		token_store(SUM);
+	}
+	| PART_DOCK tagattr '>' radio_group_scope wlist attr EDOCK {
+		token_store(RGROUP_POP);
+		token_store_attr(PUSH | WIDGET_DOCK, $2);
+	}
+	| wlist PART_DOCK tagattr '>' radio_group_scope wlist attr EDOCK {
+		token_store(RGROUP_POP);
+		token_store_attr(PUSH | WIDGET_DOCK, $3);
+		token_store(SUM);
+	}
   ;
 
 widget
@@ -725,6 +808,8 @@ widget
   | iconview
   | cellview
   | drawingarea
+  | sheet
+  | imageview
   | scalebutton
   | volumebutton
   | recentchooser
@@ -732,6 +817,10 @@ widget
   | accellabel
   | arrow
   | hsv
+  | tasklist
+  | pager
+  | windowselector
+  | curve
   | hruler
   | vruler
   | hscrollbar
@@ -1264,6 +1353,42 @@ hsv
 	}
   ;
 
+tasklist
+  : TASKLIST attr ETASKLIST {
+		token_store(PUSH | WIDGET_TASKLIST);
+	}
+  | PART_TASKLIST tagattr '>' attr ETASKLIST {
+		token_store_attr(PUSH | WIDGET_TASKLIST, $2);
+	}
+  ;
+
+pager
+  : PAGER attr EPAGER {
+		token_store(PUSH | WIDGET_PAGER);
+	}
+  | PART_PAGER tagattr '>' attr EPAGER {
+		token_store_attr(PUSH | WIDGET_PAGER, $2);
+	}
+  ;
+
+windowselector
+  : WINDOWSELECTOR attr EWINDOWSELECTOR {
+		token_store(PUSH | WIDGET_WINDOWSELECTOR);
+	}
+  | PART_WINDOWSELECTOR tagattr '>' attr EWINDOWSELECTOR {
+		token_store_attr(PUSH | WIDGET_WINDOWSELECTOR, $2);
+	}
+  ;
+
+curve
+  : CURVE attr ECURVE {
+		token_store(PUSH | WIDGET_CURVE);
+	}
+  | PART_CURVE tagattr '>' attr ECURVE {
+		token_store_attr(PUSH | WIDGET_CURVE, $2);
+	}
+  ;
+
 hruler
   : HRULER attr EHRULER {
 		token_store(PUSH | WIDGET_HRULER);
@@ -1553,6 +1678,24 @@ drawingarea
 	}
   | PART_DRAWINGAREA tagattr '>' attr EDRAWINGAREA {
 		token_store_attr(PUSH | WIDGET_DRAWINGAREA, $2);
+	}
+  ;
+
+sheet
+  : SHEET attr ESHEET {
+		token_store(PUSH | WIDGET_SHEET);
+	}
+  | PART_SHEET tagattr '>' attr ESHEET {
+		token_store_attr(PUSH | WIDGET_SHEET, $2);
+	}
+  ;
+
+imageview
+  : IMAGEVIEW attr EIMAGEVIEW {
+		token_store(PUSH | WIDGET_IMAGEVIEW);
+	}
+  | PART_IMAGEVIEW tagattr '>' attr EIMAGEVIEW {
+		token_store_attr(PUSH | WIDGET_IMAGEVIEW, $2);
 	}
   ;
 

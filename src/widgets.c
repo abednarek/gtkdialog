@@ -56,13 +56,17 @@
 #include "widget_colorselection.h"
 #include "widget_combobox.h"
 #include "widget_comboboxtext.h"
+#include "widget_curve.h"
 #include "widget_dialog.h"
+#include "widget_dock.h"
 #include "widget_drawingarea.h"
+#include "widget_imageview.h"
 #include "widget_edit.h"
 #include "widget_entry.h"
 #include "widget_eventbox.h"
 #include "widget_expander.h"
 #include "widget_filechooserbutton.h"
+#include "widget_filechooserdialog.h"
 #include "widget_fixed.h"
 #include "widget_fontbutton.h"
 #include "widget_fontselection.h"
@@ -91,12 +95,19 @@
 #include "widget_scalebutton.h"
 #include "widget_scrollbar.h"
 #include "widget_scrolledwindow.h"
+#include "widget_sheet.h"
 #include "widget_socket.h"
 #include "widget_statusicon.h"
 #include "widget_spinbutton.h"
 #include "widget_spinner.h"
 #include "widget_statusbar.h"
 #include "widget_table.h"
+#include "widget_tasklist.h"
+#include "widget_pager.h"
+#include "widget_windowselector.h"
+#include "widget_offscreenwindow.h"
+#include "widget_pagesetupdialog.h"
+#include "widget_printdialog.h"
 #include "widget_terminal.h"
 #include "widget_text.h"
 #include "widget_timer.h"
@@ -552,6 +563,15 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_drawingarea_envvar_construct(widget);
 			return string;
 			break;
+		case WIDGET_SHEET:
+			return widget_sheet_envvar_construct(widget);
+		case WIDGET_DOCK:
+		case WIDGET_DOCKITEM:
+			return widget_dock_envvar_construct(widget);
+		case WIDGET_IMAGEVIEW:
+			string = widget_imageview_envvar_construct(widget);
+			return string;
+			break;
 		case WIDGET_COMBOBOX:
 			string = widget_combobox_envvar_construct(widget);
 			return string;
@@ -619,6 +639,30 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			break;
 		case WIDGET_HSV:
 			return widget_hsv_envvar_construct(widget);
+			break;
+		case WIDGET_TASKLIST:
+			return widget_tasklist_envvar_construct(widget);
+			break;
+		case WIDGET_PAGER:
+			return widget_pager_envvar_construct(widget);
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			return widget_windowselector_envvar_construct(widget);
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			return widget_offscreenwindow_envvar_construct(widget);
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			return widget_pagesetupdialog_envvar_construct(widget);
+			break;
+		case WIDGET_PRINTDIALOG:
+			return widget_printdialog_envvar_construct(widget);
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			return widget_filechooserdialog_envvar_construct(widget);
+			break;
+		case WIDGET_CURVE:
+			return widget_curve_envvar_construct(widget);
 			break;
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:
@@ -960,6 +1004,18 @@ char *widgets_to_str(int itype)
 		case WIDGET_DRAWINGAREA:
 			type = "DRAWINGAREA";
 			break;
+		case WIDGET_SHEET:
+			type = "SHEET";
+			break;
+		case WIDGET_DOCK:
+			type = "DOCK";
+			break;
+		case WIDGET_DOCKITEM:
+			type = "DOCKITEM";
+			break;
+		case WIDGET_IMAGEVIEW:
+			type = "IMAGEVIEW";
+			break;
 		case WIDGET_COMBOBOX:
 			type = "COMBOBOX";
 			break;
@@ -1013,6 +1069,30 @@ char *widgets_to_str(int itype)
 			break;
 		case WIDGET_HSV:
 			type = "HSV";
+			break;
+		case WIDGET_TASKLIST:
+			type = "TASKLIST";
+			break;
+		case WIDGET_PAGER:
+			type = "PAGER";
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			type = "WINDOWSELECTOR";
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			type = "OFFSCREENWINDOW";
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			type = "PAGESETUPDIALOG";
+			break;
+		case WIDGET_PRINTDIALOG:
+			type = "PRINTDIALOG";
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			type = "FILECHOOSERDIALOG";
+			break;
+		case WIDGET_CURVE:
+			type = "CURVE";
 			break;
 		case WIDGET_HRULER:
 			type = "HRULER";

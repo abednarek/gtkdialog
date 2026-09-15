@@ -3,4 +3,20 @@ style "showcase-font"
 	font_name = "Sans 8"
 }
 
+style "showcase-white-canvas" = "showcase-font"
+{
+	bg[NORMAL] = "#ffffff"
+	base[NORMAL] = "#ffffff"
+}
+
+style "showcase-sheet-header" = "showcase-font"
+{
+	bg[NORMAL] = "#dbe5f1"
+	bg[PRELIGHT] = "#eef4fb"
+	bg[ACTIVE] = "#b8cce4"
+	fg[NORMAL] = "#1f2f3f"
+}
+
 class "*" style "showcase-font"
+class "GtkCurve" style "showcase-white-canvas"
+widget_class "*.<GtkSheet>.<GtkButton>" style "showcase-sheet-header"

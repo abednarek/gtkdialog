@@ -1,0 +1,47 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+if ! "$GTKDIALOG" --version 2>/dev/null | grep -q 'libwnck 2'; then
+	echo "This example requires gtkdialog built with libwnck 2 support." >&2
+	exit 1
+fi
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-windowselector.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+WINDOWSELECTOR_OUTPUT=$demo_dir/active-xid
+export WINDOWSELECTOR_OUTPUT
+
+MAIN_DIALOG='
+<window title="GTK2 window selector" width-request="420"
+	skip-taskbar-hint="true">
+	<vbox border-width="8" spacing="6">
+		<text use-markup="true" xalign="0">
+			<label>"<b>Native X11 window selector</b> — open the icon menu and choose a window."</label>
+		</text>
+		<windowselector>
+			<variable>ACTIVE_WINDOW_XID</variable>
+			<output file>'"$WINDOWSELECTOR_OUTPUT"'</output>
+			<action signal="active-window-changed">echo "Active window XID: $ACTIVE_WINDOW_XID"</action>
+		</windowselector>
+		<hbuttonbox layout="end">
+			<button>
+				<label>Refresh windows</label>
+				<action function="refresh">ACTIVE_WINDOW_XID</action>
+			</button>
+			<button>
+				<label>Save active XID</label>
+				<action function="save">ACTIVE_WINDOW_XID</action>
+			</button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

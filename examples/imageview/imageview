@@ -1,0 +1,60 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-imageview.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+VIEW_IMAGE=$demo_dir/view.ppm
+SAVED_IMAGE=$demo_dir/saved.png
+export VIEW_IMAGE SAVED_IMAGE
+
+{
+	printf 'P3\n120 80\n255\n'
+	row=0
+	while [ "$row" -lt 80 ]; do
+		column=0
+		while [ "$column" -lt 120 ]; do
+			if [ $(((row / 10 + column / 10) % 2)) -eq 0 ]; then
+				printf '43 108 176 '
+			else
+				printf '238 238 236 '
+			fi
+			column=$((column + 1))
+		done
+		printf '\n'
+		row=$((row + 1))
+	done
+} > "$VIEW_IMAGE"
+
+MAIN_DIALOG='
+<window title="Native GTK2 image viewer" width-request="700" height-request="480">
+	<vbox border-width="10" spacing="8">
+		<text><label>Ctrl+wheel zooms. Drag with the middle mouse button to pan.</label></text>
+		<imageview scale-mode="fit" zoom-step="1.25" interpolation="nearest"
+			background="#20242a">
+			<width>660</width>
+			<height>360</height>
+			<input file>'"$VIEW_IMAGE"'</input>
+			<output file>'"$SAVED_IMAGE"'</output>
+			<variable>VIEW_SOURCE</variable>
+		</imageview>
+		<hbuttonbox layout-style="spread">
+			<button><label>−</label><action function="zoomout">VIEW_SOURCE</action></button>
+			<button><label>100%</label><action function="zoomreset">VIEW_SOURCE</action></button>
+			<button><label>+</label><action function="zoomin">VIEW_SOURCE</action></button>
+			<button><label>Fit</label><action function="fit">VIEW_SOURCE</action></button>
+			<button><label>Width</label><action function="fitwidth">VIEW_SOURCE</action></button>
+			<button><label>Height</label><action function="fitheight">VIEW_SOURCE</action></button>
+			<button><label>Save</label><action function="save">VIEW_SOURCE</action></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

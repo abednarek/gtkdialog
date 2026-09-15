@@ -88,7 +88,7 @@
 action conditions are summarized in the <a href="syntax.html#common-widget-contract">common
 widget contract</a>. The sections below document this tag's specific surface.</p>
 
-A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuItem</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/gtk2-gtkcheckmenuitem.html#GtkCheckMenuItem">GtkCheckMenuItem</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkRadioMenuItem.html">GtkRadioMenuItem</a> or <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkImageMenuItem.html">GtkImageMenuItem</a>
+A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuItem</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/gtk2-gtkcheckmenuitem.html#GtkCheckMenuItem">GtkCheckMenuItem</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkRadioMenuItem.html">GtkRadioMenuItem</a>, <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkImageMenuItem.html">GtkImageMenuItem</a> or optional <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTearoffMenuItem.html">GtkTearoffMenuItem</a>
 
 <hr>
 
@@ -130,7 +130,13 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuIt
 <tr><td class="wiki"> image-name </td><td class="wiki"> Image filename </td><td class="wiki">  </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> checkbox </td><td class="wiki"> Active state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> radiobutton </td><td class="wiki"> Active state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> tearoff </td><td class="wiki"> Create a native detachable-menu handle; normally place it first in its menu </td><td class="wiki"> <code>true</code> or <code>false</code>; default false </td><td class="wiki"> 0.9.0 </td></tr>
 </table>
+
+<p>A tearoff item has no label, image, value or accelerator. Activating it
+toggles GTK+'s detached menu window and can also run ordinary action
+directives. Existing menu items are unchanged unless
+<code>tearoff="true"</code> is present.</p>
 
 <h2> Directives </h2>
 
@@ -250,13 +256,17 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuIt
 <a href="combobox.html">combobox</a>,
 <a href="comboboxentry.html">comboboxentry</a>,
 <a href="comboboxtext.html">comboboxtext</a>,
+<a href="curve.html">curve</a>,
 <a href="dialog.html">dialog</a>,
+<a href="dock.html">dock</a>,
+<a href="dockitem.html">dockitem</a>,
 <a href="drawingarea.html">drawingarea</a>,
 <a href="edit.html">edit</a>,
 <a href="entry.html">entry</a>,
 <a href="eventbox.html">eventbox</a>,
 <a href="expander.html">expander</a>,
 <a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="filechooserdialog.html">filechooserdialog</a>,
 <a href="fixed.html">fixed</a>,
 <a href="fontbutton.html">fontbutton</a>,
 <a href="fontselection.html">fontselection</a>,
@@ -273,6 +283,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuIt
 <a href="hseparator.html">hseparator</a>,
 <a href="hsv.html">hsv</a>,
 <a href="iconview.html">iconview</a>,
+<a href="imageview.html">imageview</a>,
 <a href="infobar.html">infobar</a>,
 <a href="layout.html">layout</a>,
 <a href="linkbutton.html">linkbutton</a>,
@@ -284,6 +295,10 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuIt
 <a href="menutoolbutton.html">menutoolbutton</a>,
 <a href="messagedialog.html">messagedialog</a>,
 <a href="notebook.html">notebook</a>,
+<a href="offscreenwindow.html">offscreenwindow</a>,
+<a href="pager.html">pager</a>,
+<a href="pagesetupdialog.html">pagesetupdialog</a>,
+<a href="printdialog.html">printdialog</a>,
 <a href="pixmap.html">pixmap</a>,
 <a href="plug.html">plug</a>,
 <a href="popupmenu.html">popupmenu</a>,
@@ -296,6 +311,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuIt
 <a href="scrolledwindow.html">scrolledwindow</a>,
 <a href="separator.html">separator</a>,
 <a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sheet.html">sheet</a>,
 <a href="sizegroup.html">sizegroup</a>,
 <a href="socket.html">socket</a>,
 <a href="spinbutton.html">spinbutton</a>,
@@ -304,6 +320,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuIt
 <a href="statusicon.html">statusicon</a>,
 <a href="syntax.html">syntax</a>,
 <a href="table.html">table</a>,
+<a href="tasklist.html">tasklist</a>,
 <a href="terminal.html">terminal</a>,
 <a href="text.html">text</a>,
 <a href="timer.html">timer</a>,
@@ -324,7 +341,8 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuItem.html">GtkMenuIt
 <a href="vscale.html">vscale</a>,
 <a href="vscrollbar.html">vscrollbar</a>,
 <a href="vseparator.html">vseparator</a>,
-<a href="window.html">window</a>
+<a href="window.html">window</a>,
+<a href="windowselector.html">windowselector</a>
 </p>
 <!-- reference-navigation-end -->
 

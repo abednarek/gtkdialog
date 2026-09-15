@@ -1,0 +1,45 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+OFFSCREEN_OUTPUT=${GTKDIALOG_OFFSCREEN_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-offscreen.png}
+export OFFSCREEN_OUTPUT
+
+OFFSCREEN_DEMO='
+<offscreenwindow border-width="12">
+	<vbox spacing="10">
+		<text use-markup="true">
+			<label>"<big><b>GTK2 off-screen rendering</b></big>"</label>
+		</text>
+		<frame GTK2>
+			<hbox border-width="10" spacing="10">
+				<pixmap stock-icon-size="6">
+					<input file stock="gtk-dialog-info"></input>
+				</pixmap>
+				<text xalign="0" width-request="360">
+					<label>"This complete declarative widget hierarchy is rendered without a desktop window."</label>
+				</text>
+			</hbox>
+		</frame>
+		<progressbar fraction="0.72" text="72%"></progressbar>
+		<timer milliseconds="true" interval="100" visible="false">
+			<variable export="false">OFFSCREEN_RENDER_TIMER</variable>
+			<action function="save">OFFSCREEN_DEMO</action>
+			<action>exit:OK</action>
+		</timer>
+	</vbox>
+	<width>480</width>
+	<height>210</height>
+	<output file>'"$OFFSCREEN_OUTPUT"'</output>
+	<variable>OFFSCREEN_DEMO</variable>
+</offscreenwindow>
+'
+export OFFSCREEN_DEMO
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$OFFSCREEN_DEMO" ;;
+	*)
+		"$GTKDIALOG" --program=OFFSCREEN_DEMO >/dev/null &&
+			printf 'Saved off-screen rendering to %s\n' "$OFFSCREEN_OUTPUT"
+		;;
+esac

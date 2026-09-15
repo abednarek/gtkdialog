@@ -1,0 +1,34 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+CURVE_DIALOG='
+<window title="GTK2 transfer curve" width-request="440">
+	<vbox border-width="12" spacing="8">
+		<text><label>Drag the curve or use the native mode, gamma and reset controls.</label></text>
+		<curve controls="true" curve-type="spline" min-x="0" max-x="1"
+			min-y="0" max-y="1" samples="9">
+			<variable>CURVE_VALUE</variable>
+			<default>0|0.04|0.12|0.28|0.5|0.72|0.88|0.96|1</default>
+			<action>refresh:CURVE_PREVIEW</action>
+			<action signal="curve-type-changed">refresh:CURVE_PREVIEW</action>
+		</curve>
+		<entry editable="false">
+			<variable>CURVE_PREVIEW</variable>
+			<input>printf "%s" "$CURVE_VALUE"</input>
+			<default>Drag a point to update the sampled value</default>
+		</entry>
+		<hbuttonbox layout="end">
+			<button>
+				<label>Reset</label>
+				<action>clear:CURVE_VALUE</action>
+				<action>refresh:CURVE_PREVIEW</action>
+			</button>
+			<button ok></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+
+export CURVE_DIALOG
+exec "$GTKDIALOG" --program=CURVE_DIALOG

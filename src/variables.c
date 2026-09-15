@@ -38,13 +38,17 @@
 #include "widget_colorselection.h"
 #include "widget_combobox.h"
 #include "widget_comboboxtext.h"
+#include "widget_curve.h"
 #include "widget_dialog.h"
+#include "widget_dock.h"
 #include "widget_drawingarea.h"
+#include "widget_imageview.h"
 #include "widget_edit.h"
 #include "widget_entry.h"
 #include "widget_eventbox.h"
 #include "widget_expander.h"
 #include "widget_filechooserbutton.h"
+#include "widget_filechooserdialog.h"
 #include "widget_fixed.h"
 #include "widget_fontbutton.h"
 #include "widget_fontselection.h"
@@ -73,11 +77,18 @@
 #include "widget_scalebutton.h"
 #include "widget_scrollbar.h"
 #include "widget_scrolledwindow.h"
+#include "widget_sheet.h"
 #include "widget_spinbutton.h"
 #include "widget_spinner.h"
 #include "widget_statusbar.h"
 #include "widget_statusicon.h"
 #include "widget_table.h"
+#include "widget_tasklist.h"
+#include "widget_pager.h"
+#include "widget_windowselector.h"
+#include "widget_offscreenwindow.h"
+#include "widget_pagesetupdialog.h"
+#include "widget_printdialog.h"
 #include "widget_terminal.h"
 #include "widget_text.h"
 #include "widget_timer.h"
@@ -432,6 +443,100 @@ variable *variables_set_row_column(const char *name, int row, int column)
 	return (toset);
 }
 
+static variable *variables_get_imageview(const gchar *name,
+	const gchar *function)
+{
+	variable *var = variables_get_by_name(name);
+
+	if (var == NULL || var->Widget == NULL)
+		return NULL;
+	if (var->Type != WIDGET_IMAGEVIEW) {
+		gtkdialog_warning("%s requires an imageview variable; '%s' is %s.",
+			function, name, widgets_to_str(var->Type));
+		return NULL;
+	}
+	return var;
+}
+
+static variable *variables_get_zoomable(const gchar *name,
+	const gchar *function)
+{
+	variable *var = variables_get_by_name(name);
+
+	if (var == NULL || var->Widget == NULL)
+		return NULL;
+	if (var->Type != WIDGET_IMAGEVIEW &&
+		!(var->Type == WIDGET_DRAWINGAREA &&
+		(widget_drawingarea_is_databox(var->Widget) ||
+		widget_drawingarea_is_canvas(var->Widget)))) {
+		gtkdialog_warning(
+			"%s requires an imageview, GooCanvas or GtkDatabox drawingarea variable; '%s' is %s.",
+			function, name, widgets_to_str(var->Type));
+		return NULL;
+	}
+	return var;
+}
+
+void variables_imageview_fit(const char *name)
+{
+	variable *var = variables_get_imageview(name, "fit");
+
+	if (var != NULL)
+		widget_imageview_fit(var);
+}
+
+void variables_imageview_fit_height(const char *name)
+{
+	variable *var = variables_get_imageview(name, "fitheight");
+
+	if (var != NULL)
+		widget_imageview_fit_height(var);
+}
+
+void variables_imageview_fit_width(const char *name)
+{
+	variable *var = variables_get_imageview(name, "fitwidth");
+
+	if (var != NULL)
+		widget_imageview_fit_width(var);
+}
+
+void variables_imageview_zoom_in(const char *name)
+{
+	variable *var = variables_get_zoomable(name, "zoomin");
+
+	if (var == NULL)
+		return;
+	if (var->Type == WIDGET_IMAGEVIEW)
+		widget_imageview_zoom_in(var);
+	else
+		widget_drawingarea_zoom_in(var);
+}
+
+void variables_imageview_zoom_out(const char *name)
+{
+	variable *var = variables_get_zoomable(name, "zoomout");
+
+	if (var == NULL)
+		return;
+	if (var->Type == WIDGET_IMAGEVIEW)
+		widget_imageview_zoom_out(var);
+	else
+		widget_drawingarea_zoom_out(var);
+}
+
+void variables_imageview_zoom_reset(const char *name)
+{
+	variable *var = variables_get_zoomable(name, "zoomreset");
+
+	if (var == NULL)
+		return;
+	if (var->Type == WIDGET_IMAGEVIEW)
+		widget_imageview_zoom_reset(var);
+	else
+		widget_drawingarea_zoom_reset(var);
+}
+
 /***********************************************************************
  *                                                                     *
  ***********************************************************************/
@@ -529,6 +634,27 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_HSV:
 			widget_hsv_fileselect(toset, name, value);
 			break;
+		case WIDGET_TASKLIST:
+			widget_tasklist_fileselect(toset, name, value);
+			break;
+		case WIDGET_PAGER:
+			widget_pager_fileselect(toset, name, value);
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			widget_windowselector_fileselect(toset, name, value);
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			widget_pagesetupdialog_fileselect(toset, name, value);
+			break;
+		case WIDGET_PRINTDIALOG:
+			widget_printdialog_fileselect(toset, name, value);
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			widget_filechooserdialog_fileselect(toset, name, value);
+			break;
+		case WIDGET_CURVE:
+			widget_curve_fileselect(toset, name, value);
+			break;
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:
 			widget_ruler_fileselect(toset, name, value);
@@ -538,6 +664,16 @@ variable *variables_set_value(const char *name, const char *value)
 			break;
 		case WIDGET_DRAWINGAREA:
 			widget_drawingarea_fileselect(toset, name, value);
+			break;
+		case WIDGET_SHEET:
+			widget_sheet_fileselect(toset, name, value);
+			break;
+		case WIDGET_DOCK:
+		case WIDGET_DOCKITEM:
+			widget_dock_fileselect(toset, name, value);
+			break;
+		case WIDGET_IMAGEVIEW:
+			widget_imageview_fileselect(toset, name, value);
 			break;
 		case WIDGET_COMBOBOX:
 			widget_combobox_fileselect(toset, name, value);
@@ -795,6 +931,30 @@ variable *variables_save(const char *name)
 		case WIDGET_HSV:
 			widget_hsv_save(var);
 			break;
+		case WIDGET_TASKLIST:
+			widget_tasklist_save(var);
+			break;
+		case WIDGET_PAGER:
+			widget_pager_save(var);
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			widget_windowselector_save(var);
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			widget_offscreenwindow_save(var);
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			widget_pagesetupdialog_save(var);
+			break;
+		case WIDGET_PRINTDIALOG:
+			widget_printdialog_save(var);
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			widget_filechooserdialog_save(var);
+			break;
+		case WIDGET_CURVE:
+			widget_curve_save(var);
+			break;
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:
 			widget_ruler_save(var);
@@ -804,6 +964,16 @@ variable *variables_save(const char *name)
 			break;
 		case WIDGET_DRAWINGAREA:
 			widget_drawingarea_save(var);
+			break;
+		case WIDGET_SHEET:
+			widget_sheet_save(var);
+			break;
+		case WIDGET_DOCK:
+		case WIDGET_DOCKITEM:
+			widget_dock_save(var);
+			break;
+		case WIDGET_IMAGEVIEW:
+			widget_imageview_save(var);
 			break;
 		case WIDGET_COMBOBOX:
 			widget_combobox_save(var);
@@ -1105,6 +1275,30 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_HSV:
 			widget_hsv_refresh(var);
 			break;
+		case WIDGET_TASKLIST:
+			widget_tasklist_refresh(var);
+			break;
+		case WIDGET_PAGER:
+			widget_pager_refresh(var);
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			widget_windowselector_refresh(var);
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			widget_offscreenwindow_refresh(var);
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			widget_pagesetupdialog_refresh(var);
+			break;
+		case WIDGET_PRINTDIALOG:
+			widget_printdialog_refresh(var);
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			widget_filechooserdialog_refresh(var);
+			break;
+		case WIDGET_CURVE:
+			widget_curve_refresh(var);
+			break;
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:
 			widget_ruler_refresh(var);
@@ -1114,6 +1308,16 @@ variable *variables_refresh_widget(variable *registry_var)
 			break;
 		case WIDGET_DRAWINGAREA:
 			widget_drawingarea_refresh(var);
+			break;
+		case WIDGET_SHEET:
+			widget_sheet_refresh(var);
+			break;
+		case WIDGET_DOCK:
+		case WIDGET_DOCKITEM:
+			widget_dock_refresh(var);
+			break;
+		case WIDGET_IMAGEVIEW:
+			widget_imageview_refresh(var);
 			break;
 		case WIDGET_COMBOBOX:
 			widget_combobox_refresh(var);
@@ -1553,6 +1757,8 @@ variable *variables_presentwindow(const char *name)
 		return (NULL);
 	if (var->Widget == NULL)
 		return (NULL);
+	if (var->Type == WIDGET_OFFSCREENWINDOW)
+		return (var);
 
 	gtk_window_present(GTK_WINDOW(var->Widget));
 
@@ -2025,6 +2231,9 @@ static void _variables_export(variable *actual)
 		actual->Type == WIDGET_ASSISTANT ||
 		actual->Type == WIDGET_DIALOG ||
 		actual->Type == WIDGET_MESSAGEDIALOG ||
+		actual->Type == WIDGET_PAGESETUPDIALOG ||
+		actual->Type == WIDGET_PRINTDIALOG ||
+		actual->Type == WIDGET_FILECHOOSERDIALOG ||
 		actual->Type == WIDGET_POPUPMENU) &&
 		strcmp(actual->Name, get_program_name()) == 0)
 		return;
@@ -2230,6 +2439,30 @@ variable *variables_clear(const char *name)
 		case WIDGET_HSV:
 			widget_hsv_clear(toclear);
 			break;
+		case WIDGET_TASKLIST:
+			widget_tasklist_clear(toclear);
+			break;
+		case WIDGET_PAGER:
+			widget_pager_clear(toclear);
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			widget_windowselector_clear(toclear);
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			widget_offscreenwindow_clear(toclear);
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			widget_pagesetupdialog_clear(toclear);
+			break;
+		case WIDGET_PRINTDIALOG:
+			widget_printdialog_clear(toclear);
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			widget_filechooserdialog_clear(toclear);
+			break;
+		case WIDGET_CURVE:
+			widget_curve_clear(toclear);
+			break;
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:
 			widget_ruler_clear(toclear);
@@ -2239,6 +2472,16 @@ variable *variables_clear(const char *name)
 			break;
 		case WIDGET_DRAWINGAREA:
 			widget_drawingarea_clear(toclear);
+			break;
+		case WIDGET_SHEET:
+			widget_sheet_clear(toclear);
+			break;
+		case WIDGET_DOCK:
+		case WIDGET_DOCKITEM:
+			widget_dock_clear(toclear);
+			break;
+		case WIDGET_IMAGEVIEW:
+			widget_imageview_clear(toclear);
 			break;
 		case WIDGET_COMBOBOX:
 			widget_combobox_clear(toclear);
@@ -2501,6 +2744,30 @@ int remove_selected_variable(const char *name)
 			break;
 		case WIDGET_HSV:
 			widget_hsv_removeselected(toclear);
+			break;
+		case WIDGET_TASKLIST:
+			widget_tasklist_removeselected(toclear);
+			break;
+		case WIDGET_PAGER:
+			widget_pager_removeselected(toclear);
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			widget_windowselector_removeselected(toclear);
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			widget_offscreenwindow_removeselected(toclear);
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			widget_pagesetupdialog_removeselected(toclear);
+			break;
+		case WIDGET_PRINTDIALOG:
+			widget_printdialog_removeselected(toclear);
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			widget_filechooserdialog_removeselected(toclear);
+			break;
+		case WIDGET_CURVE:
+			widget_curve_removeselected(toclear);
 			break;
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:

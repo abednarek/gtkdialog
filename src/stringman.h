@@ -61,7 +61,13 @@ typedef enum {
 	CommandAppend            = 19,
 	CommandExpandAll         = 20,
 	CommandCollapseAll       = 21,
-	CommandUnknown           = 22
+	CommandZoomIn            = 22,
+	CommandZoomOut           = 23,
+	CommandZoomReset         = 24,
+	CommandFit               = 25,
+	CommandFitWidth          = 26,
+	CommandFitHeight         = 27,
+	CommandUnknown           = 28
 } CommandType;
 
 #ifdef G_OS_WIN32

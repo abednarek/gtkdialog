@@ -1,0 +1,26 @@
+#!/bin/sh
+
+[ -z "${GTKDIALOG:-}" ] && GTKDIALOG=gtkdialog
+
+selection=$(mktemp "${TMPDIR:-/tmp}/gtkdialog-file-selection.XXXXXX")
+response=$(mktemp "${TMPDIR:-/tmp}/gtkdialog-file-response.XXXXXX")
+trap 'rm -f -- "$selection" "$response"' EXIT HUP INT TERM
+
+FILE_CHOOSER_DIALOG='
+<filechooserdialog title="Choose GTK2 source files" action="open"
+    current-folder="'"$PWD"'" select-multiple="true"
+    filter-name="C source" filter-pattern="*.c;*.h"
+    fs-filters="*.xml|*.md" shortcut-folders="'"$PWD"'">
+  <variable>FILE_CHOOSER_RESPONSE</variable>
+  <output file>'"$selection"'</output>
+  <output file response="true">'"$response"'</output>
+  <action signal="response" function="save">FILE_CHOOSER_RESPONSE</action>
+  <action signal="response">exit:response</action>
+</filechooserdialog>
+'
+export FILE_CHOOSER_DIALOG
+
+"$GTKDIALOG" --program=FILE_CHOOSER_DIALOG
+printf 'Response: %s\nSelection:\n' "$(cat "$response")"
+cat "$selection"
+printf '\n'

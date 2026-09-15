@@ -15,6 +15,7 @@ DIST_GLOBS = \
 	examples/aspectframe/* \
 	examples/button/* \
 	examples/calendar/* \
+	examples/canvas/* \
 	examples/cellview/* \
 	examples/checkbox/* \
 	examples/chooser/* \
@@ -23,14 +24,18 @@ DIST_GLOBS = \
 	examples/combobox/* \
 	examples/comboboxentry/* \
 	examples/comboboxtext/* \
+	examples/curve/* \
+	examples/databox/* \
 	examples/demoscene/* \
 	examples/dialog/* \
+	examples/dock/* \
 	examples/drawingarea/* \
 	examples/edit/* \
 	examples/entry/* \
 	examples/eventbox/* \
 	examples/expander/* \
 	examples/filechooserbutton/* \
+	examples/filechooserdialog/* \
 	examples/fixed/* \
 	examples/fontbutton/* \
 	examples/fontselection/* \
@@ -46,6 +51,7 @@ DIST_GLOBS = \
 	examples/hsv/* \
 	examples/hseparator/* \
 	examples/iconview/* \
+	examples/imageview/* \
 	examples/infobar/* \
 	examples/layout/* \
 	examples/list/* \
@@ -57,6 +63,10 @@ DIST_GLOBS = \
 	examples/messagedialog/* \
 	examples/miscellaneous/* \
 	examples/notebook/* \
+	examples/offscreenwindow/* \
+	examples/pager/* \
+	examples/pagesetupdialog/* \
+	examples/printdialog/* \
 	examples/pixmap/* \
 	examples/plug/* \
 	examples/popupmenu/* \
@@ -69,6 +79,7 @@ DIST_GLOBS = \
 	examples/recentchoosermenu/* \
 	examples/scalebutton/* \
 	examples/scrolledwindow/* \
+	examples/sheet/* \
 	examples/showcase/* \
 	examples/sizegroup/* \
 	examples/socket/* \
@@ -77,6 +88,7 @@ DIST_GLOBS = \
 	examples/statusbar/* \
 	examples/statusicon/* \
 	examples/table/* \
+	examples/tasklist/* \
 	examples/terminal/* \
 	examples/text/* \
 	examples/timer/* \
@@ -93,7 +105,8 @@ DIST_GLOBS = \
 	examples/vruler/* \
 	examples/viewport/* \
 	examples/vseparator/* \
-	examples/window/*
+	examples/window/* \
+	examples/windowselector/*
 
 EXTRA_DIST = \
 	.editorconfig \

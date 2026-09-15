@@ -18,6 +18,8 @@
 #include "signals.h"
 #include "tag_attributes.h"
 #include "widgets.h"
+#include "widget_canvas.h"
+#include "widget_databox.h"
 #include "widget_drawingarea.h"
 
 typedef enum {
@@ -257,6 +259,15 @@ void widget_drawingarea_clear(variable *var)
 {
 	DrawingAreaData *drawing_data;
 
+	if (widget_canvas_is_requested(var->Widget)) {
+		widget_canvas_clear(var);
+		return;
+	}
+	if (widget_databox_is_requested(var->Widget)) {
+		widget_databox_clear(var);
+		return;
+	}
+
 	drawing_data = widget_drawingarea_get_data(var->Widget);
 	if (drawing_data->pixbuf != NULL) {
 		g_object_unref(drawing_data->pixbuf);
@@ -285,6 +296,14 @@ GtkWidget *widget_drawingarea_create(
 		height = widget_parse_size(attributeset_get_first(&element, Attr,
 			ATTR_HEIGHT), "drawing area height");
 
+	widget = widget_canvas_create(Attr, attr, width, height);
+	if (widget != NULL)
+		return widget;
+
+	widget = widget_databox_create(Attr, attr, width, height);
+	if (widget != NULL)
+		return widget;
+
 	widget = gtk_drawing_area_new();
 	drawing_data = g_new0(DrawingAreaData, 1);
 	drawing_data->requested_width = width;
@@ -311,6 +330,11 @@ gchar *widget_drawingarea_envvar_construct(GtkWidget *widget)
 {
 	DrawingAreaData *drawing_data;
 
+	if (widget_canvas_is_requested(widget))
+		return widget_canvas_envvar_construct(widget);
+	if (widget_databox_is_requested(widget))
+		return widget_databox_envvar_construct(widget);
+
 	drawing_data = widget_drawingarea_get_data(widget);
 	return g_strdup(drawing_data->source != NULL ? drawing_data->source : "");
 }
@@ -319,6 +343,14 @@ void widget_drawingarea_fileselect(
 	variable *var, const char *name, const char *value)
 {
 	(void)name;
+	if (widget_canvas_is_requested(var->Widget)) {
+		widget_canvas_set_value(var, value);
+		return;
+	}
+	if (widget_databox_is_requested(var->Widget)) {
+		widget_databox_set_value(var, value);
+		return;
+	}
 	widget_drawingarea_load(var->Widget, value);
 }
 
@@ -327,6 +359,15 @@ void widget_drawingarea_refresh(variable *var)
 	GList *element;
 	gchar *input;
 	gboolean initialised;
+
+	if (widget_canvas_is_requested(var->Widget)) {
+		widget_canvas_refresh(var);
+		return;
+	}
+	if (widget_databox_is_requested(var->Widget)) {
+		widget_databox_refresh(var);
+		return;
+	}
 
 	initialised = GPOINTER_TO_INT(g_object_get_data(
 		G_OBJECT(var->Widget), "_initialised"));
@@ -375,6 +416,15 @@ void widget_drawingarea_save(variable *var)
 	gchar *format;
 	const gchar *save_format;
 
+	if (widget_canvas_is_requested(var->Widget)) {
+		widget_canvas_save(var);
+		return;
+	}
+	if (widget_databox_is_requested(var->Widget)) {
+		widget_databox_save(var);
+		return;
+	}
+
 	directive = attributeset_get_first(&element,
 		var->Attributes, ATTR_OUTPUT);
 	while (directive != NULL) {
@@ -414,4 +464,38 @@ void widget_drawingarea_save(variable *var)
 			g_error_free(error);
 	}
 	g_free(format);
+}
+
+gboolean widget_drawingarea_is_databox(GtkWidget *widget)
+{
+	return widget_databox_is_widget(widget);
+}
+
+gboolean widget_drawingarea_is_canvas(GtkWidget *widget)
+{
+	return widget_canvas_is_widget(widget);
+}
+
+void widget_drawingarea_zoom_in(variable *var)
+{
+	if (widget_canvas_is_requested(var->Widget))
+		widget_canvas_zoom_in(var);
+	else
+		widget_databox_zoom_in(var);
+}
+
+void widget_drawingarea_zoom_out(variable *var)
+{
+	if (widget_canvas_is_requested(var->Widget))
+		widget_canvas_zoom_out(var);
+	else
+		widget_databox_zoom_out(var);
+}
+
+void widget_drawingarea_zoom_reset(variable *var)
+{
+	if (widget_canvas_is_requested(var->Widget))
+		widget_canvas_zoom_reset(var);
+	else
+		widget_databox_zoom_reset(var);
 }

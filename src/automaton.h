@@ -146,6 +146,18 @@ typedef struct actioncommand {
 #define WIDGET_HRULER            0x00E20000
 #define WIDGET_VRULER            0x00E30000
 #define WIDGET_PLUG              0x00E40000
+#define WIDGET_IMAGEVIEW         0x00E50000
+#define WIDGET_CURVE             0x00E60000
+#define WIDGET_SHEET             0x00E70000
+#define WIDGET_DOCK              0x00E80000
+#define WIDGET_DOCKITEM          0x00E90000
+#define WIDGET_TASKLIST          0x00EA0000
+#define WIDGET_PAGER             0x00EB0000
+#define WIDGET_WINDOWSELECTOR    0x00EC0000
+#define WIDGET_OFFSCREENWINDOW   0x00ED0000
+#define WIDGET_PAGESETUPDIALOG   0x00EE0000
+#define WIDGET_PRINTDIALOG       0x00EF0000
+#define WIDGET_FILECHOOSERDIALOG 0x00F00000
 
 /*
  * Imperative stuff.

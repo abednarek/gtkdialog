@@ -232,6 +232,70 @@ void gtkdialog_lexer_reset(void)
 	return(EWINDOW);
 }
 
+\<offscreenwindow\> {
+	Token="<offscreenwindow>";
+	return(OFFSCREENWINDOW);
+}
+
+\<offscreenwindow[ ]+ {
+	Token="<offscreenwindow>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_OFFSCREENWINDOW);
+}
+
+\<\/offscreenwindow\> {
+	Token="</offscreenwindow>";
+	return(EOFFSCREENWINDOW);
+}
+
+\<pagesetupdialog\> {
+	Token="<pagesetupdialog>";
+	return(PAGESETUPDIALOG);
+}
+
+\<pagesetupdialog[ ]+ {
+	Token="<pagesetupdialog>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_PAGESETUPDIALOG);
+}
+
+\<\/pagesetupdialog\> {
+	Token="</pagesetupdialog>";
+	return(EPAGESETUPDIALOG);
+}
+
+\<printdialog\> {
+	Token="<printdialog>";
+	return(PRINTDIALOG);
+}
+
+\<printdialog[ ]+ {
+	Token="<printdialog>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_PRINTDIALOG);
+}
+
+\<\/printdialog\> {
+	Token="</printdialog>";
+	return(EPRINTDIALOG);
+}
+
+\<filechooserdialog\> {
+	Token="<filechooserdialog>";
+	return(FILECHOOSERDIALOG);
+}
+
+\<filechooserdialog[ ]+ {
+	Token="<filechooserdialog>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_FILECHOOSERDIALOG);
+}
+
+\<\/filechooserdialog\> {
+	Token="</filechooserdialog>";
+	return(EFILECHOOSERDIALOG);
+}
+
 \<assistant\> {
 	Token="<assistant>";
 	return(ASSISTANT);
@@ -349,6 +413,54 @@ void gtkdialog_lexer_reset(void)
 	return(DRAWINGAREA);
 }
 
+\<sheet\> {
+	Token="<sheet>";
+	return(SHEET);
+}
+
+\<sheet[ ]+ {
+	Token="<sheet>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_SHEET);
+}
+
+\<\/sheet\> {
+	Token="</sheet>";
+	return(ESHEET);
+}
+
+\<dock\> {
+	Token="<dock>";
+	return(DOCK);
+}
+
+\<dock[ ]+ {
+	Token="<dock>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_DOCK);
+}
+
+\<\/dock\> {
+	Token="</dock>";
+	return(EDOCK);
+}
+
+\<dockitem\> {
+	Token="<dockitem>";
+	return(DOCKITEM);
+}
+
+\<dockitem[ ]+ {
+	Token="<dockitem>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_DOCKITEM);
+}
+
+\<\/dockitem\> {
+	Token="</dockitem>";
+	return(EDOCKITEM);
+}
+
 \<drawingarea[ ]+ {
 	Token="<drawingarea>";
 	BEGIN(ST_TAG_ATTR);
@@ -358,6 +470,22 @@ void gtkdialog_lexer_reset(void)
 \<\/drawingarea\> {
 	Token="</drawingarea>";
 	return(EDRAWINGAREA);
+}
+
+\<imageview\> {
+	Token="<imageview>";
+	return(IMAGEVIEW);
+}
+
+\<imageview[ ]+ {
+	Token="<imageview>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_IMAGEVIEW);
+}
+
+\<\/imageview\> {
+	Token="</imageview>";
+	return(EIMAGEVIEW);
 }
 
 \<scalebutton\> {
@@ -1348,6 +1476,62 @@ void gtkdialog_lexer_reset(void)
 \<\/hsv\> {
 	Token="</hsv>";
 	return(EHSV);
+}
+
+\<tasklist\> {
+	Token="<tasklist>";
+	return(TASKLIST);
+}
+\<tasklist[ ]+ {
+	Token="<tasklist>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_TASKLIST);
+}
+\<\/tasklist\> {
+	Token="</tasklist>";
+	return(ETASKLIST);
+}
+
+\<pager\> {
+	Token="<pager>";
+	return(PAGER);
+}
+\<pager[ ]+ {
+	Token="<pager>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_PAGER);
+}
+\<\/pager\> {
+	Token="</pager>";
+	return(EPAGER);
+}
+
+\<windowselector\> {
+	Token="<windowselector>";
+	return(WINDOWSELECTOR);
+}
+\<windowselector[ ]+ {
+	Token="<windowselector>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_WINDOWSELECTOR);
+}
+\<\/windowselector\> {
+	Token="</windowselector>";
+	return(EWINDOWSELECTOR);
+}
+
+\<curve\> {
+	Token="<curve>";
+	return(CURVE);
+}
+\<curve[ ]+ {
+	Token="<curve>";
+	BEGIN(ST_TAG_ATTR);
+	return(PART_CURVE);
+}
+\<\/curve\> {
+	Token="</curve>";
+	return(ECURVE);
 }
 
 \<hruler\> {

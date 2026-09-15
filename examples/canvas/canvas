@@ -1,0 +1,43 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-canvas.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+CANVAS_SCENE=$demo_dir/scene.json
+CANVAS_SAVED=$demo_dir/saved.json
+export CANVAS_SCENE CANVAS_SAVED
+
+cp "$(dirname "$0")/scene.json" "$CANVAS_SCENE" || exit 1
+
+MAIN_DIALOG='
+<window title="GooCanvas GTK2 object scene" width-request="700">
+  <vbox border-width="12" spacing="8">
+    <text use-markup="true"><label>"<b>JSON object scene</b> — activate or drag the coloured cards."</label></text>
+    <drawingarea goocanvas="true" background="#f6f5f4"
+      canvas-right="660" canvas-bottom="360">
+      <width>660</width><height>360</height>
+      <input file format="json">'"$CANVAS_SCENE"'</input>
+      <output file format="json">'"$CANVAS_SAVED"'</output>
+      <variable>SCENE_ITEM</variable>
+      <action>echo "Activated: $SCENE_ITEM"</action>
+      <action signal="item-moved">echo "Moved: $SCENE_ITEM"</action>
+    </drawingarea>
+    <hbuttonbox>
+      <button><label>Zoom in</label><action function="zoomin">SCENE_ITEM</action></button>
+      <button><label>Zoom out</label><action function="zoomout">SCENE_ITEM</action></button>
+      <button><label>Reset zoom</label><action function="zoomreset">SCENE_ITEM</action></button>
+      <button><label>Reload</label><action function="refresh">SCENE_ITEM</action></button>
+      <button><label>Save JSON</label><action function="save">SCENE_ITEM</action></button>
+      <button cancel></button>
+    </hbuttonbox>
+  </vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+  -d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+  *) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

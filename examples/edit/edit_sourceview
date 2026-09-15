@@ -1,0 +1,36 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="GTKDialog source editor" width-request="620" height-request="420">
+  <vbox border-width="10" spacing="8">
+    <text xalign="0">
+      <label>Optional GtkSourceView 2 mode of the standard edit widget</label>
+    </text>
+    <edit sourceview="true" language="sh" style-scheme="classic"
+          highlight-syntax="true" highlight-matching-brackets="true"
+          max-undo-levels="100" show-line-numbers="true"
+          show-line-marks="true" highlight-current-line="true"
+          auto-indent="true" indent-on-tab="true"
+          insert-spaces-instead-of-tabs="true"
+          tab-width="4" indent-width="4" show-right-margin="true"
+          right-margin-position="72" wrap-mode="0">
+      <variable>SOURCE_TEXT</variable>
+      <default>#!/bin/sh
+
+greeting="Hello from GTKDialog"
+printf "%s\\n" "$greeting"</default>
+    </edit>
+    <hbuttonbox>
+      <button cancel></button>
+      <button ok></button>
+    </hbuttonbox>
+  </vbox>
+</window>'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "type": "group",
+      "id": "cards",
+      "translate-x": 20,
+      "translate-y": 20,
+      "children": [
+        {
+          "type": "rect",
+          "id": "yellow-card",
+          "x": 20,
+          "y": 25,
+          "width": 180,
+          "height": 100,
+          "fill-color": "#f8e45c",
+          "stroke-color": "#865e00",
+          "line-width": 2,
+          "tooltip": "Drag this rectangle",
+          "draggable": true
+        },
+        {
+          "type": "text",
+          "id": "yellow-label",
+          "text": "Draggable rectangle",
+          "x": 110,
+          "y": 75,
+          "anchor": "center",
+          "font": "Sans Bold 12",
+          "fill-color": "#3d2b00"
+        },
+        {
+          "type": "ellipse",
+          "id": "blue-ellipse",
+          "center-x": 330,
+          "center-y": 75,
+          "radius-x": 95,
+          "radius-y": 50,
+          "fill-color": "#99c1f1",
+          "stroke-color": "#1c71d8",
+          "line-width": 3,
+          "tooltip": "Drag this ellipse",
+          "draggable": true
+        }
+      ]
+    },
+    {
+      "type": "path",
+      "id": "curve",
+      "data": "M 55 210 C 150 140 250 280 350 205 S 525 150 610 215",
+      "stroke-color": "#c01c28",
+      "line-width": 4
+    },
+    {
+      "type": "polyline",
+      "id": "baseline",
+      "points": [45, 285, 165, 245, 285, 300, 405, 255, 525, 290, 620, 250],
+      "stroke-color": "#26a269",
+      "line-width": 3
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "text": "GooCanvas 1 · GTK+ 2 · versioned JSON",
+      "x": 330,
+      "y": 330,
+      "anchor": "center",
+      "font": "Sans 11",
+      "fill-color": "#555753"
+    }
+  ]
+}

@@ -158,7 +158,8 @@ static gboolean widget_menuitem_parse_accel_value(const gchar *value,
  * The following widgets are maintained here:
  * 
  * menu - a GtkMenu attached to a GtkMenuItem
- * menuitem  - a GtkMenuItem, GtkCheckMenuItem, GtkRadioMenuItem or GtkImageMenuItem
+ * menuitem  - a GtkMenuItem, GtkCheckMenuItem, GtkRadioMenuItem,
+ *             GtkImageMenuItem or GtkTearoffMenuItem
  * menuitemseparator - a GtkSeparatorMenuItem
  * 
  * Apart from GtkMenu which is the menu shell, the rest are all
@@ -372,6 +373,7 @@ GtkWidget *widget_menuitem_create(
 	#define           TYPE_MENUITEM_CHECK 4
 	#define           TYPE_MENUITEM_RADIO 5
 	#define           TYPE_MENUITEM_SEPARATOR 6
+	#define           TYPE_MENUITEM_TEAROFF 7
 	GdkPixbuf        *pixbuf;
 	GError           *error = NULL;
 	GList            *element;
@@ -382,13 +384,14 @@ GtkWidget *widget_menuitem_create(
 	gchar            *active = "false";
 	gchar            *accel_key_value, *accel_mods_value;
 	gchar            *icon_name, *image_name;
-	gchar            *label, *stock_id;
+	gchar            *label = NULL, *stock_id = NULL;
 	gchar            *resolved_image;
 	gchar            *value;
 	gint              is_active;
 	gint              menuitemtype = TYPE_MENUITEM;
 	gint              width = -1, height = -1, size = 16;
 	guint             accel_key = 0, accel_mods = 0, custom_accel = 0;
+	gboolean          tearoff = FALSE;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -403,8 +406,16 @@ GtkWidget *widget_menuitem_create(
 	 * "stock[_id]" and "icon[_name]" were already being used within the
 	 * tree widget (I missed that) so I'll document the latter but accept
 	 * everything below (I'll have to now as they're likely being used) */
+	if (attr && (value = get_tag_attribute(attr, "tearoff"))) {
+		if (!widget_parse_boolean(value, &tearoff))
+			gtkdialog_warning(
+				"Invalid menuitem tearoff value '%s'; using false.", value);
+		kill_tag_attribute(attr, "tearoff");
+	}
 	if (Type == WIDGET_MENUITEMSEPARATOR) {
 		menuitemtype = TYPE_MENUITEM_SEPARATOR;
+	} else if (tearoff) {
+		menuitemtype = TYPE_MENUITEM_TEAROFF;
 	} else if (attr &&
 		(stock_id = get_tag_attribute(attr, "label")) &&
 		((value = get_tag_attribute(attr, "use-stock")) &&
@@ -435,8 +446,9 @@ GtkWidget *widget_menuitem_create(
 	}
 
 	/* Read declared directives */
-	/* Only separator menuitems don't support this */
-	if (menuitemtype != TYPE_MENUITEM_SEPARATOR) {
+	/* Separator and tearoff menuitems have no label child. */
+	if (menuitemtype != TYPE_MENUITEM_SEPARATOR &&
+		menuitemtype != TYPE_MENUITEM_TEAROFF) {
 		/* Set a default label */
 		attributeset_set_if_unset(Attr, ATTR_LABEL, "menuitem");
 		label = attributeset_get_first(&element, Attr, ATTR_LABEL);
@@ -477,8 +489,9 @@ GtkWidget *widget_menuitem_create(
 	 * when the menu end tag is detected the menu and accelerator group
 	 * are created and finally the menuitems are appended to the menu */
 
-	/* Only separator menuitems don't support this */
-	if (menuitemtype != TYPE_MENUITEM_SEPARATOR) {
+	/* Separator and tearoff menuitems don't support accelerators. */
+	if (menuitemtype != TYPE_MENUITEM_SEPARATOR &&
+		menuitemtype != TYPE_MENUITEM_TEAROFF) {
 		if (attr) {
 			accel_key_value = get_tag_attribute(attr, "accel-key");
 			accel_mods_value = get_tag_attribute(attr, "accel-mods");
@@ -504,6 +517,9 @@ GtkWidget *widget_menuitem_create(
 	switch (menuitemtype) {
 		case TYPE_MENUITEM_SEPARATOR:
 			widget = gtk_separator_menu_item_new();
+			break;
+		case TYPE_MENUITEM_TEAROFF:
+			widget = gtk_tearoff_menu_item_new();
 			break;
 		case TYPE_MENUITEM_IMAGE_STOCK:
 			/* Do not install the stock accelerator automatically: existing

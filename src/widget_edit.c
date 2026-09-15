@@ -22,6 +22,7 @@
 
 /* Includes */
 #define _GNU_SOURCE
+#include <errno.h>
 #include <gtk/gtk.h>
 #include "config.h"
 #include "gtkdialog.h"
@@ -31,6 +32,14 @@
 #include "signals.h"
 #include "tag_attributes.h"
 #include "scrolling.h"
+#if HAVE_GTKSPELL
+#include <gtkspell/gtkspell.h>
+#endif
+#if HAVE_GTKSOURCEVIEW
+#include <gtksourceview/gtksourceview.h>
+#include <gtksourceview/gtksourcelanguagemanager.h>
+#include <gtksourceview/gtksourcestyleschememanager.h>
+#endif
 
 /* Defines */
 //#define DEBUG_CONTENT
@@ -40,6 +49,8 @@
 static void widget_edit_input_by_command(variable *var, char *command);
 static void widget_edit_input_by_file(variable *var, char *filename);
 static void widget_edit_input_by_items(variable *var);
+static void widget_edit_setup_spell_check(GtkWidget *widget, tag_attr *attr);
+static GtkWidget *widget_edit_create_text_view(tag_attr *attr);
 
 /* Notes: */
 
@@ -69,6 +80,143 @@ void widget_edit_clear(variable *var)
  * Create                                                              *
  ***********************************************************************/
 
+static void widget_edit_setup_spell_check(GtkWidget *widget, tag_attr *attr)
+{
+	gchar *enabled;
+	gchar *language;
+
+	if (attr == NULL)
+		return;
+
+	enabled = get_tag_attribute(attr, "spell-check");
+	language = get_tag_attribute(attr, "spell-language");
+	if (widget_attribute_is_true(enabled)) {
+#if HAVE_GTKSPELL
+		GError *error = NULL;
+
+		if (gtkspell_new_attach(GTK_TEXT_VIEW(widget),
+			language != NULL && language[0] != '\0' ? language : NULL,
+			&error) == NULL) {
+			gtkdialog_warning("Spell checking could not be enabled%s%s: %s.",
+				language != NULL && language[0] != '\0' ? " for " : "",
+				language != NULL && language[0] != '\0' ? language : "",
+				error != NULL ? error->message : "unknown GtkSpell error");
+			g_clear_error(&error);
+		}
+#else
+		gtkdialog_warning("Spell checking was requested, but this build "
+			"does not include GtkSpell 2 support.");
+#endif
+	}
+
+	/* These are gtkdialog extensions, not GtkTextView properties. */
+	kill_tag_attribute(attr, "spell-check");
+	kill_tag_attribute(attr, "spell-language");
+}
+
+static void widget_edit_kill_source_attributes(tag_attr *attr)
+{
+	static const gchar *names[] = {
+		"sourceview",
+		"language",
+		"style-scheme",
+		"highlight-syntax",
+		"highlight-matching-brackets",
+		"max-undo-levels"
+	};
+	guint index;
+
+	for (index = 0; index < G_N_ELEMENTS(names); ++index)
+		kill_tag_attribute(attr, names[index]);
+}
+
+static GtkWidget *widget_edit_create_text_view(tag_attr *attr)
+{
+	GtkWidget *widget;
+	gchar *enabled;
+
+	if (attr == NULL)
+		return gtk_text_view_new();
+
+	enabled = get_tag_attribute(attr, "sourceview");
+	if (!widget_attribute_is_true(enabled)) {
+		kill_tag_attribute(attr, "sourceview");
+		return gtk_text_view_new();
+	}
+
+#if HAVE_GTKSOURCEVIEW
+	{
+		GtkSourceBuffer *buffer;
+		GtkSourceLanguage *language;
+		GtkSourceLanguageManager *language_manager;
+		GtkSourceStyleScheme *scheme;
+		GtkSourceStyleSchemeManager *scheme_manager;
+		gchar *end;
+		gchar *value;
+		gint64 undo_levels;
+
+		buffer = gtk_source_buffer_new(NULL);
+		widget = gtk_source_view_new_with_buffer(buffer);
+
+		value = get_tag_attribute(attr, "language");
+		if (value != NULL && value[0] != '\0') {
+			language_manager = gtk_source_language_manager_get_default();
+			language = gtk_source_language_manager_get_language(
+				language_manager, value);
+			if (language != NULL)
+				gtk_source_buffer_set_language(buffer, language);
+			else
+				gtkdialog_warning("GtkSourceView language '%s' was not found.",
+					value);
+		}
+
+		value = get_tag_attribute(attr, "style-scheme");
+		if (value != NULL && value[0] != '\0') {
+			scheme_manager = gtk_source_style_scheme_manager_get_default();
+			scheme = gtk_source_style_scheme_manager_get_scheme(
+				scheme_manager, value);
+			if (scheme != NULL)
+				gtk_source_buffer_set_style_scheme(buffer, scheme);
+			else
+				gtkdialog_warning("GtkSourceView style scheme '%s' was not found.",
+					value);
+		}
+
+		value = get_tag_attribute(attr, "highlight-syntax");
+		if (value != NULL)
+			gtk_source_buffer_set_highlight_syntax(buffer,
+				widget_attribute_is_true(value));
+		value = get_tag_attribute(attr, "highlight-matching-brackets");
+		if (value != NULL)
+			gtk_source_buffer_set_highlight_matching_brackets(buffer,
+				widget_attribute_is_true(value));
+		value = get_tag_attribute(attr, "max-undo-levels");
+		if (value != NULL) {
+			errno = 0;
+			undo_levels = g_ascii_strtoll(value, &end, 10);
+			while (g_ascii_isspace(*end))
+				++end;
+			if (errno == 0 && end != value && *end == '\0' &&
+				undo_levels >= -1 && undo_levels <= G_MAXINT)
+				gtk_source_buffer_set_max_undo_levels(buffer,
+					(gint)undo_levels);
+			else
+				gtkdialog_warning("Invalid GtkSourceView max-undo-levels value "
+					"'%s'.", value);
+		}
+
+		g_object_unref(buffer);
+	}
+#else
+	widget = gtk_text_view_new();
+	gtkdialog_warning("A source editor was requested, but this build does not "
+		"include GtkSourceView 2 support.");
+#endif
+
+	widget_edit_kill_source_attributes(attr);
+	return widget;
+}
+
 GtkWidget *widget_edit_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type)
 {
@@ -81,7 +229,8 @@ GtkWidget *widget_edit_create(
 	/* Thunor: This is all original code moved across when refactoring */
 #if GTK_CHECK_VERSION(2, 4, 0)
 
-	widget = gtk_text_view_new();
+	widget = widget_edit_create_text_view(attr);
+	widget_edit_setup_spell_check(widget, attr);
 
 #else
 

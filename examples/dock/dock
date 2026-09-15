@@ -1,0 +1,68 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+if ! "$GTKDIALOG" --version 2>/dev/null | grep -q 'GDL 2'; then
+	echo "This example requires gtkdialog built with GDL 2 support." >&2
+	exit 1
+fi
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-dock.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+DOCK_LAYOUT_FILE=$demo_dir/layout.xml
+export DOCK_LAYOUT_FILE
+
+MAIN_DIALOG='
+<window title="GTK2 docking workspace" width-request="860" height-request="540">
+	<vbox border-width="8" spacing="6">
+		<text use-markup="true">
+			<label>"<b>Drag panel grips to rearrange or detach the workspace.</b> Save and reload preserve the current layout."</label>
+		</text>
+		<dock switcher-style="both" show-dockbar="true"
+			dockbar-style="both" dockbar-orientation="vertical">
+			<dockitem name="files" position="left" target="editor"
+				docking-param="220" stock-id="gtk-directory">
+				<tree headers-visible="false">
+					<label>Project files</label>
+					<item>README.md</item>
+					<item>src</item>
+					<item>examples</item>
+				</tree>
+				<label>Files</label>
+				<action>echo "Selected panel: files"</action>
+			</dockitem>
+			<dockitem name="editor" position="center" stock-id="gtk-edit">
+				<edit>
+					<default>"#!/bin/sh
+echo &quot;GTKDialog docking workspace&quot;"</default>
+				</edit>
+				<label>Editor</label>
+				<action>echo "Selected panel: editor"</action>
+			</dockitem>
+			<dockitem name="output" position="bottom" target="editor"
+				docking-param="150" stock-id="gtk-info">
+				<text xalign="0" selectable="true">
+					<label>Build output appears here.</label>
+				</text>
+				<label>Output</label>
+				<action>echo "Selected panel: output"</action>
+			</dockitem>
+			<output file>'"$DOCK_LAYOUT_FILE"'</output>
+			<variable>WORKSPACE_LAYOUT</variable>
+			<action signal="layout-changed">echo "Layout changed"</action>
+		</dock>
+		<hbuttonbox>
+			<button><label>Save layout</label><action function="save">WORKSPACE_LAYOUT</action></button>
+			<button><label>Reload layout</label><action function="refresh">WORKSPACE_LAYOUT</action></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

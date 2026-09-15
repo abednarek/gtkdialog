@@ -10,6 +10,7 @@ SHOWCASE_PROFILE_IMAGE=$script_dir/../pfeme/pfeme48.png
 SHOWCASE_OUTPUT_DIR=${TMPDIR:-/tmp}
 SHOWCASE_CELL_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-cellview.txt
 SHOWCASE_CANVAS_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-canvas.png
+SHOWCASE_IMAGEVIEW_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-imageview.png
 SHOWCASE_CHOOSER_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-chooser.txt
 SHOWCASE_CHOOSER_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-chooser-input-$$.txt
 SHOWCASE_CHOOSER_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-chooser-status-$$.txt
@@ -33,10 +34,48 @@ SHOWCASE_TERMINAL_FEED=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-terminal-feed-$$.
 SHOWCASE_TERMINAL_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-terminal-status-$$.txt
 SHOWCASE_STATUS_ICON_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-status-icon-$$.txt
 SHOWCASE_STATUS_ICON_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-status-icon-output-$$.txt
+SHOWCASE_CURVE_LINEAR_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-curve-linear-$$.txt
+SHOWCASE_CURVE_SPLINE_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-curve-spline-$$.txt
+SHOWCASE_CURVE_FREE_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-curve-free-$$.txt
+SHOWCASE_SOURCE_C_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-source-$$.c
+SHOWCASE_SOURCE_XML_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-source-$$.xml
+SHOWCASE_SOURCE_C_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-source-c-$$.txt
+SHOWCASE_SOURCE_XML_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-source-xml-$$.txt
+SHOWCASE_DATABOX_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-databox-$$.txt
+SHOWCASE_DATABOX_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-databox-output-$$.txt
+SHOWCASE_DATABOX_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-databox-status-$$.txt
+SHOWCASE_SHEET_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-sheet-$$.txt
+SHOWCASE_SHEET_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-sheet-output-$$.txt
+SHOWCASE_SHEET_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-sheet-status-$$.txt
+SHOWCASE_DOCK_LAYOUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-dock-layout-$$.xml
+SHOWCASE_DOCK_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-dock-status-$$.txt
+SHOWCASE_OBJECT_SCENE=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-object-scene-$$.json
+SHOWCASE_OBJECT_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-object-output-$$.json
+SHOWCASE_OBJECT_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-object-status-$$.txt
+SHOWCASE_TASKLIST_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-tasklist-$$.txt
+SHOWCASE_TASKLIST_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-tasklist-status-$$.txt
+SHOWCASE_PAGER_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-pager-$$.txt
+SHOWCASE_PAGER_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-pager-status-$$.txt
+SHOWCASE_WINDOWSELECTOR_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-windowselector-$$.txt
+SHOWCASE_WINDOWSELECTOR_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-windowselector-status-$$.txt
+SHOWCASE_OFFSCREEN_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-offscreen-$$.png
+SHOWCASE_OFFSCREEN_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-offscreen-status-$$.txt
+SHOWCASE_PAGE_SETUP_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-page-setup-$$.ini
+SHOWCASE_PRINT_SETTINGS_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-print-settings-$$.ini
+SHOWCASE_PAGE_SETUP_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-page-setup-status-$$.txt
+SHOWCASE_PRINTER_OUTPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-printer-$$.txt
+SHOWCASE_PRINT_DIALOG_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-print-dialog-status-$$.txt
+SHOWCASE_FILE_DIALOG_DIR=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-$$
+SHOWCASE_FILE_DIALOG_SELECTION=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-selection-$$.txt
+SHOWCASE_FILE_DIALOG_RESPONSE=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-response-$$.txt
+SHOWCASE_FILE_DIALOG_FOLDER=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-folder-$$.txt
+SHOWCASE_FILE_DIALOG_STATUS=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-status-$$.txt
+SHOWCASE_FILE_DIALOG_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-input-$$.txt
+SHOWCASE_FILE_DIALOG_URI_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-uri-$$.txt
 SHOWCASE_PLUG_LAUNCHER=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-plug-$$.sh
 SHOWCASE_GTKDIALOG=$GTKDIALOG
 export SHOWCASE_IMAGE SHOWCASE_CANVAS_IMAGE SHOWCASE_PLAY_ICON SHOWCASE_PROFILE_IMAGE
-export SHOWCASE_CELL_OUTPUT SHOWCASE_CANVAS_OUTPUT
+export SHOWCASE_CELL_OUTPUT SHOWCASE_CANVAS_OUTPUT SHOWCASE_IMAGEVIEW_OUTPUT
 export SHOWCASE_CHOOSER_OUTPUT SHOWCASE_CHOOSER_INPUT SHOWCASE_CHOOSER_STATUS
 export SHOWCASE_ICON_LIST SHOWCASE_ICON_COMMAND_OUTPUT SHOWCASE_ICON_FILE_OUTPUT
 export SHOWCASE_MENU_STATE SHOWCASE_MENU_OUTPUT SHOWCASE_TOOL_OUTPUT SHOWCASE_MENU_STATUS
@@ -46,6 +85,25 @@ export SHOWCASE_SCROLL_LOG SHOWCASE_STATE_RESULT
 export SHOWCASE_TERMINAL_DEMO SHOWCASE_TERMINAL_EXIT SHOWCASE_TERMINAL_FEED
 export SHOWCASE_TERMINAL_STATUS
 export SHOWCASE_STATUS_ICON_INPUT SHOWCASE_STATUS_ICON_OUTPUT
+export SHOWCASE_CURVE_LINEAR_OUTPUT SHOWCASE_CURVE_SPLINE_OUTPUT
+export SHOWCASE_CURVE_FREE_OUTPUT
+export SHOWCASE_SOURCE_C_INPUT SHOWCASE_SOURCE_XML_INPUT
+export SHOWCASE_SOURCE_C_OUTPUT SHOWCASE_SOURCE_XML_OUTPUT
+export SHOWCASE_DATABOX_INPUT SHOWCASE_DATABOX_OUTPUT SHOWCASE_DATABOX_STATUS
+export SHOWCASE_SHEET_INPUT SHOWCASE_SHEET_OUTPUT SHOWCASE_SHEET_STATUS
+export SHOWCASE_DOCK_LAYOUT SHOWCASE_DOCK_STATUS
+export SHOWCASE_OBJECT_SCENE SHOWCASE_OBJECT_OUTPUT SHOWCASE_OBJECT_STATUS
+export SHOWCASE_TASKLIST_OUTPUT SHOWCASE_TASKLIST_STATUS
+export SHOWCASE_PAGER_OUTPUT SHOWCASE_PAGER_STATUS
+export SHOWCASE_WINDOWSELECTOR_OUTPUT SHOWCASE_WINDOWSELECTOR_STATUS
+export SHOWCASE_OFFSCREEN_OUTPUT SHOWCASE_OFFSCREEN_STATUS
+export SHOWCASE_PAGE_SETUP_OUTPUT SHOWCASE_PRINT_SETTINGS_OUTPUT
+export SHOWCASE_PAGE_SETUP_STATUS
+export SHOWCASE_PRINTER_OUTPUT SHOWCASE_PRINT_DIALOG_STATUS
+export SHOWCASE_FILE_DIALOG_DIR SHOWCASE_FILE_DIALOG_SELECTION
+export SHOWCASE_FILE_DIALOG_RESPONSE SHOWCASE_FILE_DIALOG_FOLDER
+export SHOWCASE_FILE_DIALOG_STATUS SHOWCASE_FILE_DIALOG_INPUT
+export SHOWCASE_FILE_DIALOG_URI_INPUT
 export SHOWCASE_PLUG_LAUNCHER SHOWCASE_GTKDIALOG
 
 : > "$SHOWCASE_SCROLL_LOG"
@@ -85,6 +143,84 @@ cp "$SHOWCASE_TERMINAL_DEMO" "$SHOWCASE_TERMINAL_FEED"
 printf '%s\n' 'The initial shell is running' > "$SHOWCASE_TERMINAL_STATUS"
 printf '%s\n' icon:dialog-information > "$SHOWCASE_STATUS_ICON_INPUT"
 printf '%s\n' \
+	'#include <stdio.h>' \
+	'' \
+	'int main(void)' \
+	'{' \
+	'    puts("GTKDialog with GtkSourceView 2");' \
+	'    return 0;' \
+	'}' > "$SHOWCASE_SOURCE_C_INPUT"
+printf '%s\n' \
+	'<window title="Source editor">' \
+	'  <vbox spacing="8">' \
+	'    <text><label>GTK2 source editing</label></text>' \
+	'    <button ok></button>' \
+	'  </vbox>' \
+	'</window>' > "$SHOWCASE_SOURCE_XML_INPUT"
+printf '%s\n' \
+	'1|2|4|1' '2|4|3|2' '3|3|6|4' '4|7|5|3' \
+	'5|6|8|6' '6|9|7|5' '7|8|10|8' '8|12|9|7' \
+	> "$SHOWCASE_DATABOX_INPUT"
+printf '%s\n' 'Drag across the first plot to report a selection.' \
+	> "$SHOWCASE_DATABOX_STATUS"
+printf '%s\n' \
+	'Apples|12|2.50|Fresh' \
+	'Coffee|4|7.00|Low stock' \
+	'Pears|8|3.00|Fresh' \
+	'Tea|16|5.75|Restocked' > "$SHOWCASE_SHEET_INPUT"
+printf '%s\n' 'Edit a cell and leave it to commit the value.' \
+	> "$SHOWCASE_SHEET_STATUS"
+printf '%s\n' 'Drag a grip, select a tab or use the layout controls.' \
+	> "$SHOWCASE_DOCK_STATUS"
+cp "$script_dir/../canvas/scene.json" "$SHOWCASE_OBJECT_SCENE" || exit 1
+printf '%s\n' 'Activate or drag an object to report its JSON id.' \
+	> "$SHOWCASE_OBJECT_STATUS"
+printf '%s\n' 'Activate another desktop window to update the exported XID.' \
+	> "$SHOWCASE_TASKLIST_STATUS"
+printf '%s\n' 'Click a workspace preview to switch desktops.' \
+	> "$SHOWCASE_PAGER_STATUS"
+printf '%s\n' 'Open either icon menu and choose a managed desktop window.' \
+	> "$SHOWCASE_WINDOWSELECTOR_STATUS"
+printf '%s\n' 'The initial off-screen snapshot is ready.' \
+	> "$SHOWCASE_OFFSCREEN_STATUS"
+printf '%s\n' \
+	'[Page Setup]' \
+	'PPDName=A4' \
+	'DisplayName=A4' \
+	'Width=210' \
+	'Height=297' \
+	'MarginTop=12' \
+	'MarginBottom=12' \
+	'MarginLeft=15' \
+	'MarginRight=15' \
+	'Orientation=portrait' > "$SHOWCASE_PAGE_SETUP_OUTPUT"
+printf '%s\n' \
+	'[Print Settings]' \
+	'gtkdialog-empty-settings=true' > "$SHOWCASE_PRINT_SETTINGS_OUTPUT"
+printf '%s\n' 'A4 portrait · margins 12 / 12 / 15 / 15 mm' \
+	> "$SHOWCASE_PAGE_SETUP_STATUS"
+printf '%s' '' > "$SHOWCASE_PRINTER_OUTPUT"
+printf '%s\n' 'No print job is submitted; choose settings and close the dialog.' \
+	> "$SHOWCASE_PRINT_DIALOG_STATUS"
+mkdir "$SHOWCASE_FILE_DIALOG_DIR" || exit 1
+printf '%s\n' 'GTKDialog file chooser sample' \
+	> "$SHOWCASE_FILE_DIALOG_DIR/alpha.txt"
+printf '%s\n' '# GTKDialog GTK2 showcase' \
+	> "$SHOWCASE_FILE_DIALOG_DIR/beta.md"
+printf '%s\n' 'A third file is left unselected to demonstrate exact multi-input.' \
+	> "$SHOWCASE_FILE_DIALOG_DIR/notes.txt"
+printf '%s/alpha.txt\n%s/beta.md\n' \
+	"$SHOWCASE_FILE_DIALOG_DIR" "$SHOWCASE_FILE_DIALOG_DIR" \
+	> "$SHOWCASE_FILE_DIALOG_INPUT"
+printf 'file://%s/alpha.txt\nfile://%s/beta.md\n' \
+	"$SHOWCASE_FILE_DIALOG_DIR" "$SHOWCASE_FILE_DIALOG_DIR" \
+	> "$SHOWCASE_FILE_DIALOG_URI_INPUT"
+: > "$SHOWCASE_FILE_DIALOG_SELECTION"
+: > "$SHOWCASE_FILE_DIALOG_RESPONSE"
+printf '%s' "$SHOWCASE_FILE_DIALOG_DIR" > "$SHOWCASE_FILE_DIALOG_FOLDER"
+printf '%s\n' 'Choose a profile; responses save and refresh these fields.' \
+	> "$SHOWCASE_FILE_DIALOG_STATUS"
+printf '%s\n' \
 	'#!/bin/sh' \
 	'socket_id=$1' \
 	'gtkdialog_bin=$2' \
@@ -93,7 +229,7 @@ printf '%s\n' \
 	'exec "$gtkdialog_bin" --program=SHOWCASE_PLUG_DIALOG' \
 	> "$SHOWCASE_PLUG_LAUNCHER"
 chmod +x "$SHOWCASE_PLUG_LAUNCHER"
-trap 'rm -f -- "$SHOWCASE_SCROLL_LOG" "$SHOWCASE_STATE_RESULT" "$SHOWCASE_CHOOSER_INPUT" "$SHOWCASE_CHOOSER_STATUS" "$SHOWCASE_ICON_LIST" "$SHOWCASE_ICON_COMMAND_OUTPUT" "$SHOWCASE_ICON_FILE_OUTPUT" "$SHOWCASE_MENU_STATE" "$SHOWCASE_MENU_OUTPUT" "$SHOWCASE_TOOL_OUTPUT" "$SHOWCASE_MENU_STATUS" "$SHOWCASE_RECENT_DOCUMENT" "$SHOWCASE_RECENT_DATA/recently-used.xbel" "$SHOWCASE_TERMINAL_DEMO" "$SHOWCASE_TERMINAL_EXIT" "$SHOWCASE_TERMINAL_FEED" "$SHOWCASE_TERMINAL_STATUS" "$SHOWCASE_STATUS_ICON_INPUT" "$SHOWCASE_STATUS_ICON_OUTPUT" "$SHOWCASE_PLUG_LAUNCHER"; rmdir "$SHOWCASE_RECENT_DATA" 2>/dev/null || :' 0
+trap 'rm -f -- "$SHOWCASE_SCROLL_LOG" "$SHOWCASE_STATE_RESULT" "$SHOWCASE_CHOOSER_INPUT" "$SHOWCASE_CHOOSER_STATUS" "$SHOWCASE_ICON_LIST" "$SHOWCASE_ICON_COMMAND_OUTPUT" "$SHOWCASE_ICON_FILE_OUTPUT" "$SHOWCASE_MENU_STATE" "$SHOWCASE_MENU_OUTPUT" "$SHOWCASE_TOOL_OUTPUT" "$SHOWCASE_MENU_STATUS" "$SHOWCASE_RECENT_DOCUMENT" "$SHOWCASE_RECENT_DATA/recently-used.xbel" "$SHOWCASE_TERMINAL_DEMO" "$SHOWCASE_TERMINAL_EXIT" "$SHOWCASE_TERMINAL_FEED" "$SHOWCASE_TERMINAL_STATUS" "$SHOWCASE_STATUS_ICON_INPUT" "$SHOWCASE_STATUS_ICON_OUTPUT" "$SHOWCASE_CURVE_LINEAR_OUTPUT" "$SHOWCASE_CURVE_SPLINE_OUTPUT" "$SHOWCASE_CURVE_FREE_OUTPUT" "$SHOWCASE_SOURCE_C_INPUT" "$SHOWCASE_SOURCE_XML_INPUT" "$SHOWCASE_SOURCE_C_OUTPUT" "$SHOWCASE_SOURCE_XML_OUTPUT" "$SHOWCASE_DATABOX_INPUT" "$SHOWCASE_DATABOX_OUTPUT" "$SHOWCASE_DATABOX_STATUS" "$SHOWCASE_SHEET_INPUT" "$SHOWCASE_SHEET_OUTPUT" "$SHOWCASE_SHEET_STATUS" "$SHOWCASE_DOCK_LAYOUT" "$SHOWCASE_DOCK_STATUS" "$SHOWCASE_OBJECT_SCENE" "$SHOWCASE_OBJECT_OUTPUT" "$SHOWCASE_OBJECT_STATUS" "$SHOWCASE_TASKLIST_OUTPUT" "$SHOWCASE_TASKLIST_STATUS" "$SHOWCASE_PAGER_OUTPUT" "$SHOWCASE_PAGER_STATUS" "$SHOWCASE_WINDOWSELECTOR_OUTPUT" "$SHOWCASE_WINDOWSELECTOR_STATUS" "$SHOWCASE_OFFSCREEN_OUTPUT" "$SHOWCASE_OFFSCREEN_STATUS" "$SHOWCASE_PAGE_SETUP_OUTPUT" "$SHOWCASE_PRINT_SETTINGS_OUTPUT" "$SHOWCASE_PAGE_SETUP_STATUS" "$SHOWCASE_PRINTER_OUTPUT" "$SHOWCASE_PRINT_DIALOG_STATUS" "$SHOWCASE_FILE_DIALOG_SELECTION" "$SHOWCASE_FILE_DIALOG_RESPONSE" "$SHOWCASE_FILE_DIALOG_FOLDER" "$SHOWCASE_FILE_DIALOG_STATUS" "$SHOWCASE_FILE_DIALOG_INPUT" "$SHOWCASE_FILE_DIALOG_URI_INPUT" "$SHOWCASE_FILE_DIALOG_DIR/alpha.txt" "$SHOWCASE_FILE_DIALOG_DIR/beta.md" "$SHOWCASE_FILE_DIALOG_DIR/notes.txt" "$SHOWCASE_PLUG_LAUNCHER"; rmdir "$SHOWCASE_FILE_DIALOG_DIR" 2>/dev/null || :; rmdir "$SHOWCASE_RECENT_DATA" 2>/dev/null || :' 0
 
 SHOWCASE_WIDGET_CONTEXT_MENU='
 <popupmenu>
@@ -290,6 +426,1199 @@ else
 fi
 export SHOWCASE_TERMINAL_PAGE
 
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSpell 2'; then
+	SHOWCASE_SPELL_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkSpell 2 adds inline feedback and correction choices to the native GtkTextView menu. Right-click an underlined word.</label></text>
+				</infobar>
+				<hpaned position="450" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false" space-expand="true"
+					space-fill="true">
+					<frame>
+						<vbox border-width="8" spacing="6">
+							<edit spell-check="true" spell-language="en_US"
+								wrap-mode="2" space-expand="true" space-fill="true">
+								<variable>SHOWCASE_SPELL_TEXT</variable>
+								<default>This sentense contains a deliberate mispelling. Right-click sentense or mispelling to choose a correction, add the word to the dictionary or change language.</default>
+								<height>390</height>
+							</edit>
+							<text xalign="0"><label>spell-check=true · en_US dictionary</label></text>
+						</vbox>
+						<label>GtkSpell-enabled editor</label>
+					</frame>
+					<frame>
+						<vbox border-width="8" spacing="6">
+							<edit spell-check="false" wrap-mode="2"
+								space-expand="true" space-fill="true">
+								<variable>SHOWCASE_PLAIN_TEXT</variable>
+								<default>This sentense contains a deliberate mispelling. This comparison editor keeps the historical GTK2 behaviour and does not request a spelling backend.</default>
+								<height>390</height>
+							</edit>
+							<text xalign="0"><label>spell-check=false · unchanged legacy behaviour</label></text>
+						</vbox>
+						<label>Plain editor</label>
+					</frame>
+				</hpaned>
+			</vbox>'
+else
+	SHOWCASE_SPELL_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without GtkSpell 2; install its development files and rebuild to activate inline checking.</label></text>
+				</infobar>
+				<frame>
+					<edit editable="false" wrap-mode="2" space-expand="true"
+						space-fill="true">
+						<default>The edit widget remains fully usable without GtkSpell 2. Existing dialogs and the default editor behaviour are unchanged.</default>
+						<variable export="false">SHOWCASE_SPELL_UNAVAILABLE</variable>
+					</edit>
+					<label>Optional spell-checking integration</label>
+				</frame>
+			</vbox>'
+fi
+export SHOWCASE_SPELL_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSourceView 2'; then
+	SHOWCASE_SOURCE_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>The standard edit widget can opt into GtkSourceView 2 while retaining its variables, file input/output, actions, monitoring and native GtkTextView behaviour.</label></text>
+				</infobar>
+				<hpaned position="455" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false" space-expand="true"
+					space-fill="true">
+					<frame>
+						<vbox border-width="8" spacing="6">
+							<edit sourceview="true" language="c" style-scheme="classic"
+								highlight-syntax="true" highlight-matching-brackets="true"
+								max-undo-levels="100" show-line-numbers="true"
+								show-line-marks="true" highlight-current-line="true"
+								auto-indent="true" indent-on-tab="true"
+								insert-spaces-instead-of-tabs="true" tab-width="4"
+								indent-width="4" show-right-margin="true"
+								right-margin-position="44" smart-home-end="before"
+								space-expand="true" space-fill="true">
+								<input file>'"$SHOWCASE_SOURCE_C_INPUT"'</input>
+								<output file>'"$SHOWCASE_SOURCE_C_OUTPUT"'</output>
+								<variable>SHOWCASE_SOURCE_C</variable>
+								<height>360</height>
+							</edit>
+							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Clear</label><action>clear:SHOWCASE_SOURCE_C</action></button>
+								<button><label>Reload C</label><action>refresh:SHOWCASE_SOURCE_C</action></button>
+								<button><label>Save</label><action>save:SHOWCASE_SOURCE_C</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>Classic · C · line numbers, mark gutter and margin</label>
+					</frame>
+					<frame>
+						<vbox border-width="8" spacing="6">
+							<edit sourceview="true" language="xml" style-scheme="cobalt"
+								highlight-syntax="true" highlight-matching-brackets="true"
+								max-undo-levels="50" show-line-numbers="true"
+								highlight-current-line="true" auto-indent="true"
+								indent-on-tab="true" tab-width="2" indent-width="2"
+								draw-spaces="tab|trailing" smart-home-end="always"
+								space-expand="true" space-fill="true">
+								<input file>'"$SHOWCASE_SOURCE_XML_INPUT"'</input>
+								<output file>'"$SHOWCASE_SOURCE_XML_OUTPUT"'</output>
+								<variable>SHOWCASE_SOURCE_XML</variable>
+								<height>360</height>
+							</edit>
+							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Clear</label><action>clear:SHOWCASE_SOURCE_XML</action></button>
+								<button><label>Reload XML</label><action>refresh:SHOWCASE_SOURCE_XML</action></button>
+								<button><label>Save</label><action>save:SHOWCASE_SOURCE_XML</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>Cobalt · XML · whitespace and smart Home/End</label>
+					</frame>
+					<variable>SHOWCASE_SOURCE_DIVIDER</variable>
+				</hpaned>
+			</vbox>'
+else
+	SHOWCASE_SOURCE_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without GtkSourceView 2; the ordinary edit widget remains available and unchanged.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_SOURCE_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GooCanvas 1'; then
+	SHOWCASE_OBJECT_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GooCanvas renders a versioned JSON object tree. Activate any identified item or drag the yellow rectangle, blue ellipse and violet translucent card.</label></text>
+				</infobar>
+				<hpaned position="680" child1-resize="true" child1-shrink="false"
+					child2-resize="false" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<drawingarea goocanvas="true" background="#f6f5f4"
+							canvas-right="660" canvas-bottom="360"
+							space-expand="true" space-fill="true">
+							<width>650</width><height>360</height>
+							<input file format="json">'"$SHOWCASE_OBJECT_SCENE"'</input>
+							<item>{"type":"rect","id":"violet-card","x":475,"y":105,"width":135,"height":62,"fill-color":"#813d9c","stroke-color":"#613583","line-width":3,"opacity":0.76,"rotation":-4,"tooltip":"A draggable translucent and rotated object","draggable":true}</item>
+							<item>{"type":"text","id":"violet-label","text":"opacity + rotation","x":543,"y":132,"anchor":"center","font":"Sans Bold 10","fill-color":"#ffffff","rotation":-4}</item>
+							<item>{"type":"image","id":"gtkdialog-icon","file":"'"$SHOWCASE_IMAGE"'","x":470,"y":20,"scale":1.25,"tooltip":"A scaled raster image inside the object scene"}</item>
+							<item>{"type":"text","id":"hidden-item","text":"This item is intentionally hidden","x":20,"y":15,"visible":false}</item>
+							<output file format="json">'"$SHOWCASE_OBJECT_OUTPUT"'</output>
+							<variable>SHOWCASE_OBJECT_ITEM</variable>
+							<action>printf "%s\n" "Activated JSON id: $SHOWCASE_OBJECT_ITEM" > "$SHOWCASE_OBJECT_STATUS"</action>
+							<action>refresh:SHOWCASE_OBJECT_STATUS_VIEW</action>
+							<action signal="item-moved">printf "%s\n" "Moved and persisted: $SHOWCASE_OBJECT_ITEM" > "$SHOWCASE_OBJECT_STATUS"</action>
+							<action signal="item-moved">refresh:SHOWCASE_OBJECT_STATUS_VIEW</action>
+						</drawingarea>
+						<label>Nested group · shapes · path · polyline · text · image</label>
+					</frame>
+					<frame>
+						<vbox border-width="9" spacing="8" width-request="205">
+							<text use-markup="true" xalign="0"><label>"<b>Scene capabilities</b>"</label></text>
+							<text xalign="0"><label>Recursive groups</label></text>
+							<text xalign="0"><label>Rectangles and ellipses</label></text>
+							<text xalign="0"><label>SVG-compatible paths</label></text>
+							<text xalign="0"><label>Open or closed polylines</label></text>
+							<text xalign="0"><label>Pango fonts and raster images</label></text>
+							<hseparator></hseparator>
+							<text use-markup="true" xalign="0"><label>"<b>Per-item properties</b>"</label></text>
+							<text xalign="0"><label>Fill and stroke colours</label></text>
+							<text xalign="0"><label>Opacity and visibility</label></text>
+							<text xalign="0"><label>Translation, scale and rotation</label></text>
+							<text xalign="0"><label>Tooltips and draggable items</label></text>
+							<hseparator></hseparator>
+							<text xalign="0" use-markup="true"><label>"<b>Save</b> keeps drag offsets."</label></text>
+						</vbox>
+						<label>JSON object model</label>
+					</frame>
+				</hpaned>
+				<hbox spacing="8" space-expand="false" space-fill="true">
+					<hbuttonbox layout-style="start" spacing="6">
+						<button><label>Zoom in</label><input file stock="gtk-zoom-in"></input><action>zoomin:SHOWCASE_OBJECT_ITEM</action></button>
+						<button><label>Zoom out</label><input file stock="gtk-zoom-out"></input><action>zoomout:SHOWCASE_OBJECT_ITEM</action></button>
+						<button><label>Actual size</label><input file stock="gtk-zoom-100"></input><action>zoomreset:SHOWCASE_OBJECT_ITEM</action></button>
+						<button><label>Reload JSON</label><input file stock="gtk-refresh"></input><action>refresh:SHOWCASE_OBJECT_ITEM</action><action>printf "%s\n" "Original JSON scene reloaded." > "$SHOWCASE_OBJECT_STATUS"</action><action>refresh:SHOWCASE_OBJECT_STATUS_VIEW</action></button>
+						<button><label>Save JSON</label><input file stock="gtk-save"></input><action>save:SHOWCASE_OBJECT_ITEM</action><action>printf "%s\n" "Current scene saved to $SHOWCASE_OBJECT_OUTPUT" > "$SHOWCASE_OBJECT_STATUS"</action><action>refresh:SHOWCASE_OBJECT_STATUS_VIEW</action></button>
+						<button><label>Clear</label><input file stock="gtk-clear"></input><action>clear:SHOWCASE_OBJECT_ITEM</action><action>printf "%s\n" "Scene cleared; Reload JSON restores it." > "$SHOWCASE_OBJECT_STATUS"</action><action>refresh:SHOWCASE_OBJECT_STATUS_VIEW</action></button>
+					</hbuttonbox>
+				</hbox>
+				<entry editable="false">
+					<input file>'"$SHOWCASE_OBJECT_STATUS"'</input>
+					<variable>SHOWCASE_OBJECT_STATUS_VIEW</variable>
+				</entry>
+			</vbox>'
+else
+	SHOWCASE_OBJECT_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without GooCanvas 1; ordinary raster drawing areas remain available and unchanged.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_OBJECT_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkDatabox 0.9'; then
+	SHOWCASE_DATABOX_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkDatabox mode adds fast numeric plots to the existing drawingarea tag. These panels compare mixed renderers, explicit limits and a logarithmic scale.</label></text>
+				</infobar>
+				<hbox homogeneous="true" spacing="8" space-expand="true"
+					space-fill="true">
+					<frame>
+						<vbox border-width="6" spacing="5">
+							<drawingarea databox="true" background="#ffffff"
+								series-types="lines|points|bars"
+								series-colors="#3465a4|#f57900|#4e9a06"
+								series-sizes="2|5|4" show-grid="true"
+								grid-color="#b8c4d0" grid-horizontal-lines="6"
+								grid-vertical-lines="8" grid-line-style="dotted"
+								enable-selection="true" enable-zoom="true"
+								box-shadow="1" space-expand="true" space-fill="true">
+								<width>270</width><height>330</height>
+								<input file>'"$SHOWCASE_DATABOX_INPUT"'</input>
+								<output file>'"$SHOWCASE_DATABOX_OUTPUT"'</output>
+								<variable>SHOWCASE_DATABOX_MIXED</variable>
+								<action>printf "%s\n" "Selection: $SHOWCASE_DATABOX_MIXED" > "$SHOWCASE_DATABOX_STATUS"</action>
+								<action>refresh:SHOWCASE_DATABOX_STATUS_VIEW</action>
+							</drawingarea>
+							<text xalign="0"><label>lines · points · bars · file input</label></text>
+						</vbox>
+						<label>Mixed series and selection</label>
+					</frame>
+					<frame>
+						<vbox border-width="6" spacing="5">
+							<drawingarea databox="true" background="#fffaf0"
+								series-types="bars" series-colors="#75507b"
+								series-sizes="12" show-grid="true"
+								grid-color="#d3c2d6" grid-horizontal-lines="5"
+								grid-vertical-lines="4" grid-line-style="solid"
+								auto-rescale="false" min-x="0" max-x="9"
+								min-y="0" max-y="14" box-shadow="2"
+								space-expand="true" space-fill="true">
+								<width>270</width><height>330</height>
+								<item>1|3</item><item>2|6</item><item>3|5</item>
+								<item>4|10</item><item>5|8</item><item>6|12</item>
+								<item>7|7</item><item>8|11</item>
+								<variable>SHOWCASE_DATABOX_BARS</variable>
+							</drawingarea>
+							<text xalign="0"><label>bars · solid grid · fixed 0…14 limits</label></text>
+						</vbox>
+						<label>Explicit plot range</label>
+					</frame>
+					<frame>
+						<vbox border-width="6" spacing="5">
+							<drawingarea databox="true" background="#f7fbff"
+								series-types="lines|points"
+								series-colors="#cc0000|#204a87"
+								series-sizes="2|5" show-grid="true"
+								grid-color="#a9bfd0" grid-horizontal-lines="4"
+								grid-vertical-lines="5" grid-line-style="dashed"
+								scale-type-y="log" enable-selection="true"
+								enable-zoom="true" box-shadow="1"
+								space-expand="true" space-fill="true">
+								<width>270</width><height>330</height>
+								<item>1|1|2</item><item>2|10|4</item>
+								<item>4|100|16</item><item>8|1000|64</item>
+								<item>16|10000|256</item>
+								<variable>SHOWCASE_DATABOX_LOG</variable>
+							</drawingarea>
+							<text xalign="0"><label>line · points · dashed grid · log Y</label></text>
+						</vbox>
+						<label>Native logarithmic scale</label>
+					</frame>
+				</hbox>
+				<hbuttonbox layout-style="spread" spacing="6" space-expand="false">
+					<button><label>Zoom selection</label><action>zoomin:SHOWCASE_DATABOX_MIXED</action></button>
+					<button><label>Zoom out</label><action>zoomout:SHOWCASE_DATABOX_MIXED</action></button>
+					<button><label>Reset zoom</label><action>zoomreset:SHOWCASE_DATABOX_MIXED</action></button>
+					<button><label>Reload data</label><action>refresh:SHOWCASE_DATABOX_MIXED</action></button>
+					<button><label>Save data</label><action>save:SHOWCASE_DATABOX_MIXED</action></button>
+				</hbuttonbox>
+				<entry editable="false">
+					<input file>'"$SHOWCASE_DATABOX_STATUS"'</input>
+					<variable>SHOWCASE_DATABOX_STATUS_VIEW</variable>
+				</entry>
+			</vbox>'
+else
+	SHOWCASE_DATABOX_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without GtkDatabox 0.9; ordinary raster drawing areas remain available and unchanged.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_DATABOX_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSheet 3'; then
+	SHOWCASE_SHEET_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkSheet 3 adds editable GTK2 spreadsheets without changing table, grid or tree. The three views compare fixed headers, automatic sizing and a headerless scratch pad.</label></text>
+				</infobar>
+				<hpaned position="555" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<vbox border-width="7" spacing="6">
+							<sheet columns="4" rows="12" title="Inventory"
+								bgcolor="#ffffff" grid-color="#9eb6ce"
+								column-labels="Item|Quantity|Price|Status"
+								column-widths="155|70|70|125"
+								row-titles="true" column-titles="true"
+								editable="true" autoresize-columns="false"
+								autoresize-rows="false" clip-text="true"
+								selection-mode="single" space-expand="true"
+								space-fill="true">
+								<input file>'"$SHOWCASE_SHEET_INPUT"'</input>
+								<output file>'"$SHOWCASE_SHEET_OUTPUT"'</output>
+								<variable>SHOWCASE_SHEET_CELL</variable>
+								<action>printf "%s\n" "Committed: $SHOWCASE_SHEET_CELL" &gt; "$SHOWCASE_SHEET_STATUS"</action>
+								<action>refresh:SHOWCASE_SHEET_STATUS_VIEW</action>
+								<height>350</height>
+							</sheet>
+							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Reload</label><action>refresh:SHOWCASE_SHEET_CELL</action></button>
+								<button><label>Save</label><action>save:SHOWCASE_SHEET_CELL</action></button>
+								<button><label>Clear</label><action>clear:SHOWCASE_SHEET_CELL</action></button>
+							</hbuttonbox>
+							<entry editable="false">
+								<input file>'"$SHOWCASE_SHEET_STATUS"'</input>
+								<variable>SHOWCASE_SHEET_STATUS_VIEW</variable>
+							</entry>
+						</vbox>
+						<label>Editable · explicit widths · clipped text · single cell</label>
+					</frame>
+					<vpaned position="235" child1-resize="true" child1-shrink="false"
+						child2-resize="true" child2-shrink="false">
+						<frame>
+							<sheet columns="3" rows="6" title="Read-only summary"
+								bgcolor="#ffffff" grid-color="#9eb6ce"
+								column-labels="Task|Owner|Result"
+								row-titles="false" column-titles="true"
+								editable="false" autoresize-columns="true"
+								autoresize-rows="true" clip-text="false"
+								selection-mode="multiple" space-expand="true"
+								space-fill="true">
+								<item>Build GTK2|Artur|Passed</item>
+								<item>Run glibc tests|CI|6 / 6</item>
+								<item>Run musl tests|Alpine|6 / 6</item>
+								<item>Compare rendering|Reference|Identical</item>
+								<variable>SHOWCASE_SHEET_SUMMARY</variable>
+								<height>175</height>
+							</sheet>
+							<label>Read-only · auto-sized · multiple selection</label>
+						</frame>
+						<frame>
+							<sheet columns="3" rows="5" title="Scratch pad"
+								bgcolor="#ffffff" grid-color="#9eb6ce"
+								column-widths="125|125|125"
+								row-titles="true" column-titles="false"
+								editable="true" clip-text="false"
+								selection-mode="browse" space-expand="true"
+								space-fill="true">
+								<item>Headerless|editable|cells</item>
+								<item>Browse|selection|mode</item>
+								<variable>SHOWCASE_SHEET_SCRATCH</variable>
+								<action signal="changed">echo "Scratch cell: $SHOWCASE_SHEET_SCRATCH"</action>
+								<height>155</height>
+							</sheet>
+							<label>Headerless · browse selection · live changed action</label>
+						</frame>
+					</vpaned>
+				</hpaned>
+			</vbox>'
+else
+	SHOWCASE_SHEET_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without GtkSheet 3; table, grid and tree remain available and unchanged.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_SHEET_PAGE
+
+SHOWCASE_HAVE_GDL=false
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GDL 2'; then
+	SHOWCASE_HAVE_GDL=true
+	SHOWCASE_DOCK_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Drag the panel grips to rearrange or detach them. Editor and Preview share the central switcher; iconified panels appear in the vertical dock bar.</label></text>
+				</infobar>
+				<dock switcher-style="both" show-dockbar="true"
+					dockbar-style="both" dockbar-orientation="vertical"
+					default-title="GTKDialog detached panel"
+					space-expand="true" space-fill="true">
+					<dockitem name="files" position="left" target="editor"
+						docking-param="185" stock-id="gtk-directory"
+						behavior="never-floating|cant-close">
+						<tree headers-visible="false" rules-hint="true">
+							<label>Project item</label>
+							<item>README.md</item>
+							<item>ChangeLog</item>
+							<item>src/</item>
+							<item>examples/</item>
+							<item>doc/</item>
+							<variable>SHOWCASE_DOCK_FILES_TREE</variable>
+						</tree>
+						<label>Files</label>
+						<variable>SHOWCASE_DOCK_FILES</variable>
+						<action>printf "%s\n" "Selected Files panel" > "$SHOWCASE_DOCK_STATUS"</action>
+						<action>refresh:SHOWCASE_DOCK_STATUS_VIEW</action>
+					</dockitem>
+					<dockitem name="editor" position="center" stock-id="gtk-edit"
+						behavior="cant-close|cant-iconify">
+						<edit tab-width="4" space-expand="true" space-fill="true">
+							<default>"#!/bin/sh
+
+echo GTKDialog-docking-workspace
+gtkdialog --program=MAIN_DIALOG"</default>
+							<variable>SHOWCASE_DOCK_EDITOR</variable>
+						</edit>
+						<label>Editor</label>
+						<variable>SHOWCASE_DOCK_EDITOR_PANEL</variable>
+						<action>printf "%s\n" "Selected Editor tab" > "$SHOWCASE_DOCK_STATUS"</action>
+						<action>refresh:SHOWCASE_DOCK_STATUS_VIEW</action>
+					</dockitem>
+					<dockitem name="inspector" position="right" target="editor"
+						docking-param="215" stock-id="gtk-properties">
+						<grid rows="5" columns="2" row-spacing="7"
+							column-spacing="8" border-width="9">
+							<text row="0" column="0" xalign="0"><label>Title</label></text>
+							<entry row="0" column="1"><default>Docked application</default><variable>SHOWCASE_DOCK_TITLE</variable></entry>
+							<text row="1" column="0" xalign="0"><label>Width</label></text>
+							<spinbutton row="1" column="1" range-min="320" range-max="1600" range-step="10" range-value="860"><variable>SHOWCASE_DOCK_WIDTH</variable></spinbutton>
+							<checkbox row="2" column="0" column-span="2"><label>Resizable window</label><default>true</default><variable>SHOWCASE_DOCK_RESIZABLE</variable></checkbox>
+							<comboboxtext row="3" column="0" column-span="2"><item>Development</item><item>Testing</item><item>Release</item><default>Development</default><variable>SHOWCASE_DOCK_MODE</variable></comboboxtext>
+							<button row="4" column="0" column-span="2"><label>Apply properties</label></button>
+						</grid>
+						<label>Inspector</label>
+						<variable>SHOWCASE_DOCK_INSPECTOR</variable>
+						<action>printf "%s\n" "Selected Inspector panel" > "$SHOWCASE_DOCK_STATUS"</action>
+						<action>refresh:SHOWCASE_DOCK_STATUS_VIEW</action>
+					</dockitem>
+					<dockitem name="output" position="bottom" target="editor"
+						docking-param="135" stock-id="gtk-info"
+						behavior="cant-close">
+						<edit editable="false">
+							<default>"$ make check
+PASS: test-cli.sh
+PASS: test-lifecycle.sh
+GTK2 workspace is ready."</default>
+							<variable>SHOWCASE_DOCK_OUTPUT</variable>
+							<height>85</height>
+						</edit>
+						<label>Output</label>
+						<variable>SHOWCASE_DOCK_OUTPUT_PANEL</variable>
+						<action>printf "%s\n" "Selected Output panel" > "$SHOWCASE_DOCK_STATUS"</action>
+						<action>refresh:SHOWCASE_DOCK_STATUS_VIEW</action>
+					</dockitem>
+					<dockitem name="preview" position="center" target="editor"
+						stock-id="gtk-execute">
+						<vbox border-width="12" spacing="10">
+							<text use-markup="true"><label>"<big><b>Live preview</b></big>"</label></text>
+							<pixmap><input file>'"$SHOWCASE_IMAGE"'</input></pixmap>
+							<progressbar fraction="0.62" text="Native GTK2 content"><variable>SHOWCASE_DOCK_PROGRESS</variable></progressbar>
+							<button><label>Run preview action</label><action>echo "Preview action from $SHOWCASE_DOCK_PREVIEW"</action></button>
+						</vbox>
+						<label>Preview</label>
+						<variable>SHOWCASE_DOCK_PREVIEW</variable>
+						<action>printf "%s\n" "Selected Preview tab" > "$SHOWCASE_DOCK_STATUS"</action>
+						<action>refresh:SHOWCASE_DOCK_STATUS_VIEW</action>
+					</dockitem>
+					<input file>'"$SHOWCASE_DOCK_LAYOUT"'</input>
+					<output file>'"$SHOWCASE_DOCK_LAYOUT"'</output>
+					<variable>SHOWCASE_DOCK_WORKSPACE</variable>
+					<action signal="layout-changed">printf "%s\n" "Layout changed; save it to make the arrangement persistent." > "$SHOWCASE_DOCK_STATUS"</action>
+					<action signal="layout-changed">refresh:SHOWCASE_DOCK_STATUS_VIEW</action>
+				</dock>
+				<hbox spacing="8" space-expand="false" space-fill="true">
+					<hbuttonbox layout-style="start" spacing="6">
+						<button><label>Save layout</label><input file stock="gtk-save"></input><action>save:SHOWCASE_DOCK_WORKSPACE</action><action>printf "%s\n" "Layout saved; workspace value: $SHOWCASE_DOCK_WORKSPACE" > "$SHOWCASE_DOCK_STATUS"</action><action>refresh:SHOWCASE_DOCK_STATUS_VIEW</action></button>
+						<button><label>Reload layout</label><input file stock="gtk-refresh"></input><action>refresh:SHOWCASE_DOCK_WORKSPACE</action><action>printf "%s\n" "Saved layout reloaded." > "$SHOWCASE_DOCK_STATUS"</action><action>refresh:SHOWCASE_DOCK_STATUS_VIEW</action></button>
+						<button><label>Hide inspector</label><action>hide:SHOWCASE_DOCK_INSPECTOR</action></button>
+						<button><label>Show inspector</label><action>show:SHOWCASE_DOCK_INSPECTOR</action></button>
+					</hbuttonbox>
+					<entry editable="false" space-expand="true" space-fill="true">
+						<input file>'"$SHOWCASE_DOCK_STATUS"'</input>
+						<variable>SHOWCASE_DOCK_STATUS_VIEW</variable>
+					</entry>
+				</hbox>
+			</vbox>'
+
+	SHOWCASE_DOCK_SEED='
+<window title="GTKDialog layout initialiser" width-request="860"
+	height-request="540" opacity="0" skip-taskbar-hint="true"
+	skip-pager-hint="true" decorated="false">
+	<vbox>
+		<dock>
+			<dockitem name="files" position="left" target="editor" docking-param="185"><text width-request="185" height-request="300"><label>Files</label></text></dockitem>
+			<dockitem name="editor" position="center"><text width-request="390" height-request="300"><label>Editor</label></text></dockitem>
+			<dockitem name="inspector" position="right" target="editor" docking-param="215"><text width-request="215" height-request="300"><label>Inspector</label></text></dockitem>
+			<dockitem name="output" position="bottom" target="editor" docking-param="135"><text width-request="390" height-request="135"><label>Output</label></text></dockitem>
+			<dockitem name="preview" position="center" target="editor"><text width-request="390" height-request="300"><label>Preview</label></text></dockitem>
+			<output file>'"$SHOWCASE_DOCK_LAYOUT"'</output>
+			<variable>SHOWCASE_DOCK_SEED_LAYOUT</variable>
+		</dock>
+		<timer milliseconds="true" interval="150" visible="false">
+			<variable export="false">SHOWCASE_DOCK_SEED_TIMER</variable>
+			<action>save:SHOWCASE_DOCK_SEED_LAYOUT</action>
+			<action>exit:OK</action>
+		</timer>
+	</vbox>
+</window>'
+else
+	SHOWCASE_DOCK_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without GDL 2; rebuild with GDL to activate the rearrangeable docking workspace.</label></text>
+				</infobar>
+				<frame>
+					<text><label>The optional dock and dockitem tags retain GTK2 frame fallbacks in reduced builds.</label></text>
+					<label>Optional GDL 2 integration</label>
+				</frame>
+			</vbox>'
+	SHOWCASE_DOCK_SEED=
+fi
+export SHOWCASE_DOCK_PAGE SHOWCASE_DOCK_SEED SHOWCASE_HAVE_GDL
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'libwnck 2'; then
+	SHOWCASE_TASKLIST_PAGE='
+			<vbox border-width="10" spacing="9">
+				<infobar message-type="info">
+					<text><label>These native libwnck 2 task lists compare workspace filtering, application grouping and GTK2 button relief. Clicking a task activates its window.</label></text>
+				</infobar>
+				<frame>
+					<vbox border-width="8" spacing="5">
+						<tasklist screen="0" grouping="never"
+							include-all-workspaces="false" button-relief="normal"
+							minimum-height="42" height-request="32"
+							space-expand="false" space-fill="true">
+							<variable>SHOWCASE_TASKLIST_CURRENT</variable>
+							<action signal="active-window-changed">printf "%s\n" "Current-workspace list: $SHOWCASE_TASKLIST_CURRENT" > "$SHOWCASE_TASKLIST_STATUS"</action>
+							<action signal="active-window-changed">refresh:SHOWCASE_TASKLIST_STATUS_VIEW</action>
+						</tasklist>
+						<text xalign="0"><label>Individual applications · current workspace · normal relief</label></text>
+					</vbox>
+					<label>Never group</label>
+				</frame>
+				<frame>
+					<vbox border-width="8" spacing="5">
+						<tasklist grouping="auto" grouping-limit="120"
+							include-all-workspaces="true"
+							switch-workspace-on-unminimize="true"
+							button-relief="half" minimum-height="42" height-request="32"
+							space-expand="false" space-fill="true">
+							<variable>SHOWCASE_TASKLIST_AUTO</variable>
+							<output file>'"$SHOWCASE_TASKLIST_OUTPUT"'</output>
+							<action signal="active-window-changed">printf "%s\n" "Automatic all-workspace list: $SHOWCASE_TASKLIST_AUTO" > "$SHOWCASE_TASKLIST_STATUS"</action>
+							<action signal="active-window-changed">refresh:SHOWCASE_TASKLIST_STATUS_VIEW</action>
+						</tasklist>
+						<text xalign="0"><label>All workspaces · automatic grouping below 120 px · half relief</label></text>
+					</vbox>
+					<label>Automatic grouping</label>
+				</frame>
+				<frame>
+					<vbox border-width="8" spacing="5">
+						<tasklist grouping="always" include-all-workspaces="true"
+							button-relief="none" minimum-height="42" height-request="32"
+							space-expand="false" space-fill="true">
+							<variable>SHOWCASE_TASKLIST_GROUPED</variable>
+						</tasklist>
+						<text xalign="0"><label>All workspaces · always grouped by application · no relief</label></text>
+					</vbox>
+					<label>Always group</label>
+				</frame>
+				<hbuttonbox layout-style="spread" spacing="6" space-expand="false">
+					<button><label>Refresh windows</label><input file stock="gtk-refresh"></input><action>refresh:SHOWCASE_TASKLIST_CURRENT</action><action>refresh:SHOWCASE_TASKLIST_AUTO</action><action>refresh:SHOWCASE_TASKLIST_GROUPED</action></button>
+					<button><label>Save active XID</label><input file stock="gtk-save"></input><action>save:SHOWCASE_TASKLIST_AUTO</action></button>
+					<button><label>Hide grouped</label><action>hide:SHOWCASE_TASKLIST_GROUPED</action></button>
+					<button><label>Show grouped</label><action>show:SHOWCASE_TASKLIST_GROUPED</action></button>
+				</hbuttonbox>
+				<entry editable="false">
+					<input file>'"$SHOWCASE_TASKLIST_STATUS"'</input>
+					<variable>SHOWCASE_TASKLIST_STATUS_VIEW</variable>
+				</entry>
+			</vbox>'
+else
+	SHOWCASE_TASKLIST_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without libwnck 2; rebuild with it to activate native X11 task lists.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_TASKLIST_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'libwnck 2'; then
+	SHOWCASE_PAGER_PAGE='
+			<vbox border-width="10" spacing="9">
+				<infobar message-type="info">
+					<text><label>Native libwnck 2 pagers can show live window previews or workspace names. Clicking any cell activates that X11 workspace.</label></text>
+				</infobar>
+				<frame>
+					<vbox border-width="8" spacing="5">
+						<pager screen="0" orientation="horizontal" rows="2"
+							display-mode="content" show-all-workspaces="true"
+							shadow-type="in" height-request="165"
+							space-expand="true" space-fill="true">
+							<variable>SHOWCASE_PAGER_CONTENT</variable>
+							<output file>'"$SHOWCASE_PAGER_OUTPUT"'</output>
+							<action signal="active-workspace-changed">printf "%s\n" "Content pager selected workspace $SHOWCASE_PAGER_CONTENT" > "$SHOWCASE_PAGER_STATUS"</action>
+							<action signal="active-workspace-changed">refresh:SHOWCASE_PAGER_STATUS_VIEW</action>
+							<action signal="workspace-created">printf "%s\n" "A workspace was created" > "$SHOWCASE_PAGER_STATUS"</action>
+							<action signal="workspace-destroyed">printf "%s\n" "A workspace was removed" > "$SHOWCASE_PAGER_STATUS"</action>
+						</pager>
+						<text xalign="0"><label>Live window contents · two-row layout hint · inset shadow</label></text>
+					</vbox>
+					<label>Content mode</label>
+				</frame>
+				<hbox spacing="9" homogeneous="true" space-expand="true" space-fill="true">
+					<frame>
+						<vbox border-width="8" spacing="5">
+							<pager display-mode="name" show-all-workspaces="true"
+								shadow-type="etched-in" height-request="65">
+								<variable>SHOWCASE_PAGER_NAMES</variable>
+								<action signal="active-workspace-changed">printf "%s\n" "Name pager selected workspace $SHOWCASE_PAGER_NAMES" > "$SHOWCASE_PAGER_STATUS"</action>
+								<action signal="active-workspace-changed">refresh:SHOWCASE_PAGER_STATUS_VIEW</action>
+							</pager>
+							<text xalign="0"><label>Workspace names · etched frame</label></text>
+						</vbox>
+						<label>Name mode</label>
+					</frame>
+					<frame>
+						<vbox border-width="8" spacing="5">
+							<pager display-mode="content" show-all-workspaces="false"
+								shadow-type="out" height-request="65">
+								<variable>SHOWCASE_PAGER_ACTIVE_ONLY</variable>
+								<action signal="active-workspace-changed">printf "%s\n" "Active-only pager selected workspace $SHOWCASE_PAGER_ACTIVE_ONLY" > "$SHOWCASE_PAGER_STATUS"</action>
+								<action signal="active-workspace-changed">refresh:SHOWCASE_PAGER_STATUS_VIEW</action>
+							</pager>
+							<text xalign="0"><label>Active workspace only · raised shadow</label></text>
+						</vbox>
+						<label>Filtered mode</label>
+					</frame>
+				</hbox>
+				<hbuttonbox layout-style="spread" spacing="6" space-expand="false">
+					<button><label>Refresh pagers</label><input file stock="gtk-refresh"></input><action>refresh:SHOWCASE_PAGER_CONTENT</action><action>refresh:SHOWCASE_PAGER_NAMES</action><action>refresh:SHOWCASE_PAGER_ACTIVE_ONLY</action></button>
+					<button><label>Save active index</label><input file stock="gtk-save"></input><action>save:SHOWCASE_PAGER_CONTENT</action></button>
+					<button><label>Hide names</label><action>hide:SHOWCASE_PAGER_NAMES</action></button>
+					<button><label>Show names</label><action>show:SHOWCASE_PAGER_NAMES</action></button>
+				</hbuttonbox>
+				<entry editable="false">
+					<input file>'"$SHOWCASE_PAGER_STATUS"'</input>
+					<variable>SHOWCASE_PAGER_STATUS_VIEW</variable>
+				</entry>
+			</vbox>'
+else
+	SHOWCASE_PAGER_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without libwnck 2; rebuild with it to activate native X11 workspace pagers.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_PAGER_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'libwnck 2'; then
+	SHOWCASE_WINDOWSELECTOR_PAGE='
+			<vbox border-width="10" spacing="9">
+				<infobar message-type="info">
+					<text><label>WnckSelector is a compact live menu of managed X11 windows. Its icon follows the active window; each menu item shows the application icon and current title.</label></text>
+				</infobar>
+				<frame>
+					<hbox border-width="10" spacing="12" space-expand="false" space-fill="true">
+						<windowselector width-request="42" height-request="28"
+							space-expand="false" space-fill="false">
+							<variable>SHOWCASE_WINDOWSELECTOR_COMPACT</variable>
+							<output file>'"$SHOWCASE_WINDOWSELECTOR_OUTPUT"'</output>
+							<action signal="active-window-changed">printf "%s\n" "Compact selector activated XID $SHOWCASE_WINDOWSELECTOR_COMPACT" > "$SHOWCASE_WINDOWSELECTOR_STATUS"</action>
+							<action signal="active-window-changed">refresh:SHOWCASE_WINDOWSELECTOR_STATUS_VIEW</action>
+						</windowselector>
+						<vseparator></vseparator>
+						<vbox spacing="4" space-expand="true" space-fill="true">
+							<text use-markup="true" xalign="0"><label>"<b>Natural compact form</b> — open the icon menu and select any listed window."</label></text>
+							<text xalign="0"><label>The variable and output contain the active window XID; refresh can also activate an XID read from input.</label></text>
+						</vbox>
+					</hbox>
+					<label>Active-window selector</label>
+				</frame>
+				<frame>
+					<hbox border-width="10" spacing="12" space-expand="true" space-fill="true">
+						<windowselector width-request="250" height-request="28"
+							sensitive="false" space-expand="true" space-fill="true">
+							<variable>SHOWCASE_WINDOWSELECTOR_WIDE</variable>
+							<action signal="active-window-changed">printf "%s\n" "Wide selector activated XID $SHOWCASE_WINDOWSELECTOR_WIDE" > "$SHOWCASE_WINDOWSELECTOR_STATUS"</action>
+							<action signal="active-window-changed">refresh:SHOWCASE_WINDOWSELECTOR_STATUS_VIEW</action>
+						</windowselector>
+						<text xalign="0" space-expand="true" space-fill="true"><label>A second instance starts insensitive and fills its allocation, demonstrating normal GTK2 state and packing attributes without changing the native menu.</label></text>
+					</hbox>
+					<label>Shared widget contract</label>
+				</frame>
+				<hbuttonbox layout-style="spread" spacing="6" space-expand="false">
+					<button><label>Refresh menus</label><input file stock="gtk-refresh"></input><action>refresh:SHOWCASE_WINDOWSELECTOR_COMPACT</action><action>refresh:SHOWCASE_WINDOWSELECTOR_WIDE</action></button>
+					<button><label>Save active XID</label><input file stock="gtk-save"></input><action>save:SHOWCASE_WINDOWSELECTOR_COMPACT</action></button>
+					<button><label>Disable wide</label><action>disable:SHOWCASE_WINDOWSELECTOR_WIDE</action></button>
+					<button><label>Enable wide</label><action>enable:SHOWCASE_WINDOWSELECTOR_WIDE</action></button>
+					<button><label>Hide wide</label><action>hide:SHOWCASE_WINDOWSELECTOR_WIDE</action></button>
+					<button><label>Show wide</label><action>show:SHOWCASE_WINDOWSELECTOR_WIDE</action></button>
+				</hbuttonbox>
+				<entry editable="false">
+					<input file>'"$SHOWCASE_WINDOWSELECTOR_STATUS"'</input>
+					<variable>SHOWCASE_WINDOWSELECTOR_STATUS_VIEW</variable>
+				</entry>
+			</vbox>'
+else
+	SHOWCASE_WINDOWSELECTOR_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without libwnck 2; rebuild with it to activate native X11 window-selector menus.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_WINDOWSELECTOR_PAGE
+
+SHOWCASE_OFFSCREEN_CONTENT='
+			<frame>
+				<vbox border-width="12" spacing="10">
+					<hbox spacing="12">
+						<pixmap stock-icon-size="6">
+							<input file stock="gtk-dialog-info"></input>
+						</pixmap>
+						<vbox spacing="2">
+							<text use-markup="true" xalign="0">
+								<label>"<big><b>Weekly GTK2 build report</b></big>"</label>
+							</text>
+							<text xalign="0"><label>A complete declarative hierarchy rendered to PNG.</label></text>
+						</vbox>
+					</hbox>
+					<hseparator></hseparator>
+					<grid rows="3" columns="3" row-spacing="8" column-spacing="12">
+						<text row="0" column="0" use-markup="true" xalign="0"><label>"<b>Component</b>"</label></text>
+						<text row="0" column="1" use-markup="true" xalign="0"><label>"<b>Result</b>"</label></text>
+						<text row="0" column="2" use-markup="true" xalign="0"><label>"<b>Coverage</b>"</label></text>
+						<text row="1" column="0" xalign="0"><label>Core widgets</label></text>
+						<text row="1" column="1" use-markup="true" xalign="0"><label>"<b>Passed</b>"</label></text>
+						<progressbar row="1" column="2" fraction="1" text="100%"></progressbar>
+						<text row="2" column="0" xalign="0"><label>Compatibility paths</label></text>
+						<text row="2" column="1" use-markup="true" xalign="0"><label>"<b>Running</b>"</label></text>
+						<progressbar row="2" column="2" fraction="0.84" text="84%"></progressbar>
+					</grid>
+					<hbox spacing="8">
+						<checkbox sensitive="false"><label>GTK2 interface retained</label><default>true</default></checkbox>
+						<checkbox sensitive="false"><label>Image export enabled</label><default>true</default></checkbox>
+					</hbox>
+				</vbox>
+				<label>Off-screen report card</label>
+			</frame>'
+
+SHOWCASE_OFFSCREEN_SEED='
+<offscreenwindow border-width="14">
+	<vbox spacing="8">
+		'"$SHOWCASE_OFFSCREEN_CONTENT"'
+		<timer milliseconds="true" interval="120" visible="false">
+			<variable export="false">SHOWCASE_OFFSCREEN_SEED_TIMER</variable>
+			<action function="disable">SHOWCASE_OFFSCREEN_SEED_TIMER</action>
+			<action function="save">SHOWCASE_OFFSCREEN_SEED</action>
+			<action function="closewindow">SHOWCASE_OFFSCREEN_SEED</action>
+		</timer>
+	</vbox>
+	<width>620</width>
+	<height>300</height>
+	<output file>'"$SHOWCASE_OFFSCREEN_OUTPUT"'</output>
+	<variable>SHOWCASE_OFFSCREEN_SEED</variable>
+</offscreenwindow>'
+export SHOWCASE_OFFSCREEN_SEED
+
+SHOWCASE_OFFSCREEN_DIALOG='
+<offscreenwindow border-width="14">
+	<vbox spacing="8">
+		'"$SHOWCASE_OFFSCREEN_CONTENT"'
+		<timer milliseconds="true" interval="120" visible="false">
+			<variable export="false">SHOWCASE_OFFSCREEN_TIMER</variable>
+			<action function="disable">SHOWCASE_OFFSCREEN_TIMER</action>
+			<action function="refresh">SHOWCASE_OFFSCREEN_DIALOG</action>
+			<action function="save">SHOWCASE_OFFSCREEN_DIALOG</action>
+			<action>printf "%s\n" "Regenerated off-screen PNG: $SHOWCASE_OFFSCREEN_OUTPUT" > "$SHOWCASE_OFFSCREEN_STATUS"</action>
+			<action function="refresh">SHOWCASE_OFFSCREEN_PREVIEW</action>
+			<action function="refresh">SHOWCASE_OFFSCREEN_STATUS_VIEW</action>
+			<action function="closewindow">SHOWCASE_OFFSCREEN_DIALOG</action>
+		</timer>
+	</vbox>
+	<width>620</width>
+	<height>300</height>
+	<output file>'"$SHOWCASE_OFFSCREEN_OUTPUT"'</output>
+	<action signal="damage-event">echo "Off-screen content redrawn"</action>
+	<variable>SHOWCASE_OFFSCREEN_DIALOG</variable>
+</offscreenwindow>'
+export SHOWCASE_OFFSCREEN_DIALOG
+
+SHOWCASE_OFFSCREEN_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkOffscreenWindow renders a complete GTK2 hierarchy without placing another window on the desktop. The preview below is the PNG produced by that invisible program root.</label></text>
+				</infobar>
+				<hpaned position="650" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<alignment xalign="0.5" yalign="0.5" xscale="0" yscale="0">
+							<pixmap>
+								<input file>'"$SHOWCASE_OFFSCREEN_OUTPUT"'</input>
+								<variable>SHOWCASE_OFFSCREEN_PREVIEW</variable>
+							</pixmap>
+						</alignment>
+						<label>Rendered PNG · 620 × 300</label>
+					</frame>
+					<frame>
+						<vbox border-width="10" spacing="10">
+							<text use-markup="true" xalign="0"><label>"<b>Invisible top-level lifecycle</b>"</label></text>
+							<text wrap="true" width-request="225" xalign="0"><label>The action launches a fresh off-screen root, waits for its first draw, saves it, refreshes this preview and closes only that root.</label></text>
+							<button>
+								<label>Regenerate PNG</label>
+								<input file stock="gtk-refresh"></input>
+								<action function="launch">SHOWCASE_OFFSCREEN_DIALOG</action>
+							</button>
+							<entry editable="false">
+								<default>'"$SHOWCASE_OFFSCREEN_OUTPUT"'</default>
+								<variable export="false">SHOWCASE_OFFSCREEN_PATH</variable>
+							</entry>
+							<entry editable="false">
+								<input file>'"$SHOWCASE_OFFSCREEN_STATUS"'</input>
+								<variable>SHOWCASE_OFFSCREEN_STATUS_VIEW</variable>
+							</entry>
+							<text wrap="true" width-request="225" xalign="0"><label>The filename extension selects the GdkPixbuf writer. The same root can be closed and launched again without transferring child ownership.</label></text>
+						</vbox>
+						<label>Save, refresh and relaunch</label>
+					</frame>
+					<variable>SHOWCASE_OFFSCREEN_DIVIDER</variable>
+				</hpaned>
+			</vbox>'
+export SHOWCASE_OFFSCREEN_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GTK2 Unix printing'; then
+	SHOWCASE_PAGE_SETUP_DIALOG='
+<pagesetupdialog title="GTKDialog · saved page setup"
+	page-setup-file="'"$SHOWCASE_PAGE_SETUP_OUTPUT"'"
+	print-settings-file="'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'">
+	<output file>'"$SHOWCASE_PAGE_SETUP_OUTPUT"'</output>
+	<output file print-settings="true">'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'</output>
+	<action signal="response" function="save">SHOWCASE_PAGE_SETUP_DIALOG</action>
+	<action signal="response">printf "%s\n" "Saved native page and print settings" > "$SHOWCASE_PAGE_SETUP_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_PAGE_SETUP_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_SETTINGS_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PAGE_SETUP_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_PAGE_SETUP_DIALOG</action>
+	<variable>SHOWCASE_PAGE_SETUP_DIALOG</variable>
+</pagesetupdialog>'
+
+	SHOWCASE_CUSTOM_PAGE_SETUP_DIALOG='
+<pagesetupdialog title="GTKDialog · custom square paper"
+	paper-name="gtkdialog-square" paper-width="180" paper-height="180"
+	orientation="reverse-landscape" top-margin="8" bottom-margin="8"
+	left-margin="10" right-margin="10">
+	<output file>'"$SHOWCASE_PAGE_SETUP_OUTPUT"'</output>
+	<output file print-settings="true">'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'</output>
+	<action signal="response" function="save">SHOWCASE_CUSTOM_PAGE_SETUP_DIALOG</action>
+	<action signal="response">printf "%s\n" "Saved custom 180 × 180 mm page setup" > "$SHOWCASE_PAGE_SETUP_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_PAGE_SETUP_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_SETTINGS_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PAGE_SETUP_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_CUSTOM_PAGE_SETUP_DIALOG</action>
+	<variable>SHOWCASE_CUSTOM_PAGE_SETUP_DIALOG</variable>
+</pagesetupdialog>'
+	export SHOWCASE_PAGE_SETUP_DIALOG SHOWCASE_CUSTOM_PAGE_SETUP_DIALOG
+
+	SHOWCASE_PAGE_SETUP_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>The new root opens GTK2 native Unix page setup. It persists paper, orientation, margins and printer-specific settings in reusable GTK key files.</label></text>
+				</infobar>
+				<hpaned position="485" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<vbox spacing="8">
+						<frame>
+							<grid rows="4" columns="2" row-spacing="8" column-spacing="14"
+								border-width="10">
+								<text row="0" column="0" use-markup="true" xalign="0"><label>"<b>Saved standard setup</b>"</label></text>
+								<text row="0" column="1" xalign="0"><label>A4 · portrait</label></text>
+								<text row="1" column="0" use-markup="true" xalign="0"><label>"<b>Custom paper</b>"</label></text>
+								<text row="1" column="1" xalign="0"><label>180 × 180 mm</label></text>
+								<text row="2" column="0" use-markup="true" xalign="0"><label>"<b>Orientations</b>"</label></text>
+								<text row="2" column="1" xalign="0"><label>All four GTK2 modes</label></text>
+								<text row="3" column="0" use-markup="true" xalign="0"><label>"<b>Margins</b>"</label></text>
+								<text row="3" column="1" xalign="0"><label>Independent millimetre values</label></text>
+							</grid>
+							<label>Declarative setup options</label>
+						</frame>
+						<frame>
+							<edit editable="false" wrap-mode="none" hscrollbar-policy="2"
+								vscrollbar-policy="1" height-request="190">
+								<input file>'"$SHOWCASE_PAGE_SETUP_OUTPUT"'</input>
+								<variable>SHOWCASE_PAGE_SETUP_SOURCE</variable>
+							</edit>
+							<label>Current GtkPageSetup key file</label>
+						</frame>
+					</vbox>
+					<vbox spacing="8">
+						<frame>
+							<vbox border-width="10" spacing="8">
+								<text use-markup="true" xalign="0"><label>"<big><b>Native page setup lifecycle</b></big>"</label></text>
+								<text wrap="true" width-request="335" xalign="0"><label>Open the saved setup, change its native controls, then Apply or Cancel. The response runs save, refresh and close synchronously; opening it again loads the resulting key files.</label></text>
+								<button>
+									<label>Open saved page setup</label>
+									<input file stock="gtk-page-setup"></input>
+									<action function="launch">SHOWCASE_PAGE_SETUP_DIALOG</action>
+								</button>
+								<button>
+									<label>Open custom square preset</label>
+									<input file stock="gtk-properties"></input>
+									<action function="launch">SHOWCASE_CUSTOM_PAGE_SETUP_DIALOG</action>
+								</button>
+								<button>
+									<label>Reload key-file previews</label>
+									<input file stock="gtk-refresh"></input>
+									<action function="refresh">SHOWCASE_PAGE_SETUP_SOURCE</action>
+									<action function="refresh">SHOWCASE_PRINT_SETTINGS_SOURCE</action>
+									<action function="refresh">SHOWCASE_PAGE_SETUP_STATUS_VIEW</action>
+								</button>
+								<entry editable="false">
+									<input file>'"$SHOWCASE_PAGE_SETUP_STATUS"'</input>
+									<variable>SHOWCASE_PAGE_SETUP_STATUS_VIEW</variable>
+								</entry>
+							</vbox>
+							<label>Save, close and relaunch</label>
+						</frame>
+						<frame>
+							<edit editable="false" wrap-mode="none" hscrollbar-policy="2"
+								vscrollbar-policy="1" height-request="120">
+								<input file>'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'</input>
+								<variable>SHOWCASE_PRINT_SETTINGS_SOURCE</variable>
+							</edit>
+							<label>GtkPrintSettings key file</label>
+						</frame>
+					</vbox>
+					<variable>SHOWCASE_PAGE_SETUP_DIVIDER</variable>
+				</hpaned>
+			</vbox>'
+
+	SHOWCASE_PRINT_DIALOG='
+<printdialog title="GTKDialog · complete print settings"
+	page-setup-file="'"$SHOWCASE_PAGE_SETUP_OUTPUT"'"
+	print-settings-file="'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'"
+	current-page="3" support-selection="true" has-selection="true"
+	embed-page-setup="true" manual-capabilities="all">
+	<output file>'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'</output>
+	<output file page-setup="true">'"$SHOWCASE_PAGE_SETUP_OUTPUT"'</output>
+	<output file printer="true">'"$SHOWCASE_PRINTER_OUTPUT"'</output>
+	<action signal="response" function="save">SHOWCASE_PRINT_DIALOG</action>
+	<action signal="response">printf "%s\n" "Complete dialog response: $SHOWCASE_PRINT_DIALOG · settings saved, no print job submitted" > "$SHOWCASE_PRINT_DIALOG_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_DIALOG_SETTINGS_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_DIALOG_PAGE_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINTER_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_DIALOG_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_PRINT_DIALOG</action>
+	<variable>SHOWCASE_PRINT_DIALOG</variable>
+</printdialog>'
+
+	SHOWCASE_COMPACT_PRINT_DIALOG='
+<printdialog title="GTKDialog · compact print settings"
+	page-setup-file="'"$SHOWCASE_PAGE_SETUP_OUTPUT"'"
+	print-settings-file="'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'"
+	current-page="-1" support-selection="false" has-selection="false"
+	embed-page-setup="false" manual-capabilities="copies|collate">
+	<output file>'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'</output>
+	<output file page-setup="true">'"$SHOWCASE_PAGE_SETUP_OUTPUT"'</output>
+	<output file printer="true">'"$SHOWCASE_PRINTER_OUTPUT"'</output>
+	<action signal="response" function="save">SHOWCASE_COMPACT_PRINT_DIALOG</action>
+	<action signal="response">printf "%s\n" "Compact dialog response: $SHOWCASE_COMPACT_PRINT_DIALOG · settings saved, no print job submitted" > "$SHOWCASE_PRINT_DIALOG_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_DIALOG_SETTINGS_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_DIALOG_PAGE_SOURCE</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINTER_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_PRINT_DIALOG_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_COMPACT_PRINT_DIALOG</action>
+	<variable>SHOWCASE_COMPACT_PRINT_DIALOG</variable>
+</printdialog>'
+	export SHOWCASE_PRINT_DIALOG SHOWCASE_COMPACT_PRINT_DIALOG
+
+	SHOWCASE_PRINT_DIALOG_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkPrintUnixDialog collects native printer, range, copy and page choices as reusable settings. This showcase never creates or submits a print job.</label></text>
+				</infobar>
+				<hpaned position="475" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<vbox spacing="8">
+						<frame>
+							<grid rows="4" columns="2" row-spacing="8" column-spacing="12"
+								border-width="10">
+								<text row="0" column="0" use-markup="true" xalign="0"><label>"<b>Complete dialog</b>"</label></text>
+								<text row="0" column="1" xalign="0"><label>All declared capabilities</label></text>
+								<text row="1" column="0" use-markup="true" xalign="0"><label>"<b>Selection/current page</b>"</label></text>
+								<text row="1" column="1" xalign="0"><label>Enabled · current index 3</label></text>
+								<text row="2" column="0" use-markup="true" xalign="0"><label>"<b>Embedded page setup</b>"</label></text>
+								<text row="2" column="1" xalign="0"><label>Paper and orientation controls</label></text>
+								<text row="3" column="0" use-markup="true" xalign="0"><label>"<b>Compact dialog</b>"</label></text>
+								<text row="3" column="1" xalign="0"><label>Copies and collation only</label></text>
+							</grid>
+							<label>Two capability profiles</label>
+						</frame>
+						<hbuttonbox layout-style="center" spacing="8">
+							<button>
+								<label>Open complete dialog</label>
+								<input file stock="gtk-print"></input>
+								<action function="launch">SHOWCASE_PRINT_DIALOG</action>
+							</button>
+							<button>
+								<label>Open compact dialog</label>
+								<input file stock="gtk-properties"></input>
+								<action function="launch">SHOWCASE_COMPACT_PRINT_DIALOG</action>
+							</button>
+						</hbuttonbox>
+						<entry editable="false">
+							<input file>'"$SHOWCASE_PRINT_DIALOG_STATUS"'</input>
+							<variable>SHOWCASE_PRINT_DIALOG_STATUS_VIEW</variable>
+						</entry>
+						<entry editable="false">
+							<input file>'"$SHOWCASE_PRINTER_OUTPUT"'</input>
+							<variable>SHOWCASE_PRINTER_VIEW</variable>
+						</entry>
+						<text xalign="0"><label>The lower field contains the selected printer name and remains empty when no backend printer is selected.</label></text>
+					</vbox>
+					<vbox spacing="8">
+						<frame>
+							<edit editable="false" wrap-mode="none" hscrollbar-policy="2"
+								vscrollbar-policy="1" height-request="225">
+								<input file>'"$SHOWCASE_PRINT_SETTINGS_OUTPUT"'</input>
+								<variable>SHOWCASE_PRINT_DIALOG_SETTINGS_SOURCE</variable>
+							</edit>
+							<label>Reusable GtkPrintSettings key file</label>
+						</frame>
+						<frame>
+							<edit editable="false" wrap-mode="none" hscrollbar-policy="2"
+								vscrollbar-policy="1" height-request="140">
+								<input file>'"$SHOWCASE_PAGE_SETUP_OUTPUT"'</input>
+								<variable>SHOWCASE_PRINT_DIALOG_PAGE_SOURCE</variable>
+							</edit>
+							<label>Shared GtkPageSetup key file</label>
+						</frame>
+					</vbox>
+					<variable>SHOWCASE_PRINT_DIALOG_DIVIDER</variable>
+				</hpaned>
+			</vbox>'
+else
+	SHOWCASE_PAGE_SETUP_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without gtk+-unix-print-2.0; install the GTK2 Unix printing development module to activate the native page-setup dialog.</label></text>
+				</infobar>
+			</vbox>'
+	SHOWCASE_PRINT_DIALOG_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>This gtkdialog binary was built without gtk+-unix-print-2.0; install the GTK2 Unix printing development module to activate the native print-settings dialog.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_PAGE_SETUP_PAGE SHOWCASE_PRINT_DIALOG_PAGE
+
+SHOWCASE_FILE_OPEN_DIALOG='
+<filechooserdialog title="GTKDialog · multiple file selection" action="open"
+	current-folder="'"$SHOWCASE_FILE_DIALOG_DIR"'" select-multiple="true"
+	filter-name="Text and Markdown" filter-pattern="*.txt;*.md"
+	shortcut-folders="'"$SHOWCASE_FILE_DIALOG_DIR"'">
+	<input file>'"$SHOWCASE_FILE_DIALOG_INPUT"'</input>
+	<output file>'"$SHOWCASE_FILE_DIALOG_SELECTION"'</output>
+	<output file response="true">'"$SHOWCASE_FILE_DIALOG_RESPONSE"'</output>
+	<output file current-folder="true">'"$SHOWCASE_FILE_DIALOG_FOLDER"'</output>
+	<action signal="response" function="save">SHOWCASE_FILE_OPEN_DIALOG</action>
+	<action signal="response">printf "%s\n" "Open response: $SHOWCASE_FILE_OPEN_DIALOG · selection saved" > "$SHOWCASE_FILE_DIALOG_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_SELECTION_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_RESPONSE_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_FOLDER_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_FILE_OPEN_DIALOG</action>
+	<variable>SHOWCASE_FILE_OPEN_DIALOG</variable>
+</filechooserdialog>'
+
+SHOWCASE_FILE_SAVE_DIALOG='
+<filechooserdialog title="GTKDialog · choose an output filename" action="save"
+	current-folder="'"$SHOWCASE_FILE_DIALOG_DIR"'"
+	current-name="gtkdialog-notes.txt" do-overwrite-confirmation="true"
+	filter-name="Text files" filter-pattern="*.txt">
+	<output file>'"$SHOWCASE_FILE_DIALOG_SELECTION"'</output>
+	<output file response="true">'"$SHOWCASE_FILE_DIALOG_RESPONSE"'</output>
+	<output file current-folder="true">'"$SHOWCASE_FILE_DIALOG_FOLDER"'</output>
+	<action signal="response" function="save">SHOWCASE_FILE_SAVE_DIALOG</action>
+	<action signal="response">printf "%s\n" "Save response: $SHOWCASE_FILE_SAVE_DIALOG · filename saved, no document written" > "$SHOWCASE_FILE_DIALOG_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_SELECTION_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_RESPONSE_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_FOLDER_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_FILE_SAVE_DIALOG</action>
+	<variable>SHOWCASE_FILE_SAVE_DIALOG</variable>
+</filechooserdialog>'
+
+SHOWCASE_FOLDER_DIALOG='
+<filechooserdialog title="GTKDialog · select a working folder"
+	action="select-folder" current-folder="'"$SHOWCASE_OUTPUT_DIR"'">
+	<default>'"$SHOWCASE_FILE_DIALOG_DIR"'</default>
+	<output file>'"$SHOWCASE_FILE_DIALOG_SELECTION"'</output>
+	<output file response="true">'"$SHOWCASE_FILE_DIALOG_RESPONSE"'</output>
+	<output file current-folder="true">'"$SHOWCASE_FILE_DIALOG_FOLDER"'</output>
+	<action signal="response" function="save">SHOWCASE_FOLDER_DIALOG</action>
+	<action signal="response">printf "%s\n" "Folder response: $SHOWCASE_FOLDER_DIALOG · path saved" > "$SHOWCASE_FILE_DIALOG_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_SELECTION_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_RESPONSE_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_FOLDER_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_FOLDER_DIALOG</action>
+	<variable>SHOWCASE_FOLDER_DIALOG</variable>
+</filechooserdialog>'
+
+SHOWCASE_FILE_URI_DIALOG='
+<filechooserdialog title="GTKDialog · URI selection" action="open"
+	selection-format="uri" current-folder-uri="file://'"$SHOWCASE_FILE_DIALOG_DIR"'"
+	select-multiple="true" filter-name="Text and Markdown"
+	filter-pattern="*.txt;*.md"
+	shortcut-folder-uris="file://'"$SHOWCASE_FILE_DIALOG_DIR"'">
+	<input file>'"$SHOWCASE_FILE_DIALOG_URI_INPUT"'</input>
+	<output file>'"$SHOWCASE_FILE_DIALOG_SELECTION"'</output>
+	<output file response="true">'"$SHOWCASE_FILE_DIALOG_RESPONSE"'</output>
+	<output file current-folder="true">'"$SHOWCASE_FILE_DIALOG_FOLDER"'</output>
+	<action signal="response" function="save">SHOWCASE_FILE_URI_DIALOG</action>
+	<action signal="response">printf "%s\n" "URI response: $SHOWCASE_FILE_URI_DIALOG · URI list saved" > "$SHOWCASE_FILE_DIALOG_STATUS"</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_SELECTION_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_RESPONSE_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_FOLDER_VIEW</action>
+	<action signal="response" function="refresh">SHOWCASE_FILE_DIALOG_STATUS_VIEW</action>
+	<action signal="response" function="closewindow">SHOWCASE_FILE_URI_DIALOG</action>
+	<variable>SHOWCASE_FILE_URI_DIALOG</variable>
+</filechooserdialog>'
+export SHOWCASE_FILE_OPEN_DIALOG SHOWCASE_FILE_SAVE_DIALOG
+export SHOWCASE_FOLDER_DIALOG SHOWCASE_FILE_URI_DIALOG
+
+SHOWCASE_FILE_DIALOG_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkFileChooserDialog is a launchable GTK2 root. Four profiles cover exact multiple input, save names, folder selection and filename-independent URI exchange.</label></text>
+				</infobar>
+				<hpaned position="490" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<vbox spacing="8">
+						<frame>
+							<grid rows="4" columns="2" row-spacing="8" column-spacing="12" border-width="10">
+								<text row="0" column="0" use-markup="true" xalign="0"><label>"<b>Open</b>"</label></text>
+								<text row="0" column="1" xalign="0"><label>Two selected files · one excluded file</label></text>
+								<text row="1" column="0" use-markup="true" xalign="0"><label>"<b>Save</b>"</label></text>
+								<text row="1" column="1" xalign="0"><label>Suggested name · overwrite confirmation</label></text>
+								<text row="2" column="0" use-markup="true" xalign="0"><label>"<b>Folder</b>"</label></text>
+								<text row="2" column="1" xalign="0"><label>Native directory-only mode</label></text>
+								<text row="3" column="0" use-markup="true" xalign="0"><label>"<b>URI</b>"</label></text>
+								<text row="3" column="1" xalign="0"><label>Input, output and shortcut URI</label></text>
+							</grid>
+							<label>Native modes and data formats</label>
+						</frame>
+						<grid rows="2" columns="2" row-spacing="8" column-spacing="8">
+							<button row="0" column="0"><label>Open multiple files</label><input file stock="gtk-open"></input><action function="launch">SHOWCASE_FILE_OPEN_DIALOG</action></button>
+							<button row="0" column="1"><label>Choose save name</label><input file stock="gtk-save"></input><action function="launch">SHOWCASE_FILE_SAVE_DIALOG</action></button>
+							<button row="1" column="0"><label>Select folder</label><input file stock="gtk-directory"></input><action function="launch">SHOWCASE_FOLDER_DIALOG</action></button>
+							<button row="1" column="1"><label>Open URI profile</label><input file stock="gtk-network"></input><action function="launch">SHOWCASE_FILE_URI_DIALOG</action></button>
+						</grid>
+						<text wrap="true" xalign="0"><label>Every response saves all three outputs, refreshes this page, closes only the chooser and leaves its source variable ready for relaunch.</label></text>
+					</vbox>
+					<vbox spacing="8">
+						<frame>
+							<vbox border-width="10" spacing="6">
+								<text use-markup="true" xalign="0"><label>"<b>Last selection</b>"</label></text>
+								<edit editable="false" wrap-mode="none" hscrollbar-policy="2" vscrollbar-policy="1" height-request="115">
+									<input file>'"$SHOWCASE_FILE_DIALOG_SELECTION"'</input>
+									<variable>SHOWCASE_FILE_DIALOG_SELECTION_VIEW</variable>
+								</edit>
+								<text use-markup="true" xalign="0"><label>"<b>Response</b>"</label></text>
+								<entry editable="false"><input file>'"$SHOWCASE_FILE_DIALOG_RESPONSE"'</input><variable>SHOWCASE_FILE_DIALOG_RESPONSE_VIEW</variable></entry>
+								<text use-markup="true" xalign="0"><label>"<b>Current folder</b>"</label></text>
+								<entry editable="false"><input file>'"$SHOWCASE_FILE_DIALOG_FOLDER"'</input><variable>SHOWCASE_FILE_DIALOG_FOLDER_VIEW</variable></entry>
+							</vbox>
+							<label>Selection, response and folder outputs</label>
+						</frame>
+						<entry editable="false"><input file>'"$SHOWCASE_FILE_DIALOG_STATUS"'</input><variable>SHOWCASE_FILE_DIALOG_STATUS_VIEW</variable></entry>
+						<hbuttonbox layout-style="end" spacing="8">
+							<button><label>Reload outputs</label><input file stock="gtk-refresh"></input><action function="refresh">SHOWCASE_FILE_DIALOG_SELECTION_VIEW</action><action function="refresh">SHOWCASE_FILE_DIALOG_RESPONSE_VIEW</action><action function="refresh">SHOWCASE_FILE_DIALOG_FOLDER_VIEW</action><action function="refresh">SHOWCASE_FILE_DIALOG_STATUS_VIEW</action></button>
+						</hbuttonbox>
+					</vbox>
+					<variable>SHOWCASE_FILE_DIALOG_DIVIDER</variable>
+				</hpaned>
+			</vbox>'
+export SHOWCASE_FILE_DIALOG_PAGE
+
 SHOWCASE_ASSISTANT='
 <assistant title="GTKDialog guided setup" width-request="460">
 	<vbox page-title="Welcome" page-type="intro" complete="true"
@@ -319,7 +1648,7 @@ SHOWCASE_ASSISTANT='
 export SHOWCASE_ASSISTANT
 
 SHOWCASE_ABOUT='
-<aboutdialog program-name="GTKDialog GTK2 widget showcase" version="0.9.0"
+<aboutdialog program-name="GTKDialog GTK2 widget showcase" version="0.9.1"
 	comments="A GTK2-only demonstration of gtkdialog widgets."
 	copyright="Copyright (C) GTKDialog contributors and Artur Bednarek"
 	license="GNU General Public License version 2 or later"
@@ -366,6 +1695,7 @@ MAIN_DIALOG='
 	<vbox spacing="0">
 		<menubar>
 			<menu label="_File" use-underline="true">
+				<menuitem tearoff="true"></menuitem>
 				<menuitem stock-id="gtk-new">
 					<action>echo "New selected"</action>
 				</menuitem>
@@ -398,6 +1728,7 @@ MAIN_DIALOG='
 				<menuitem label="Text and files"></menuitem>
 				<menuitem label="Selection widgets"></menuitem>
 				<menuitem label="Icon view image input"></menuitem>
+				<menuitem label="Image viewer"></menuitem>
 				<menuitem label="Tree renderers"></menuitem>
 				<menuitem label="Tree styling"></menuitem>
 				<menuitem label="Tree images and colours"></menuitem>
@@ -409,6 +1740,11 @@ MAIN_DIALOG='
 				<menuitem label="Menu and toolbar state input"></menuitem>
 				<menuitem label="Embedded VTE terminal"></menuitem>
 				<menuitem label="XEmbed socket"></menuitem>
+				<menuitem label="Off-screen rendering"></menuitem>
+					<menuitem label="Page setup"></menuitem>
+					<menuitem label="Print settings"></menuitem>
+					<menuitem label="File chooser dialogs"></menuitem>
+				<menuitem label="Transfer curves"></menuitem>
 				<menuitem label="Status icon"></menuitem>
 			</menu>
 			<menu label="_Help" use-underline="true">
@@ -480,7 +1816,7 @@ MAIN_DIALOG='
 			</toolitem>
 		</toolbar>
 
-		<notebook labels="Text and files|Selection|Icon input|Tree renderers|Tree styling|Tree images|Tree states|Tree JSON|Popup menus|Classic controls|State actions|Paned layout|Choosers|Drawing areas|Layout canvas|Live logs|Scrolling|Toolbars|Menu state|Tool palette|Terminal|XEmbed socket|Dialogs|Colour selector|Font selector|HSV selector|Status and accelerators"
+		<notebook labels="Text and files|Spell checking|Source editing|Selection|Icon input|Image viewer|Tree renderers|Tree styling|Tree images|Tree states|Tree JSON|Popup menus|Classic controls|State actions|Paned layout|Choosers|Drawing areas|Object scenes|Numeric plots|Spreadsheets|Docking workspace|Desktop task lists|Workspace pagers|Window selector|Off-screen rendering|Page setup|Print settings|File chooser dialogs|Layout canvas|Live logs|Scrolling|Toolbars|Menu state|Tool palette|Terminal|XEmbed socket|Dialogs|Colour selector|Font selector|HSV selector|Transfer curves|Status and accelerators"
 			scrollable="true" space-expand="true" space-fill="true">
 			<vbox border-width="10" spacing="8">
 				<infobar message-type="info" default-response="ok">
@@ -548,6 +1884,10 @@ The labels share their width through a named GTK2 size group."
 					</edit>
 				</grid>
 			</vbox>
+
+			'"$SHOWCASE_SPELL_PAGE"'
+
+			'"$SHOWCASE_SOURCE_PAGE"'
 
 			<hpaned position="430" child1-resize="true" child1-shrink="false"
 				child2-resize="true" child2-shrink="false" border-width="10">
@@ -683,6 +2023,68 @@ The labels share their width through a named GTK2 size group."
 						<label>File input · multiple selection</label>
 					</frame>
 				</hpaned>
+			</vbox>
+
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text>
+						<label>Native image views preserve aspect ratio. Use the controls, Ctrl+wheel or middle-button dragging in the main viewport.</label>
+					</text>
+				</infobar>
+				<hpaned position="610" child1-resize="true" child1-shrink="false"
+					child2-resize="true" child2-shrink="false"
+					space-expand="true" space-fill="true">
+					<frame>
+						<imageview scale-mode="fit" zoom-step="1.4"
+							interpolation="bilinear" background="#20242a"
+							pan-button="2" wheel-zoom="true"
+							hscrollbar-policy="1" vscrollbar-policy="1"
+							space-expand="true" space-fill="true">
+							<width>580</width>
+							<height>300</height>
+							<input file>'"$SHOWCASE_CANVAS_IMAGE"'</input>
+							<output file>'"$SHOWCASE_IMAGEVIEW_OUTPUT"'</output>
+							<variable>SHOWCASE_IMAGE_VIEW</variable>
+							<action signal="zoom-changed">echo "Image-view scale mode changed"</action>
+							<action signal="button-press-event">echo "Image view: $PTR_X,$PTR_Y button $PTR_BTN"</action>
+						</imageview>
+						<label>Interactive viewport · file input · bilinear</label>
+					</frame>
+					<vbox spacing="8">
+						<frame>
+							<imageview scale-mode="fit-width" interpolation="nearest"
+								background="#263849" wheel-zoom="false">
+								<width>230</width>
+								<height>135</height>
+								<input>printf "%s\\n" "$SHOWCASE_CANVAS_IMAGE"</input>
+								<variable>SHOWCASE_IMAGE_WIDTH</variable>
+							</imageview>
+							<label>fit-width · command input · nearest</label>
+						</frame>
+						<frame>
+							<imageview scale-mode="fit-height" interpolation="hyper"
+								background="#493226" wheel-zoom="false">
+								<width>230</width>
+								<height>135</height>
+								<default>'"$SHOWCASE_CANVAS_IMAGE"'</default>
+								<variable>SHOWCASE_IMAGE_HEIGHT</variable>
+							</imageview>
+							<label>fit-height · default input · hyper</label>
+						</frame>
+					</vbox>
+					<variable>SHOWCASE_IMAGE_DIVIDER</variable>
+				</hpaned>
+				<hbuttonbox layout-style="center" spacing="6" space-expand="false">
+					<button><label>−</label><action function="zoomout">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>100%</label><action function="zoomreset">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>+</label><action function="zoomin">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>Fit</label><action function="fit">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>Width</label><action function="fitwidth">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>Height</label><action function="fitheight">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>Clear</label><action function="clear">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>Reload</label><action function="refresh">SHOWCASE_IMAGE_VIEW</action></button>
+					<button><label>Save original</label><action function="save">SHOWCASE_IMAGE_VIEW</action></button>
+				</hbuttonbox>
 			</vbox>
 
 			<vbox border-width="10" spacing="8">
@@ -965,7 +2367,7 @@ The labels share their width through a named GTK2 size group."
 						<table exported-column="0" selected-row="0"
 							column-header-active="true|true|true">
 							<label>Package|Version|State</label>
-							<item>gtkdialog|0.9.0|ready</item>
+							<item>gtkdialog|0.9.1|ready</item>
 							<item>GTK+|2.24|linked</item>
 							<item>GLib|runtime|linked</item>
 							<variable>SHOWCASE_PACKAGE</variable>
@@ -1249,6 +2651,28 @@ The labels share their width through a named GTK2 size group."
 					<button><label>Save original raster</label><action>save:SHOWCASE_CANVAS_STRETCH</action></button>
 				</hbuttonbox>
 			</vbox>
+
+			'"$SHOWCASE_OBJECT_PAGE"'
+
+			'"$SHOWCASE_DATABOX_PAGE"'
+
+			'"$SHOWCASE_SHEET_PAGE"'
+
+			'"$SHOWCASE_DOCK_PAGE"'
+
+			'"$SHOWCASE_TASKLIST_PAGE"'
+
+			'"$SHOWCASE_PAGER_PAGE"'
+
+			'"$SHOWCASE_WINDOWSELECTOR_PAGE"'
+
+			'"$SHOWCASE_OFFSCREEN_PAGE"'
+
+			'"$SHOWCASE_PAGE_SETUP_PAGE"'
+
+			'"$SHOWCASE_PRINT_DIALOG_PAGE"'
+
+			'"$SHOWCASE_FILE_DIALOG_PAGE"'
 
 			<vbox border-width="10" spacing="8">
 				<infobar message-type="info">
@@ -1715,6 +3139,78 @@ The labels share their width through a named GTK2 size group."
 				</hpaned>
 			</vbox>
 
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>GtkCurve edits sampled transfer functions. The centre editor also exposes the native GtkGammaCurve spline, linear, free, gamma and reset controls.</label></text>
+				</infobar>
+				<hbox homogeneous="true" spacing="8" space-expand="true" space-fill="true">
+					<frame>
+						<vbox border-width="8" spacing="6">
+							<curve curve-type="linear" min-x="0" max-x="100"
+								min-y="0" max-y="1" samples="7" height-request="230">
+								<variable>SHOWCASE_CURVE_LINEAR</variable>
+								<default>0|0.12|0.3|0.5|0.7|0.88|1</default>
+								<output file>'"$SHOWCASE_CURVE_LINEAR_OUTPUT"'</output>
+								<action>refresh:SHOWCASE_CURVE_LINEAR_VALUE</action>
+							</curve>
+							<entry editable="false">
+								<variable>SHOWCASE_CURVE_LINEAR_VALUE</variable>
+								<input>printf "%s" "$SHOWCASE_CURVE_LINEAR"</input>
+								<default>0|0.12|0.3|0.5|0.7|0.88|1</default>
+							</entry>
+							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Reset</label><action>clear:SHOWCASE_CURVE_LINEAR</action><action>refresh:SHOWCASE_CURVE_LINEAR_VALUE</action></button>
+								<button><label>Save</label><action>save:SHOWCASE_CURVE_LINEAR</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>Linear · X range 0..100 · 7 samples</label>
+					</frame>
+					<frame>
+						<vbox border-width="8" spacing="6">
+							<curve controls="true" curve-type="spline" gamma="2.2" samples="9"
+								height-request="230">
+								<variable>SHOWCASE_CURVE_SPLINE</variable>
+								<output file>'"$SHOWCASE_CURVE_SPLINE_OUTPUT"'</output>
+								<action>refresh:SHOWCASE_CURVE_SPLINE_VALUE</action>
+								<action signal="curve-type-changed">refresh:SHOWCASE_CURVE_SPLINE_VALUE</action>
+							</curve>
+							<entry editable="false">
+								<variable>SHOWCASE_CURVE_SPLINE_VALUE</variable>
+								<input>printf "%s" "$SHOWCASE_CURVE_SPLINE"</input>
+								<default>0|0.389|0.533|0.64|0.73|0.808|0.877|0.941|1</default>
+							</entry>
+							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Reset</label><action>clear:SHOWCASE_CURVE_SPLINE</action><action>refresh:SHOWCASE_CURVE_SPLINE_VALUE</action></button>
+								<button><label>Save</label><action>save:SHOWCASE_CURVE_SPLINE</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>Native controls · gamma 2.2 · 9 samples</label>
+					</frame>
+					<frame>
+						<vbox border-width="8" spacing="6">
+							<curve curve-type="free" min-y="-1" max-y="1"
+								samples="9" height-request="230">
+								<variable>SHOWCASE_CURVE_FREE</variable>
+								<default>0|0.7|1|0.7|0|-0.7|-1|-0.7|0</default>
+								<output file>'"$SHOWCASE_CURVE_FREE_OUTPUT"'</output>
+								<action>refresh:SHOWCASE_CURVE_FREE_VALUE</action>
+							</curve>
+							<entry editable="false">
+								<variable>SHOWCASE_CURVE_FREE_VALUE</variable>
+								<input>printf "%s" "$SHOWCASE_CURVE_FREE"</input>
+								<default>0|0.7|1|0.7|0|-0.7|-1|-0.7|0</default>
+							</entry>
+							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Reset</label><action>clear:SHOWCASE_CURVE_FREE</action><action>refresh:SHOWCASE_CURVE_FREE_VALUE</action></button>
+								<button><label>Save</label><action>save:SHOWCASE_CURVE_FREE</action></button>
+							</hbuttonbox>
+						</vbox>
+						<label>Free · Y range -1..1 · 9 samples</label>
+					</frame>
+				</hbox>
+				<text><label>Each Save button writes the complete locale-independent vector to its own temporary output file.</label></text>
+			</vbox>
+
 			<vbox border-width="10" spacing="10">
 				<infobar message-type="info">
 					<text><label>GtkStatusIcon lives in the desktop notification area rather than inside this window. Its zero-size logical widget keeps normal gtkdialog variables, state actions and window ownership.</label></text>
@@ -1788,5 +3284,13 @@ export MAIN_DIALOG
 
 case $1 in
 	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
-	*) "$GTKDIALOG" --styles="$script_dir/showcase.gtkrc" --program=MAIN_DIALOG ;;
+	*)
+		"$GTKDIALOG" --styles="$script_dir/showcase.gtkrc" \
+			--program=SHOWCASE_OFFSCREEN_SEED >/dev/null || exit 1
+		if [ "$SHOWCASE_HAVE_GDL" = true ]; then
+			"$GTKDIALOG" --styles="$script_dir/showcase.gtkrc" \
+				--program=SHOWCASE_DOCK_SEED >/dev/null 2>&1 || :
+		fi
+		"$GTKDIALOG" --styles="$script_dir/showcase.gtkrc" --program=MAIN_DIALOG
+		;;
 esac

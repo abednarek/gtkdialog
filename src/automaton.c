@@ -64,13 +64,17 @@
 #include "widget_colorselection.h"
 #include "widget_combobox.h"
 #include "widget_comboboxtext.h"
+#include "widget_curve.h"
 #include "widget_dialog.h"
+#include "widget_dock.h"
 #include "widget_drawingarea.h"
+#include "widget_imageview.h"
 #include "widget_edit.h"
 #include "widget_entry.h"
 #include "widget_eventbox.h"
 #include "widget_expander.h"
 #include "widget_filechooserbutton.h"
+#include "widget_filechooserdialog.h"
 #include "widget_fixed.h"
 #include "widget_fontbutton.h"
 #include "widget_fontselection.h"
@@ -99,12 +103,19 @@
 #include "widget_scalebutton.h"
 #include "widget_scrollbar.h"
 #include "widget_scrolledwindow.h"
+#include "widget_sheet.h"
 #include "widget_socket.h"
 #include "widget_spinbutton.h"
 #include "widget_spinner.h"
 #include "widget_statusbar.h"
 #include "widget_statusicon.h"
 #include "widget_table.h"
+#include "widget_tasklist.h"
+#include "widget_pager.h"
+#include "widget_windowselector.h"
+#include "widget_offscreenwindow.h"
+#include "widget_pagesetupdialog.h"
+#include "widget_printdialog.h"
 #include "widget_terminal.h"
 #include "widget_text.h"
 #include "widget_timer.h"
@@ -263,6 +274,30 @@ void print_command(instruction command)
 		case WIDGET_HSV:
 			printf("(new hsv())");
 			break;
+		case WIDGET_TASKLIST:
+			printf("(new tasklist())");
+			break;
+		case WIDGET_PAGER:
+			printf("(new pager())");
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			printf("(new windowselector())");
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			printf("(new offscreenwindow(pop()))");
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			printf("(new pagesetupdialog())");
+			break;
+		case WIDGET_PRINTDIALOG:
+			printf("(new printdialog())");
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			printf("(new filechooserdialog())");
+			break;
+		case WIDGET_CURVE:
+			printf("(new curve())");
+			break;
 		case WIDGET_HRULER:
 			printf("(new hruler())");
 			break;
@@ -304,6 +339,18 @@ void print_command(instruction command)
 			break;
 		case WIDGET_DRAWINGAREA:
 			printf("(new drawingarea())");
+			break;
+		case WIDGET_SHEET:
+			printf("(new sheet())");
+			break;
+		case WIDGET_DOCK:
+			printf("(new dock(pop()))");
+			break;
+		case WIDGET_DOCKITEM:
+			printf("(new dockitem(pop()))");
+			break;
+		case WIDGET_IMAGEVIEW:
+			printf("(new imageview())");
 			break;
 		case WIDGET_SOCKET:
 			printf("(new socket())");
@@ -781,6 +828,30 @@ void print_token(token Token)
 		case WIDGET_HSV:
 			printf("(HSV)");
 			break;
+		case WIDGET_TASKLIST:
+			printf("(TASKLIST)");
+			break;
+		case WIDGET_PAGER:
+			printf("(PAGER)");
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			printf("(WINDOWSELECTOR)");
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			printf("(OFFSCREENWINDOW)");
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			printf("(PAGESETUPDIALOG)");
+			break;
+		case WIDGET_PRINTDIALOG:
+			printf("(PRINTDIALOG)");
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+			printf("(FILECHOOSERDIALOG)");
+			break;
+		case WIDGET_CURVE:
+			printf("(CURVE)");
+			break;
 		case WIDGET_HRULER:
 			printf("(HRULER)");
 			break;
@@ -819,6 +890,18 @@ void print_token(token Token)
 			break;
 		case WIDGET_DRAWINGAREA:
 			printf("(DRAWINGAREA)");
+			break;
+		case WIDGET_SHEET:
+			printf("(SHEET)");
+			break;
+		case WIDGET_DOCK:
+			printf("(DOCK)");
+			break;
+		case WIDGET_DOCKITEM:
+			printf("(DOCKITEM)");
+			break;
+		case WIDGET_IMAGEVIEW:
+			printf("(IMAGEVIEW)");
 			break;
 		case WIDGET_SOCKET:
 			printf("(SOCKET)");
@@ -1334,7 +1417,8 @@ static GtkWidget *put_in_the_scrolled_window(GtkWidget *widget,
 			/* Set the size */
 			gtk_widget_set_size_request(scrolledwindow, width, height);
 			/* Pack the widget */
-			if (Type == WIDGET_LIST || Type == WIDGET_TERMINAL) {
+			if (Type == WIDGET_LIST || Type == WIDGET_TERMINAL ||
+				Type == WIDGET_IMAGEVIEW) {
 				gtk_scrolled_window_add_with_viewport(
 					GTK_SCROLLED_WINDOW(scrolledwindow), widget);
 			} else {
@@ -1680,6 +1764,50 @@ instruction_execute_push(
 			Widget = widget_hsv_create(Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
 			break;
+		case WIDGET_TASKLIST:
+			Widget = widget_tasklist_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_PAGER:
+			Widget = widget_pager_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_WINDOWSELECTOR:
+			Widget = widget_windowselector_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_OFFSCREENWINDOW:
+			Widget = window = widget_offscreenwindow_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_PAGESETUPDIALOG:
+			Widget = window = widget_pagesetupdialog_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_PRINTDIALOG:
+			Widget = window = widget_printdialog_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_FILECHOOSERDIALOG:
+#if GTK_CHECK_VERSION(2,4,0)
+			Widget = window = widget_filechooserdialog_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+#else
+			yyerror_simple(
+				"File chooser dialog requires GTK+ 2.4 or later.\n");
+#endif
+			break;
+		case WIDGET_CURVE:
+			Widget = widget_curve_create(Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:
 			Widget = widget_ruler_create(Attr, tag_attributes, Widget_Type);
@@ -1735,6 +1863,27 @@ instruction_execute_push(
 		case WIDGET_DRAWINGAREA:
 			Widget = widget_drawingarea_create(Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_SHEET:
+			Widget = widget_sheet_create(Attr, tag_attributes, Widget_Type);
+			scrolled_window = put_in_the_scrolled_window(Widget, Attr,
+				tag_attributes, Widget_Type);
+			push_widget(scrolled_window, WIDGET_SCROLLEDW);
+			break;
+		case WIDGET_DOCKITEM:
+			Widget = widget_dockitem_create(
+				Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_DOCK:
+			Widget = widget_dock_create(Attr, tag_attributes, Widget_Type);
+			push_widget(Widget, Widget_Type);
+			break;
+		case WIDGET_IMAGEVIEW:
+			Widget = widget_imageview_create(Attr, tag_attributes, Widget_Type);
+			scrolled_window = put_in_the_scrolled_window(Widget, Attr,
+				tag_attributes, Widget_Type);
+			push_widget(scrolled_window, WIDGET_SCROLLEDW);
 			break;
 		case WIDGET_SOCKET:
 			Widget = widget_socket_create(Attr, tag_attributes, Widget_Type);
@@ -2015,6 +2164,7 @@ instruction_execute_push(
 		case WIDGET_TOGGLETOOLBUTTON:
 		case WIDGET_TOOLBUTTON:
 		case WIDGET_TOOLITEM:
+		case WIDGET_DOCKITEM:
 			widget_set_tag_attributes(Widget, tag_attributes);
 			break;
 		default:

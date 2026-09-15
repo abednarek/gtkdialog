@@ -1,0 +1,49 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+if ! "$GTKDIALOG" --version 2>/dev/null | grep -q 'libwnck 2'; then
+	echo "This example requires gtkdialog built with libwnck 2 support." >&2
+	exit 1
+fi
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-pager.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+PAGER_OUTPUT=$demo_dir/active-workspace
+export PAGER_OUTPUT
+
+MAIN_DIALOG='
+<window title="GTK2 workspace pager" width-request="620" skip-taskbar-hint="true">
+	<vbox border-width="8" spacing="6">
+		<text use-markup="true" xalign="0">
+			<label>"<b>Native X11 workspace pager</b> — click a workspace to activate it."</label>
+		</text>
+		<pager orientation="horizontal" rows="1" display-mode="content"
+			show-all-workspaces="true" shadow-type="in">
+			<variable>ACTIVE_WORKSPACE</variable>
+			<output file>'"$PAGER_OUTPUT"'</output>
+			<action signal="active-workspace-changed">echo "Active workspace: $ACTIVE_WORKSPACE"</action>
+			<action signal="workspace-created">echo "Workspace created"</action>
+			<action signal="workspace-destroyed">echo "Workspace removed"</action>
+		</pager>
+		<hbuttonbox layout="end">
+			<button>
+				<label>Refresh workspaces</label>
+				<action function="refresh">ACTIVE_WORKSPACE</action>
+			</button>
+			<button>
+				<label>Save active index</label>
+				<action function="save">ACTIVE_WORKSPACE</action>
+			</button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

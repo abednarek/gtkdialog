@@ -1,0 +1,28 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+MAIN_DIALOG='
+<window title="GTKDialog spell checking" width-request="520" height-request="260">
+  <vbox border-width="10" spacing="8">
+    <text xalign="0">
+      <label>Misspelled words are underlined. Right-click one to see corrections.</label>
+    </text>
+    <edit spell-check="true" spell-language="en_US" wrap-mode="2">
+      <variable>SPELLING_TEXT</variable>
+      <default>This sentense contains a deliberate mispelling.</default>
+    </edit>
+    <hbuttonbox>
+      <button>
+        <label>Close</label>
+        <action>exit:OK</action>
+      </button>
+    </hbuttonbox>
+  </vbox>
+</window>'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

@@ -88,14 +88,15 @@
 action conditions are summarized in the <a href="syntax.html#common-widget-contract">common
 widget contract</a>. The sections below document this tag's specific surface.</p>
 
-A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextView</a> packed inside a <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkScrolledWindow.html">GtkScrolledWindow</a>
+A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextView</a> packed inside a <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkScrolledWindow.html">GtkScrolledWindow</a>. When the optional GtkSourceView 2 support is available, <code>sourceview="true"</code> creates a source-code editor derived from GtkTextView.
 
 <hr>
 
 <h2> Definition </h2>
 
 <pre>
-&lt;edit tag_attr="value"...&gt;
+&lt;edit spell-check="true" spell-language="en_US" sourceview="true"
+      language="c" show-line-numbers="true" tag_attr="value"...&gt;
 	&lt;default&gt;state&lt;/default&gt;
 	&lt;variable&gt;varname&lt;/variable&gt;
 	&lt;height&gt;value&lt;/height&gt;
@@ -125,6 +126,26 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 <tr><td class="wiki"> hscrollbar-policy </td><td class="wiki"> Policy for the horizontal scrollbar </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code> (always, automatic, never) </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> vscrollbar-policy </td><td class="wiki"> Policy for the vertical scrollbar </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code> (always, automatic, never) </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> scroll-to-bottom </td><td class="wiki"> Keep the current distance from the bottom when refreshed or resized </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.5 </td></tr>
+<tr><td class="wiki"> spell-check </td><td class="wiki"> Enable inline spelling feedback and correction menu when built with GtkSpell 2 </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> spell-language </td><td class="wiki"> Dictionary language used when spell-check is enabled; the current locale is used when omitted </td><td class="wiki"> Language code such as <code>en_US</code> or <code>pl_PL</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> sourceview </td><td class="wiki"> Use the optional GtkSourceView 2 source editor </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> language </td><td class="wiki"> GtkSourceView language definition ID </td><td class="wiki"> For example <code>c</code>, <code>sh</code> or <code>xml</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> style-scheme </td><td class="wiki"> GtkSourceView colour scheme ID </td><td class="wiki"> For example <code>classic</code>, <code>tango</code> or <code>cobalt</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> highlight-syntax </td><td class="wiki"> Enable language syntax highlighting </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> highlight-matching-brackets </td><td class="wiki"> Highlight a bracket matching the cursor position </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> max-undo-levels </td><td class="wiki"> Maximum number of undo actions retained by the source buffer </td><td class="wiki"> <code>-1</code> for unlimited, <code>0</code> to disable, or a positive integer </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> show-line-numbers </td><td class="wiki"> Show source line numbers </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> show-line-marks </td><td class="wiki"> Show the source-mark gutter </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> highlight-current-line </td><td class="wiki"> Highlight the line containing the cursor </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> auto-indent </td><td class="wiki"> Copy the current indentation onto a new line </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> indent-on-tab </td><td class="wiki"> Indent the current selection when Tab is pressed </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> insert-spaces-instead-of-tabs </td><td class="wiki"> Insert spaces when the Tab key is pressed </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> tab-width </td><td class="wiki"> Display width of a tab </td><td class="wiki"> Integer from <code>1</code> to <code>32</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> indent-width </td><td class="wiki"> Number of columns added or removed by indentation </td><td class="wiki"> <code>-1</code> to use tab-width, or an integer from <code>1</code> to <code>32</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> show-right-margin </td><td class="wiki"> Show a vertical right-margin guide </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> right-margin-position </td><td class="wiki"> Column used by the right-margin guide </td><td class="wiki"> Integer from <code>1</code> to <code>1000</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> smart-home-end </td><td class="wiki"> GtkSourceView Home and End key behaviour </td><td class="wiki"> <code>disabled</code>, <code>before</code>, <code>after</code> or <code>always</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> draw-spaces </td><td class="wiki"> Whitespace categories drawn by GtkSourceView </td><td class="wiki"> Numeric flags or names joined with <code>|</code>, for example <code>space|tab</code> </td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 
 <h2> Directives </h2>
@@ -214,6 +235,24 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 
 <p>When <code>scroll-to-bottom="true"</code>, content added while the view is at the bottom remains visible. If the user scrolls upward, subsequent refreshes preserve that distance from the bottom.</p>
 
+<p>Spell checking is enabled only when <code>spell-check="true"</code>. It
+underlines words rejected by the selected dictionary and adds suggestions to
+the standard GtkTextView context menu. Configure with
+<code>--with-gtkspell</code> to compile this integration. The optional feature
+is listed as
+<code>GtkSpell 2</code> by <code>gtkdialog --version</code>. A build without the
+library remains fully usable; it reports a warning only when a dialog requests
+spell checking.</p>
+
+<p>The source editor remains an <code>edit</code> widget: all established edit
+directives, functions, signals, file monitoring and variable output continue
+to apply. Configure with <code>--with-gtksourceview</code> to compile this
+integration. The optional feature is listed as <code>GtkSourceView 2</code> by
+<code>gtkdialog --version</code>. A build without the library falls back to an
+ordinary GtkTextView and reports a warning only when
+<code>sourceview="true"</code> is requested. The language and style-scheme values
+are IDs installed by GtkSourceView rather than translated display names.</p>
+
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">
@@ -234,13 +273,17 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 <a href="combobox.html">combobox</a>,
 <a href="comboboxentry.html">comboboxentry</a>,
 <a href="comboboxtext.html">comboboxtext</a>,
+<a href="curve.html">curve</a>,
 <a href="dialog.html">dialog</a>,
+<a href="dock.html">dock</a>,
+<a href="dockitem.html">dockitem</a>,
 <a href="drawingarea.html">drawingarea</a>,
 <a href="edit.html">edit</a>,
 <a href="entry.html">entry</a>,
 <a href="eventbox.html">eventbox</a>,
 <a href="expander.html">expander</a>,
 <a href="filechooserbutton.html">filechooserbutton</a>,
+<a href="filechooserdialog.html">filechooserdialog</a>,
 <a href="fixed.html">fixed</a>,
 <a href="fontbutton.html">fontbutton</a>,
 <a href="fontselection.html">fontselection</a>,
@@ -257,6 +300,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 <a href="hseparator.html">hseparator</a>,
 <a href="hsv.html">hsv</a>,
 <a href="iconview.html">iconview</a>,
+<a href="imageview.html">imageview</a>,
 <a href="infobar.html">infobar</a>,
 <a href="layout.html">layout</a>,
 <a href="linkbutton.html">linkbutton</a>,
@@ -268,6 +312,10 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 <a href="menutoolbutton.html">menutoolbutton</a>,
 <a href="messagedialog.html">messagedialog</a>,
 <a href="notebook.html">notebook</a>,
+<a href="offscreenwindow.html">offscreenwindow</a>,
+<a href="pager.html">pager</a>,
+<a href="pagesetupdialog.html">pagesetupdialog</a>,
+<a href="printdialog.html">printdialog</a>,
 <a href="pixmap.html">pixmap</a>,
 <a href="plug.html">plug</a>,
 <a href="popupmenu.html">popupmenu</a>,
@@ -280,6 +328,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 <a href="scrolledwindow.html">scrolledwindow</a>,
 <a href="separator.html">separator</a>,
 <a href="separatortoolitem.html">separatortoolitem</a>,
+<a href="sheet.html">sheet</a>,
 <a href="sizegroup.html">sizegroup</a>,
 <a href="socket.html">socket</a>,
 <a href="spinbutton.html">spinbutton</a>,
@@ -288,6 +337,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 <a href="statusicon.html">statusicon</a>,
 <a href="syntax.html">syntax</a>,
 <a href="table.html">table</a>,
+<a href="tasklist.html">tasklist</a>,
 <a href="terminal.html">terminal</a>,
 <a href="text.html">text</a>,
 <a href="timer.html">timer</a>,
@@ -308,7 +358,8 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTextView.html">GtkTextVi
 <a href="vscale.html">vscale</a>,
 <a href="vscrollbar.html">vscrollbar</a>,
 <a href="vseparator.html">vseparator</a>,
-<a href="window.html">window</a>
+<a href="window.html">window</a>,
+<a href="windowselector.html">windowselector</a>
 </p>
 <!-- reference-navigation-end -->
 

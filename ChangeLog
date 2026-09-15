@@ -1,10 +1,118 @@
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Reworked the public README and showcase gallery into a consistent
-  two-column image layout.
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Released version 0.9.1.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Made external GTK2 integrations explicit configure-time opt-ins, with a
+  complete-extension switch, strict dependency errors and a feature summary.
+- Documented the selectable dependency set and its per-widget build options.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Applied the native GtkSheet background property before loading initial data,
+  so populated and empty cells consistently use the requested colour.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a native GTK2 file chooser dialog root with open, save and folder
+  modes, multiple path or URI selection, filters and shortcut folders.
+- Added response actions, selection/response/folder output, input, clear and
+  close/relaunch lifecycle coverage with a standalone example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional GTK2 Unix print dialog for collecting printer, range,
+  copy and page choices without submitting a print job.
+- Added print/page settings reload and output, selected-printer output,
+  response actions, clear and close/relaunch lifecycle coverage.
+- Shared page attributes and GTK key-file handling with the page-setup dialog,
+  and documented the new root with a runnable example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional native GTK2 Unix page-setup dialog with standard and
+  custom paper sizes, orientation, margins and response actions.
+- Added reusable GTK page-setup and print-settings key-file input and output,
+  including close and relaunch lifecycle coverage and a standalone example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a GTK2 off-screen window root for rendering declarative widget trees
+  to image files, with redraw, damage actions and close/relaunch coverage.
+- Documented snapshot timing and ownership, and added a standalone renderer
+  example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional libwnck 2 GTK2 window-selector menu with live window icons
+  and titles, active-window XID input/output and change actions.
+- Documented its ownership and lifecycle, including repeated construction and
+  close/relaunch coverage, and added a standalone example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional libwnck 2 GTK2 workspace-pager widget with content and name
+  display modes, screen selection, layout hints and native frame styles.
+- Added active-workspace index input, output and workspace-change actions with
+  close/relaunch-safe signal ownership.
+- Documented the pager syntax and added a standalone desktop example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional libwnck 2 GTK2 task-list widget with grouping, workspace,
+  screen, relief and retained native minimum-size controls.
+- Added active-window XID input, output and change actions with automatic
+  signal disconnection when task-list windows are closed or relaunched.
+- Documented the task-list syntax and added a standalone desktop-panel example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional GooCanvas 1 mode to drawing areas with versioned JSON
+  groups, shapes, paths, text and images, per-item styling and transforms.
+- Added selected-item actions, persistent dragging, atomic refresh, scene
+  output, clear and whole-canvas zoom functions.
+- Documented the object-scene format and added a standalone interactive
+  GTK2 canvas example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added optional GDL 2 GTK2 dock and dockitem widgets with named relative
+  placement, behavior flags, switcher and dock-bar controls.
+- Added persistent GDL layout input and output, layout and item actions, and a
+  GTK2 frame fallback for builds without GDL.
+- Documented docking ownership and syntax and added a standalone rearrangeable
+  workspace example.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional GtkSheet 3 GTK2 spreadsheet widget with editable cells,
+  configurable headers, pipe-delimited input, refresh, save and clear support.
+- Documented the sheet data format, signals, optional dependency and a
+  standalone editable inventory example.
+- Made the imperative GtkDatabox fallback test inspect its expected warning
+  without promoting it to a fatal GLib warning.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Kept automatic GtkDatabox margins valid on logarithmic axes.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Refit GtkDatabox plots after native scale properties are applied.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional GtkDatabox 0.9 plot mode to drawing areas with owned
+  numeric series, grids, selection, zoom, refresh and data-file output.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional GtkSourceView 2 mode to edit widgets with source-language,
+  style-scheme, indentation, line-number and highlighting controls.
 
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Standardised the public showcase gallery with complete GTK2 desktop
-  captures and consistent native window framing.
+- Added an opt-in native GtkTearoffMenuItem variant for detachable GTK2 menus.
+
+* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
+- Added opt-in native GtkGammaCurve controls to the curve editor while keeping
+  the established graph-only default and value format.
+- Corrected linear-curve endpoint sampling after native mode changes.
+
+* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a native GtkCurve transfer editor with validated ranges, sampled
+  input/output, gamma setup and lifecycle-safe imperative/relaunch handling.
+
+* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
+- Added optional GtkSpell 2 integration to edit widgets with selectable
+  dictionaries, native correction menus and safe close/relaunch handling.
+
+* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a native GTK2 image viewer with bounded zoom, fit modes, drag panning,
+  image input/output and lifecycle-safe actions.
 
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
 - Added a GTK2 XEmbed plug root for embedding gtkdialog interfaces in native
@@ -48,46 +156,6 @@
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
 - Added standalone GtkHScrollbar and GtkVScrollbar widgets with adjustment
   ranges, numeric input and output, refresh/save actions and GtkRange signals.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Replaced the project README with a current GTK2 overview, build guidance and
-  a complete decorated-window gallery of the widget showcase.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Covered pausing and resuming a timer through the legacy disable and enable
-  actions, confirming that its periodic source remains active while paused.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Isolated the showcase recent chooser from ambient desktop history and gave it
-  a deterministic document, avoiding GTK2 failures on empty recent registries.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Completed the XEmbed showcase page with a usable client area and accessible
-  launch and socket-ID controls.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Demonstrated legacy boolean input, file monitoring, state output, conditional
-  actions and generic widget signals for menus and toolbars in the showcase.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Demonstrated command and file image-list input, image-only rendering and
-  selection actions for icon views in the GTK2 showcase.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Expanded the GTK2 showcase chooser page with its 0.8.5-compatible initial
-  input, filters, signals and selection actions.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Added an optional VTE terminal page to the GTK2 showcase, including child
-  exit and clear-or-restart behavior.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Demonstrated activation and conditional state actions on classic checkbox,
-  toggle-button and expander widgets in the GTK2 showcase.
-
-* Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Demonstrated the restored 0.8.5 bottom-following behavior of scrolling text
-  and edit widgets with a live log in the GTK2 showcase.
 
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
 - Added a reusable GTK2 XEmbed socket that exposes its numeric XID to
@@ -212,15 +280,9 @@
   strings and added direct regression coverage.
 - Added active-state action conditions for GtkSpinner, with before/after-clear
   regression coverage and matching user documentation.
-- Rejected trailing non-whitespace after action condition expressions instead
-  of silently ignoring it, and added coverage for malformed, unknown and
-  whitespace-terminated conditions.
 - Made the activate function toggle classic check and toggle buttons and
   select classic radio buttons, matching toolbar controls and documented
   historical behaviour, with regression coverage.
-- Made legacy active-state action prefixes and explicit condition attributes
-  combine conjunctively for classic and toolbar toggle widgets, with shared
-  documentation and regression coverage for named and default signals.
 - Forwarded pointer, key and focus event actions from GTK+ 2 toolbar buttons
   to their logical XML tool items, preserving source-sensitive actions, and
   added real-input regression coverage for classic and new widgets.
@@ -235,12 +297,6 @@
 - Extended generic GTK+ property attributes with symbolic enum names and nicks,
   symbolic flag lists and textual GdkColor values while preserving numeric
   compatibility, and added valid and invalid-value regression coverage.
-- Removed the obsolete NEWS release summary and RPM packaging template, and
-  selected Automake's foreign layout so release archives no longer require
-  those historical files.
-- Replaced retired source, contact and build information, clarified the
-  GTK+ 2-only support policy and GPL-2.0-or-later licensing, and corrected the
-  Autoconf project metadata.
 - Added a native GTK+ 2 recent-resource chooser with URI values, filters,
   input/output support, documentation, examples and lifecycle coverage.
 - Added native GTK+ 2 about dialogs with standard metadata, credited-person
@@ -674,9 +730,6 @@
   signal-terminated shell commands on stderr.
 - Made unknown action functions warnings instead of accidentally executing
   their parameters as shell commands.
-- Fixed optional Glade support to compile only when libglade is available
-  and initialized it when enabled.
-
 * Sun Apr 7 2013 Thunor <thunorsif@hotmail.com>
 - Updated a few wiki/reference pages with new info, fixed bad links.
 - Changed GTKDIALOG=gtkdialog in all examples/applications to
@@ -781,7 +834,7 @@
 - The existing if true and if false conditions for toggle widgets were
   being unneccessarily restricted to the default signals but now the
   prefixes of all <action signal="type"> directives are evaluated.
-  
+
 * Fri Nov 23 2012 Thunor <thunorsif@hotmail.com>
 - Reinstated the GTK_WIN_POS_CENTER_ALWAYS --center command-line option
   because GTK_WIN_POS_CENTER causes Simple Network Setup (which resizes)
@@ -851,7 +904,6 @@
 
 * Wed Sep 19 2012 Thunor <thunorsif@hotmail.com>
 - Added BUILD_DETAILS to the help string.
-- Updated the copyright notices.
 - Added support for the auto-refresh tag attribute to all widgets that
   currently support file monitors. Auto refreshing can be faster for
   applications that contain 100s of pixmaps or buttons (games) as it
@@ -1370,11 +1422,6 @@
   I've so far refactored or recently added.
 
 * Mon Aug 8 2011 Thunor <thunorsif@hotmail.com>
-- Fixed an existing bug in try_set_property, the function that passes
-  the tag attributes that are GTK+ widget properties to GTK+ to be set.
-  The part that should have been converting a char to a guint was
-  converting a char to a [UTF8] char which resulted in all guint GTK+
-  widget properties being bugged; therefore "border_width" now works.
 - Deprecated the "margin" custom tag attribute and removed from docs.
 - Started to implement the spinbutton widget.
 
@@ -1514,12 +1561,6 @@
 - Connected up the GtkScale's "value_changed" signal in glade_support.c.
 
 * Fri Jul 8 2011 Thunor <thunorsif@hotmail.com>
-- Overhauled the copyright and license notices atop most source files.
-  Quite a few were missing, some were only snippets of the license and
-  some weren't attributed to anyone. Where applicable I've included
-  myself in the copyright notices since I've introduced a fair amount of
-  code now. Everything is now consistently (C) 2003-2007 László Pere
-  which correctly covers the period of all of his work.
 - Started adding the new hscale and vscale widgets.
 
 * Thu Jul 7 2011 Thunor <thunorsif@hotmail.com>
@@ -1554,7 +1595,7 @@
 - Fixed three bugs in glade_support.c that were checking that command
   wasn't NULL when they should've been checking full_command instead
   (likely an initial mistake and then copied and pasted).
-  
+
 * Sat Jun 25 2011 Thunor <thunorsif@hotmail.com>
 - Added width and height tag attribute support for the scrollable hbox
   and vbox to control the viewport dimensions.
@@ -1563,7 +1604,7 @@
   selection-mode GtkCList (<table>) property.
 - New widget: <hseparator tagattr></hseparator>.
 - New widget: <vseparator tagattr></vseparator>.
-  
+
 * Fri Jun 24 2011 Thunor <thunorsif@hotmail.com>
 - Added hbox and vbox widget scrolling capability via the "scrollable"
   custom attribute. If scrollable="true/yes/1" then the box is placed
@@ -1681,18 +1722,18 @@
   the secondary form is a command prefix:
   <action>Exit:VALUE</action>
   This form can be used when creating the GUI with Glade, where the callback
-  function name is used by the GtkDialog as a command to execute. 
+  function name is used by the GtkDialog as a command to execute.
   The older
-  <action clear>VARIABLE</action> 
+  <action clear>VARIABLE</action>
   form is no longer recognized.
 - Bugfix: Label from file buffer overrun fixed.
 - Bugfix: Frame without label caused a segfault. Now fixed.
 - Bugfix: Compiling problem when no Glade library found is fixed.
-- Bugfix: Closewindow action for progress_bars fixed 
+- Bugfix: Closewindow action for progress_bars fixed
   (see the 05.01-progress_bar_closewindow example program)
 
 * Thu Oct 26 2006 Laszlo Pere <pipas@linux.pte.hu> 0.7.4
-- A better glade support. See glade files in the examples directory. 
+- A better glade support. See glade files in the examples directory.
 - Launch/Closewindow bug is fixed by Jean-Philippe Guillemin.
 
 * Wed Oct 25 2006 Laszlo Pere <pipas@linux.pte.hu> 0.7.3
@@ -1739,14 +1780,14 @@
 
 * Wed Jul 27 2005 Laszlo Pere <pipas@linux.pte.hu> 0.59.6
 - Crash on ia64 bug fixed thanks to David Mosberger and Fabio Tranchitella.
-  
+
 * Sun Jan 2 2005 Laszlo Pere <pipas@linux.pte.hu> 0.59.5
-- It is possible now to insert multiple columns into the tables using 
+- It is possible now to insert multiple columns into the tables using
 - shell commands (e.g. echo "one|two").
 - Actions for table widgets are working perfectly now.
 
 * Sat Jan 1 2005 Laszlo Pere <pipas@linux.pte.hu> 0.59.4
-- Compile problem on RH9 (GTK 2.2.1) fixed 
+- Compile problem on RH9 (GTK 2.2.1) fixed
 - Some widgets have problems with the older GTK library
 
 * Thu Dec 9 2004 Laszlo Pere <pipas@linux.pte.hu> 0.59.3
@@ -1782,10 +1823,10 @@ the default is: MAIN_WINDOW
 - Better error messages for unknown tags.
 - New action: <action copy>FROM, TO</action>
 - List widgets have a variable called XXX_ALL.
-- Icon search path is: 
--   (1) the working directory, 
--   (2) /usr/share/icons/Bluecurve/16x16/stock/, 
--   (3) Anywhere if the locate finds it 
+- Icon search path is:
+-   (1) the working directory,
+-   (2) /usr/share/icons/Bluecurve/16x16/stock/,
+-   (3) Anywhere if the locate finds it
 
 * Fri Nov 19 2004 Laszlo Pere <pipas@linux.pte.hu> 0.58.9
 - stringman.c: A bug with the multi-column tables fixed.

@@ -226,6 +226,7 @@ outside.
 * Recent chooser menu::	Recent resources in a menu
 * Scrollbars::			Standalone range positions
 * Rulers::			Measured GTK2 ranges
+* Curve editor::		Interactive transfer curves
 * Scale and volume buttons::	Compact numeric controls
 * Aspect frame::		Fixed-proportion content
 * Static label::                Labels containing static text
@@ -304,7 +305,7 @@ exit or close a launched dialog, so use an explicit @code{exit} or
 @code{closewindow} action.
 
 @example
-<aboutdialog program-name="GTKDialog GTK2" version="0.9.0"
+<aboutdialog program-name="GTKDialog GTK2" version="0.9.1"
              comments="Build GTK+ 2 interfaces from XML.">
   <item role="author">GTKDialog contributors</item>
   <item role="documenter">Documentation contributors</item>
@@ -731,6 +732,12 @@ Set @code{scroll-to-bottom="true"} for the same bottom-gravity behaviour as a
 scrollable text label.  The scroll state and its signal handlers are owned by
 the scrolled window and disappear when its window is closed, including
 windows that are later launched again.
+
+When gtkdialog was built with GtkSpell 2, @code{spell-check="true"} enables
+inline spelling feedback and correction choices in the normal context menu.
+Use @code{spell-language="en_US"}, for example, to select a dictionary;
+otherwise GtkSpell uses the current locale.  @command{gtkdialog --version}
+lists @code{GtkSpell 2} when this optional integration is available.
 
 @c -----------------------------------------------------------------
 @node Pushbutton
@@ -1187,8 +1194,8 @@ OK, it is not complete, but the next example seems to be just fine.
 </vbox>
 @end example
 
-When JSON-GLib was found while building gtkdialog, a tree can load nested rows
-from a versioned JSON document.  Add @code{format="json"} to either
+When gtkdialog was configured with @code{--with-json-glib}, a tree can load
+nested rows from a versioned JSON document.  Add @code{format="json"} to either
 @code{<input>} or @code{<input file>}; without that explicit attribute the
 historical pipe-separated format is unchanged.  The XML @code{<label>} still
 declares the data columns.  Each JSON row requires a positional @code{values}
@@ -1422,6 +1429,45 @@ common widget actions; clear resets the value to @code{0|0|1}.
 </hsv>
 @end example
 
+@section Curve Editor
+
+The @code{<curve>} tag exposes the GTK+ 2 @code{GtkCurve} transfer-curve
+editor.  This widget is deprecated only because it was not carried forward
+after GTK+ 2; it remains part of the GTK2 ABI and is intentionally available
+in this GTK2-only implementation.
+
+Its value is a sequence of locale-independent Y values separated by vertical
+bars.  @code{default}, command and file input accept between 2 and 4096
+samples.  The exported variable and saved output contain the number selected
+by the @code{samples} tag attribute, or the input vector length when that
+attribute is omitted.  Samples include both endpoints of the X range.
+
+The @code{curve-type} attribute accepts @code{linear}, @code{spline} or
+@code{free}; @code{min-x}, @code{max-x}, @code{min-y} and @code{max-y} set
+finite axis ranges, and @code{gamma} creates an initial positive gamma curve.
+A default or input vector takes precedence over gamma.  If a curve type is
+explicitly requested, it is applied after that initial vector.
+
+The opt-in @code{controls="true"} attribute wraps the graph in the native
+GTK+ 2 @code{GtkGammaCurve}.  It adds the original spline, linear, free,
+gamma and reset controls without changing the value representation or the
+default appearance of existing @code{<curve>} descriptions.
+
+The logical default @code{changed} action is emitted when the user finishes
+an edit with the pointer.  The native @code{curve-type-changed} signal is also
+available explicitly, including changes made with the optional controls.  The
+widget supports refresh, save, clear, file monitoring and applicable common
+widget actions.  Clear restores the native straight diagonal over the
+configured range.
+
+@example
+<curve controls="true" curve-type="spline" min-y="0" max-y="1" samples="5">
+  <variable>TRANSFER</variable>
+  <default>0|0.1|0.5|0.9|1</default>
+  <action>echo "$TRANSFER"</action>
+</curve>
+@end example
+
 @section Accelerator Label
 
 The @code{<accellabel>} tag exposes GTK+ 2 @code{GtkAccelLabel}.  It displays
@@ -1649,6 +1695,13 @@ followed by the tool button's directives.  Its main button uses the
 @code{clicked} signal and can be invoked with @code{activate}; choosing an
 entry runs that menu item's actions.  Menutoolbuttons require GTK+ 2.6 or
 later.
+
+An ordinary menu can begin with
+@code{<menuitem tearoff="true"></menuitem>} to expose GTK+ 2's native
+detachable-menu handle.  The opt-in item has no label, image, value or
+accelerator.  Activating it toggles the detached menu window and may also run
+normal action directives; menu descriptions without the attribute retain
+their established behaviour.
 
 A toggletoolbutton has a Boolean state.  Its @code{<default>} and
 @code{<input>} directives set that state, and its variable value is

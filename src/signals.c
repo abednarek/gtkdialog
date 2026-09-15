@@ -33,6 +33,8 @@
 #include "widget_checkbox.h"
 #include "widget_colorbutton.h"
 #include "widget_comboboxtext.h"
+#include "widget_dock.h"
+#include "widget_canvas.h"
 #include "widget_accellabel.h"
 #include "widget_edit.h"
 #include "widget_entry.h"
@@ -58,6 +60,12 @@
 #include "widgets.h"
 #if HAVE_VTE
 #include <vte/vte.h>
+#endif
+#if HAVE_GTKDATABOX
+#include <gtkdatabox.h>
+#endif
+#if HAVE_GTKSHEET
+#include <gtksheet/gtksheet.h>
 #endif
 #if HAVE_SYS_INOTIFY_H
 #include <errno.h>
@@ -1128,6 +1136,7 @@ void on_any_widget_auto_refresh_event(GFileMonitor *monitor, GFile *file,
 		case WIDGET_COLORSELECTION:
 		case WIDGET_DIALOG:
 		case WIDGET_DRAWINGAREA:
+		case WIDGET_DOCK:
 		case WIDGET_COMBOBOXENTRY:
 		case WIDGET_COMBOBOXTEXT:
 		case WIDGET_EDIT:
@@ -1135,12 +1144,17 @@ void on_any_widget_auto_refresh_event(GFileMonitor *monitor, GFile *file,
 		case WIDGET_EXPANDER:
 		case WIDGET_CHOOSER:
 		case WIDGET_FILECHOOSERBUTTON:
+		case WIDGET_FILECHOOSERDIALOG:
 		case WIDGET_FONTBUTTON:
 		case WIDGET_FONTSELECTION:
 		case WIDGET_FRAME:
 		case WIDGET_HSCALE:
 		case WIDGET_HSCROLLBAR:
 		case WIDGET_HSV:
+		case WIDGET_TASKLIST:
+		case WIDGET_PAGER:
+		case WIDGET_WINDOWSELECTOR:
+		case WIDGET_CURVE:
 		case WIDGET_HRULER:
 		case WIDGET_VRULER:
 		case WIDGET_ICONVIEW:
@@ -1353,6 +1367,25 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 			if (widget_statusicon_is_proxy(widget)) {
 				if (strcasecmp(signal_name, "activate") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
+			} else if (widget_canvas_is_requested(widget)) {
+				if (strcasecmp(signal_name, "item-activated") == 0)
+					execute = widget_signal_executor_eval_condition(condition);
+#if HAVE_GTKDATABOX
+			} else if (GTK_IS_DATABOX(widget)) {
+				if (strcasecmp(signal_name, "selection-finalized") == 0)
+					execute = widget_signal_executor_eval_condition(condition);
+#endif
+#if HAVE_GTKSHEET
+			} else if (GTK_IS_SHEET(widget)) {
+				if (strcasecmp(signal_name, "deactivate") == 0)
+					execute = widget_signal_executor_eval_condition(condition);
+#endif
+			} else if (widget_dock_is_container(widget)) {
+				if (strcasecmp(signal_name, "layout-changed") == 0)
+					execute = widget_signal_executor_eval_condition(condition);
+			} else if (widget_dock_is_item(widget)) {
+				if (strcasecmp(signal_name, "selected") == 0)
+					execute = widget_signal_executor_eval_condition(condition);
 			} else if (GTK_IS_TOGGLE_BUTTON(widget)) {
 				if (strcasecmp(signal_name, "toggled") == 0) {
 					is_active = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
@@ -1386,6 +1419,9 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 				if (strcasecmp(signal_name, "color-changed") == 0) {
 					execute = widget_signal_executor_eval_condition(condition);
 				}
+			} else if (GTK_IS_CURVE(widget) || GTK_IS_GAMMA_CURVE(widget)) {
+				if (strcasecmp(signal_name, "changed") == 0)
+					execute = widget_signal_executor_eval_condition(condition);
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkButton--->GtkColorButton */
 			} else if (GTK_IS_COLOR_BUTTON(widget)) {
 				if (strcasecmp(signal_name, "color-set") == 0) {

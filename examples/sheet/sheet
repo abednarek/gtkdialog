@@ -1,0 +1,51 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+
+if ! "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSheet 3'; then
+	echo "This example requires gtkdialog built with GtkSheet 3 support." >&2
+	exit 1
+fi
+
+demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-sheet.XXXXXX") || exit 1
+trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM
+
+SHEET_DATA=$demo_dir/inventory
+SHEET_SAVED=$demo_dir/saved-inventory
+export SHEET_DATA SHEET_SAVED
+
+printf '%s\n' \
+	'Apples|10|2.50' \
+	'Pears|8|3.00' \
+	'Tea|2|5.75' > "$SHEET_DATA"
+
+MAIN_DIALOG='
+<window title="Editable GTK2 sheet" width-request="700" height-request="410">
+	<vbox border-width="12" spacing="8">
+		<text use-markup="true">
+			<label>"<b>Inventory</b> — select and edit cells, then save or reload the pipe-delimited data."</label>
+		</text>
+		<sheet columns="3" rows="12" title="Stock"
+			column-labels="Item|Quantity|Price"
+			column-widths="300|130|130" editable="true"
+			row-titles="true" column-titles="true" clip-text="true">
+			<input file>'"$SHEET_DATA"'</input>
+			<output file>'"$SHEET_SAVED"'</output>
+			<variable>INVENTORY_CELL</variable>
+			<action>echo "Committed cell: $INVENTORY_CELL"</action>
+		</sheet>
+		<hbuttonbox>
+			<button><label>Reload</label><action function="refresh">INVENTORY_CELL</action></button>
+			<button><label>Save</label><action function="save">INVENTORY_CELL</action></button>
+			<button><label>Clear</label><action function="clear">INVENTORY_CELL</action></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

@@ -431,9 +431,41 @@ print_version_exit(int exitcode)
 		PACKAGE_NAME, PACKAGE_VERSION, BUILD_DETAILS);
 	printf("Built with support for: ");
 	printf("GTK+ 2"); extralibs++;
+#if HAVE_GTK_UNIX_PRINT
+	if (extralibs) printf(", ");
+	printf("GTK2 Unix printing"); extralibs++;
+#endif
 #if HAVE_JSON_GLIB
 	if (extralibs) printf(", ");
 	printf("JSON-GLib"); extralibs++;
+#endif
+#if HAVE_GOOCANVAS
+	if (extralibs) printf(", ");
+	printf("GooCanvas 1"); extralibs++;
+#endif
+#if HAVE_GTKSPELL
+	if (extralibs) printf(", ");
+	printf("GtkSpell 2"); extralibs++;
+#endif
+#if HAVE_GTKSOURCEVIEW
+	if (extralibs) printf(", ");
+	printf("GtkSourceView 2"); extralibs++;
+#endif
+#if HAVE_GTKDATABOX
+	if (extralibs) printf(", ");
+	printf("GtkDatabox 0.9"); extralibs++;
+#endif
+#if HAVE_GTKSHEET
+	if (extralibs) printf(", ");
+	printf("GtkSheet 3"); extralibs++;
+#endif
+#if HAVE_GDL
+	if (extralibs) printf(", ");
+	printf("GDL 2"); extralibs++;
+#endif
+#if HAVE_WNCK
+	if (extralibs) printf(", ");
+	printf("libwnck 2"); extralibs++;
 #endif
 #if HAVE_VTE
 	if (extralibs) printf(", ");

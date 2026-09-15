@@ -7,7 +7,7 @@ application.
 
 This repository contains the maintained GTK+ 2 fork. It keeps the established
 0.8.x interface available while adding GTK2 widgets and compatibility-minded
-extensions. The current version is `0.9.0`; the package and
+extensions. The current version is `0.9.1`; the package and
 executable remain named `gtkdialog`.
 
 ![Hierarchical JSON tree in the GTKDialog showcase](screenshots/08-tree-json.png)
@@ -17,17 +17,33 @@ executable remain named `gtkdialog`.
 A normal build needs:
 
 - a C compiler, `make` and `pkg-config`;
-- the GTK+ 2 development files;
-- the JSON-GLib 1.0 development files.
+- the GTK+ 2 development files.
 
-JSON-GLib is needed for the supported hierarchical JSON input and output of
-the tree widget and should be installed for a complete build of this fork.
-For compatibility with older systems, `configure` still permits a reduced
-build without it; the historical pipe-separated tree format remains available
-in that configuration.
+The default build contains the GTK2 core and does not enable external widget
+libraries merely because they happen to be installed. Enable only the
+integrations required by the intended installation:
 
-VTE support is optional. It is enabled automatically when a GTK+ 2-compatible
-libvte version 0.23.5 or later and its development files are present.
+| Configure option | Optional integration |
+| --- | --- |
+| `--with-json-glib` | JSON-GLib 1.0 hierarchical tree input and output |
+| `--with-vte` | VTE 0.23.5 GTK2 terminal widget |
+| `--with-gtkspell` | GtkSpell 2 inline spelling and correction menu |
+| `--with-gtksourceview` | GtkSourceView 2 source editing and highlighting |
+| `--with-gtkdatabox` | GtkDatabox 0.9 line, point and bar plots |
+| `--with-gtksheet` | GtkSheet 3.5.1 editable spreadsheets |
+| `--with-gdl` | GDL 2.30.1 rearrangeable docking areas |
+| `--with-goocanvas` | GooCanvas 1.0 object scenes; also requires `--with-json-glib` |
+| `--with-libwnck` | libwnck 2.30 task lists, pagers and window selectors |
+| `--with-unix-print` | GTK2 Unix page-setup and print-settings dialogs |
+
+`--enable-all-extensions` requests every integration. Individual
+`--without-*` options can still exclude one from that complete set. An
+explicitly requested integration is never silently omitted: `configure`
+stops with an error if its development package is unavailable. Its final
+summary records exactly which integrations will be compiled. Excluding
+JSON-GLib from the complete set also disables its dependent GooCanvas
+integration; a direct `--with-goocanvas` without `--with-json-glib` is an
+error.
 
 From a release archive, build outside the source directory:
 
@@ -38,6 +54,13 @@ cd build
 make
 make check
 make install
+```
+
+For a complete build with every development package installed, replace the
+configure command with:
+
+```sh
+../configure --enable-all-extensions
 ```
 
 Use the usual `DESTDIR` or `--prefix` options when packaging or installing to
@@ -92,11 +115,36 @@ of existing widget tags and data formats. Highlights include:
   optional row and cell styling;
 - row-aware and keyboard-accessible popup menus, including a standalone
   desktop menu program;
+- scrolling text editors with bottom-following refreshes, optional GtkSpell 2
+  inline checking and optional GtkSourceView 2 source-code editing;
 - GTK2 layout and container tags including `grid`, paned windows, scrolled
   windows, explicit viewports, fixed positioning, drawing areas and large
   layout canvases;
+- optional GtkDatabox 0.9 plots with multiple line, point and bar series,
+  grids, numeric file input, selection and mouse or action-driven zooming;
+- optional GooCanvas 1 object scenes with nested groups, shapes, paths, text,
+  images, per-item styling, selection, dragging and JSON persistence;
+- optional GtkSheet 3.5.1 spreadsheets with editable cells, configurable row
+  and column headers, file input, refresh and data-file output;
+- optional GDL 2 docking areas with named panels, relative placement,
+  detachable content, switcher tabs and persistent layout files;
+- optional libwnck 2 task lists with workspace-aware grouping, active-window
+  values and window activation through normal input and refresh operations;
+- optional libwnck 2 workspace pagers with content or name views, layout hints,
+  active-workspace values and workspace activation through normal input;
+- optional libwnck 2 window-selector menus with live application icons and
+  titles, active-window XID values and activation through normal input;
+- GTK2 2.20 off-screen program roots that render complete declarative widget
+  trees to image files without placing a window on the desktop;
+- native GTK2 Unix page-setup dialogs with paper, orientation and margin
+  defaults plus reusable page-setup and print-settings files;
+- native GTK2 Unix print dialogs that collect printer, range, copy and page
+  choices as reusable settings without implicitly submitting a print job;
+- native GTK2 file chooser dialog roots with open, save and folder modes,
+  multiple path or URI selection, filters, shortcuts and response actions;
 - standalone scrollbars and measurement rulers, full embedded colour and font
-  selectors, and a native hue/saturation/value selector;
+  selectors, a native hue/saturation/value selector, and an interactive
+  transfer-curve editor with optional native gamma and mode controls;
 - native accelerator labels bound to named menu items regardless of their XML
   order, plus lightweight directional arrow indicators;
 - toolbars, detachable handle-box toolbars, tool palettes and their native
@@ -114,6 +162,22 @@ of existing widget tags and data formats. Highlights include:
   <tr>
     <td width="50%"><img src="screenshots/04-tree-renderers.png" alt="Tree combo cell being edited"></td>
     <td width="50%"><img src="screenshots/08-tree-json.png" alt="Expanded JSON tree with typed renderers"></td>
+  </tr>
+  <tr>
+    <th width="50%">Native image viewer modes</th>
+    <th width="50%">Optional GtkSpell integration</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/29-image-viewer.png" alt="Image viewer scaling and interpolation modes"></td>
+    <td width="50%"><img src="screenshots/30-spell-checking.png" alt="GtkSpell correction menu beside an unchanged plain editor"></td>
+  </tr>
+  <tr>
+    <th width="50%">Optional source-code editors</th>
+    <th width="50%">Native dialogs</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/32-source-editing.png" alt="GtkSourceView editors using C and XML language definitions"></td>
+    <td width="50%"><img src="screenshots/23-dialogs.png" alt="Native GTK2 dialogs and information bars"></td>
   </tr>
   <tr>
     <th width="50%">Popup menus</th>
@@ -141,19 +205,65 @@ of existing widget tags and data formats. Highlights include:
   </tr>
   <tr>
     <th width="50%">Native HSV selector</th>
-    <th width="50%">Drawing areas and rulers</th>
+    <th width="50%">Transfer curves with native controls</th>
   </tr>
   <tr>
     <td width="50%"><img src="screenshots/28-hsv-selector.png" alt="GtkHSV with independent selector metrics"></td>
-    <td width="50%"><img src="screenshots/14-drawing-areas.png" alt="Drawing areas with horizontal and vertical rulers"></td>
+    <td width="50%"><img src="screenshots/31-transfer-curves.png" alt="Edited linear, native GtkGammaCurve controls and free transfer curves"></td>
   </tr>
   <tr>
-    <th width="50%">Recent-resource menu</th>
+    <th width="50%">Detachable recent-resource menu</th>
     <th width="50%">Notification-area status icon and accelerator label</th>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/26-recent-menu.png" alt="GtkRecentChooserMenu opened from the showcase menubar"></td>
+    <td width="50%"><img src="screenshots/26-recent-menu.png" alt="Detached File menu with a numbered GtkRecentChooserMenu"></td>
     <td width="50%"><img src="screenshots/27-status-icon.png" alt="GtkStatusIcon controls and a GtkAccelLabel"></td>
+  </tr>
+  <tr>
+    <th width="50%">Optional numeric plots</th>
+    <th width="50%">Optional editable spreadsheets</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/33-numeric-plots.png" alt="Line, point and bar plots with fixed and logarithmic ranges"></td>
+    <td width="50%"><img src="screenshots/34-spreadsheets.png" alt="Editable, read-only and headerless GtkSheet spreadsheet views"></td>
+  </tr>
+  <tr>
+    <th width="50%">Optional rearrangeable docking workspace</th>
+    <th width="50%">Optional interactive object scenes</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/35-docking-workspace.png" alt="GDL workspace with relative panels, central switcher and an iconified Output panel"></td>
+    <td width="50%"><img src="screenshots/36-object-scenes.png" alt="GooCanvas object scene with nested shapes, paths, text, image and persistent dragging"></td>
+  </tr>
+  <tr>
+    <th width="50%">Optional native desktop task lists</th>
+    <th width="50%">Optional native workspace pagers</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/37-desktop-task-lists.png" alt="Three libwnck task lists comparing workspace filtering, grouping and button relief"></td>
+    <td width="50%"><img src="screenshots/38-workspace-pagers.png" alt="Three libwnck workspace pagers comparing content, name and active-only modes"></td>
+  </tr>
+  <tr>
+    <th width="50%">Optional native window-selector menu</th>
+    <th width="50%">GTK2 off-screen rendering</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/39-window-selector.png" alt="Two libwnck window selectors with the compact selector menu listing live desktop windows"></td>
+    <td width="50%"><img src="screenshots/40-offscreen-rendering.png" alt="Generated GTK2 off-screen report image with save and relaunch controls"></td>
+  </tr>
+  <tr>
+    <th width="50%">Native GTK2 Unix page setup</th>
+    <th width="50%">Native GTK2 Unix print settings</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/41-page-setup.png" alt="Native GTK2 Unix page-setup dialog over the showcase page with reusable page and print settings"></td>
+    <td width="50%"><img src="screenshots/42-print-settings.png" alt="Native GTK2 Unix print dialog showing printer, range, selection, copy and preview controls without submitting a print job"></td>
+  </tr>
+  <tr>
+    <th colspan="2">Native GTK2 file chooser dialogs</th>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img width="50%" src="screenshots/43-file-chooser-dialog.png" alt="Native GTK2 file chooser dialog showing an exact multiple selection over the showcase page"></td>
   </tr>
 </table>
 
