@@ -319,7 +319,7 @@ SHOWCASE_ASSISTANT='
 export SHOWCASE_ASSISTANT
 
 SHOWCASE_ABOUT='
-<aboutdialog program-name="GTKDialog GTK2 widget showcase" version="0.9.0-dev"
+<aboutdialog program-name="GTKDialog GTK2 widget showcase" version="0.9.0"
 	comments="A GTK2-only demonstration of gtkdialog widgets."
 	copyright="Copyright (C) GTKDialog contributors and Artur Bednarek"
 	license="GNU General Public License version 2 or later"
@@ -965,7 +965,7 @@ The labels share their width through a named GTK2 size group."
 						<table exported-column="0" selected-row="0"
 							column-header-active="true|true|true">
 							<label>Package|Version|State</label>
-							<item>gtkdialog|0.9.0-dev|ready</item>
+							<item>gtkdialog|0.9.0|ready</item>
 							<item>GTK+|2.24|linked</item>
 							<item>GLib|runtime|linked</item>
 							<variable>SHOWCASE_PACKAGE</variable>

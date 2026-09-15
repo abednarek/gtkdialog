@@ -94,7 +94,7 @@
   arbitrary external clients without changing the legacy GVim helper.
 
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Advanced the maintained GTK2 fork to 0.9.0-dev and distinguished its new
+- Advanced the maintained GTK2 fork to 0.9.0 and distinguished its new
   widgets and XML extensions from the historical 0.8.4 interface.
 
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>

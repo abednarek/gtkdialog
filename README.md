@@ -7,7 +7,7 @@ application.
 
 This repository contains the maintained GTK+ 2 fork. It keeps the established
 0.8.x interface available while adding GTK2 widgets and compatibility-minded
-extensions. The current development version is `0.9.0-dev`; the package and
+extensions. The current version is `0.9.0`; the package and
 executable remain named `gtkdialog`.
 
 ![Hierarchical JSON tree in the GTKDialog showcase](screenshots/08-tree-json.png)

@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([gtkdialog], [0.9.0-dev], [artur@unix.org.pl], [gtkdialog],
+AC_INIT([gtkdialog], [0.9.0], [artur@unix.org.pl], [gtkdialog],
 	[https://github.com/abednarek/gtkdialog])
 AM_INIT_AUTOMAKE([foreign])
 #AM_CONFIG_HEADER([config.h]) Obsolete.
