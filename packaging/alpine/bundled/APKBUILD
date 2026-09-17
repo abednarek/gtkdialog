@@ -11,7 +11,8 @@ makedepends="build-base gtk+2.0-dev json-glib-dev enchant2-dev libxml2-dev
 	ncurses-dev libx11-dev cairo-dev pango-dev pkgconf gettext-dev intltool
 	autoconf automake libtool flex bison patch tar"
 checkdepends="xvfb-run xdotool font-dejavu"
-source="gtkdialog-$pkgver.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver.tar.gz"
+source="gtkdialog-$pkgver.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver.tar.gz
+	gtkdialog-$pkgver-bundled-sources.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver-bundled-sources.tar.gz"
 builddir="$srcdir/gtkdialog-$pkgver"
 
 build() {
@@ -29,4 +30,5 @@ package() {
 	cp -a "$srcdir/bundle-package/." "$pkgdir/"
 }
 
-sha512sums="5a4f7824a909c98cb33ea7c5b1ca52438c8968e74e36510158841deff41bd2750651bfb075a62697f2ed7cc96d4d147a9de4d6f3882e3fa2ac65433e04aa5bf2  gtkdialog-$pkgver.tar.gz"
+sha512sums="aea3553e726d5d8c86c969ca11df1cdd70843abdc918ed0af8bda620b15894b7df8da0cf9f9c6e7f4b36355ee889904e73158f86abd4d81d30d3f3f5d6f55830  gtkdialog-$pkgver.tar.gz
+a22a99ca8a857bac60acb0eeb2c9a3a0b3c5f4497bd7c5964aef6e23871d0ace12883b9e8dcc45f667277a921f9e06a8ffbc53305291418e11ffda3a93c80a06  gtkdialog-$pkgver-bundled-sources.tar.gz"

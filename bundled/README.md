@@ -1,7 +1,10 @@
 # Bundled GTK2 extension sources
 
 This directory contains the upstream source archives needed to build a
-separate `gdlg2-bundled` package. The normal `gdlg2` package does not use them.
+separate `gdlg2-bundled` package. The normal Alpine and Void `gdlg2` packages
+do not use them. The 0.9.2 release separates the ordinary `make dist` archive
+from `gtkdialog-0.9.2-bundled-sources.tar.gz`; unpack both into the same
+source directory before a bundled build. Arch offers only the bundled recipe.
 The bundled installation prefix is `/opt/gldg2`; it must not replace a
 distribution's GTK libraries or the normal `gdlg2` executable.
 
@@ -15,6 +18,13 @@ The source archives' own copyright and license files remain inside them.
 Any additional local adaptation must be kept as a separately reviewable
 patch under `patches/<component>/`, not applied to the archived source in Git.
 Apply patches in filename order after unpacking a component.
+
+For a release, run `make dist` in an out-of-tree build to create the ordinary
+source archive. Create the companion archive with
+`./bundled/create-distfiles-archive.sh "$PWD" 0.9.2 "$OUTPUT_ARCHIVE"`.
+The helper checks every pinned checksum before packaging the sources. Both
+archives use the same top-level directory so package builders can unpack them
+together.
 
 ## Included VTE fork
 
@@ -62,8 +72,8 @@ distribution GTK2 packages. All three use distribution JSON-GLib. The other
 eight components are the GTK2 extension libraries requested by `configure`.
 The extensions have been staged together on glibc and Alpine/musl; private
 GTK2 has been staged on glibc. The staged launchers have also been exercised
-in Arch, Alpine and Void root filesystems. The 0.9.2 `make dist` source archive
-includes these files, and the package recipes verify its checksum. Staged
+in Arch, Alpine and Void root filesystems. The 0.9.2 bundled-sources archive
+includes these files, and the package recipes verify both asset checksums. Staged
 builds are not finished distribution packages.
 
 An integrated glibc build with all eight extension libraries, including this
@@ -97,10 +107,7 @@ tree; the work directory must not contain an earlier `stage` directory:
 ```
 
 Use `system-gtk2` instead of `private-gtk2` on Alpine and Void. The script
-also accepts `private-gtk2-core` for the Arch standard recipe: it builds only
-private GTK2 and `gdlg2` with JSON-GLib, without the eight optional extensions.
-The Arch standard and bundled packages use the same private prefix and cannot
-be installed together. The script verifies the pinned archive checksums,
+verifies the pinned archive checksums,
 applies the patches, runs all builds outside the source tree and populates
 `$PACKAGE_DIR/opt/gldg2`. Its staged
 `gdlg2` build can be checked before packaging with:

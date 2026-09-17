@@ -3,7 +3,7 @@
 set -eu
 
 if [ "$#" -ne 4 ]; then
-	echo "usage: $0 SOURCE_DIR WORK_DIR PACKAGE_DIR system-gtk2|private-gtk2|private-gtk2-core" >&2
+	echo "usage: $0 SOURCE_DIR WORK_DIR PACKAGE_DIR system-gtk2|private-gtk2" >&2
 	exit 2
 fi
 
@@ -14,7 +14,7 @@ package_dir=$(CDPATH= cd -P "$3" && pwd)
 gtk_mode=$4
 
 case $gtk_mode in
-	system-gtk2|private-gtk2|private-gtk2-core) ;;
+	system-gtk2|private-gtk2) ;;
 	*) echo "unknown GTK2 mode: $gtk_mode" >&2; exit 2 ;;
 esac
 case $work_dir/ in
@@ -93,43 +93,34 @@ if [ "$gtk_mode" != system-gtk2 ]; then
 		--disable-static
 fi
 
-if [ "$gtk_mode" != private-gtk2-core ]; then
-	build_component gtkspell gtkspell-2.0.16.tar.gz gtkspell-2.0.16 --disable-static
-	build_component gtksourceview gtksourceview-2.10.5.tar.bz2 \
-		gtksourceview-2.10.5 --disable-gtk-doc --disable-introspection
-	build_component gtkdatabox gtkdatabox-0.9.3.1.tar.gz \
-		gtkdatabox-0.9.3.1 --disable-libglade --disable-glade
-	build_component gtksheet gtksheet-3.5.1.tar.gz gtksheet-3.5.1 \
-		--disable-glade --disable-tests
-	build_component gdl gdl-2.30.1.tar.bz2 gdl-2.30.1 \
-		--disable-gtk-doc --disable-introspection --disable-glade
-	build_component goocanvas goocanvas-1.0.0.tar.bz2 goocanvas-1.0.0 \
-		--disable-gtk-doc --disable-introspection
-	build_component libwnck libwnck-2.30.7.tar.bz2 libwnck-2.30.7 \
-		--disable-gtk-doc --disable-introspection
-	build_component vte vte-gtk2-0.28.2-gtk2.4.tar.gz \
-		vte-gtk2-0.28.2-gtk2.4 --with-gtk=2.0 --disable-python \
-		--disable-introspection --disable-gtk-doc --disable-gnome-pty-helper \
-		--disable-glade --disable-static
-fi
+build_component gtkspell gtkspell-2.0.16.tar.gz gtkspell-2.0.16 --disable-static
+build_component gtksourceview gtksourceview-2.10.5.tar.bz2 \
+	gtksourceview-2.10.5 --disable-gtk-doc --disable-introspection
+build_component gtkdatabox gtkdatabox-0.9.3.1.tar.gz \
+	gtkdatabox-0.9.3.1 --disable-libglade --disable-glade
+build_component gtksheet gtksheet-3.5.1.tar.gz gtksheet-3.5.1 \
+	--disable-glade --disable-tests
+build_component gdl gdl-2.30.1.tar.bz2 gdl-2.30.1 \
+	--disable-gtk-doc --disable-introspection --disable-glade
+build_component goocanvas goocanvas-1.0.0.tar.bz2 goocanvas-1.0.0 \
+	--disable-gtk-doc --disable-introspection
+build_component libwnck libwnck-2.30.7.tar.bz2 libwnck-2.30.7 \
+	--disable-gtk-doc --disable-introspection
+build_component vte vte-gtk2-0.28.2-gtk2.4.tar.gz \
+	vte-gtk2-0.28.2-gtk2.4 --with-gtk=2.0 --disable-python \
+	--disable-introspection --disable-gtk-doc --disable-gnome-pty-helper \
+	--disable-glade --disable-static
 
 echo "Building gdlg2 ($gtk_mode)"
 cp -a "$source_dir/." "$work_dir/sources/gtkdialog"
 (cd "$work_dir/sources/gtkdialog" && autoreconf -fi)
 mkdir -p "$work_dir/build/gtkdialog"
-if [ "$gtk_mode" = private-gtk2-core ]; then
-	(cd "$work_dir/build/gtkdialog" && \
-		"$work_dir/sources/gtkdialog/configure" --prefix="$prefix" \
-		--with-json-glib && make -j "$build_jobs" && \
-		make install DESTDIR="$stage")
-else
-	(cd "$work_dir/build/gtkdialog" && \
-		"$work_dir/sources/gtkdialog/configure" --prefix="$prefix" \
-		--with-json-glib --with-vte --with-gtkspell --with-gtksourceview \
-		--with-gtkdatabox --with-gtksheet --with-gdl --with-goocanvas \
-		--with-libwnck --with-unix-print && \
-		make -j "$build_jobs" && make install DESTDIR="$stage")
-fi
+(cd "$work_dir/build/gtkdialog" && \
+	"$work_dir/sources/gtkdialog/configure" --prefix="$prefix" \
+	--with-json-glib --with-vte --with-gtkspell --with-gtksourceview \
+	--with-gtkdatabox --with-gtksheet --with-gdl --with-goocanvas \
+	--with-libwnck --with-unix-print && \
+	make -j "$build_jobs" && make install DESTDIR="$stage")
 
 mkdir -p "$stage_prefix/libexec" "$stage_prefix/bin"
 mv "$stage_prefix/bin/gdlg2" "$stage_prefix/libexec/gdlg2"

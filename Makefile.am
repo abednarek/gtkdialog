@@ -5,8 +5,12 @@ endif
 DIST_SUBDIRS = src doc data
 
 DIST_GLOBS = \
-	bundled/* \
-	bundled/distfiles/* \
+	bundled/README.md \
+	bundled/SHA256SUMS \
+	bundled/sources.lock \
+	bundled/build-bundle.sh \
+	bundled/create-distfiles-archive.sh \
+	bundled/gdlg2-launcher \
 	bundled/patches/*/*.patch \
 	doc/reference/* \
 	screenshots/* \

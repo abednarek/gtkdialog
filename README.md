@@ -90,8 +90,9 @@ options.
 APKBUILD, PKGBUILD and xbps-src recipes for this release are kept
 [in the project repository](https://github.com/abednarek/gtkdialog/tree/main/packaging),
 outside the generated source archive whose checksum they verify. The
-`make dist` archive includes the pinned `bundled/` sources needed by the
-private GTK2 and optional-extension package variants.
+`make dist` archive contains the application sources. The separate
+`gtkdialog-0.9.2-bundled-sources.tar.gz` asset contains the pinned GTK2 and
+extension sources; bundled package recipes fetch and verify both archives.
 
 A Git checkout also needs Autoconf, Automake, Flex and Bison. The latter two
 generate the lexer and parser during the build; release archives already
