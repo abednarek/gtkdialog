@@ -21,4 +21,4 @@ package() {
 	make -C "$builddir/build" DESTDIR="$pkgdir" install
 }
 
-sha512sums="aea3553e726d5d8c86c969ca11df1cdd70843abdc918ed0af8bda620b15894b7df8da0cf9f9c6e7f4b36355ee889904e73158f86abd4d81d30d3f3f5d6f55830  gtkdialog-$pkgver.tar.gz"
+sha512sums="63fb5f2cbf4f009b3f6c3f315b9ddc2a721b951e684e0a6823a504b7ba2a63194db86f6811664bf3e4a4a0e6bc42efcabf810a9df811097041f67b5300599994  gtkdialog-$pkgver.tar.gz"

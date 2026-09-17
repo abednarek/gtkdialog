@@ -72,7 +72,6 @@ mkdir build
 cd build
 ../configure
 make
-make check
 make install
 ```
 
@@ -96,9 +95,9 @@ extension sources; bundled package recipes fetch and verify both archives.
 
 A Git checkout also needs Autoconf, Automake, Flex and Bison. The latter two
 generate the lexer and parser during the build; release archives already
-include those generated C sources. This public Git snapshot omits the test
-suite; use the release archive for `make check`. Generate the build system
-first, then use the same out-of-tree procedure:
+include those generated C sources. This public Git snapshot and the release
+archives omit the test suite. Generate the build system first, then use the
+same out-of-tree procedure:
 
 ```sh
 NOCONFIGURE=1 ./autogen.sh

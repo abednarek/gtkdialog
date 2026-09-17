@@ -15,7 +15,7 @@ homepage="https://github.com/abednarek/gtkdialog"
 distfiles="${homepage}/releases/download/${version}/gtkdialog-${version}.tar.gz
  ${homepage}/releases/download/${version}/gtkdialog-${version}-bundled-sources.tar.gz"
 wrksrc="gtkdialog-${version}"
-checksum="43b27b35c726d71a30987327ed96af99c2a1697c4417f9f78e4d008645f49041 f1c7546b061b94b90ba42fd7ec3e49fff6cd9fad1a6bbda103f4fec1c1c359a4"
+checksum="a6e6c86d8eb094d657abd1b3e3f1692be39a0815e8271d48ce2339ba14db42af f1c7546b061b94b90ba42fd7ec3e49fff6cd9fad1a6bbda103f4fec1c1c359a4"
 
 do_build() {
 	./bundled/build-bundle.sh "$PWD" "$wrkdir/bundle-work" \
