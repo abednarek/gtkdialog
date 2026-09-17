@@ -7,7 +7,6 @@ url="https://github.com/abednarek/gtkdialog"
 arch="all"
 license="GPL-2.0-or-later"
 makedepends="build-base gtk+2.0-dev json-glib-dev pkgconf"
-checkdepends="xvfb-run xdotool font-dejavu"
 source="gtkdialog-$pkgver.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver.tar.gz"
 builddir="$srcdir/gtkdialog-$pkgver"
 
@@ -16,10 +15,6 @@ build() {
 	cd "$builddir/build"
 	../configure --prefix=/usr --with-json-glib
 	make
-}
-
-check() {
-	make -C "$builddir/build" check
 }
 
 package() {

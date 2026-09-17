@@ -6,7 +6,6 @@ hostmakedepends="pkg-config autoconf automake libtool glib-devel gettext gettext
  intltool flex bison patch"
 makedepends="gtk+-devel json-glib-devel enchant2-devel libxml2-devel
  ncurses-devel libX11-devel cairo-devel pango-devel"
-checkdepends="xvfb-run xdotool dejavu-fonts-ttf"
 depends="gtk+ json-glib enchant2 enchant2-hunspell hunspell-en
  hicolor-icon-theme"
 short_desc="GTK2 dialog builder with private legacy GTK2 extensions"
@@ -21,12 +20,6 @@ checksum="43b27b35c726d71a30987327ed96af99c2a1697c4417f9f78e4d008645f49041 f1c75
 do_build() {
 	./bundled/build-bundle.sh "$PWD" "$wrkdir/bundle-work" \
 		"$wrkdir/bundle-package" system-gtk2
-}
-
-do_check() {
-	LD_LIBRARY_PATH="$wrkdir/bundle-work/stage/opt/gldg2/lib" \
-	XDG_DATA_DIRS="$wrkdir/bundle-work/stage/opt/gldg2/share:/usr/local/share:/usr/share" \
-		make -C "$wrkdir/bundle-work/build/gtkdialog" check
 }
 
 do_install() {

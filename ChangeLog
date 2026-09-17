@@ -1,4 +1,8 @@
 * Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Removed package-recipe test hooks and their dependencies because the public
+  source snapshot does not distribute the test suite.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
 - Split the 0.9.2 release sources into the Autotools distribution archive and
   a separate archive of pinned GTK2 extension sources. Updated Alpine, Arch
   and Void recipes to fetch only the sources they use; Arch now has only the

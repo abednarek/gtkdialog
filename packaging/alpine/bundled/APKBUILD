@@ -10,7 +10,6 @@ depends="gtk+2.0 json-glib enchant2-libs libxml2 libncursesw"
 makedepends="build-base gtk+2.0-dev json-glib-dev enchant2-dev libxml2-dev
 	ncurses-dev libx11-dev cairo-dev pango-dev pkgconf gettext-dev intltool
 	autoconf automake libtool flex bison patch tar"
-checkdepends="xvfb-run xdotool font-dejavu"
 source="gtkdialog-$pkgver.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver.tar.gz
 	gtkdialog-$pkgver-bundled-sources.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver-bundled-sources.tar.gz"
 builddir="$srcdir/gtkdialog-$pkgver"
@@ -18,12 +17,6 @@ builddir="$srcdir/gtkdialog-$pkgver"
 build() {
 	"$builddir/bundled/build-bundle.sh" "$builddir" \
 		"$srcdir/bundle-work" "$srcdir/bundle-package" system-gtk2
-}
-
-check() {
-	LD_LIBRARY_PATH="$srcdir/bundle-work/stage/opt/gldg2/lib" \
-	XDG_DATA_DIRS="$srcdir/bundle-work/stage/opt/gldg2/share:/usr/local/share:/usr/share" \
-		make -C "$srcdir/bundle-work/build/gtkdialog" check
 }
 
 package() {
