@@ -49,6 +49,8 @@ typedef struct actioncommand {
   char        *destination_name;
 } actioncommand;
 
+void attributeset_destroy(gpointer data);
+
 /*                                   -- Type of widget      */
 /*                                 xxxxxxxx                 */
 #define WIDGET_TYPE              0x00FF0000
@@ -190,6 +192,7 @@ typedef struct actioncommand {
 #define IMMERGE               0x00009000
 #define RGROUP_PUSH           0x0000A000
 #define RGROUP_POP            0x0000B000
+#define EMPTY_WIDGETS         0x0000C000
 
 /*                                    -- Attribute           */
 /*                              xxxxxxxx                 */
@@ -222,6 +225,20 @@ typedef struct actioncommand {
 int instruction_execute(instruction command);
 void print_program(void);
 void run_program(void);
+gboolean program_set_tab_target(GtkWidget *notebook, gint target_window_id,
+	const gchar *instance, const gchar *label);
+GtkWidget *program_notebook_tab_label(GtkWidget *page, const gchar *label,
+	const gchar *instance, const gchar *close_enabled,
+	const gchar *close_action);
+gboolean program_set_box_target(GtkWidget *box, gint target_window_id,
+	const gchar *instance);
+void program_clear_fragment_target(void);
+gboolean program_remove_tab_instance(const gchar *instance,
+	GtkWidget *source, gboolean *source_removed);
+gboolean program_select_tab_instance(const gchar *instance);
+gboolean program_fragment_instance_is_live(const gchar *instance);
+gboolean program_fragment_template_active(void);
+gboolean program_fragment_was_attached(void);
 
 void fileselection_made( GtkWidget *w, actioncommand *action );
 

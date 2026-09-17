@@ -32,6 +32,7 @@
 #include "signals.h"
 #include "tag_attributes.h"
 #include "widget_menuitem.h"
+#include "widget_menu_json.h"
 
 /* Defines */
 //#define DEBUG_CONTENT
@@ -172,8 +173,6 @@ static gboolean widget_menuitem_parse_accel_value(const gchar *value,
 
 void widget_menuitem_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -659,8 +658,6 @@ gchar *widget_menuitem_envvar_construct(GtkWidget *widget)
 void widget_menuitem_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -683,6 +680,7 @@ void widget_menuitem_refresh(variable *var)
 	GList            *element;
 	GtkWidget        *image;
 	gchar            *act;
+	gchar            *format;
 	gchar            *resolved_image;
 	gchar            *value, *image_name;
 	gint              initialised = FALSE;
@@ -745,18 +743,27 @@ void widget_menuitem_refresh(variable *var)
 	/* The <input> tag... */
 	act = attributeset_get_first(&element, var->Attributes, ATTR_INPUT);
 	while (act) {
-		if (input_is_shell_command(act))
-			widget_menuitem_input_by_command(var, act + 8);
-		/* input file stock = "File:", input file = "File:/path/to/file" */
-		if (strncasecmp(act, "file:", 5) == 0 && strlen(act) > 5) {
-			/* Only checkbox and radiobutton menuitems support this */
-			if (GTK_IS_CHECK_MENU_ITEM(var->Widget)) {
-				if (!initialised) {
-					/* Check for file-monitor and create if requested */
-					widget_file_monitor_try_create(var, act + 5);
+		format = attributeset_get_this_tagattr(&element, var->Attributes,
+			ATTR_INPUT, "format");
+		if (var->Type == WIDGET_MENU && format &&
+			g_ascii_strcasecmp(format, "json") == 0)
+			widget_menu_json_refresh(var,
+				gtk_menu_item_get_submenu(GTK_MENU_ITEM(var->Widget)),
+				act, initialised);
+		else {
+			if (input_is_shell_command(act))
+				widget_menuitem_input_by_command(var, act + 8);
+			/* input file stock = "File:", input file = "File:/path/to/file" */
+			if (strncasecmp(act, "file:", 5) == 0 && strlen(act) > 5) {
+				/* Only checkbox and radiobutton menuitems support this */
+				if (GTK_IS_CHECK_MENU_ITEM(var->Widget)) {
+					if (!initialised) {
+						/* Check for file-monitor and create if requested */
+						widget_file_monitor_try_create(var, act + 5);
+					}
 				}
+				widget_menuitem_input_by_file(var, act + 5);
 			}
-			widget_menuitem_input_by_file(var, act + 5);
 		}
 		act = attributeset_get_next(&element, var->Attributes, ATTR_INPUT);
 	}
@@ -825,8 +832,6 @@ void widget_menuitem_refresh(variable *var)
 
 void widget_menuitem_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -917,7 +922,7 @@ static void widget_menuitem_input_by_command(variable *var, char *command)
 	if (GTK_IS_CHECK_MENU_ITEM(var->Widget)) {
 
 		/* Opening pipe for reading... */
-		if (infile = widget_opencommand(command)) {
+		if ((infile = widget_opencommand(command))) {
 			/* Just one line */
 			if ((line = widget_read_line(infile))) {
 				is_active = widget_parse_legacy_input_boolean(line);
@@ -959,7 +964,7 @@ static void widget_menuitem_input_by_file(variable *var, char *filename)
 	/* Only checkbox and radiobutton menuitems support this */
 	if (GTK_IS_CHECK_MENU_ITEM(var->Widget)) {
 
-		if (infile = fopen(filename, "r")) {
+		if ((infile = fopen(filename, "r"))) {
 			/* Just one line */
 			if ((line = widget_read_line(infile))) {
 				is_active = widget_parse_legacy_input_boolean(line);
@@ -990,8 +995,6 @@ static void widget_menuitem_input_by_file(variable *var, char *filename)
 
 static void widget_menuitem_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

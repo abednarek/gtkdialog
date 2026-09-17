@@ -35,16 +35,16 @@ with separate content and response-button areas.</p><hr>
 be nested. Direct children without a <code>response</code> attribute form the
 content area. Direct button children with that attribute form the action
 area.</p>
-<h2> Tag attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">default-response</td><td class="wiki">Default action button</td><td class="wiki">Named response or integer</td></tr>
-<tr><td class="wiki">response</td><td class="wiki">Response assigned to a direct button</td><td class="wiki"><code>ok</code>, <code>cancel</code>, <code>close</code>, <code>yes</code>, <code>no</code>, <code>apply</code>, <code>help</code>, <code>accept</code>, <code>reject</code>, <code>none</code>, <code>delete-event</code> or integer</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">default-response</td><td class="wiki">Default action button</td><td class="wiki">Named response or integer</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">response</td><td class="wiki">Response assigned to a direct button</td><td class="wiki"><code>ok</code>, <code>cancel</code>, <code>close</code>, <code>yes</code>, <code>no</code>, <code>apply</code>, <code>help</code>, <code>accept</code>, <code>reject</code>, <code>none</code>, <code>delete-event</code> or integer</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>Standard writable GtkDialog and GtkWindow properties, including
 <code>title</code>, <code>modal</code> and <code>has-separator</code>, are also
 accepted.</p>
-<h2> Actions and values </h2>
+<h2> Actions and Values </h2>
 <p>The variable is updated before the default <code>response</code> actions
 run. A response does not implicitly close the dialog. Use <code>exit</code> for
 a root dialog or <code>closewindow</code> for a launched dialog. Defaults and

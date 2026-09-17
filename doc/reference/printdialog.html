@@ -36,24 +36,24 @@ It collects the user's choices but does not create or submit a print job.</p><hr
 </pre>
 <p>This element replaces the normal top-level <code>window</code> and cannot
 be nested or contain child widgets.</p>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">print-settings-file</td><td class="wiki">Initial and refreshable GtkPrintSettings key file</td><td class="wiki">Filename</td></tr>
-<tr><td class="wiki">page-setup-file</td><td class="wiki">Initial and refreshable GtkPageSetup key file</td><td class="wiki">Filename</td></tr>
-<tr><td class="wiki">current-page</td><td class="wiki">Document page made available as the current-page choice</td><td class="wiki"><code>-1</code> to disable, otherwise a non-negative page index</td></tr>
-<tr><td class="wiki">support-selection</td><td class="wiki">Expose the print-selection choice</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">has-selection</td><td class="wiki">Make the print-selection choice available initially</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">embed-page-setup</td><td class="wiki">Embed paper and orientation controls in the dialog</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">manual-capabilities</td><td class="wiki">Features the consuming script can handle itself</td><td class="wiki">Names separated by <code>|</code>, comma, semicolon or whitespace</td></tr>
-<tr><td class="wiki">paper-name</td><td class="wiki">Standard paper name, or name of a custom paper</td><td class="wiki">For example <code>iso_a4</code> or <code>na_letter</code></td></tr>
-<tr><td class="wiki">paper-width</td><td class="wiki">Custom paper width; requires paper-height</td><td class="wiki">Positive millimetres</td></tr>
-<tr><td class="wiki">paper-height</td><td class="wiki">Custom paper height; requires paper-width</td><td class="wiki">Positive millimetres</td></tr>
-<tr><td class="wiki">orientation</td><td class="wiki">Initial page orientation</td><td class="wiki"><code>portrait</code>, <code>landscape</code>, <code>reverse-portrait</code> or <code>reverse-landscape</code></td></tr>
-<tr><td class="wiki">top-margin</td><td class="wiki">Initial top margin</td><td class="wiki">Non-negative millimetres</td></tr>
-<tr><td class="wiki">bottom-margin</td><td class="wiki">Initial bottom margin</td><td class="wiki">Non-negative millimetres</td></tr>
-<tr><td class="wiki">left-margin</td><td class="wiki">Initial left margin</td><td class="wiki">Non-negative millimetres</td></tr>
-<tr><td class="wiki">right-margin</td><td class="wiki">Initial right margin</td><td class="wiki">Non-negative millimetres</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">print-settings-file</td><td class="wiki">Initial and refreshable GtkPrintSettings key file</td><td class="wiki">Filename</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">page-setup-file</td><td class="wiki">Initial and refreshable GtkPageSetup key file</td><td class="wiki">Filename</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">current-page</td><td class="wiki">Document page made available as the current-page choice</td><td class="wiki"><code>-1</code> to disable, otherwise a non-negative page index</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">support-selection</td><td class="wiki">Expose the print-selection choice</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">has-selection</td><td class="wiki">Make the print-selection choice available initially</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">embed-page-setup</td><td class="wiki">Embed paper and orientation controls in the dialog</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">manual-capabilities</td><td class="wiki">Features the consuming script can handle itself</td><td class="wiki">Names separated by <code>|</code>, comma, semicolon or whitespace</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">paper-name</td><td class="wiki">Standard paper name, or name of a custom paper</td><td class="wiki">For example <code>iso_a4</code> or <code>na_letter</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">paper-width</td><td class="wiki">Custom paper width; requires paper-height</td><td class="wiki">Positive millimetres</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">paper-height</td><td class="wiki">Custom paper height; requires paper-width</td><td class="wiki">Positive millimetres</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">orientation</td><td class="wiki">Initial page orientation</td><td class="wiki"><code>portrait</code>, <code>landscape</code>, <code>reverse-portrait</code> or <code>reverse-landscape</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">top-margin</td><td class="wiki">Initial top margin</td><td class="wiki">Non-negative millimetres</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">bottom-margin</td><td class="wiki">Initial bottom margin</td><td class="wiki">Non-negative millimetres</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">left-margin</td><td class="wiki">Initial left margin</td><td class="wiki">Non-negative millimetres</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">right-margin</td><td class="wiki">Initial right margin</td><td class="wiki">Non-negative millimetres</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>The page-setup file is loaded first, after which explicit paper,
 orientation and margin attributes override it. The print-settings file can
@@ -97,7 +97,7 @@ the stored response.</p>
 <code>gtk+-unix-print-2.0</code> 2.10 or later. A build without it still parses
 the tag and reports a precise diagnostic if the widget is used. The enabled
 optional feature appears as
-<code>GTK2 Unix printing</code> in <code>gtkdialog --version</code>.</p>
+<code>GTK2 Unix printing</code> in <code>gdlg2 --version</code>.</p>
 <p>GtkPrintUnixDialog retains the page setup assigned to it and copies values
 from initial print settings. Its page-setup and selected-printer getters return
 borrowed objects, while its settings getter creates a new owned object.
@@ -123,7 +123,7 @@ widget contract</a>. The sections above describe facilities specific to this tag
 &lt;/printdialog&gt;
 </pre>
 <p>See <code>examples/printdialog/printdialog</code> for a complete runnable
-example. This widget was introduced in gtkdialog version 0.9.0.</p>
+example. This widget was introduced in gtkdialog version 0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

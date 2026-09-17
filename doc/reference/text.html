@@ -122,6 +122,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkLabel.html">GtkLabel</a>
 <tr><td class="wiki"> block-function-signals </td><td class="wiki"> Block signal emissions from functions </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> file-monitor </td><td class="wiki"> Emit signal when input file(s) change </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> auto-refresh </td><td class="wiki"> Auto refresh when input file(s) change </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> use-markup </td><td class="wiki"> Interpret the label and refreshed input as Pango markup </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> scrollable </td><td class="wiki"> Pack the label in a scrolled window </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.5 </td></tr>
 <tr><td class="wiki"> width </td><td class="wiki"> Scrolled-window minimum width; used only with <code>scrollable="true"</code> </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to use the default </td><td class="wiki"> 0.8.5 </td></tr>
 <tr><td class="wiki"> height </td><td class="wiki"> Scrolled-window minimum height; used only with <code>scrollable="true"</code> </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to use the default </td><td class="wiki"> 0.8.5 </td></tr>
@@ -137,16 +138,16 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkLabel.html">GtkLabel</a>
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Contents</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> label </td><td class="wiki"> Initial text </td><td class="wiki"> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> label </td><td class="wiki"> Initial text </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> variable export="false" </td><td class="wiki"> Variable name, not exported to shell </td><td class="wiki"> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> height </td><td class="wiki"> Scrolled-window minimum height; used only with <code>scrollable="true"</code> </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to use the default </td><td class="wiki"> 0.8.5 </td></tr>
 <tr><td class="wiki"> width </td><td class="wiki"> Scrolled-window minimum width; used only with <code>scrollable="true"</code> </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to use the default </td><td class="wiki"> 0.8.5 </td></tr>
-<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Execute command on signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 </table>
@@ -167,13 +168,13 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkLabel.html">GtkLabel</a>
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> show </td><td class="wiki"> Show widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> hide </td><td class="wiki"> Hide widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> fileselect </td><td class="wiki"> Launch file selection dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> fileselect </td><td class="wiki"> Launch file selection dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 </table>
 
 <p>The following general functions can be performed by any widget capable of emitting signals:</p>
@@ -181,10 +182,10 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkLabel.html">GtkLabel</a>
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
 <tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 </table>
 
@@ -213,6 +214,23 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkLabel.html">GtkLabel</a>
 <h2> Notes </h2>
 
 <p>Line wrapping is enabled by default for this widget which can be overridden with the "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkLabel.html#GtkLabel--wrap">wrap</a>" tag attribute.</p>
+
+<p>Markup is opt-in. With <code>use-markup="true"</code>, the initial
+<code>label</code> and text subsequently loaded by <code>input</code>,
+<code>input file</code> or <code>refresh</code> are interpreted as
+<a href="https://docs.gtk.org/Pango/pango_markup.html">Pango markup</a>.
+Without it, angle brackets remain ordinary text. In the XML-like dialog
+source, quote a label containing markup so its tags are treated as text by
+the gtkdialog parser; a command or file input can provide markup directly.
+The value exported by the widget is its displayed plain text, not the markup
+source.</p>
+
+<pre>
+&lt;text use-markup="true" xalign="0"&gt;
+  &lt;label&gt;"&lt;b&gt;Important&lt;/b&gt; and &lt;span foreground='blue'&gt;blue&lt;/span&gt;"&lt;/label&gt;
+  &lt;variable&gt;MESSAGE&lt;/variable&gt;
+&lt;/text&gt;
+</pre>
 
 <p>The historical unscrolled label remains the default. Set <code>scrollable="true"</code> to opt into the GTK+ 2 scrolled-window wrapper. Its default size is 200x100. When <code>scroll-to-bottom="true"</code>, content added while the view is at the bottom remains visible; after the user scrolls upward, refreshes preserve the distance from the bottom.</p>
 

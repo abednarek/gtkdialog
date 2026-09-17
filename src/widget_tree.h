@@ -23,7 +23,6 @@
 #ifndef WIDGET_TREE_H
 #define WIDGET_TREE_H
 
-#if GTK_CHECK_VERSION(2,4,0)
 
 /* Function prototypes */
 void widget_tree_clear(variable *var);
@@ -36,6 +35,5 @@ void widget_tree_refresh(variable *var);
 void widget_tree_removeselected(variable *var);
 void widget_tree_save(variable *var);
 
-#endif
 
 #endif

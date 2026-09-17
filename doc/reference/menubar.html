@@ -97,6 +97,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuBar.html">GtkMenuBar
 <pre>
 &lt;menubar tag_attr="value"...&gt;
 	menu...
+	&lt;input file format="json"&gt;filename&lt;/input&gt;
 	&lt;variable&gt;varname&lt;/variable&gt;
 	&lt;sensitive&gt;state&lt;/sensitive&gt;
 	&lt;action signal="type"&gt;activity&lt;/action&gt;...
@@ -116,6 +117,8 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuBar.html">GtkMenuBar
 <tr><td class="wiki"> space-expand </td><td class="wiki"> Pack widget expanding into space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> space-fill </td><td class="wiki"> Pack widget filling space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> block-function-signals </td><td class="wiki"> Block signal emissions from functions </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> file-monitor </td><td class="wiki"> Emit a signal when the JSON input file changes </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> auto-refresh </td><td class="wiki"> Reload JSON input when its file changes </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
 </table>
 
 <h2> Directives </h2>
@@ -126,12 +129,18 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkMenuBar.html">GtkMenuBar
 <tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Contents</b> </th><th class="wiki"> <b>Since</b> </th></tr>
 <tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> variable export="false" </td><td class="wiki"> Variable name, not exported to shell </td><td class="wiki"> </td><td class="wiki"> 0.8.3 </td></tr>
+<tr><td class="wiki"> input file format="json" </td><td class="wiki"> Append menus from a JSON document; refresh replaces only JSON-generated items </td><td class="wiki"> Filename </td><td class="wiki"> 0.9.2 </td></tr>
 <tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Execute command on signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 </table>
+
+<p>JSON input requires JSON-GLib and uses the same <a href="menu.html#json-input">menu
+document format</a> as a nested <code>&lt;menu&gt;</code>. Existing XML menus
+remain in place. A menubar may contain only this input directive (and optional
+other directives) or combine it with XML menus.</p>
 
 <h2> Signals </h2>
 

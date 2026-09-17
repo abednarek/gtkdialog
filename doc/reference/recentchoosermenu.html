@@ -36,22 +36,22 @@ for resources stored by the desktop recent manager.</p><hr>
 native chooser submenu and all installed recent filters. The chooser reads the
 current user's shared recent-resource history; <code>item</code> is not used to
 populate that history.</p>
-<h2> Tag attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">local-only</td><td class="wiki">Show only local resources</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">show-private</td><td class="wiki">Show private resources</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">show-not-found</td><td class="wiki">Show missing resources</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">show-tips</td><td class="wiki">Show resource tooltips</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">show-icons</td><td class="wiki">Show resource icons</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">limit</td><td class="wiki">Maximum displayed resources</td><td class="wiki">Integer</td></tr>
-<tr><td class="wiki">sort-type</td><td class="wiki">Recent-resource order</td><td class="wiki"><code>none</code>, <code>mru</code> or <code>lru</code></td></tr>
-<tr><td class="wiki">show-numbers</td><td class="wiki">Prefix the first ten resources with mnemonic numbers</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">filter-name</td><td class="wiki">Optional filter label</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">filter-pattern</td><td class="wiki">Filename patterns</td><td class="wiki">Comma- or semicolon-separated patterns</td></tr>
-<tr><td class="wiki">filter-mime-type</td><td class="wiki">Allowed MIME types</td><td class="wiki">Comma- or semicolon-separated MIME types</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">local-only</td><td class="wiki">Show only local resources</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">show-private</td><td class="wiki">Show private resources</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">show-not-found</td><td class="wiki">Show missing resources</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">show-tips</td><td class="wiki">Show resource tooltips</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">show-icons</td><td class="wiki">Show resource icons</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">limit</td><td class="wiki">Maximum displayed resources</td><td class="wiki">Integer</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">sort-type</td><td class="wiki">Recent-resource order</td><td class="wiki"><code>none</code>, <code>mru</code> or <code>lru</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">show-numbers</td><td class="wiki">Prefix the first ten resources with mnemonic numbers</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">filter-name</td><td class="wiki">Optional filter label</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">filter-pattern</td><td class="wiki">Filename patterns</td><td class="wiki">Comma- or semicolon-separated patterns</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">filter-mime-type</td><td class="wiki">Allowed MIME types</td><td class="wiki">Comma- or semicolon-separated MIME types</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
-<h2> Actions and values </h2>
+<h2> Actions and Values </h2>
 <p>The variable and file output contain the single current resource URI.
 Defaults and inputs establish a logical URI for output and actions without
 marking a visible menu entry; activating a recent entry replaces it with the
@@ -79,8 +79,7 @@ tag.</p>
 	&lt;/recentchoosermenu&gt;
 &lt;/menu&gt;
 </pre>
-<p>The menu requires GTK+ 2.10 or later. Introduced in gtkdialog version
-0.9.0.</p>
+<p>Introduced in gtkdialog version 0.9.0.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

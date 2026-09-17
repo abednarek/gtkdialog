@@ -51,8 +51,6 @@ static void widget_button_input_by_items(variable *var);
 
 void widget_button_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -418,8 +416,6 @@ gchar *widget_button_envvar_construct(GtkWidget *widget)
 void widget_button_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -533,8 +529,6 @@ void widget_button_refresh(variable *var)
 
 void widget_button_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -620,7 +614,7 @@ static void widget_button_input_by_command(variable *var, char *command)
 
 	if (var->Type == WIDGET_TOGGLEBUTTON) {
 		/* Opening pipe for reading... */
-		if (infile = widget_opencommand(command)) {
+		if ((infile = widget_opencommand(command))) {
 			/* Just one line */
 			if ((line = widget_read_line(infile))) {
 				is_active = widget_parse_legacy_input_boolean(line);
@@ -718,8 +712,6 @@ static void widget_button_input_by_file(variable *var, char *filename)
 
 static void widget_button_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

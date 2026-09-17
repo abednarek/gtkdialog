@@ -36,12 +36,12 @@ be nested inside one. Each direct child is one page. Its variable contains the
 zero-based current page number.</p>
 <h2> Page Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">page-title</td><td class="wiki">Page heading</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">page-type</td><td class="wiki">Page role and navigation</td><td class="wiki"><code>content</code>, <code>intro</code>, <code>confirm</code>, <code>summary</code> or <code>progress</code></td></tr>
-<tr><td class="wiki">complete</td><td class="wiki">Whether navigation may continue</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">page-title</td><td class="wiki">Page heading</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">page-type</td><td class="wiki">Page role and navigation</td><td class="wiki"><code>content</code>, <code>intro</code>, <code>confirm</code>, <code>summary</code> or <code>progress</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">complete</td><td class="wiki">Whether navigation may continue</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
 </table>
-<h2> Actions and signals </h2>
+<h2> Actions and Signals </h2>
 <p>The default action signal is <code>apply</code>. Explicit
 <code>apply</code>, <code>cancel</code>, <code>close</code> and
 <code>prepare</code> signals are supported. <code>clear</code> and
@@ -67,8 +67,7 @@ tag.</p>
 	&lt;action&gt;exit:Apply&lt;/action&gt;
 &lt;/assistant&gt;
 </pre>
-<p>This widget requires GTK+ 2.10 or later and was introduced in gtkdialog
-version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.0.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

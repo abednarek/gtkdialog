@@ -21,7 +21,6 @@
 #include "widget_menuitem.h"
 #include "widget_statusicon.h"
 
-#if GTK_CHECK_VERSION(2,10,0)
 #define STATUS_ICON_DATA "gtkdialog-status-icon"
 #define STATUS_ICON_SOURCE_DATA "gtkdialog-status-icon-source"
 #define STATUS_ICON_SIGNALS_DATA "gtkdialog-status-icon-signals"
@@ -76,15 +75,10 @@ static void widget_statusicon_set_source(
 static void widget_statusicon_set_tooltip(
 	GtkStatusIcon *icon, const gchar *text, gboolean markup)
 {
-#if GTK_CHECK_VERSION(2,16,0)
 	if (markup)
 		gtk_status_icon_set_tooltip_markup(icon, text);
 	else
 		gtk_status_icon_set_tooltip_text(icon, text);
-#else
-	(void)markup;
-	gtk_status_icon_set_tooltip(icon, text);
-#endif
 }
 
 static AttributeSet *widget_statusicon_attributes(GtkWidget *widget)
@@ -318,10 +312,8 @@ GtkWidget *widget_statusicon_create(
 		if ((value = get_tag_attribute(attr, "blinking")) != NULL &&
 			widget_parse_boolean(value, &blinking))
 			gtk_status_icon_set_blinking(icon, blinking);
-#if GTK_CHECK_VERSION(2,18,0)
 		if ((value = get_tag_attribute(attr, "title")) != NULL)
 			gtk_status_icon_set_title(icon, value);
-#endif
 		kill_tag_attribute(attr, "image-name");
 		kill_tag_attribute(attr, "image-file");
 		kill_tag_attribute(attr, "file");
@@ -458,16 +450,3 @@ void widget_statusicon_save(variable *var)
 	g_free(source);
 	widget_close_output(output, filename);
 }
-#else
-gboolean widget_statusicon_is_proxy(GtkWidget *widget)
-{
-	(void)widget;
-	return FALSE;
-}
-
-gboolean widget_statusicon_activate(GtkWidget *widget)
-{
-	(void)widget;
-	return FALSE;
-}
-#endif

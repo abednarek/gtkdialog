@@ -21,7 +21,6 @@
 #include "widgets.h"
 #include "widget_assistant.h"
 
-#if GTK_CHECK_VERSION(2,10,0)
 extern gboolean option_centering;
 extern gboolean have_geometry_xy;
 extern gboolean have_geometry_dxdy;
@@ -300,4 +299,3 @@ void widget_assistant_save(variable *var)
 	g_free(page);
 	widget_close_output(output, filename);
 }
-#endif

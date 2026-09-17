@@ -29,7 +29,7 @@ without placing a normal window on the desktop.</p><hr>
 	&lt;variable&gt;program name&lt;/variable&gt;
 &lt;/offscreenwindow&gt;
 </pre>
-<h2> Rendering and output </h2>
+<h2> Rendering and Output </h2>
 <p>The root is shown and realized internally so GTK can allocate and draw its
 child, but no desktop window is displayed. Width and height set the minimum
 snapshot dimensions; otherwise the child's natural requisition is used.
@@ -44,7 +44,7 @@ A short timer, as in the example below, is the deterministic way to take the
 initial snapshot. <code>refresh</code> queues a redraw of the child.
 <code>clear</code> and <code>removeselected</code> intentionally do nothing,
 because destroying the child would destroy the declared program.</p>
-<h2> Signals and lifecycle </h2>
+<h2> Signals and Lifecycle </h2>
 <p>The default action signal is <code>damage-event</code>, emitted after an
 already rendered child changes. Initial realization is available explicitly
 as <code>realize</code>, but the first draw is not guaranteed to produce a
@@ -54,12 +54,12 @@ The normal <code>launch</code> and <code>closewindow</code> lifecycle applies,
 including closing and relaunching the same off-screen program. Launching an
 already active instance keeps the existing one; <code>presentwindow</code>
 has no visual effect. The general <code>exit</code> action remains synchronous.</p>
-<h2> Ownership and availability </h2>
+<h2> Ownership and Availability </h2>
 <p>GtkOffscreenWindow owns its one child hierarchy. Each save operation receives
 a new GdkPixbuf reference from GTK, writes it, and releases it immediately.
 Closing the root therefore releases the child, its variables, timers, monitors
 and any widget-owned resources through the existing top-level lifecycle.</p>
-<p>This tag requires GTK+ 2.20 or later and remains GTK2-only.</p>
+<p>This tag remains GTK2-only.</p>
 <h2> Common Contract </h2>
 <p>Common directives, GtkWidget signals, state and general functions, and action
 conditions are documented in the <a href="syntax.html#common-widget-contract">common
@@ -80,7 +80,7 @@ tag.</p>
 &lt;/offscreenwindow&gt;
 </pre>
 <p>See <code>examples/offscreenwindow/offscreenwindow</code> for a complete
-runnable example. This widget was introduced in gtkdialog version 0.9.0.</p>
+runnable example. This widget was introduced in gtkdialog version 0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

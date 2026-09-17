@@ -3,7 +3,7 @@
 # Copyright (C) 2026 Artur Bednarek <artur@unix.org.pl>
 # Distributed under the GNU General Public License version 2 or later.
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 ROW_MENU='
 <popupmenu>

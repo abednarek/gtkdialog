@@ -21,7 +21,7 @@ for selectable icon collections.</p><hr>
 <h2> Definition </h2>
 <pre>
 &lt;iconview tag_attr="value"...&gt;
-	&lt;item icon-name="theme-name"&gt;label&lt;/item&gt;...
+	&lt;item value="stable-value" icon-name="theme-name"&gt;label&lt;/item&gt;...
 	&lt;item stock="gtk-stock-name"&gt;label&lt;/item&gt;...
 	&lt;item image-name="filename"&gt;label&lt;/item&gt;...
 	&lt;default&gt;label&lt;/default&gt;
@@ -32,30 +32,51 @@ for selectable icon collections.</p><hr>
 	&lt;output file&gt;filename&lt;/output&gt;
 &lt;/iconview&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">selection-mode</td><td class="wiki">Selection behavior</td><td class="wiki"><code>none</code>, <code>single</code>, <code>browse</code> or <code>multiple</code></td></tr>
-<tr><td class="wiki">icon-size</td><td class="wiki">Loaded icon size</td><td class="wiki">Positive pixel count; default 48</td></tr>
-<tr><td class="wiki">input-mode</td><td class="wiki">Interpret each input line as text or an image filename</td><td class="wiki"><code>text</code> (default) or <code>image</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">selection-mode</td><td class="wiki">Selection behavior</td><td class="wiki"><code>none</code>, <code>single</code>, <code>browse</code> or <code>multiple</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">icon-size</td><td class="wiki">Loaded icon size</td><td class="wiki">Positive pixel count; default 48</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">input-mode</td><td class="wiki">Interpret each input line as text or an image filename</td><td class="wiki"><code>text</code> (default) or <code>image</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">item-model</td><td class="wiki">Flat item presentation model; the established model remains the default</td><td class="wiki"><code>text</code> or <code>rich</code></td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>Normal GtkIconView properties such as <code>columns</code>,
 <code>item-width</code>, <code>column-spacing</code>, <code>row-spacing</code>,
 <code>margin</code> and <code>item-padding</code> are also available. Set
-<code>text-column="-1"</code> to display images without their labels while
-retaining the labels as selection values.</p>
-<h2> Items, values and actions </h2>
-<p>Each item label is its exported value. An item can use <code>stock</code>
+<code>text-column="-1"</code> to display images without their labels or rich
+descriptions while retaining their selection values. In the rich model,
+<code>pixbuf-column="-1"</code> similarly hides the image renderer.</p>
+<h2> Items, Values and Actions </h2>
+<p>In the default <code>item-model="text"</code>, each item label is its
+exported value. An item can use <code>stock</code>
 for a GTK stock icon, <code>icon-name</code> for a themed icon or
 <code>image-name</code> / <code>image-file</code> for an image file. Input
 commands and files add one text-only item per line by default. With
 <code>input-mode="image"</code>, every line is loaded as an image filename
 and is also used as that item's exported value. Multiple selected values are
 newline-separated.</p>
+<p>The opt-in <code>item-model="rich"</code> is still a flat
+<code>GtkListStore</code>. It adds the following item attributes:</p>
+<table class="wiki" border="1" cellpadding="5px">
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">value</td><td class="wiki">Stable value used by selection, variables, defaults and output</td><td class="wiki">Text; defaults to the plain visible label</td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki">markup</td><td class="wiki">Interpret the label as Pango markup</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki">description</td><td class="wiki">Secondary text displayed below the label</td><td class="wiki">Text</td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki">tooltip</td><td class="wiki">Hover help, interpreted as GTK tooltip markup</td><td class="wiki">Text or Pango markup</td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki">foreground</td><td class="wiki">Label foreground</td><td class="wiki">GTK+ colour specification</td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki">background</td><td class="wiki">Label background</td><td class="wiki">GTK+ colour specification</td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki">font</td><td class="wiki">Label font</td><td class="wiki">Pango font description</td><td class="wiki"> 0.9.2 </td></tr>
+</table>
+<p>Rich items retain the existing <code>stock</code> / <code>stock-id</code>,
+<code>icon-name</code> / <code>icon</code> and <code>image-name</code> /
+<code>image-file</code> icon sources. A rich <code>&lt;default&gt;</code> selects by
+stable value. Line-based command and file inputs remain plain flat rows whose
+label and value are the input line.</p>
 <p>The default action signal is <code>item-activated</code>. The explicit
 <code>selection-changed</code> signal is also supported. <code>clear</code>
 removes all items, <code>removeselected</code> removes the selection and
-<code>save</code> writes every current label to the output file.</p>
+<code>save</code> writes every current label in the text model or every stable
+value in the rich model to the output file.</p>
 <h2> Common Contract </h2>
 
 <p>Common directives, GtkWidget signals, state and general functions, and action
@@ -73,6 +94,18 @@ tag.</p>
 	&lt;action&gt;echo "$SELECTED_ICON"&lt;/action&gt;
 &lt;/iconview&gt;
 </pre>
+<p>A rich, but still flat, collection can use:</p>
+<pre>
+&lt;iconview item-model="rich" icon-size="48" columns="3"&gt;
+	&lt;item value="projects-id" stock="gtk-directory"
+		description="Local work" tooltip="Open projects"&gt;Projects&lt;/item&gt;
+	&lt;item value="settings-id" stock="gtk-preferences" markup="true"
+		foreground="#204a87" font="Sans Bold 9"
+		description="Application options"&gt;"&lt;b&gt;Settings&lt;/b&gt;"&lt;/item&gt;
+	&lt;variable&gt;SELECTED_ICON&lt;/variable&gt;
+	&lt;default&gt;projects-id&lt;/default&gt;
+&lt;/iconview&gt;
+</pre>
 <p>An image-only view populated from a command or file can use:</p>
 <pre>
 &lt;iconview input-mode="image" text-column="-1" icon-size="96"&gt;
@@ -80,8 +113,10 @@ tag.</p>
 	&lt;variable&gt;SELECTED_IMAGE&lt;/variable&gt;
 &lt;/iconview&gt;
 </pre>
-<p>This widget requires GTK+ 2.6 or later and was introduced in gtkdialog
-version 0.9.0.</p>
+<p>See <code>examples/iconview/iconview</code> and
+<code>examples/iconview/iconview_rich</code> for runnable examples. This widget
+was introduced in gtkdialog version 0.9.0. The
+rich model was added in version 0.9.2.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

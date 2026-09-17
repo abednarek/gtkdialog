@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 TMPDIR=/tmp/gtkdialog/examples/"`basename $0`"
 mkdir -p "$TMPDIR"

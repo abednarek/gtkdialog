@@ -3,7 +3,7 @@
 # Copyright (C) 2026 Artur Bednarek <artur@unix.org.pl>
 # Distributed under the GNU General Public License version 2 or later.
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 DESKTOP_MENU='
 <popupmenu>
@@ -15,7 +15,7 @@ DESKTOP_MENU='
 	<menu label="Utilities">
 		<menuitem stock-id="gtk-info">
 			<label>Show gtkdialog version</label>
-			<action>gtkdialog --version</action>
+			<action>gdlg2 --version</action>
 		</menuitem>
 	</menu>
 	<menuitemseparator></menuitemseparator>

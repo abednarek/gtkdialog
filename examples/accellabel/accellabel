@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 ACCEL_LABEL_DIALOG='
 <window title="GTK2 accelerator label" width-request="420">

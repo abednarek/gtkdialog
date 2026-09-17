@@ -12,7 +12,6 @@
 #ifndef WIDGET_SCALEBUTTON_H
 #define WIDGET_SCALEBUTTON_H
 
-#if GTK_CHECK_VERSION(2,12,0)
 void widget_scalebutton_clear(variable *var);
 GtkWidget *widget_scalebutton_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type);
@@ -22,6 +21,5 @@ void widget_scalebutton_fileselect(
 void widget_scalebutton_refresh(variable *var);
 void widget_scalebutton_removeselected(variable *var);
 void widget_scalebutton_save(variable *var);
-#endif
 
 #endif

@@ -1,0 +1,30 @@
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -4 +4 @@
+-SRC_SUBDIRS = gdk gtk modules demos tests perf
++SRC_SUBDIRS = gdk gtk modules
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -568 +568 @@
+-SRC_SUBDIRS = gdk gtk modules demos tests perf
++SRC_SUBDIRS = gdk gtk modules
+--- a/gdk/Makefile.am
++++ b/gdk/Makefile.am
+@@ -12 +12 @@
+-SUBDIRS = $(gdktarget) . tests
++SUBDIRS = $(gdktarget) .
+--- a/gdk/Makefile.in
++++ b/gdk/Makefile.in
+@@ -881 +881 @@
+-SUBDIRS = $(gdktarget) . tests
++SUBDIRS = $(gdktarget) .
+--- a/gtk/Makefile.am
++++ b/gtk/Makefile.am
+@@ -19 +19 @@
+-SUBDIRS = theme-bits . tests
++SUBDIRS = theme-bits .
+--- a/gtk/Makefile.in
++++ b/gtk/Makefile.in
+@@ -2013 +2013 @@
+-SUBDIRS = theme-bits . tests
++SUBDIRS = theme-bits .

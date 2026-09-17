@@ -48,8 +48,6 @@ static void widget_frame_input_by_items(variable *var);
 
 void widget_frame_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -186,8 +184,6 @@ gchar *widget_frame_envvar_construct(GtkWidget *widget)
 void widget_frame_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -271,8 +267,6 @@ void widget_frame_refresh(variable *var)
 
 void widget_frame_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -349,7 +343,7 @@ static void widget_frame_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			gtk_frame_set_label(GTK_FRAME(var->Widget), line);
@@ -380,7 +374,7 @@ static void widget_frame_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			gtk_frame_set_label(GTK_FRAME(var->Widget), line);
@@ -404,8 +398,6 @@ static void widget_frame_input_by_file(variable *var, char *filename)
 
 static void widget_frame_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

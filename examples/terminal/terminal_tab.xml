@@ -1,0 +1,9 @@
+<vbox>
+  <terminal argv0="/bin/sh" font-desc="Monospace 9"
+    space-expand="true" space-fill="true"
+    scrollback-lines="2000" scroll-on-keystroke="true">
+    <variable>@INSTANCE@_TERMINAL</variable>
+    <action signal="child-exited">removetab:@INSTANCE@</action>
+  </terminal>
+  <variable>@INSTANCE@_PAGE</variable>
+</vbox>

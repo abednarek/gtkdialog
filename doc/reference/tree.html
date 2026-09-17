@@ -101,10 +101,12 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeVi
 	&lt;height&gt;value&lt;/height&gt;
 	&lt;width&gt;value&lt;/width&gt;
 	&lt;input&gt;command&lt;/input&gt;...
+	&lt;input completion-column="index"&gt;command&lt;/input&gt;...
 	&lt;input icon-column="index"&gt;command&lt;/input&gt;...
 	&lt;input stock-column="index"&gt;command&lt;/input&gt;...
 	&lt;input format="json"&gt;command&lt;/input&gt;...
 	&lt;input file&gt;filename&lt;/input&gt;...
+	&lt;input file completion-column="index"&gt;filename&lt;/input&gt;...
 	&lt;input file icon-column="index"&gt;filename&lt;/input&gt;...
 	&lt;input file stock-column="index"&gt;filename&lt;/input&gt;...
 	&lt;input file format="json"&gt;filename&lt;/input&gt;...
@@ -114,6 +116,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeVi
 	&lt;action function="type"&gt;parameter&lt;/action&gt;...
 	&lt;item&gt;data&lt;/item&gt;...
 	&lt;item combo-column="index"&gt;choice&lt;/item&gt;...
+	&lt;item completion-column="index"&gt;suggestion&lt;/item&gt;...
 	&lt;item icon-name="image"&gt;data&lt;/item&gt;...
 	&lt;item stock-id="gtk-image"&gt;data&lt;/item&gt;...
 	&lt;output file&gt;filename&lt;/output&gt;
@@ -139,8 +142,9 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeVi
 <tr><td class="wiki"> context-menu </td><td class="wiki"> Popup menu program to open on right click, the Menu key or Shift+F10 </td><td class="wiki"> Name of an exported environment variable containing a <code>&lt;popupmenu&gt;</code> program </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> hscrollbar-policy </td><td class="wiki"> Policy for the horizontal scrollbar </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code> (always, automatic, never) </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> vscrollbar-policy </td><td class="wiki"> Policy for the vertical scrollbar </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code> (always, automatic, never) </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> exported-column </td><td class="wiki"> The column to export data from </td><td class="wiki"> An integer from <code>0</code> to the last data column; invalid values use <code>0</code> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> exported-column </td><td class="wiki"> The column to export data from </td><td class="wiki"> An integer from <code>0</code> to the last data column; invalid values use <code>0</code> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> selected-row </td><td class="wiki"> The row to select on initialisation and refresh </td><td class="wiki"> An integer &gt;= <code>0</code>; invalid values are ignored </td><td class="wiki"> 0.8.1 </td></tr>
+<tr><td class="wiki"> preserve-state </td><td class="wiki"> Restore JSON rows' selection, expansion and top visible row after refresh by stable row ID </td><td class="wiki"> <code>true</code> or <code>false</code>; default false </td><td class="wiki"> 0.9.2 </td></tr>
 <tr><td class="wiki"> column-header-active </td><td class="wiki"> Active state of column header(s) </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ... </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> column-visible </td><td class="wiki"> Visible state of column(s) </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ... </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> column-resizeable </td><td class="wiki"> Resizeable state of column(s) </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ... </td><td class="wiki"> 0.8.4 </td></tr>
@@ -149,20 +153,24 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeVi
 <tr><td class="wiki"> sort-column </td><td class="wiki"> The initial sort column when auto-sorting </td><td class="wiki"> An integer from <code>0</code> to the last data column; invalid values use <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> sort-type </td><td class="wiki"> The initial sort direction when auto-sorting </td><td class="wiki"> <code>0</code>, <code>1</code> (ascending, descending); invalid values use <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> column-type </td><td class="wiki"> Data type of column(s) </td><td class="wiki"> <i>type0</i> <code>|</code> <i>type1</i> <code>|</code> ... (<code>string</code>, <code>int64</code>, <code>uint64</code> or <code>double</code>); malformed, overflowing or non-finite numeric data uses <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> column-renderer </td><td class="wiki"> Renderer used by each data column </td><td class="wiki"> <i>renderer0</i> <code>|</code> <i>renderer1</i> <code>|</code> ... (<code>text</code>, <code>markup</code>, <code>color</code>, <code>pixbuf</code>, <code>icon-text</code>, <code>toggle</code>, <code>radio</code>, <code>progress</code>, <code>combo</code>, <code>spin</code>, <code>accel</code> or <code>spinner</code>); omitted or unknown values use <code>text</code>. Progress and combo require GTK+ 2.6; spin and accel require GTK+ 2.10; spinner requires GTK+ 2.20. A spinner reads the column as a Boolean activity state and does not change its value </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-renderer </td><td class="wiki"> Renderer used by each data column </td><td class="wiki"> <i>renderer0</i> <code>|</code> <i>renderer1</i> <code>|</code> ... (<code>text</code>, <code>markup</code>, <code>color</code>, <code>pixbuf</code>, <code>icon-text</code>, <code>toggle</code>, <code>radio</code>, <code>progress</code>, <code>combo</code>, <code>spin</code>, <code>accel</code> or <code>spinner</code>); omitted or unknown values use <code>text</code>. A spinner reads the column as a Boolean activity state and does not change its value </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-editable </td><td class="wiki"> Whether each text, toggle, combo, spin or accel renderer can change its model value </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ...; omitted values are <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-combo-has-entry </td><td class="wiki"> Whether each combo renderer accepts typed values in addition to its declared choices </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ...; omitted values are <code>false</code>. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-spin-min </td><td class="wiki"> Minimum value for each spin renderer </td><td class="wiki"> Pipe-separated finite numbers; omitted values use <code>0</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-spin-max </td><td class="wiki"> Maximum value for each spin renderer </td><td class="wiki"> Pipe-separated finite numbers greater than their minimum; omitted values use <code>100</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-spin-step </td><td class="wiki"> Increment for each spin renderer </td><td class="wiki"> Pipe-separated positive finite numbers; omitted values use <code>1</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-spin-digits </td><td class="wiki"> Decimal places displayed by each spin renderer </td><td class="wiki"> Pipe-separated integers from <code>0</code> through <code>20</code>; omitted values use <code>0</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-spin-climb-rate </td><td class="wiki"> Acceleration rate for each spin renderer </td><td class="wiki"> Pipe-separated non-negative finite numbers; omitted values use the GTK+ default. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-accel-mode </td><td class="wiki"> Accelerator interpretation for each accel renderer </td><td class="wiki"> <code>gtk</code> (default) or <code>other</code>. Requires GTK+ 2.10 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-progress-orientation </td><td class="wiki"> Direction for each progress renderer </td><td class="wiki"> <code>left-to-right</code>, <code>right-to-left</code>, <code>bottom-to-top</code> or <code>top-to-bottom</code>. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-progress-pulse </td><td class="wiki"> Activity pulse position for each progress renderer </td><td class="wiki"> Pipe-separated integers greater than or equal to <code>-1</code>; <code>-1</code> disables activity mode. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-completion </td><td class="wiki"> Complete typed values in editable text columns and combo columns with entries </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ...; omitted values are <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> column-completion-minimum-key-length </td><td class="wiki"> Typed characters required before completion is shown in each enabled column </td><td class="wiki"> Pipe-separated non-negative integers; omitted values use <code>1</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> completion-match </td><td class="wiki"> Match typed text at the start or anywhere within suggestions for all completion-enabled columns </td><td class="wiki"> <code>prefix</code> (default) or <code>contains</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> completion-case-sensitive </td><td class="wiki"> Distinguish letter case while matching suggestions in all completion-enabled columns </td><td class="wiki"> <code>true</code> or <code>false</code>; default <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> column-combo-has-entry </td><td class="wiki"> Whether each combo renderer accepts typed values in addition to its declared choices </td><td class="wiki"> <i>state0</i> <code>|</code> <i>state1</i> <code>|</code> ...; omitted values are <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-min </td><td class="wiki"> Minimum value for each spin renderer </td><td class="wiki"> Pipe-separated finite numbers; omitted values use <code>0</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-max </td><td class="wiki"> Maximum value for each spin renderer </td><td class="wiki"> Pipe-separated finite numbers greater than their minimum; omitted values use <code>100</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-step </td><td class="wiki"> Increment for each spin renderer </td><td class="wiki"> Pipe-separated positive finite numbers; omitted values use <code>1</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-digits </td><td class="wiki"> Decimal places displayed by each spin renderer </td><td class="wiki"> Pipe-separated integers from <code>0</code> through <code>20</code>; omitted values use <code>0</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spin-climb-rate </td><td class="wiki"> Acceleration rate for each spin renderer </td><td class="wiki"> Pipe-separated non-negative finite numbers; omitted values use the GTK+ default </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-accel-mode </td><td class="wiki"> Accelerator interpretation for each accel renderer </td><td class="wiki"> <code>gtk</code> (default) or <code>other</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-progress-orientation </td><td class="wiki"> Direction for each progress renderer </td><td class="wiki"> <code>left-to-right</code>, <code>right-to-left</code>, <code>bottom-to-top</code> or <code>top-to-bottom</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-progress-pulse </td><td class="wiki"> Activity pulse position for each progress renderer </td><td class="wiki"> Pipe-separated integers greater than or equal to <code>-1</code>; <code>-1</code> disables activity mode </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-progress-text </td><td class="wiki"> Text overlaid on each progress renderer </td><td class="wiki"> Pipe-separated strings; omitted values use the GTK+ percentage display </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-progress-text-xalign, column-progress-text-yalign </td><td class="wiki"> Progress text alignment </td><td class="wiki"> Pipe-separated numbers from <code>0</code> through <code>1</code>. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-spinner-size </td><td class="wiki"> Icon size used by each spinner renderer </td><td class="wiki"> <code>menu</code>, <code>small-toolbar</code>, <code>large-toolbar</code>, <code>button</code>, <code>dnd</code> or <code>dialog</code>. Requires GTK+ 2.20 or later </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-progress-text-xalign, column-progress-text-yalign </td><td class="wiki"> Progress text alignment </td><td class="wiki"> Pipe-separated numbers from <code>0</code> through <code>1</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-spinner-size </td><td class="wiki"> Icon size used by each spinner renderer </td><td class="wiki"> <code>menu</code>, <code>small-toolbar</code>, <code>large-toolbar</code>, <code>button</code>, <code>dnd</code> or <code>dialog</code> </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-toggle-inconsistent </td><td class="wiki"> Display each toggle or radio renderer in its mixed state </td><td class="wiki"> Pipe-separated Boolean values; omitted values are <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-color-width, column-color-height </td><td class="wiki"> Swatch dimensions for each color renderer </td><td class="wiki"> Pipe-separated integers from <code>1</code> through <code>512</code>; omitted values use <code>36</code> by <code>14</code> pixels </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-pixbuf-source </td><td class="wiki"> Interpretation of values in pixbuf-rendered columns </td><td class="wiki"> <code>icon-name</code> (default), <code>stock-id</code> or <code>file</code> </td><td class="wiki"> 0.9.0 </td></tr>
@@ -179,14 +187,14 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeVi
 <tr><td class="wiki"> column-strikethrough </td><td class="wiki"> Whether text is struck through in each column </td><td class="wiki"> Pipe-separated Boolean values </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-xalign, column-yalign </td><td class="wiki"> Horizontal and vertical renderer alignment for each column </td><td class="wiki"> Pipe-separated numbers from <code>0</code> through <code>1</code> </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-xpad, column-ypad </td><td class="wiki"> Horizontal and vertical renderer padding for each column </td><td class="wiki"> Pipe-separated non-negative pixel counts </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-ellipsize </td><td class="wiki"> Ellipsisation mode for each text-based column </td><td class="wiki"> <code>none</code>, <code>start</code>, <code>middle</code> or <code>end</code>; requires GTK+ 2.6 </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-wrap-mode </td><td class="wiki"> Wrapping mode for each text-based column </td><td class="wiki"> <code>word</code>, <code>char</code> or <code>word-char</code>; requires GTK+ 2.8 </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-wrap-width </td><td class="wiki"> Wrapping width for each text-based column </td><td class="wiki"> Pipe-separated pixel counts, or <code>-1</code> to disable wrapping; requires GTK+ 2.8 </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> column-text-align </td><td class="wiki"> Paragraph alignment for each text-based column </td><td class="wiki"> <code>left</code>, <code>center</code> or <code>right</code>; requires GTK+ 2.10 </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-ellipsize </td><td class="wiki"> Ellipsisation mode for each text-based column </td><td class="wiki"> <code>none</code>, <code>start</code>, <code>middle</code> or <code>end</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-wrap-mode </td><td class="wiki"> Wrapping mode for each text-based column </td><td class="wiki"> <code>word</code>, <code>char</code> or <code>word-char</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-wrap-width </td><td class="wiki"> Wrapping width for each text-based column </td><td class="wiki"> Pipe-separated pixel counts, or <code>-1</code> to disable wrapping </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> column-text-align </td><td class="wiki"> Paragraph alignment for each text-based column </td><td class="wiki"> <code>left</code>, <code>center</code> or <code>right</code> </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> column-sort-function </td><td class="wiki"> The sorting algorithm for each column </td><td class="wiki"> <i>func0</i> <code>|</code> <i>func1</i> <code>|</code> ... (<code>0</code> default, <code>1</code> strnatcmp or <code>2</code> strcasenatcmp); invalid values use <code>0</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> selection-mode </td><td class="wiki"> Selection method </td><td class="wiki"> <code>0</code>, <code>1</code>, <code>2</code>, <code>3</code> or <code>none</code>, <code>single</code>, <code>browse</code>, <code>multiple</code>; invalid values use <code>single</code> </td><td class="wiki"> 0.7.21 </td></tr>
-<tr><td class="wiki"> icon-name </td><td class="wiki"> Default GTK theme icon name for all rows </td><td class="wiki"> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> stock-id </td><td class="wiki"> Default GTK stock icon ID for all rows </td><td class="wiki"> <code>gtk-about</code>, <code>gtk-add</code>, ... (<a href="https://www.csparks.com/gtk2-html-2.24.33/gtk2-Stock-Items.html#GTK-STOCK-ABOUT:CAPS">full list</a>) </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> icon-name </td><td class="wiki"> Default GTK theme icon name for all rows </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> stock-id </td><td class="wiki"> Default GTK stock icon ID for all rows </td><td class="wiki"> <code>gtk-about</code>, <code>gtk-add</code>, ... (<a href="https://www.csparks.com/gtk2-html-2.24.33/gtk2-Stock-Items.html#GTK-STOCK-ABOUT:CAPS">full list</a>) </td><td class="wiki"> Legacy </td></tr>
 </table>
 
 <h2> Directives </h2>
@@ -195,34 +203,37 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeVi
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Contents</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> label </td><td class="wiki"> Column header labels </td><td class="wiki"> <i>label0</i> <code>|</code> <i>label1</i> <code>|</code> ... </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> label </td><td class="wiki"> Column header labels </td><td class="wiki"> <i>label0</i> <code>|</code> <i>label1</i> <code>|</code> ... </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> variable export="false" </td><td class="wiki"> Variable name, not exported to shell </td><td class="wiki"> </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> height<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Initial minimum height </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> width<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Initial minimum width </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input icon-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input stock-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> height<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Initial minimum height </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> width<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Initial minimum width </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input completion-column="<i>index</i>" </td><td class="wiki"> Completion suggestions for one editable data column; does not insert tree rows </td><td class="wiki"> Shell command producing one suggestion per line; index is from <code>0</code> to the last data column. Requires completion enabled for the column </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> input icon-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input stock-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> input format="json" </td><td class="wiki"> Hierarchical JSON data input source </td><td class="wiki"> Shell command; requires JSON-GLib support </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input file icon-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Filename; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input file stock-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Filename; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input file completion-column="<i>index</i>" </td><td class="wiki"> Completion suggestions for one editable data column; does not insert tree rows </td><td class="wiki"> Filename containing one suggestion per line; index is from <code>0</code> to the last data column. Supports <code>file-monitor</code> and <code>auto-refresh</code>; requires completion enabled for the column </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> input file icon-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Filename; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input file stock-column="<i>index</i>" </td><td class="wiki"> Data input source </td><td class="wiki"> Filename; index is from <code>0</code> to the last data column and invalid values are ignored </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> input file format="json" </td><td class="wiki"> Hierarchical JSON data input source </td><td class="wiki"> Filename; requires JSON-GLib support </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Execute command on default signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Execute command on signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> item </td><td class="wiki"> Input data for all declared columns </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i> <code>|</code> ... (no fixed column limit) </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> item combo-column="<i>index</i>" </td><td class="wiki"> Choice for a combo-rendered data column; it is not inserted as a tree row </td><td class="wiki"> Choice text; index is from <code>0</code> to the last data column. Requires GTK+ 2.6 or later </td><td class="wiki"> 0.9.0 </td></tr>
-<tr><td class="wiki"> item icon-name="<i>image</i>" </td><td class="wiki"> Input data </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i>  <code>|</code> ... </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> item stock-id="<i>gtk-image</i>" </td><td class="wiki"> Input data </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i>  <code>|</code> ... </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> item </td><td class="wiki"> Input data for all declared columns </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i> <code>|</code> ... (no fixed column limit) </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> item combo-column="<i>index</i>" </td><td class="wiki"> Choice for a combo-rendered data column; it is not inserted as a tree row </td><td class="wiki"> Choice text; index is from <code>0</code> to the last data column </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> item completion-column="<i>index</i>" </td><td class="wiki"> Completion suggestion for an editable data column; it is not inserted as a tree row </td><td class="wiki"> Suggestion text; index is from <code>0</code> to the last data column </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item icon-name="<i>image</i>" </td><td class="wiki"> Input data </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i>  <code>|</code> ... </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> item stock-id="<i>gtk-image</i>" </td><td class="wiki"> Input data </td><td class="wiki"> <i>data0</i> <code>|</code> <i>data1</i>  <code>|</code> ... </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> output file </td><td class="wiki"> Data output target </td><td class="wiki"> Filename </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> output file format="json" </td><td class="wiki"> Hierarchical JSON data output target </td><td class="wiki"> Filename; requires JSON-GLib support </td><td class="wiki"> 0.9.0 </td></tr>
 </table>
@@ -233,7 +244,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkTreeView.html">GtkTreeVi
 is selected only by adding <code>format="json"</code> to an input or output
 directive. Configure with <code>--with-json-glib</code> to enable this support.
 The optional feature is listed as <code>JSON-GLib</code> by
-<code>gtkdialog --version</code> when enabled.</p>
+<code>gdlg2 --version</code> when enabled.</p>
 
 <p>A JSON document is a versioned object containing a <code>rows</code> array.
 Each row requires a positional <code>values</code> array matching the columns
@@ -252,11 +263,13 @@ keeps its historical conversion to zero.</p>
   "version": 1,
   "rows": [
     {
+      "id": "projects",
       "icon-name": "folder",
       "values": ["Projects", 2, true],
       "expanded": true,
       "children": [
         {
+          "id": "readme",
           "stock-id": "gtk-file",
           "values": ["README", 1, false]
         }
@@ -273,11 +286,22 @@ the initial expansion state, and the optional <code>children</code> array uses
 the same row format recursively. Nesting is limited to 256 levels. JSON input
 is completely validated before any row from that document is inserted.</p>
 
+<p>The optional non-empty string <code>id</code> identifies a JSON row across
+refreshes and is included in JSON output. With
+<code>preserve-state="true"</code>, later refreshes restore the selected rows,
+expanded branches and top visible row when their IDs occur in the new model.
+IDs should be unique across all inputs of one tree; duplicate IDs are
+ambiguous and are not restored. Rows without IDs follow the new input's
+<code>expanded</code> value. <code>selected-row</code> still applies on
+initialisation and if no IDs match after a refresh; otherwise the preserved
+selection takes precedence. Classic flat tree input and trees without this
+option keep their previous behavior.</p>
+
 <p>An optional <code>style</code> object applies presentation defaults to every
 cell in its row. An optional <code>cells</code> array contains a style object or
 <code>null</code> for each data column; cell properties override the row style,
 which in turn overrides the corresponding <code>column-*</code> setting. The
-following properties are accepted: <code>background</code>,
+following properties are accepted: <code>sensitive</code>, <code>background</code>,
 <code>foreground</code>, <code>font</code>, <code>weight</code>,
 <code>style</code>, <code>underline</code>, <code>strikethrough</code>,
 <code>xalign</code>, <code>yalign</code>, <code>xpad</code>,
@@ -288,13 +312,20 @@ The three image source properties are mutually exclusive. Text-only properties a
 ignored by non-text renderers. GTK theme colours remain in control while a row
 is selected so that focus and selection stay readable.</p>
 
+<p><code>sensitive</code> is a Boolean. Set it to <code>false</code> in a
+<code>cells</code> entry to show that one cell as insensitive and prevent its
+text, combo, spin, accelerator, toggle or radio renderer from changing data.
+A row-level <code>style.sensitive</code> supplies the default for its cells;
+a cell value overrides it. Row selection and row activation remain available.
+Without this property, cells retain their existing behavior.</p>
+
 <pre>
 {
   "values": ["Build", 73, true],
   "style": {"background": "#f5f5f5"},
   "cells": [
     {"foreground": "#204a87", "weight": "bold"},
-    {"xalign": 1.0},
+    {"xalign": 1.0, "sensitive": false},
     null
   ]
 }
@@ -317,6 +348,28 @@ behavior.</p>
 <p>The "cell-edited" signal is emitted after an in-place text or combo edit has updated the model. It is available only for columns enabled by <code>column-editable</code>; the tree variable reflects the edited selection when actions run.</p>
 
 <p>A <code>combo</code> renderer presents choices declared by <code>&lt;item combo-column="<i>index</i>"&gt;</code>. Choice items belong to the renderer model and are not inserted as tree rows. Unless the corresponding <code>column-combo-has-entry</code> value is true, only declared choices can be selected.</p>
+
+<p>When <code>column-completion</code> is enabled, editing suggestions come
+from <code>&lt;item completion-column="<i>index</i>"&gt;</code> and from any
+existing combo choices for the same column. Command and file inputs carrying
+the same <code>completion-column</code> attribute add one flat suggestion per
+output line without inserting those lines as tree rows. Completion sources are
+rebuilt on every refresh; file sources participate in the existing
+<code>file-monitor</code> and <code>auto-refresh</code> behavior. A
+completion-only input is always line-oriented, so its <code>completion-column</code>
+attribute takes precedence over row-oriented input options such as
+<code>format="json"</code>, <code>icon-column</code> and
+<code>stock-column</code>. Unmarked inputs retain their historical row-loading
+behavior. Completion applies to editable
+<code>text</code>, <code>markup</code> and <code>icon-text</code> renderers, and
+to editable <code>combo</code> renderers whose corresponding
+<code>column-combo-has-entry</code> value is true. It filters a flat list while
+typing and commits through the existing <code>cell-edited</code> path, so the
+stored value and signal ordering are unchanged. The default matching behavior
+remains GTK2's case-insensitive <code>prefix</code> mode. The shared
+<code>completion-match="contains"</code> and
+<code>completion-case-sensitive="true"</code> options apply to every
+completion-enabled column in the tree.</p>
 
 <p>A <code>spin</code> renderer presents a native spin button while editing. Its range, increment and decimal places are configured by the corresponding <code>column-spin-min</code>, <code>column-spin-max</code>, <code>column-spin-step</code> and <code>column-spin-digits</code> values.</p>
 
@@ -358,15 +411,15 @@ produces a warning and an empty cell.</p>
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> show </td><td class="wiki"> Show widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> hide </td><td class="wiki"> Hide widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> grabfocus </td><td class="wiki"> Grab input focus </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> save<sup><a href="#note2">[2]</a></sup> </td><td class="wiki"> Save widget data </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> 0.7.21 </td></tr>
-<tr><td class="wiki"> removeselected </td><td class="wiki"> Remove selected widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> removeselected </td><td class="wiki"> Remove selected widget data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> expandall </td><td class="wiki"> Expand every row that has children </td><td class="wiki"> Variable name </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> collapseall </td><td class="wiki"> Collapse every expanded row </td><td class="wiki"> Variable name </td><td class="wiki"> 0.9.0 </td></tr>
 </table>
@@ -382,10 +435,10 @@ functions.</p>
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
 <tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 </table>
 

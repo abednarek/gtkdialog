@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
 <window title="Vertical button box" width-request="320" height-request="260">

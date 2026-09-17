@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "${GTKDIALOG:-}" ] && GTKDIALOG=gtkdialog
+[ -z "${GTKDIALOG:-}" ] && GTKDIALOG=gdlg2
 
 selection=$(mktemp "${TMPDIR:-/tmp}/gtkdialog-file-selection.XXXXXX")
 response=$(mktemp "${TMPDIR:-/tmp}/gtkdialog-file-response.XXXXXX")

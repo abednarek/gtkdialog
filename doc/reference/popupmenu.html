@@ -108,7 +108,7 @@ hierarchies. This widget was introduced in version 0.9.0.</p>
 <p>"..." denotes acceptance of multiples of the same thing. At least one menu
 item is required.</p>
 
-<h2> Standalone use </h2>
+<h2> Standalone Use </h2>
 
 <p>Export the XML description and run it in the same way as a window program.
 The menu appears at the current pointer position without a surrounding window.
@@ -130,10 +130,10 @@ POPUP_MENU='
 	&lt;/menuitem&gt;
 &lt;/popupmenu&gt;'
 export POPUP_MENU
-gtkdialog --program=POPUP_MENU
+gdlg2 --program=POPUP_MENU
 </pre>
 
-<h2> Context-menu use </h2>
+<h2> Context-menu Use </h2>
 
 <p>Set <code>context-menu="NAME"</code> on a widget which receives pointer or
 keyboard events and export <code>NAME</code> with a
@@ -165,7 +165,7 @@ MAIN_DIALOG='
 	&lt;/tree&gt;
 &lt;/window&gt;'
 export MAIN_DIALOG
-gtkdialog --program=MAIN_DIALOG
+gdlg2 --program=MAIN_DIALOG
 </pre>
 
 <p>For <a href="tree.html">tree</a>, <a href="iconview.html">iconview</a> and
@@ -182,7 +182,7 @@ property conversion described in <a href="syntax.html">syntax</a> applies.
 Menu-item labels, icons, accelerator attributes, check/radio state and actions
 are defined on the child <a href="menuitem.html">menuitem</a> tags.</p>
 
-<h2> Directives and functions </h2>
+<h2> Directives and Functions </h2>
 
 <p><code>popupmenu</code> is a menu-shell container and has no application
 value of its own. Its menu items provide activation actions. The common widget

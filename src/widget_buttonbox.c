@@ -37,10 +37,8 @@ static gboolean widget_buttonbox_parse_layout(
 		*layout = GTK_BUTTONBOX_START;
 	else if (strcasecmp(value, "end") == 0)
 		*layout = GTK_BUTTONBOX_END;
-#if GTK_CHECK_VERSION(2,12,0)
 	else if (strcasecmp(value, "center") == 0)
 		*layout = GTK_BUTTONBOX_CENTER;
-#endif
 	else
 		return FALSE;
 

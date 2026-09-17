@@ -68,8 +68,6 @@ static gboolean widget_colorbutton_parse_alpha(const gchar *value,
 
 void widget_colorbutton_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -158,8 +156,6 @@ gchar *widget_colorbutton_envvar_construct(GtkWidget *widget)
 void widget_colorbutton_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -276,8 +272,6 @@ void widget_colorbutton_refresh(variable *var)
 
 void widget_colorbutton_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -371,7 +365,7 @@ static void widget_colorbutton_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			values = linecutter(line, '|');
@@ -426,7 +420,7 @@ static void widget_colorbutton_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			values = linecutter(line, '|');
@@ -471,8 +465,6 @@ static void widget_colorbutton_input_by_file(variable *var, char *filename)
 
 static void widget_colorbutton_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

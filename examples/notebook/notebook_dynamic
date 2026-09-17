@@ -1,0 +1,58 @@
+#!/bin/sh
+
+# Reparent existing GTK2 widget trees without reparsing the dialog.
+GTKDIALOG=${GTKDIALOG:-gtkdialog}
+
+MAIN_DIALOG='
+<window title="Dynamic notebook and panels" width-request="460">
+  <vbox>
+    <notebook tab-labels="Overview">
+      <vbox>
+        <text><label>Original notebook page</label></text>
+        <variable>PAGE_ONE</variable>
+      </vbox>
+      <variable>DEMO_NOTEBOOK</variable>
+    </notebook>
+    <hbox>
+      <button><label>Add tab</label><action>reparentwidget:PAGE_TWO:DEMO_NOTEBOOK:Tools</action></button>
+      <button><label>Remove tab</label><action>reparentwidget:PAGE_TWO:PARKING_BOX</action></button>
+    </hbox>
+    <vbox>
+      <vbox>
+        <text><label>Panel A</label></text>
+        <entry><default>State stays with the widget</default></entry>
+        <variable>PANEL_A</variable>
+      </vbox>
+      <variable>DISPLAY_BOX</variable>
+    </vbox>
+    <hbox>
+      <button><label>Show panel A</label>
+        <action>reparentwidget:PANEL_B:PARKING_BOX</action>
+        <action>reparentwidget:PANEL_A:DISPLAY_BOX</action>
+      </button>
+      <button><label>Show panel B</label>
+        <action>reparentwidget:PANEL_A:PARKING_BOX</action>
+        <action>reparentwidget:PANEL_B:DISPLAY_BOX</action>
+      </button>
+    </hbox>
+    <vbox visible="false">
+      <vbox>
+        <text><label>Additional notebook page</label></text>
+        <variable>PAGE_TWO</variable>
+      </vbox>
+      <vbox>
+        <text><label>Panel B</label></text>
+        <entry><default>This entry also retains its state</default></entry>
+        <variable>PANEL_B</variable>
+      </vbox>
+      <variable>PARKING_BOX</variable>
+    </vbox>
+    <button><label>Close</label><action>exit:OK</action></button>
+  </vbox>
+</window>'
+export MAIN_DIALOG
+
+case ${1:-} in
+  --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+  *) "$GTKDIALOG" --program MAIN_DIALOG ;;
+esac

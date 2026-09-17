@@ -48,8 +48,7 @@ static void widget_vbox_input_by_items(variable *var);
 
 void widget_vbox_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -76,6 +75,8 @@ GtkWidget *widget_vbox_create(
 	GtkWidget        *widget;
 	stackelement      s;
 	variable         *var;
+	(void)Attr;
+	(void)Type;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -184,6 +185,7 @@ GtkWidget *widget_vbox_create(
 gchar *widget_vbox_envvar_construct(GtkWidget *widget)
 {
 	gchar            *string;
+	(void)widget;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -205,8 +207,9 @@ gchar *widget_vbox_envvar_construct(GtkWidget *widget)
 void widget_vbox_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
+	(void)name;
+	(void)value;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -282,8 +285,7 @@ void widget_vbox_refresh(variable *var)
 
 void widget_vbox_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -303,8 +305,7 @@ void widget_vbox_removeselected(variable *var)
 
 void widget_vbox_save(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -323,8 +324,8 @@ void widget_vbox_save(variable *var)
 
 static void widget_vbox_input_by_command(variable *var, char *command)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
+	(void)command;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -343,8 +344,8 @@ static void widget_vbox_input_by_command(variable *var, char *command)
 
 static void widget_vbox_input_by_file(variable *var, char *filename)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
+	(void)filename;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -363,8 +364,7 @@ static void widget_vbox_input_by_file(variable *var, char *filename)
 
 static void widget_vbox_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

@@ -694,19 +694,41 @@ wlist
 		token_store(RGROUP_POP);
 		token_store(PUSH | WIDGET_NOTEBOOK); 
 	}
+	| NOTEBOOK radio_group_scope attr ENOTEBOOK {
+		token_store(RGROUP_POP);
+		token_store(EMPTY_WIDGETS);
+		token_store(PUSH | WIDGET_NOTEBOOK);
+	}
 	| wlist NOTEBOOK radio_group_scope wlist attr ENOTEBOOK   {
 		token_store(RGROUP_POP);
 		token_store(PUSH | WIDGET_NOTEBOOK); 
 		token_store(SUM);      
 	}
+	| wlist NOTEBOOK radio_group_scope attr ENOTEBOOK {
+		token_store(RGROUP_POP);
+		token_store(EMPTY_WIDGETS);
+		token_store(PUSH | WIDGET_NOTEBOOK);
+		token_store(SUM);
+	}
 	| PART_NOTEBOOK tagattr '>' radio_group_scope wlist attr ENOTEBOOK {
 		token_store(RGROUP_POP);
+		token_store_attr(PUSH | WIDGET_NOTEBOOK, $2);
+	}
+	| PART_NOTEBOOK tagattr '>' radio_group_scope attr ENOTEBOOK {
+		token_store(RGROUP_POP);
+		token_store(EMPTY_WIDGETS);
 		token_store_attr(PUSH | WIDGET_NOTEBOOK, $2);
 	}
 	| wlist PART_NOTEBOOK tagattr '>' radio_group_scope wlist attr ENOTEBOOK {
 		token_store(RGROUP_POP);
 		token_store_attr(PUSH | WIDGET_NOTEBOOK, $3);
 		token_store(SUM);      
+	}
+	| wlist PART_NOTEBOOK tagattr '>' radio_group_scope attr ENOTEBOOK {
+		token_store(RGROUP_POP);
+		token_store(EMPTY_WIDGETS);
+		token_store_attr(PUSH | WIDGET_NOTEBOOK, $3);
+		token_store(SUM);
 	}
 	| FRAME radio_group_scope wlist attr EFRAME {
 		token_store(RGROUP_POP);
@@ -1136,6 +1158,14 @@ menubar
   : MENUBAR EMENUBAR {
 		yyerror("The menubar widget requires at least one menu widget.");
 	}
+  | MENUBAR input attr EMENUBAR {
+		token_store(EMPTY_WIDGETS);
+		token_store(PUSH | WIDGET_MENUBAR);
+	}
+  | PART_MENUBAR tagattr '>' input attr EMENUBAR {
+		token_store(EMPTY_WIDGETS);
+		token_store_attr(PUSH | WIDGET_MENUBAR, $2);
+	}
   | MENUBAR menu attr EMENUBAR {
 		token_store(PUSH | WIDGET_MENUBAR);
 	}
@@ -1162,6 +1192,16 @@ menuwlist
 menu
   : MENU EMENU {
 		yyerror("The menu widget requires at least one menuitem widget.");
+	}
+	| MENU radio_group_scope input attr EMENU {
+		token_store(RGROUP_POP);
+		token_store(EMPTY_WIDGETS);
+		token_store(PUSH | WIDGET_MENU);
+	}
+	| PART_MENU tagattr '>' radio_group_scope input attr EMENU {
+		token_store(RGROUP_POP);
+		token_store(EMPTY_WIDGETS);
+		token_store_attr(PUSH | WIDGET_MENU, $2);
 	}
 	| MENU radio_group_scope menuwlist attr EMENU {
 		token_store(RGROUP_POP);

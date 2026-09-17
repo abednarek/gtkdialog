@@ -19,7 +19,6 @@
 #include "widgets.h"
 #include "widget_spinner.h"
 
-#if GTK_CHECK_VERSION(2,20,0)
 static void widget_spinner_set_active(
 	GtkWidget *widget, const gchar *value, const gchar *source)
 {
@@ -192,4 +191,3 @@ void widget_spinner_save(variable *var)
 	g_free(state);
 	widget_close_output(output, filename);
 }
-#endif

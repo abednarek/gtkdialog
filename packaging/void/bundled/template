@@ -1,0 +1,33 @@
+# Template file for 'gdlg2-bundled'
+pkgname=gdlg2-bundled
+version=0.9.2
+revision=1
+hostmakedepends="pkg-config autoconf automake libtool glib-devel gettext gettext-devel
+ intltool flex bison patch"
+makedepends="gtk+-devel json-glib-devel enchant2-devel libxml2-devel
+ ncurses-devel libX11-devel cairo-devel pango-devel"
+checkdepends="xvfb-run xdotool dejavu-fonts-ttf"
+depends="gtk+ json-glib enchant2 enchant2-hunspell hunspell-en
+ hicolor-icon-theme"
+short_desc="GTK2 dialog builder with private legacy GTK2 extensions"
+maintainer="Artur Bednarek <artur@unix.org.pl>"
+license="GPL-2.0-or-later, LGPL-2.0-or-later, LGPL-2.1-or-later"
+homepage="https://github.com/abednarek/gtkdialog"
+distfiles="${homepage}/releases/download/${version}/gtkdialog-${version}.tar.gz"
+wrksrc="gtkdialog-${version}"
+checksum="27ba33ab0b72cd954890d77da12ce1302b1a839599034e2806890610a81d3d8e"
+
+do_build() {
+	./bundled/build-bundle.sh "$PWD" "$wrkdir/bundle-work" \
+		"$wrkdir/bundle-package" system-gtk2
+}
+
+do_check() {
+	LD_LIBRARY_PATH="$wrkdir/bundle-work/stage/opt/gldg2/lib" \
+	XDG_DATA_DIRS="$wrkdir/bundle-work/stage/opt/gldg2/share:/usr/local/share:/usr/share" \
+		make -C "$wrkdir/bundle-work/build/gtkdialog" check
+}
+
+do_install() {
+	cp -a "$wrkdir/bundle-package/." "$DESTDIR/"
+}

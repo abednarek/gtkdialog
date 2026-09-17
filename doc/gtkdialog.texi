@@ -68,8 +68,9 @@ history is available at @uref{https://github.com/oshazard/gtkdialog}.
 
 @section How to Install the Program
 The program can be installed using the standard @command{configure},
-@command{make} and @command{make install} command sequence.  Builds should
-be kept outside the source directory.  A Git checkout must first be prepared
+@command{make} and @command{make install} command sequence.  GTK+ 2.24.33
+development files are required.  Builds should be kept outside the source
+directory.  A Git checkout must first be prepared
 with @command{autoreconf -fi}; a release archive already contains the generated
 files.  Further details can be found in the @file{README.md} and @file{INSTALL}
 files included with the source.
@@ -122,7 +123,7 @@ export MAIN_DIALOG='
   </hbox>
  </vbox>'
 
-gtkdialog --program MAIN_DIALOG
+gdlg2 --program MAIN_DIALOG
 @end example
 
 This example uses a very plain way to open a dialog box. We store the
@@ -152,7 +153,7 @@ export DIALOG='
 </vbox>'
 
 I=$IFS; IFS=""
-for STATEMENTS in  $(gtkdialog --program DIALOG); do
+for STATEMENTS in  $(gdlg2 --program DIALOG); do
   eval $STATEMENTS
 done
 IFS=$I
@@ -169,13 +170,12 @@ list @code{gtkdialog} produced. Changing the field separator (IFS) is
 a little bit disturbing but necessary since this is the only way to
 protect the space characters in user input. 
 
-In larger software projects it may be a good idea to break the code to
-separate files. Since @code{gtkdialog} can read the description
-program from file it is easy to write self executable programs with
-it. This is how the next example constructed.
+In larger software projects it may be a good idea to break the code into
+separate files. Since @code{gdlg2} can read a dialog description from a
+file, save the following XML as @file{dialog.xml} and run
+@command{gdlg2 --file dialog.xml}.
 
 @example
-#! /usr/local/bin/gtkdialog -f
 <vbox>
   <checkbox>
     <label>This is a checkbox</label>
@@ -277,8 +277,6 @@ The default action signal is @code{apply}.  The @code{apply}, @code{cancel},
 </assistant>
 @end example
 
-The widget requires GTK+ 2.10 or later.
-
 @c -----------------------------------------------------------------
 @node About dialog
 @section About dialog
@@ -305,7 +303,7 @@ exit or close a launched dialog, so use an explicit @code{exit} or
 @code{closewindow} action.
 
 @example
-<aboutdialog program-name="GTKDialog GTK2" version="0.9.1"
+<aboutdialog program-name="GTKDialog GTK2" version="0.9.2"
              comments="Build GTK+ 2 interfaces from XML.">
   <item role="author">GTKDialog contributors</item>
   <item role="documenter">Documentation contributors</item>
@@ -313,10 +311,6 @@ exit or close a launched dialog, so use an explicit @code{exit} or
   <action>exit:response</action>
 </aboutdialog>
 @end example
-
-The widget requires GTK+ 2.6 or later.  The @code{wrap-license} property
-requires GTK+ 2.8; @code{program-name} is translated to the older GTK name
-API when building against GTK+ 2.6 or 2.10.
 
 @c -----------------------------------------------------------------
 @node Dialog
@@ -460,8 +454,7 @@ For an image-only view populated from a file, use for example:
 @end example
 
 The default action signal is @code{item-activated};
-@code{selection-changed} may be named explicitly.  The widget requires
-GTK+ 2.6 or later.
+@code{selection-changed} may be named explicitly.
 
 @c -----------------------------------------------------------------
 @node Cell view
@@ -492,7 +485,6 @@ declared image and reloads the text, @code{clear} removes both fields, and
 The object-valued model and tree-path-valued displayed row are owned by
 gtkdialog rather than exposed as textual properties.  GtkCellView has no
 type-specific default signal; normal GtkWidget signals remain available.
-The widget requires GTK+ 2.6 or later.
 
 @c -----------------------------------------------------------------
 @node Recent chooser
@@ -526,8 +518,7 @@ pattern and MIME lists are separated with commas or semicolons.
 @end example
 
 The default action signal is @code{item-activated};
-@code{selection-changed} may be named explicitly.  The widget requires
-GTK+ 2.10 or later.
+@code{selection-changed} may be named explicitly.
 
 @c -----------------------------------------------------------------
 @node Recent chooser menu
@@ -563,8 +554,7 @@ marking a visible menu entry.  Activating an entry replaces that value with
 the URI reported by GTK+.  @code{refresh}, @code{save}, @code{clear} and
 @code{removeselected} do not alter the desktop recent-resource history.  The
 default signal is @code{item-activated}; @code{selection-changed} may be named
-explicitly for GTK+ operations that emit it.  The widget requires GTK+ 2.10
-or later.
+explicitly for GTK+ operations that emit it.
 
 @c -----------------------------------------------------------------
 @node Scrollbars
@@ -598,7 +588,7 @@ File monitoring and automatic refresh use the common widget contract.
 
 The default action signal is @code{value-changed}.  The GtkRange signals
 @code{adjust-bounds}, @code{change-value} and @code{move-slider} may be
-named explicitly.  Both widgets are available throughout GTK+ 2.
+named explicitly.
 
 @c -----------------------------------------------------------------
 @node Rulers
@@ -659,8 +649,7 @@ the value to the adjustment minimum.
 </volumebutton>
 @end example
 
-The default and explicit action signal is @code{value-changed}.  Both widgets
-require GTK+ 2.12 or later.
+The default and explicit action signal is @code{value-changed}.
 
 @c -----------------------------------------------------------------
 @node Aspect frame
@@ -686,8 +675,6 @@ use the frame label.  @code{clear} and @code{removeselected} clear that label.
   <variable>ASPECT_LABEL</variable>
 </aspectframe>
 @end example
-
-The widget is available throughout GTK+ 2.
 
 @c -----------------------------------------------------------------
 @node Static label 
@@ -736,7 +723,7 @@ windows that are later launched again.
 When gtkdialog was built with GtkSpell 2, @code{spell-check="true"} enables
 inline spelling feedback and correction choices in the normal context menu.
 Use @code{spell-language="en_US"}, for example, to select a dictionary;
-otherwise GtkSpell uses the current locale.  @command{gtkdialog --version}
+otherwise GtkSpell uses the current locale.  @command{gdlg2 --version}
 lists @code{GtkSpell 2} when this optional integration is available.
 
 @c -----------------------------------------------------------------
@@ -843,8 +830,7 @@ to one.
 </entry>
 @end example
 
-Refreshing the entry rebuilds the suggestion model.  Completion requires
-GTK+ 2.4 or later.
+Refreshing the entry rebuilds the suggestion model.
 
 @c -----------------------------------------------------------------
 @node Checkbox
@@ -951,8 +937,6 @@ desktop URI handler.
 </linkbutton>
 @end example
 
-The widget requires GTK+ 2.18 or later.
-
 @c -----------------------------------------------------------------
 @node Chooser
 @section Chooser
@@ -983,7 +967,7 @@ The @code{refresh}, @code{save}, @code{clear}, @code{removeselected} and
 </chooser>
 @end example
 
-The widget remains in open-existing-file mode and requires GTK+ 2.4 or later.
+The widget remains in open-existing-file mode.
 
 @c -----------------------------------------------------------------
 @node File chooser button
@@ -1013,8 +997,6 @@ store or clear the selection.
 </filechooserbutton>
 @end example
 
-The widget requires GTK+ 2.6 or later.
-
 @c -----------------------------------------------------------------
 @node Info bar
 @section Info bar
@@ -1043,8 +1025,6 @@ runs.
 </infobar>
 @end example
 
-The widget requires GTK+ 2.18 or later.
-
 @c -----------------------------------------------------------------
 @node Spinner
 @section Spinner
@@ -1067,8 +1047,6 @@ pointer events remain available explicitly.  The @code{active_is_true} and
   <variable>BUSY</variable>
 </spinner>
 @end example
-
-The widget requires GTK+ 2.20 or later.
 
 @c -----------------------------------------------------------------
 @node XEmbed socket and plug
@@ -1227,7 +1205,7 @@ and nesting is limited to 256 levels.
 Use @code{<output file format="json">} to save the hierarchy, values, icons and
 current expansion state in the same versioned format.  Normal
 @code{<output file>} retains its historical flat format.  The JSON feature is
-reported by @code{gtkdialog --version}; @file{examples/tree/tree_json} provides
+reported by @code{gdlg2 --version}; @file{examples/tree/tree_json} provides
 a runnable example.
 
 Text-rendered columns can opt into in-place editing with the
@@ -1264,7 +1242,7 @@ numeric column) and emits @code{cell-toggled} after updating the model.
 </tree>
 @end example
 
-On GTK+ 2.6 and later, @code{column-renderer="progress"} displays a
+@code{column-renderer="progress"} displays a
 column's numeric value as a native progress bar.  Displayed values are
 rounded and limited to 0--100 without modifying the model, saved output or
 exported tree variable.
@@ -1278,7 +1256,7 @@ exported tree variable.
 </tree>
 @end example
 
-On GTK+ 2.6 and later, @code{column-renderer="combo"} edits a column from
+@code{column-renderer="combo"} edits a column from
 a native drop-down list.  Declare each choice with an @code{<item>} whose
 zero-based @code{combo-column} names the data column.  These choice items
 are not tree rows.  Enable the corresponding @code{column-editable} value;
@@ -1300,7 +1278,7 @@ corresponding pipe-separated @code{column-combo-has-entry} value to
 </tree>
 @end example
 
-On GTK+ 2.10 and later, @code{column-renderer="spin"} edits numeric values
+@code{column-renderer="spin"} edits numeric values
 with a native spin button.  The pipe-separated @code{column-spin-min},
 @code{column-spin-max}, @code{column-spin-step} and
 @code{column-spin-digits} attributes configure each data column.  Their
@@ -1320,7 +1298,7 @@ and emits @code{cell-edited}.
 </tree>
 @end example
 
-On GTK+ 2.10 and later, @code{column-renderer="accel"} displays and edits
+@code{column-renderer="accel"} displays and edits
 keyboard accelerators in string columns.  Values use an XML-safe GTK+
 accelerator spelling, for example @code{Primary+O} or
 @code{Primary+Shift+O}.  Enable the corresponding @code{column-editable}
@@ -1340,7 +1318,7 @@ value.  A captured key combination emits
 </tree>
 @end example
 
-On GTK+ 2.20 and later, @code{column-renderer="spinner"} displays a native
+@code{column-renderer="spinner"} displays a native
 activity indicator.  The value in that model column controls whether the
 indicator is active, using the same Boolean forms as a toggle renderer.  The
 animation does not modify the model, saved output or exported tree variable,
@@ -1540,7 +1518,7 @@ The default signal is @code{activate}.  Explicit
 @code{context-menu} names a @code{<popupmenu>} program and GTK positions that
 menu at the notification icon.  Common show, hide, enable, disable, refresh,
 save, clear, activate and state-condition actions operate through the logical
-widget.  The feature requires GTK+ 2.10 or later.
+widget.
 
 @example
 <statusicon icon-name="dialog-information"
@@ -1631,7 +1609,7 @@ horizontal and vertical position.  Values range from @code{0} at the left or
 top through @code{0.5} at the centre to @code{1} at the right or bottom.
 The @code{xscale} and @code{yscale} attributes select how much of the
 available extra space the child receives, from @code{0} for its requested
-size to @code{1} for all available space.  GTK+ 2.4 and later also provide
+size to @code{1} for all available space.  Padding is controlled by
 @code{top-padding}, @code{bottom-padding}, @code{left-padding} and
 @code{right-padding}.
 
@@ -1648,9 +1626,8 @@ The @code{<hbuttonbox>} and @code{<vbuttonbox>} containers arrange related
 buttons using the standard GTK+ 2 button-box layout.  They preserve the XML
 order of their direct children.  Use @code{layout-style} with
 @code{default}, @code{spread}, @code{edge}, @code{start}, @code{end} or
-@code{center} to select their placement.  The @code{center} style requires
-GTK+ 2.12 or later.  Omitting the attribute retains the toolkit's configured
-default.
+@code{center} to select their placement.  Omitting the attribute retains the
+toolkit's configured default.
 
 A direct child with @code{secondary="true"} is placed separately from the
 main group according to the selected GTK+ layout.  This is commonly used for
@@ -1668,8 +1645,8 @@ a Help button beside a group of confirmation buttons.
 
 @section Toolbars and tool items
 
-GTK+ 2.4 and later provide the @code{<toolbar>} container.  Its direct
-children must be @code{<toolbutton>}, @code{<toggletoolbutton>},
+The @code{<toolbar>} container's direct children must be
+@code{<toolbutton>}, @code{<toggletoolbutton>},
 @code{<radiotoolbutton>}, @code{<menutoolbutton>} or
 @code{<toolitem>} or @code{<separatortoolitem>} widgets, and their XML order
 is retained.  The
@@ -1684,17 +1661,15 @@ otherwise GTK+ may place excess items behind its overflow arrow.
 A toolbutton accepts a @code{<label>} directive and an ordinary
 @code{<action>}, whose default signal is @code{clicked}.  GTK+ properties
 such as @code{stock-id}, @code{icon-name}, @code{tooltip-text} and
-@code{is-important} can be supplied as tag attributes when supported by the
-installed GTK+ 2 version.  The @code{activate} action function also clicks a
-named toolbutton.
+@code{is-important} can be supplied as tag attributes.  The @code{activate}
+action function also clicks a named toolbutton.
 
 A menutoolbutton combines a normal clickable tool button with a separate
 arrow that opens a menu.  Put one or more @code{<menuitem>}, nested
 @code{<menu>} or @code{<menuitemseparator>} widgets directly inside it,
 followed by the tool button's directives.  Its main button uses the
 @code{clicked} signal and can be invoked with @code{activate}; choosing an
-entry runs that menu item's actions.  Menutoolbuttons require GTK+ 2.6 or
-later.
+entry runs that menu item's actions.
 
 An ordinary menu can begin with
 @code{<menuitem tearoff="true"></menuitem>} to expose GTK+ 2's native
@@ -1724,8 +1699,7 @@ action behaviour; put interaction actions on that child.  The tool item can
 be named separately for shared show, hide, enable and disable actions.  GTK+
 properties such as @code{expand}, @code{homogeneous},
 @code{visible-horizontal}, @code{visible-vertical} and @code{is-important}
-can be supplied as tag attributes.  General tool items require GTK+ 2.4 or
-later.
+can be supplied as tag attributes.
 
 @example
 <toolbar toolbar-style="both-horizontal">
@@ -1775,9 +1749,9 @@ later.
 
 @section Size groups
 
-GTK+ 2.4 and later can give unrelated widgets the same requested width,
-height or both without changing the container hierarchy.  Give each member
-the same @code{size-group} tag attribute.  The optional
+Size groups give unrelated widgets the same requested width, height or both
+without changing the container hierarchy.  Give each member the same
+@code{size-group} tag attribute.  The optional
 @code{size-group-mode} is @code{horizontal}, @code{vertical} or @code{both};
 it defaults to @code{both}.
 

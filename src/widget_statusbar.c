@@ -229,8 +229,6 @@ void widget_statusbar_refresh(variable *var)
 
 void widget_statusbar_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -310,7 +308,7 @@ static void widget_statusbar_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			widget_statusbar_update(var, line);
@@ -341,7 +339,7 @@ static void widget_statusbar_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			widget_statusbar_update(var, line);
@@ -365,8 +363,6 @@ static void widget_statusbar_input_by_file(variable *var, char *filename)
 
 static void widget_statusbar_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

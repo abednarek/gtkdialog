@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 OFFSCREEN_OUTPUT=${GTKDIALOG_OFFSCREEN_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-offscreen.png}
 export OFFSCREEN_OUTPUT

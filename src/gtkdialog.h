@@ -68,6 +68,8 @@ void gtkdialog_warning(const gchar *format, ...) G_GNUC_PRINTF(1, 2);
 void gtkdialog_lexer_reset(void);
 void reset_program_source(void);
 void get_program_from_variable(const gchar *name);
+gboolean get_program_from_template_variable(const gchar *name,
+	const gchar *instance);
 void set_program_name(const gchar *name);
 gchar *get_program_name(void);
 void load_styles_file(gchar *filename);

@@ -1,0 +1,50 @@
+--- a/gtk/gtkcellrendererspin.c
++++ b/gtk/gtkcellrendererspin.c
+@@ -210 +210 @@
+-	priv->adjustment = g_object_ref_sink (obj);
++	priv->adjustment = (GtkAdjustment *) g_object_ref_sink (obj);
+--- a/gtk/gtkcomboboxtext.c
++++ b/gtk/gtkcomboboxtext.c
+@@ -278 +278 @@
+-      parser_data->object = g_object_ref (buildable);
++      parser_data->object = (GObject *) g_object_ref (buildable);
+--- a/gtk/gtkimmodule.c
++++ b/gtk/gtkimmodule.c
+@@ -663 +663 @@
+-	  gchar *context_id;
++	  gpointer context_id;
+--- a/gtk/gtklabel.c
++++ b/gtk/gtklabel.c
+@@ -1339 +1339 @@
+-      parser_data->object = g_object_ref (buildable);
++      parser_data->object = (GObject *) g_object_ref (buildable);
+--- a/gtk/gtkscale.c
++++ b/gtk/gtkscale.c
+@@ -1474 +1474 @@
+-                                                 (GCompareFunc) compare_marks,
++                                                 compare_marks,
+--- a/gtk/gtktoolpalette.c
++++ b/gtk/gtktoolpalette.c
+@@ -737 +737 @@
+-  info->widget = g_object_ref_sink (child);
++  info->widget = GTK_TOOL_ITEM_GROUP (g_object_ref_sink (child));
+--- a/gtk/gtktreeview.c
++++ b/gtk/gtktreeview.c
+@@ -14150 +14150 @@
+-      tree_view->priv->search_entry = g_object_ref (entry);
++      tree_view->priv->search_entry = GTK_WIDGET (g_object_ref (entry));
+--- a/gtk/gtkuimanager.c
++++ b/gtk/gtkuimanager.c
+@@ -506 +506 @@
+-  return g_object_ref (widget);
++  return G_OBJECT (g_object_ref (widget));
+--- a/gtk/gtkwidget.c
++++ b/gtk/gtkwidget.c
+@@ -10682 +10682 @@
+-      parser_data->object = g_object_ref (buildable);
++      parser_data->object = (GObject *) g_object_ref (buildable);
+--- a/modules/other/gail/gailtreeview.c
++++ b/modules/other/gail/gailtreeview.c
+@@ -998 +998 @@
+-            gailview->focus_cell = g_object_ref (cell);
++            gailview->focus_cell = ATK_OBJECT (g_object_ref (cell));

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 completion_file=$(mktemp "${TMPDIR:-/tmp}/gtkdialog-completion.XXXXXX") || exit 1
 trap 'rm -f "$completion_file"' EXIT HUP INT TERM

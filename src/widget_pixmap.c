@@ -50,8 +50,6 @@ static void widget_pixmap_input_by_items(variable *var);
 
 void widget_pixmap_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -211,8 +209,6 @@ gchar *widget_pixmap_envvar_construct(GtkWidget *widget)
 void widget_pixmap_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -233,7 +229,6 @@ void widget_pixmap_refresh(variable *var)
 {
 	GList            *element;
 	gchar            *act;
-	gchar            *value;
 	gint              initialised = FALSE;
 
 #ifdef DEBUG_TRANSITS
@@ -299,8 +294,6 @@ void widget_pixmap_refresh(variable *var)
 
 void widget_pixmap_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -320,8 +313,6 @@ void widget_pixmap_removeselected(variable *var)
 
 void widget_pixmap_save(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -340,8 +331,6 @@ void widget_pixmap_save(variable *var)
 
 static void widget_pixmap_input_by_command(variable *var, char *command)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -407,8 +396,6 @@ static void widget_pixmap_input_by_file(variable *var, char *filename)
 
 static void widget_pixmap_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

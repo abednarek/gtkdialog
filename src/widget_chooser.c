@@ -20,7 +20,6 @@
 #include "widgets.h"
 #include "widget_chooser.h"
 
-#if GTK_CHECK_VERSION(2,4,0)
 static void widget_chooser_set_filename(
 	GtkWidget *widget, const gchar *filename)
 {
@@ -291,4 +290,3 @@ void widget_chooser_save(variable *var)
 	g_free(selection);
 	widget_close_output(output, filename);
 }
-#endif

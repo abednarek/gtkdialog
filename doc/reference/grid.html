@@ -50,9 +50,9 @@ GtkTable behaviour.</p>
 <h2> Grid Tag Attributes </h2>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Range</b></th><th class="wiki"><b>Default</b></th></tr>
-<tr><td class="wiki">rows</td><td class="wiki">Initial number of rows</td><td class="wiki"><code>1</code> to <code>65535</code></td><td class="wiki"><code>1</code></td></tr>
-<tr><td class="wiki">columns</td><td class="wiki">Initial number of columns and width used by automatic placement</td><td class="wiki"><code>1</code> to <code>65535</code></td><td class="wiki"><code>1</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Range</b></th><th class="wiki"><b>Default</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">rows</td><td class="wiki">Initial number of rows</td><td class="wiki"><code>1</code> to <code>65535</code></td><td class="wiki"><code>1</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">columns</td><td class="wiki">Initial number of columns and width used by automatic placement</td><td class="wiki"><code>1</code> to <code>65535</code></td><td class="wiki"><code>1</code></td><td class="wiki">0.9.0</td></tr>
 </table>
 
 <p>Writable GTK+ 2 GtkTable, GtkContainer and GtkWidget properties can also be
@@ -62,15 +62,15 @@ used as tag attributes. Useful properties include <code>row-spacing</code>,
 <h2> Direct Child Tag Attributes </h2>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Default</b></th></tr>
-<tr><td class="wiki">row</td><td class="wiki">Zero-based starting row</td><td class="wiki">Automatic XML-order row</td></tr>
-<tr><td class="wiki">column</td><td class="wiki">Zero-based starting column</td><td class="wiki">Automatic XML-order column</td></tr>
-<tr><td class="wiki">row-span</td><td class="wiki">Number of rows occupied</td><td class="wiki"><code>1</code></td></tr>
-<tr><td class="wiki">column-span</td><td class="wiki">Number of columns occupied</td><td class="wiki"><code>1</code></td></tr>
-<tr><td class="wiki">x-options</td><td class="wiki">Horizontal combination of <code>expand</code>, <code>shrink</code> and <code>fill</code>, separated by spaces, commas or <code>|</code>; <code>none</code> selects no options</td><td class="wiki"><code>expand|fill</code></td></tr>
-<tr><td class="wiki">y-options</td><td class="wiki">Vertical combination of <code>expand</code>, <code>shrink</code> and <code>fill</code>, separated by spaces, commas or <code>|</code>; <code>none</code> selects no options</td><td class="wiki"><code>expand|fill</code></td></tr>
-<tr><td class="wiki">x-padding</td><td class="wiki">Horizontal padding in pixels</td><td class="wiki"><code>0</code></td></tr>
-<tr><td class="wiki">y-padding</td><td class="wiki">Vertical padding in pixels</td><td class="wiki"><code>0</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Default</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">row</td><td class="wiki">Zero-based starting row</td><td class="wiki">Automatic XML-order row</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">column</td><td class="wiki">Zero-based starting column</td><td class="wiki">Automatic XML-order column</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">row-span</td><td class="wiki">Number of rows occupied</td><td class="wiki"><code>1</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">column-span</td><td class="wiki">Number of columns occupied</td><td class="wiki"><code>1</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">x-options</td><td class="wiki">Horizontal combination of <code>expand</code>, <code>shrink</code> and <code>fill</code>, separated by spaces, commas or <code>|</code>; <code>none</code> selects no options</td><td class="wiki"><code>expand|fill</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">y-options</td><td class="wiki">Vertical combination of <code>expand</code>, <code>shrink</code> and <code>fill</code>, separated by spaces, commas or <code>|</code>; <code>none</code> selects no options</td><td class="wiki"><code>expand|fill</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">x-padding</td><td class="wiki">Horizontal padding in pixels</td><td class="wiki"><code>0</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">y-padding</td><td class="wiki">Vertical padding in pixels</td><td class="wiki"><code>0</code></td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 
 <p>Positions and spans must remain within GTK+ 2's 65535-row and
@@ -79,11 +79,11 @@ used as tag attributes. Useful properties include <code>row-spacing</code>,
 <h2> Directives </h2>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Contents</b></th></tr>
-<tr><td class="wiki">variable</td><td class="wiki">Name used to target the container with functions; its exported value is empty</td><td class="wiki">Shell variable name</td></tr>
-<tr><td class="wiki">variable export="false"</td><td class="wiki">Variable name not exported to the shell</td><td class="wiki">Shell variable name</td></tr>
-<tr><td class="wiki">sensitive</td><td class="wiki">Sensitive state</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">action signal="type"</td><td class="wiki">Execute a command or function for a GTK signal</td><td class="wiki">Activity</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Contents</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">variable</td><td class="wiki">Name used to target the container with functions; its exported value is empty</td><td class="wiki">Shell variable name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">variable export="false"</td><td class="wiki">Variable name not exported to the shell</td><td class="wiki">Shell variable name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">sensitive</td><td class="wiki">Sensitive state</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">action signal="type"</td><td class="wiki">Execute a command or function for a GTK signal</td><td class="wiki">Activity</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 
 <h2> Signals and Functions </h2>

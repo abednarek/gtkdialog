@@ -22,7 +22,6 @@
 #include "widgets.h"
 #include "widget_infobar.h"
 
-#if GTK_CHECK_VERSION(2,18,0)
 typedef struct {
 	const gchar *name;
 	gint value;
@@ -334,4 +333,3 @@ void widget_infobar_save(variable *var)
 	g_free(response);
 	widget_close_output(output, filename);
 }
-#endif

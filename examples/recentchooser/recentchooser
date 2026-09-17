@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
 <window title="GTKDialog recent resources" width-request="620"

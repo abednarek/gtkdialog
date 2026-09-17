@@ -20,7 +20,6 @@
 #include "widgets.h"
 #include "widget_linkbutton.h"
 
-#if GTK_CHECK_VERSION(2,18,0)
 static void widget_linkbutton_set_uri(GtkWidget *widget, const gchar *uri)
 {
 	gtk_link_button_set_uri(GTK_LINK_BUTTON(widget), uri != NULL ? uri : "");
@@ -188,4 +187,3 @@ void widget_linkbutton_save(variable *var)
 	g_free(uri);
 	widget_close_output(output, filename);
 }
-#endif

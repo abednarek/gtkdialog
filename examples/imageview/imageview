@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-imageview.XXXXXX") || exit 1
 trap 'rm -rf "$demo_dir"' EXIT HUP INT TERM

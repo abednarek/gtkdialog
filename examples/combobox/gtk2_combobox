@@ -2,7 +2,7 @@
 
 # This example requires GTK+ 2.
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
 <window>

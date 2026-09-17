@@ -1,0 +1,19 @@
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -3,6 +3,6 @@
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = gtkdatabox.pc
+ 
+-SUBDIRS = gtk glade examples 
++SUBDIRS = gtk
+ 
+ EXTRA_DIST = depcomp scripts gtkdatabox.pc.in gtkdatabox.spec.in glade/gtkdatabox.xml api
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -383,5 +383,5 @@ top_srcdir = @top_srcdir@
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = gtkdatabox.pc
+-SUBDIRS = gtk glade examples 
++SUBDIRS = gtk
+ EXTRA_DIST = depcomp scripts gtkdatabox.pc.in gtkdatabox.spec.in glade/gtkdatabox.xml api
+ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc

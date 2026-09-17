@@ -20,7 +20,6 @@
 #include "widgets.h"
 #include "widget_printing.h"
 
-#if GTK_CHECK_VERSION(2,10,0)
 static GtkPageOrientation widget_printing_orientation(const gchar *value,
 	gboolean *valid)
 {
@@ -185,4 +184,3 @@ gboolean widget_printing_save_print_settings(GtkPrintSettings *settings,
 		gtk_print_settings_unset(settings, "gtkdialog-empty-settings");
 	return saved;
 }
-#endif

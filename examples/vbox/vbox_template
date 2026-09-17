@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Build and replace a panel when requested; unlike reparentwidget, this
+# destroys the previous panel and starts the new one with fresh state.
+GTKDIALOG=${GTKDIALOG:-gtkdialog}
+
+PANEL_TEMPLATE='
+<vbox>
+  <text><label>Fresh @INSTANCE@ panel</label></text>
+  <entry><default>Type into @INSTANCE@</default><variable>@INSTANCE@_ENTRY</variable></entry>
+  <variable>@INSTANCE@_PANEL</variable>
+</vbox>'
+export PANEL_TEMPLATE
+
+MAIN_DIALOG='
+<window title="Box XML templates" width-request="440">
+  <vbox>
+    <vbox>
+      <vbox><text><label>Original panel</label></text></vbox>
+      <variable>DISPLAY_BOX</variable>
+    </vbox>
+    <hbox>
+      <button><label>New Alpha panel</label><action>replacebox:PANEL_TEMPLATE:DISPLAY_BOX:ALPHA</action></button>
+      <button><label>New Beta panel</label><action>replacebox:PANEL_TEMPLATE:DISPLAY_BOX:BETA</action></button>
+    </hbox>
+    <button><label>Close</label><action>exit:OK</action></button>
+  </vbox>
+</window>'
+export MAIN_DIALOG
+
+case ${1:-} in
+  --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+  *) "$GTKDIALOG" --program MAIN_DIALOG ;;
+esac

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "label": "JSON menu",
+      "items": [
+        {
+          "label": "<b>Rich menu item</b>",
+          "markup": true,
+          "stock": "gtk-properties",
+          "foreground": "#204a87",
+          "font": "Sans 8",
+          "tooltip": "Label, icon, colour and font come from JSON",
+          "action": "launch:SHOWCASE_ABOUT"
+        },
+        {
+          "label": "Open question",
+          "icon-name": "dialog-question",
+          "action": "launch:SHOWCASE_MESSAGE"
+        },
+        { "type": "separator" },
+        {
+          "label": "Nested tools",
+          "items": [
+            { "label": "Show custom dialog", "action": "launch:SHOWCASE_DIALOG" },
+            { "label": "Not available", "sensitive": false }
+          ]
+        }
+      ]
+    }
+  ]
+}

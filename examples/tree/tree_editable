@@ -1,20 +1,26 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
 MAIN_DIALOG='
 <window title="Editable tree cells" width-request="440" height-request="240">
 	<vbox border-width="10" spacing="8">
 		<text>
-			<label>Select a row, then click its task name to edit it.</label>
+			<label>Select a row, then edit its task or type an owner name for completion.</label>
 		</text>
-		<tree column-editable="true|false" exported-column="0">
+		<tree column-editable="true|true" column-completion="false|true"
+			column-completion-minimum-key-length="1|1"
+			completion-match="contains" completion-case-sensitive="false"
+			exported-column="1">
 			<variable>EDITABLE_TREE</variable>
 			<label>Task|Owner</label>
+			<input completion-column="1">printf "%s\n" "Ada Lovelace" "Grace Hopper"</input>
+			<input file completion-column="1">'"$script_dir"'/tree_completion.txt</input>
 			<item>Review changes|Ada</item>
 			<item>Update documentation|Linus</item>
 			<item>Prepare release|Grace</item>
-			<action signal="cell-edited">echo "Edited task: $EDITABLE_TREE"</action>
+			<action signal="cell-edited">echo "Edited value: $EDITABLE_TREE"</action>
 		</tree>
 		<hbuttonbox layout-style="end">
 			<button cancel></button>

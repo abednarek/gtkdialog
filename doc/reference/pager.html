@@ -31,15 +31,15 @@ It adds a new tag and does not alter any historical gtkdialog widget.</p><hr>
 	&lt;output file&gt;filename&lt;/output&gt;
 &lt;/pager&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">screen</td><td class="wiki">X11 screen whose workspaces are shown</td><td class="wiki">Zero-based integer; default 0</td></tr>
-<tr><td class="wiki">orientation</td><td class="wiki">Direction of the workspace layout</td><td class="wiki"><code>horizontal</code> or <code>vertical</code></td></tr>
-<tr><td class="wiki">rows</td><td class="wiki">Rows, or columns with vertical orientation</td><td class="wiki">Positive integer</td></tr>
-<tr><td class="wiki">display-mode</td><td class="wiki">Draw window contents or workspace names</td><td class="wiki"><code>content</code> or <code>name</code>; default <code>content</code></td></tr>
-<tr><td class="wiki">show-all-workspaces</td><td class="wiki">Show all workspaces instead of only the active one</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td></tr>
-<tr><td class="wiki">shadow-type</td><td class="wiki">Native frame around the pager</td><td class="wiki"><code>none</code>, <code>in</code>, <code>out</code>, <code>etched-in</code> or <code>etched-out</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">screen</td><td class="wiki">X11 screen whose workspaces are shown</td><td class="wiki">Zero-based integer; default 0</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">orientation</td><td class="wiki">Direction of the workspace layout</td><td class="wiki"><code>horizontal</code> or <code>vertical</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">rows</td><td class="wiki">Rows, or columns with vertical orientation</td><td class="wiki">Positive integer</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">display-mode</td><td class="wiki">Draw window contents or workspace names</td><td class="wiki"><code>content</code> or <code>name</code>; default <code>content</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">show-all-workspaces</td><td class="wiki">Show all workspaces instead of only the active one</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">shadow-type</td><td class="wiki">Native frame around the pager</td><td class="wiki"><code>none</code>, <code>in</code>, <code>out</code>, <code>etched-in</code> or <code>etched-out</code></td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>Standard writable scalar GtkWidget properties remain available. The pager
 applies <code>orientation</code> and <code>rows</code> after joining the GTK
@@ -83,7 +83,7 @@ widget contract</a>. The sections above describe facilities specific to this tag
 &lt;/pager&gt;
 </pre>
 <p>See <code>examples/pager/pager</code> for a complete runnable desktop-panel
-example. This widget was introduced in gtkdialog version 0.9.0.</p>
+example. This widget was introduced in gtkdialog version 0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

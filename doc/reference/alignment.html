@@ -50,29 +50,28 @@ child when several widgets must be aligned together.</p>
 used as tag attributes. The alignment-specific properties are:</p>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Range</b></th><th class="wiki"><b>Default</b></th></tr>
-<tr><td class="wiki">xalign</td><td class="wiki">Horizontal position: left, centre or right</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>0.5</code></td></tr>
-<tr><td class="wiki">yalign</td><td class="wiki">Vertical position: top, centre or bottom</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>0.5</code></td></tr>
-<tr><td class="wiki">xscale</td><td class="wiki">Horizontal share of extra space given to the child</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>1</code></td></tr>
-<tr><td class="wiki">yscale</td><td class="wiki">Vertical share of extra space given to the child</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>1</code></td></tr>
-<tr><td class="wiki">top-padding</td><td class="wiki">Space above the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td></tr>
-<tr><td class="wiki">bottom-padding</td><td class="wiki">Space below the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td></tr>
-<tr><td class="wiki">left-padding</td><td class="wiki">Space left of the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td></tr>
-<tr><td class="wiki">right-padding</td><td class="wiki">Space right of the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Range</b></th><th class="wiki"><b>Default</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">xalign</td><td class="wiki">Horizontal position: left, centre or right</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>0.5</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">yalign</td><td class="wiki">Vertical position: top, centre or bottom</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>0.5</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">xscale</td><td class="wiki">Horizontal share of extra space given to the child</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>1</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">yscale</td><td class="wiki">Vertical share of extra space given to the child</td><td class="wiki"><code>0</code> to <code>1</code></td><td class="wiki"><code>1</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">top-padding</td><td class="wiki">Space above the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">bottom-padding</td><td class="wiki">Space below the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">left-padding</td><td class="wiki">Space left of the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">right-padding</td><td class="wiki">Space right of the child</td><td class="wiki">Non-negative pixels</td><td class="wiki"><code>0</code></td><td class="wiki">0.9.0</td></tr>
 </table>
 
-<p>The padding properties require GTK+ 2.4 or later. The custom
-<code>space-expand</code> and <code>space-fill</code> attributes can override
+<p>The custom <code>space-expand</code> and <code>space-fill</code> attributes can override
 how an alignment is packed into an hbox or vbox.</p>
 
 <h2> Directives </h2>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Contents</b></th></tr>
-<tr><td class="wiki">variable</td><td class="wiki">Name used to target the container with functions; its exported value is empty</td><td class="wiki">Shell variable name</td></tr>
-<tr><td class="wiki">variable export="false"</td><td class="wiki">Variable name not exported to the shell</td><td class="wiki">Shell variable name</td></tr>
-<tr><td class="wiki">sensitive</td><td class="wiki">Sensitive state</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">action signal="type"</td><td class="wiki">Execute a command or function for a GTK signal</td><td class="wiki">Activity</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Contents</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">variable</td><td class="wiki">Name used to target the container with functions; its exported value is empty</td><td class="wiki">Shell variable name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">variable export="false"</td><td class="wiki">Variable name not exported to the shell</td><td class="wiki">Shell variable name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">sensitive</td><td class="wiki">Sensitive state</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">action signal="type"</td><td class="wiki">Execute a command or function for a GTK signal</td><td class="wiki">Activity</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 
 <h2> Signals and Functions </h2>

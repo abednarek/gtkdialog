@@ -1,9 +1,9 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
-<aboutdialog program-name="GTKDialog GTK2" version="0.9.1"
+<aboutdialog program-name="GTKDialog GTK2" version="0.9.2"
 	comments="Build GTK+ 2 interfaces from a compact XML description."
 	copyright="Copyright (C) GTKDialog contributors"
 	license="GNU General Public License version 2 or later"

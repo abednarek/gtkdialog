@@ -42,7 +42,6 @@ extern gint geometry_dy;
 extern gint geometry_x;
 extern gint geometry_y;
 
-#if GTK_CHECK_VERSION(2,4,0)
 typedef struct {
 	GtkWidget *widget;
 	gchar *value;
@@ -877,47 +876,3 @@ void widget_filechooserdialog_removeselected(variable *var)
 	widget_filechooserdialog_cancel_pending(var->Widget);
 	gtk_file_chooser_unselect_all(GTK_FILE_CHOOSER(var->Widget));
 }
-#else
-GtkWidget *widget_filechooserdialog_create(AttributeSet *attributes,
-	tag_attr *tag_attributes, gint type)
-{
-	(void)attributes;
-	(void)tag_attributes;
-	(void)type;
-	return NULL;
-}
-
-gchar *widget_filechooserdialog_envvar_construct(GtkWidget *widget)
-{
-	(void)widget;
-	return g_strdup("");
-}
-
-void widget_filechooserdialog_fileselect(variable *var, const char *name,
-	const char *value)
-{
-	(void)var;
-	(void)name;
-	(void)value;
-}
-
-void widget_filechooserdialog_refresh(variable *var)
-{
-	(void)var;
-}
-
-void widget_filechooserdialog_save(variable *var)
-{
-	(void)var;
-}
-
-void widget_filechooserdialog_clear(variable *var)
-{
-	(void)var;
-}
-
-void widget_filechooserdialog_removeselected(variable *var)
-{
-	(void)var;
-}
-#endif

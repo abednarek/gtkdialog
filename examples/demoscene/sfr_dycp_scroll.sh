@@ -2,7 +2,7 @@
 
 # This example requires bash.
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 # Gtkdialog is a C program and the C library will execute a system command
 # using /bin/sh so we need to make sure that bash executes any commands.

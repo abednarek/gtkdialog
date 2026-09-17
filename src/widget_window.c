@@ -132,9 +132,6 @@ static GtkWindowType widget_window_parse_type(tag_attr *attr)
 
 void widget_window_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
-
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -220,8 +217,17 @@ GtkWidget *widget_window_create(
 
 	/* Pop the widgets that the window will contain and add them */
 	s = pop();
-	if (s.nwidgets > 0)
+	if (program_fragment_template_active() && s.nwidgets != 1) {
+		gint index;
+
+		gtkdialog_warning("A widget template must have exactly one root widget.");
+		for (index = 0; index < s.nwidgets; ++index) {
+			variables_drop_subtree(s.widgets[index]);
+			gtk_widget_destroy(s.widgets[index]);
+		}
+	} else if (s.nwidgets > 0) {
 		gtk_container_add(GTK_CONTAINER(widget), s.widgets[0]);
+	}
 	stackelement_clear(&s);
 
 	/* Thunor: Each menu created will have an accelerator group
@@ -257,6 +263,7 @@ GtkWidget *widget_window_create(
 gchar *widget_window_envvar_construct(GtkWidget *widget)
 {
 	gchar            *string;
+	(void)widget;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -288,8 +295,9 @@ gchar *widget_window_envvar_construct(GtkWidget *widget)
 void widget_window_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
+	(void)name;
+	(void)value;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -375,8 +383,7 @@ void widget_window_refresh(variable *var)
 
 void widget_window_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -453,7 +460,7 @@ static void widget_window_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			gtk_window_set_title(GTK_WINDOW(var->Widget), line);
@@ -484,7 +491,7 @@ static void widget_window_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			gtk_window_set_title(GTK_WINDOW(var->Widget), line);
@@ -508,8 +515,7 @@ static void widget_window_input_by_file(variable *var, char *filename)
 
 static void widget_window_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
+	(void)var;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

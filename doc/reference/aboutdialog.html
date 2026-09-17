@@ -34,23 +34,23 @@ for application information, licensing and credits.</p><hr>
 nested and does not accept child widgets. Each item adds one credited person.
 The optional role is <code>author</code> (the default),
 <code>documenter</code> or <code>artist</code>.</p>
-<h2> Tag attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">program-name</td><td class="wiki">Displayed application name and native window title</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">version</td><td class="wiki">Displayed application version</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">comments</td><td class="wiki">Short application description</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">copyright</td><td class="wiki">Copyright notice</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">website</td><td class="wiki">Project URI</td><td class="wiki">URI</td></tr>
-<tr><td class="wiki">website-label</td><td class="wiki">Project-link label</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">license</td><td class="wiki">License text</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">wrap-license</td><td class="wiki">Wrap license text</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">translator-credits</td><td class="wiki">Translator credit text</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">logo-icon-name</td><td class="wiki">Logo from the icon theme</td><td class="wiki">Icon name</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">program-name</td><td class="wiki">Displayed application name and native window title</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">version</td><td class="wiki">Displayed application version</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">comments</td><td class="wiki">Short application description</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">copyright</td><td class="wiki">Copyright notice</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">website</td><td class="wiki">Project URI</td><td class="wiki">URI</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">website-label</td><td class="wiki">Project-link label</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">license</td><td class="wiki">License text</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">wrap-license</td><td class="wiki">Wrap license text</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">translator-credits</td><td class="wiki">Translator credit text</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">logo-icon-name</td><td class="wiki">Logo from the icon theme</td><td class="wiki">Icon name</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>Other standard writable GtkAboutDialog and GtkWindow properties are also
 accepted.</p>
-<h2> Actions and values </h2>
+<h2> Actions and Values </h2>
 <p>The variable is updated before default <code>response</code> actions run.
 The native Close button normally returns <code>cancel</code>, while the window
 manager returns <code>delete-event</code>. Responses do not implicitly close
@@ -67,7 +67,7 @@ tag.</p>
 
 <h2> Example </h2>
 <pre>
-&lt;aboutdialog program-name="GTKDialog GTK2" version="0.9.1"
+&lt;aboutdialog program-name="GTKDialog GTK2" version="0.9.2"
  comments="Build GTK+ 2 interfaces from XML."&gt;
 	&lt;item role="author"&gt;GTKDialog contributors&lt;/item&gt;
 	&lt;item role="documenter"&gt;Documentation contributors&lt;/item&gt;
@@ -75,9 +75,7 @@ tag.</p>
 	&lt;action&gt;exit:response&lt;/action&gt;
 &lt;/aboutdialog&gt;
 </pre>
-<p>The widget requires GTK+ 2.6 or later. <code>wrap-license</code> requires
-GTK+ 2.8; <code>program-name</code> uses the older GTK name API when building
-against GTK+ 2.6 or 2.10. Introduced in gtkdialog version 0.9.0.</p>
+<p>Introduced in gtkdialog version 0.9.0.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

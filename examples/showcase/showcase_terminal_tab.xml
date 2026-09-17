@@ -1,0 +1,13 @@
+<vbox border-width="8" spacing="6"
+  tab-close-action="hangupterminal:@INSTANCE@_TERMINAL">
+  <text xalign="0"><label>A live shell in its own VTE tab. The tab close button hangs up its child process.</label></text>
+  <terminal argv0="/bin/sh" font-name="Monospace 9"
+    text-background-color="#1d2021" text-foreground-color="#ebdbb2"
+    cursor-background-color="#fabd2f" scrollback-lines="2000"
+    cursor-shape="ibeam" scroll-on-output="true"
+    scroll-on-keystroke="true" space-expand="true" space-fill="true">
+    <variable export="false">@INSTANCE@_TERMINAL</variable>
+    <action signal="child-exited">removetab:@INSTANCE@</action>
+  </terminal>
+  <variable export="false">@INSTANCE@_PAGE</variable>
+</vbox>

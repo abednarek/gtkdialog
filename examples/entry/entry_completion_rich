@@ -1,0 +1,38 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
+
+MAIN_DIALOG='
+<window title="Rich GTK2 entry completion" width-request="520">
+	<vbox border-width="10" spacing="8">
+		<text><label>Type vel, IGN or lease, then choose a flat rich suggestion:</label></text>
+		<entry completion="true" completion-model="rich"
+			completion-icon-size="20" completion-minimum-key-length="1"
+			completion-match="contains" completion-case-sensitive="false">
+			<default>development</default>
+			<item value="development" stock="gtk-execute"
+				description="Build and test applications">Development</item>
+			<item value="design" stock="gtk-select-color" markup="true"
+				foreground="#204a87" font="Sans Bold 9"
+				description="Plan the user interface">"<b>Design</b>"</item>
+			<item value="save-release" stock="gtk-save"
+				description="Write a stable identifier, not this label">Save release</item>
+			<item value="offline" stock="gtk-disconnect" sensitive="false"
+				description="Unavailable suggestions cannot be selected">Offline service</item>
+			<variable>RICH_CATEGORY</variable>
+			<action signal="activate">echo "Selected value: $RICH_CATEGORY"</action>
+		</entry>
+		<text use-markup="true"><label>"The visible label may differ from the <b>stable exported value</b>. Editing after a selection exports the typed text again."</label></text>
+		<hbuttonbox>
+			<button ok></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

@@ -66,7 +66,7 @@ static gboolean widget_pagesetupdialog_set_response(GtkWidget *widget,
 	return TRUE;
 }
 
-#if HAVE_GTK_UNIX_PRINT && GTK_CHECK_VERSION(2,10,0)
+#if HAVE_GTK_UNIX_PRINT
 static void widget_pagesetupdialog_response(GtkDialog *dialog, gint response,
 	AttributeSet *attributes)
 {
@@ -105,7 +105,7 @@ static void widget_pagesetupdialog_reload_files(GtkWidget *widget)
 GtkWidget *widget_pagesetupdialog_create(AttributeSet *attributes,
 	tag_attr *tag_attributes, gint type)
 {
-#if HAVE_GTK_UNIX_PRINT && GTK_CHECK_VERSION(2,10,0)
+#if HAVE_GTK_UNIX_PRINT
 	GtkPageSetup *setup;
 	GtkPrintSettings *settings;
 	GtkWidget *widget;
@@ -229,7 +229,7 @@ static void widget_pagesetupdialog_input_by_file(variable *var,
 
 void widget_pagesetupdialog_refresh(variable *var)
 {
-#if HAVE_GTK_UNIX_PRINT && GTK_CHECK_VERSION(2,10,0)
+#if HAVE_GTK_UNIX_PRINT
 	GList *element;
 	gchar *input;
 	gboolean initialised;
@@ -273,7 +273,7 @@ void widget_pagesetupdialog_refresh(variable *var)
 
 void widget_pagesetupdialog_save(variable *var)
 {
-#if HAVE_GTK_UNIX_PRINT && GTK_CHECK_VERSION(2,10,0)
+#if HAVE_GTK_UNIX_PRINT
 	GError *error;
 	GList *element;
 	GtkPageSetup *setup;
@@ -324,7 +324,7 @@ void widget_pagesetupdialog_save(variable *var)
 
 void widget_pagesetupdialog_clear(variable *var)
 {
-#if HAVE_GTK_UNIX_PRINT && GTK_CHECK_VERSION(2,10,0)
+#if HAVE_GTK_UNIX_PRINT
 	GtkPageSetup *setup;
 	GtkPrintSettings *settings;
 

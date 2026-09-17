@@ -18,7 +18,6 @@
 #include "tag_attributes.h"
 #include "widget_aboutdialog.h"
 
-#if GTK_CHECK_VERSION(2,6,0)
 extern gboolean option_centering;
 extern gboolean have_geometry_xy;
 extern gboolean have_geometry_dxdy;
@@ -88,11 +87,7 @@ GtkWidget *widget_aboutdialog_create(
 		? get_tag_attribute(attr, "program-name") : NULL;
 	if (program_name == NULL)
 		program_name = PACKAGE;
-#if GTK_CHECK_VERSION(2,12,0)
 	gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(widget), program_name);
-#else
-	gtk_about_dialog_set_name(GTK_ABOUT_DIALOG(widget), program_name);
-#endif
 	if (attr != NULL)
 		kill_tag_attribute(attr, "program-name");
 	gtk_window_set_icon_name(GTK_WINDOW(widget), PACKAGE);
@@ -107,4 +102,3 @@ GtkWidget *widget_aboutdialog_create(
 		gtk_window_set_position(GTK_WINDOW(widget), GTK_WIN_POS_CENTER_ALWAYS);
 	return widget;
 }
-#endif

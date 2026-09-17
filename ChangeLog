@@ -1,3 +1,268 @@
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Pointed Alpine, Arch and Void package recipes at the public 0.9.2 source
+  archive and aligned their checksums with that archive.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Let dynamic notebook templates override the tab close action per page, so
+  terminal pages can hang up their child before closing without applying that
+  action to other page types.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a showcase page for runtime notebook tabs containing independent VTE
+  terminals and GtkSourceView editors with per-tab close actions.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Replaced LAN-only project references in distributable documentation with
+  portable links and in-archive VTE source references.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Documented the portability, PTY and terminal-behavior changes in the
+  pinned VTE GTK2 snapshot and the bundle's disabled truecolor mode.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Prepared version 0.9.2 with the pinned bundle sources in the Autotools
+  release archive so all distribution recipes can consume one source package.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Included Void's Hunspell provider and English dictionary in the bundled
+  package so its enabled GtkSpell feature has a usable backend.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Added Void's hicolor icon theme to both package variants so GTK2 stock
+  icons are available in a minimal installation.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Declared Fontconfig in both Arch package variants after making its
+  initialization an explicit GTK2 startup dependency.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Initialize Fontconfig before GTK2 creates widgets to avoid startup warnings
+  with current Fontconfig while leaving dialog output unchanged.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Added Void's separate GLib code-generator package to the bundled build
+  dependencies for GtkSourceView 2 marshaller generation.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Prepared the Arch standard package with private GTK2 and JSON-GLib, kept
+  it separate from the extension bundle, and resolved its symlinked launcher.
+- Completed the bundled Arch package's Enchant backend and dictionary
+  dependencies for working GtkSpell support.
+
+* Thu Sep 17 2026 Artur Bednarek <artur@unix.org.pl>
+- Kept private GTK2's deprecated item-factory callback assignment buildable
+  with GCC 16 without changing its callback dispatch.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Prepared separate bundled package recipes for Alpine, Arch and Void using
+  the private build in /opt/gldg2.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a reproducible out-of-tree bundled build that verifies pinned sources,
+  applies local GTK2 patches and stages the private runtime and launcher.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a private bundled launcher that finds its GTK2 extensions and data
+  without changing system-wide runtime paths.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Adapted private GTK2 2.24.33 to current GLib pointer types and limited its
+  bundled build to runtime components for the Arch variant.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Built bundled GtkSpell 2 against Enchant 2, preserving the personal
+  dictionary action through its current API.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Made bundled GDL 2's grip getter return NULL on an invalid item, matching
+  its pointer return type and allowing current GLib headers to compile it.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Built bundled GtkDatabox 0.9 as a GTK2 library without its unrelated Glade
+  module and example executables.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Kept bundled GooCanvas 1 building with current GLib pointer types for its
+  GTK2 item models.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Kept bundled GtkSourceView 2 building with current GLib type checks while
+  retaining its GTK2 source-buffer behaviour.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Adapted bundled GtkSheet 3.5.1 to current Autotools for a GTK2 library-only
+  build without generating its optional documentation or Glade integration.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Used the maintained vte-gtk2 source snapshot for bundled builds in place
+  of unmodified VTE 0.28.2.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Pinned the original GTK2 extension sources for separate bundled packages,
+  with GTK+ 2.24.33 included only for Arch builds.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Installed the existing application icon under gdlg2.png so GTK2 and other
+  gtkdialog packages do not claim the same icon file.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Prepared Alpine, Arch and Void packaging recipes for the next GTK2 source
+  release, with JSON support enabled explicitly.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Installed the GTK2 executable as gdlg2 and updated runnable examples,
+  tests and command-line documentation to use the non-colliding name.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Documented the existing GTK2 Pango markup paths and the text widget's
+  opt-in rendering and output behaviour.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an optional end-to-end regression runner for original Puppy helper
+  scripts, comparing GTK2 0.8.5 and this fork after GUI interactions.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an opt-in terminal action that sends SIGHUP through the live VTE
+  widget's child PID, allowing tab closure without shell PID commands.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added a tabbed terminal example that creates live shells from a separate XML
+  template and hangs up each child before closing its page.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Allowed notebooks to start without XML-defined pages so the first page can
+  be added from a runtime template.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Applied optional notebook close buttons to initial XML pages as well as
+  dynamically appended pages.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Kept the clicked dynamic page alive through its pre-close action so a
+  same-name replacement cannot be mistaken for the original page.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Allowed automatic notebook page labels to include their generated sequence
+  number through an @INDEX@ placeholder.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added optional close buttons and a pre-close action for dynamically created
+  notebook pages, without changing XML-defined tab labels.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added automatic unique instances for repeatedly appended XML notebook
+  pages, selecting each new page without changing appendtab behavior.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Allowed named widget templates to read a single-root XML fragment from a
+  file at action time, including hbox and vbox notebook pages.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an opt-in action to select a live notebook page created from an XML
+  template without changing appendtab's existing selection behavior.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added opt-in replacement of hbox and vbox children from named XML fragments.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added opt-in notebook pages built from named XML fragments, with instance
+  placeholder substitution and cleanup when a generated page is removed.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Removed stale generated lexer and parser sources from Git checkouts so
+  Autotools regenerates them from the maintained grammar during builds.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an opt-in action for moving existing box children and notebook pages
+  within one window, preserving their widget state and variable ownership.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added opt-in JSON file input for GTK2 menus and menubars, with nested items,
+  icons, styled labels and actions; refresh keeps XML-defined items intact.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added optional GTK2 VTE palette, cursor, scrollback, bell and scrolling
+  attributes to the terminal widget.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added per-cell sensitivity to JSON tree rows without changing classic tree input.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added opt-in JSON tree state restoration by stable row ID across refreshes.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Documented and covered the historical attribute-less radio tag alias.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Standardised reference API tables with a Since column and explicit Legacy
+  markers for features predating recorded release metadata.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Corrected the reference documentation to distinguish features released in
+  versions 0.9.0 and 0.9.1.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Removed obsolete per-feature GTK+ 2 version qualifications from the user
+  documentation now that GTK+ 2.24.33 is required.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Removed obsolete compile-time branches for GTK+ 2 releases older than the
+  required 2.24.33 baseline.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Raised the minimum supported GTK+ 2 version to 2.24.33.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added shared opt-in substring and case-sensitive completion matching to
+  entry, comboboxentry and editable tree cells.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added command and monitored file sources for editable tree-cell completion.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added optional flat completion to editable tree text cells and typed combo
+  cells, reusing explicit completion suggestions and existing combo choices.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added optional shared-model completion to comboboxentry, including rich
+  item rendering and stable selected values.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an opt-in rich flat icon-view model with stable values, markup,
+  descriptions, tooltips, colours and fonts.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added opt-in rich entry completion rows with icons, styled labels,
+  descriptions and stable exported values.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an opt-in rich flat item model to the editable comboboxentry widget.
+
+* Wed Sep 16 2026 Artur Bednarek <artur@unix.org.pl>
+- Added hierarchical comboboxtext models with native GTK2 submenus and
+  JSON input/output.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added an opt-in rich comboboxtext model with stable exported values,
+  per-item icons, markup, sensitivity, colours and fonts.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Added undo and redo action functions for the optional GtkSourceView editor.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Documented the runtime behaviour of dialogs that request integrations not
+  selected at build time.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Defined GooCanvas precedence when both optional drawing-area modes are
+  requested, and prevented attributes of the ignored GtkDatabox mode from
+  being retained by the selected widget.
+
+* Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
+- Required an off-screen window to contain exactly one direct child, preventing
+  skipped or additional imperative children from remaining outside its owned
+  widget hierarchy.
+
 * Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
 - Released version 0.9.1.
 
@@ -77,8 +342,6 @@
   configurable headers, pipe-delimited input, refresh, save and clear support.
 - Documented the sheet data format, signals, optional dependency and a
   standalone editable inventory example.
-- Made the imperative GtkDatabox fallback test inspect its expected warning
-  without promoting it to a fatal GLib warning.
 
 * Tue Sep 15 2026 Artur Bednarek <artur@unix.org.pl>
 - Kept automatic GtkDatabox margins valid on logarithmic axes.
@@ -189,8 +452,7 @@
   coverage and standalone/showcase examples.
 
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
-- Fixed clean out-of-tree distribution file discovery and made the JSON tree
-  output assertion portable to POSIX and BusyBox test implementations.
+- Fixed clean out-of-tree distribution file discovery.
 
 * Mon Sep 14 2026 Artur Bednarek <artur@unix.org.pl>
 - Added an opt-in tree color renderer with configurable cached swatches while

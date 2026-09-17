@@ -280,9 +280,7 @@ void widget_dialog_refresh(variable *var)
 		fprintf(stderr, "%s(): <label> not implemented for this widget.\n",
 			__func__);
 	if (attributeset_is_avail(var->Attributes, ATTR_ITEM)
-#if GTK_CHECK_VERSION(2,6,0)
 		&& !GTK_IS_ABOUT_DIALOG(var->Widget)
-#endif
 	)
 		fprintf(stderr, "%s(): <item> not implemented for this widget.\n",
 			__func__);

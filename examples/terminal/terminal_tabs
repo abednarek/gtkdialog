@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# The page XML is kept separately and read afresh for every new tab.
+# Build gtkdialog with --with-vte to run actual terminal sessions.
+GTKDIALOG=${GTKDIALOG:-gtkdialog}
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+TERMINAL_TAB="file:$script_dir/terminal_tab.xml"
+export TERMINAL_TAB
+
+MAIN_DIALOG='
+<window title="Tabbed GTK2 terminal" width-request="760" height-request="500">
+  <vbox>
+    <notebook tab-close-buttons="true"
+      tab-close-action="hangupterminal:@INSTANCE@_TERMINAL"
+      space-expand="true" space-fill="true">
+      <variable>TERMINAL_PAGES</variable>
+    </notebook>
+    <timer milliseconds="true" interval="50" visible="false">
+      <variable export="false">TERMINAL_START</variable>
+      <action>appendtabauto:TERMINAL_TAB:TERMINAL_PAGES:Shell @INDEX@</action>
+      <action>disable:TERMINAL_START</action>
+    </timer>
+    <hbox space-expand="false" space-fill="false">
+      <button><label>+ New terminal</label><action>appendtabauto:TERMINAL_TAB:TERMINAL_PAGES:Shell @INDEX@</action></button>
+      <button><label>Quit</label><action>exit:OK</action></button>
+    </hbox>
+  </vbox>
+</window>'
+export MAIN_DIALOG
+
+case ${1:-} in
+  --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+  *) "$GTKDIALOG" --program MAIN_DIALOG ;;
+esac

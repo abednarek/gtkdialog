@@ -7,8 +7,8 @@ AM_YFLAGS=-d -p $$(basename $@ parser.c)
 BUILT_SOURCES = \
 	gtkdialog_parser.h 
 
-bin_PROGRAMS = gtkdialog 
-gtkdialog_SOURCES = \
+bin_PROGRAMS = gdlg2
+gdlg2_SOURCES = \
 	widget_accellabel.c widget_accellabel.h \
 	widget_arrow.c widget_arrow.h \
 	gtkdialog.c gtkdialog.h \
@@ -72,6 +72,7 @@ gtkdialog_SOURCES = \
 	widget_messagedialog.c widget_messagedialog.h \
 	widget_menubar.c widget_menubar.h \
 	widget_menuitem.c widget_menuitem.h \
+	widget_menu_json.c widget_menu_json.h \
 	widget_notebook.c widget_notebook.h \
 	widget_paned.c widget_paned.h \
 	widget_pixmap.c widget_pixmap.h \

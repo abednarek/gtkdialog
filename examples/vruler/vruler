@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 VERTICAL_RULER_DIALOG='
 <window title="Native GTK2 vertical ruler" width-request="240">

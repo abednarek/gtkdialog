@@ -1,5 +1,9 @@
-icondir=$(datadir)/icons/hicolor/32x32/apps
+icondir = $(datadir)/icons/hicolor/32x32/apps
 
-icon_DATA=gtkdialog.png
+nodist_icon_DATA = gdlg2.png
 
-EXTRA_DIST=$(icon_DATA)
+gdlg2.png: $(srcdir)/gtkdialog.png
+	cp $(srcdir)/gtkdialog.png $@
+
+EXTRA_DIST = gtkdialog.png
+CLEANFILES = gdlg2.png

@@ -1,0 +1,29 @@
+# Maintainer: Artur Bednarek <artur@unix.org.pl>
+pkgname=gdlg2
+pkgver=0.9.2
+pkgrel=0
+pkgdesc="GTK2 dialog builder for shell scripts"
+url="https://github.com/abednarek/gtkdialog"
+arch="all"
+license="GPL-2.0-or-later"
+makedepends="build-base gtk+2.0-dev json-glib-dev pkgconf"
+checkdepends="xvfb-run xdotool font-dejavu"
+source="gtkdialog-$pkgver.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver.tar.gz"
+builddir="$srcdir/gtkdialog-$pkgver"
+
+build() {
+	mkdir -p "$builddir/build"
+	cd "$builddir/build"
+	../configure --prefix=/usr --with-json-glib
+	make
+}
+
+check() {
+	make -C "$builddir/build" check
+}
+
+package() {
+	make -C "$builddir/build" DESTDIR="$pkgdir" install
+}
+
+sha512sums="5a4f7824a909c98cb33ea7c5b1ca52438c8968e74e36510158841deff41bd2750651bfb075a62697f2ed7cc96d4d147a9de4d6f3882e3fa2ac65433e04aa5bf2  gtkdialog-$pkgver.tar.gz"

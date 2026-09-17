@@ -24,7 +24,6 @@
 #include "widgets.h"
 #include "widget_toolpalette.h"
 
-#if GTK_CHECK_VERSION(2,20,0)
 static void widget_toolpalette_store_boolean(GtkWidget *widget,
 	tag_attr *attr, const gchar *attribute, const gchar *key)
 {
@@ -116,15 +115,12 @@ static void widget_toolpalette_input_by_file(
 	}
 	fclose(input);
 }
-#endif
 
 void widget_toolpalette_clear(variable *var)
 {
-#if GTK_CHECK_VERSION(2,20,0)
 	if (widget_toolpalette_is_group(var))
 		widget_toolpalette_set_group_label(var, "");
 	else
-#endif
 		fprintf(stderr, "%s(): Clear not implemented for this widget.\n",
 			__func__);
 }
@@ -132,7 +128,6 @@ void widget_toolpalette_clear(variable *var)
 GtkWidget *widget_toolpalette_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type)
 {
-#if GTK_CHECK_VERSION(2,20,0)
 	GList *element;
 	GtkWidget *widget;
 	stackelement children;
@@ -185,27 +180,16 @@ GtkWidget *widget_toolpalette_create(
 	}
 	stackelement_clear(&children);
 	return widget;
-#else
-	(void)Attr;
-	(void)attr;
-	(void)Type;
-	g_error("gtkdialog: tool palettes require GTK+ 2.20 or later.");
-	return NULL;
-#endif
 }
 
 gchar *widget_toolpalette_envvar_construct(GtkWidget *widget)
 {
-#if GTK_CHECK_VERSION(2,20,0)
 	if (GTK_IS_TOOL_ITEM_GROUP(widget)) {
 		const gchar *label;
 
 		label = gtk_tool_item_group_get_label(GTK_TOOL_ITEM_GROUP(widget));
 		return g_strdup(label != NULL ? label : "");
 	}
-#else
-	(void)widget;
-#endif
 	return g_strdup("");
 }
 
@@ -213,11 +197,9 @@ void widget_toolpalette_fileselect(
 	variable *var, const char *name, const char *value)
 {
 	(void)name;
-#if GTK_CHECK_VERSION(2,20,0)
 	if (widget_toolpalette_is_group(var))
 		widget_toolpalette_set_group_label(var, value);
 	else
-#endif
 		fprintf(stderr, "%s(): Fileselect not implemented for this widget.\n",
 			__func__);
 }
@@ -231,7 +213,6 @@ void widget_toolpalette_refresh(variable *var)
 
 	initialised = GPOINTER_TO_INT(g_object_get_data(
 		G_OBJECT(var->Widget), "_initialised"));
-#if GTK_CHECK_VERSION(2,20,0)
 	if (widget_toolpalette_is_group(var)) {
 		gchar *input;
 
@@ -250,7 +231,6 @@ void widget_toolpalette_refresh(variable *var)
 				var->Attributes, ATTR_INPUT);
 		}
 	}
-#endif
 	if (initialised)
 		return;
 
@@ -265,14 +245,12 @@ void widget_toolpalette_refresh(variable *var)
 	if (width != -1 || height != -1)
 		gtk_widget_set_size_request(var->Widget, width, height);
 
-#if GTK_CHECK_VERSION(2,20,0)
 	if (widget_toolpalette_is_group(var)) {
 		if (attributeset_is_avail(var->Attributes, ATTR_DEFAULT))
 			widget_toolpalette_set_group_label(var,
 				attributeset_get_first(&element,
 					var->Attributes, ATTR_DEFAULT));
 	} else {
-#endif
 		if (attributeset_is_avail(var->Attributes, ATTR_LABEL))
 			fprintf(stderr,
 				"%s(): <label> not implemented for this widget.\n",
@@ -285,9 +263,7 @@ void widget_toolpalette_refresh(variable *var)
 			fprintf(stderr,
 				"%s(): <input> not implemented for this widget.\n",
 				__func__);
-#if GTK_CHECK_VERSION(2,20,0)
 	}
-#endif
 	if (attributeset_is_avail(var->Attributes, ATTR_ITEM))
 		fprintf(stderr,
 			"%s(): <item> not implemented for this widget.\n", __func__);
@@ -305,7 +281,6 @@ void widget_toolpalette_removeselected(variable *var)
 
 void widget_toolpalette_save(variable *var)
 {
-#if GTK_CHECK_VERSION(2,20,0)
 	FILE *output;
 	GList *element;
 	gchar *directive;
@@ -346,9 +321,4 @@ void widget_toolpalette_save(variable *var)
 		fputs(label != NULL ? label : "", output);
 	}
 	widget_close_output(output, filename);
-#else
-	(void)var;
-	fprintf(stderr, "%s(): Save not implemented for this widget.\n",
-		__func__);
-#endif
 }

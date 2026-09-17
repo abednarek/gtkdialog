@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
 <window title="GTKDialog source editor" width-request="620" height-request="420">
@@ -23,6 +23,14 @@ greeting="Hello from GTKDialog"
 printf "%s\\n" "$greeting"</default>
     </edit>
     <hbuttonbox>
+      <button>
+        <label>Undo</label>
+        <action function="undo">SOURCE_TEXT</action>
+      </button>
+      <button>
+        <label>Redo</label>
+        <action function="redo">SOURCE_TEXT</action>
+      </button>
       <button cancel></button>
       <button ok></button>
     </hbuttonbox>

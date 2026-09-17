@@ -34,18 +34,18 @@ panning without an additional widget library.</p><hr>
 	&lt;output file&gt;image filename&lt;/output&gt;
 &lt;/imageview&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">scale-mode</td><td class="wiki">Initial scaling policy</td><td class="wiki"><code>none</code>, <code>manual</code>, <code>fit</code>, <code>fit-width</code> or <code>fit-height</code></td></tr>
-<tr><td class="wiki">zoom</td><td class="wiki">Initial manual scale</td><td class="wiki">finite number from <code>0.01</code> to <code>32</code></td></tr>
-<tr><td class="wiki">zoom-step</td><td class="wiki">Multiplier used by zoom actions</td><td class="wiki">finite number from <code>1.01</code> to <code>10</code></td></tr>
-<tr><td class="wiki">interpolation</td><td class="wiki">Filter used while scaling</td><td class="wiki"><code>nearest</code>, <code>tiles</code>, <code>bilinear</code> or <code>hyper</code></td></tr>
-<tr><td class="wiki">background</td><td class="wiki">Viewport background</td><td class="wiki">GTK colour specification</td></tr>
-<tr><td class="wiki">pan-button</td><td class="wiki">Mouse button used for drag panning</td><td class="wiki"><code>1</code> through <code>5</code></td></tr>
-<tr><td class="wiki">wheel-zoom</td><td class="wiki">Enable Ctrl+wheel zooming</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">hscrollbar-policy</td><td class="wiki">Horizontal scrollbar policy</td><td class="wiki"><code>0</code>, <code>1</code> or <code>2</code> (always, automatic, never)</td></tr>
-<tr><td class="wiki">vscrollbar-policy</td><td class="wiki">Vertical scrollbar policy</td><td class="wiki"><code>0</code>, <code>1</code> or <code>2</code> (always, automatic, never)</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">scale-mode</td><td class="wiki">Initial scaling policy</td><td class="wiki"><code>none</code>, <code>manual</code>, <code>fit</code>, <code>fit-width</code> or <code>fit-height</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">zoom</td><td class="wiki">Initial manual scale</td><td class="wiki">finite number from <code>0.01</code> to <code>32</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">zoom-step</td><td class="wiki">Multiplier used by zoom actions</td><td class="wiki">finite number from <code>1.01</code> to <code>10</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">interpolation</td><td class="wiki">Filter used while scaling</td><td class="wiki"><code>nearest</code>, <code>tiles</code>, <code>bilinear</code> or <code>hyper</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">background</td><td class="wiki">Viewport background</td><td class="wiki">GTK colour specification</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">pan-button</td><td class="wiki">Mouse button used for drag panning</td><td class="wiki"><code>1</code> through <code>5</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">wheel-zoom</td><td class="wiki">Enable Ctrl+wheel zooming</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">hscrollbar-policy</td><td class="wiki">Horizontal scrollbar policy</td><td class="wiki"><code>0</code>, <code>1</code> or <code>2</code> (always, automatic, never)</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">vscrollbar-policy</td><td class="wiki">Vertical scrollbar policy</td><td class="wiki"><code>0</code>, <code>1</code> or <code>2</code> (always, automatic, never)</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>The defaults are manual scale <code>1</code>, zoom step <code>1.25</code>,
 bilinear interpolation, middle-button panning and enabled Ctrl+wheel zooming.
@@ -53,7 +53,7 @@ Both scrollbars default to GTK's automatic policy. <code>fit</code> displays the
 whole image, while <code>fit-width</code> and <code>fit-height</code> preserve
 the aspect ratio and may require one scrollbar.</p>
 
-<h2> Value and image I/O </h2>
+<h2> Value and Image I/O </h2>
 <p>A file input names an image to load. A command input reads an image filename
 from its first output line. Several inputs are evaluated in order and the last
 successfully loaded image wins. The variable contains the original filename,
@@ -64,18 +64,18 @@ that filename.</p>
 original unscaled raster to the output filename. The filename extension selects
 the output format. A failed load leaves the previous valid image intact.</p>
 
-<h2> Image-view functions </h2>
+<h2> Image-view Functions </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Type</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Parameter</b></th></tr>
-<tr><td class="wiki">zoomin</td><td class="wiki">Enter manual mode and multiply the current displayed scale by zoom-step</td><td class="wiki">Image-view variable</td></tr>
-<tr><td class="wiki">zoomout</td><td class="wiki">Enter manual mode and divide the current displayed scale by zoom-step</td><td class="wiki">Image-view variable</td></tr>
-<tr><td class="wiki">zoomreset</td><td class="wiki">Enter manual mode at the image's natural size</td><td class="wiki">Image-view variable</td></tr>
-<tr><td class="wiki">fit</td><td class="wiki">Fit the whole image in the viewport</td><td class="wiki">Image-view variable</td></tr>
-<tr><td class="wiki">fitwidth</td><td class="wiki">Fit the image width to the viewport</td><td class="wiki">Image-view variable</td></tr>
-<tr><td class="wiki">fitheight</td><td class="wiki">Fit the image height to the viewport</td><td class="wiki">Image-view variable</td></tr>
+<tr><th class="wiki"><b>Type</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Parameter</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">zoomin</td><td class="wiki">Enter manual mode and multiply the current displayed scale by zoom-step</td><td class="wiki">Image-view variable</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">zoomout</td><td class="wiki">Enter manual mode and divide the current displayed scale by zoom-step</td><td class="wiki">Image-view variable</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">zoomreset</td><td class="wiki">Enter manual mode at the image's natural size</td><td class="wiki">Image-view variable</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">fit</td><td class="wiki">Fit the whole image in the viewport</td><td class="wiki">Image-view variable</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">fitwidth</td><td class="wiki">Fit the image width to the viewport</td><td class="wiki">Image-view variable</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">fitheight</td><td class="wiki">Fit the image height to the viewport</td><td class="wiki">Image-view variable</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 
-<h2> Interaction and signals </h2>
+<h2> Interaction and Signals </h2>
 <p>Hold Ctrl and turn the wheel to zoom. Wheel events
 without Ctrl retain the normal GTK scrolling behaviour. Drag with the configured
 pan button to move the horizontal and vertical adjustments. The default pan
@@ -87,7 +87,7 @@ the visible raster is drawn. There is no default signal. Normal
 <code>button-press-event</code> and <code>button-release-event</code> actions
 receive the common pointer environment values.</p>
 
-<h2> Ownership and memory </h2>
+<h2> Ownership and Memory </h2>
 <p>The widget owns exactly one source pixbuf and its source filename. Replacing,
 clearing or destroying the widget releases them. Rendering creates only a
 temporary scaled pixbuf for the exposed rectangle, so zooming a large image
@@ -116,7 +116,7 @@ tag.</p>
 </pre>
 <p>A runnable example is installed with the source distribution under
 <code>examples/imageview/imageview</code>.</p>
-<p>This widget was introduced in gtkdialog version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

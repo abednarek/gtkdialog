@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 SHOWCASE_IMAGE=$script_dir/../../data/icons/hicolor/32x32/apps/gtkdialog.png
@@ -74,6 +74,8 @@ SHOWCASE_FILE_DIALOG_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-i
 SHOWCASE_FILE_DIALOG_URI_INPUT=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-file-dialog-uri-$$.txt
 SHOWCASE_PLUG_LAUNCHER=$SHOWCASE_OUTPUT_DIR/gtkdialog-showcase-plug-$$.sh
 SHOWCASE_GTKDIALOG=$GTKDIALOG
+SHOWCASE_NOTEBOOK_TERMINAL_TAB=file:$script_dir/showcase_terminal_tab.xml
+SHOWCASE_NOTEBOOK_SOURCE_TAB=file:$script_dir/showcase_source_tab.xml
 export SHOWCASE_IMAGE SHOWCASE_CANVAS_IMAGE SHOWCASE_PLAY_ICON SHOWCASE_PROFILE_IMAGE
 export SHOWCASE_CELL_OUTPUT SHOWCASE_CANVAS_OUTPUT SHOWCASE_IMAGEVIEW_OUTPUT
 export SHOWCASE_CHOOSER_OUTPUT SHOWCASE_CHOOSER_INPUT SHOWCASE_CHOOSER_STATUS
@@ -105,6 +107,7 @@ export SHOWCASE_FILE_DIALOG_RESPONSE SHOWCASE_FILE_DIALOG_FOLDER
 export SHOWCASE_FILE_DIALOG_STATUS SHOWCASE_FILE_DIALOG_INPUT
 export SHOWCASE_FILE_DIALOG_URI_INPUT
 export SHOWCASE_PLUG_LAUNCHER SHOWCASE_GTKDIALOG
+export SHOWCASE_NOTEBOOK_TERMINAL_TAB SHOWCASE_NOTEBOOK_SOURCE_TAB
 
 : > "$SHOWCASE_SCROLL_LOG"
 showcase_line=1
@@ -313,12 +316,14 @@ SHOWCASE_TREE_ROWS='<item>Review changes|Ada|true|100|0|Primary+r|false</item>
 					<item>Publish release|Margaret|false|0|0|Primary+u|false</item>'
 
 if "$GTKDIALOG" --version 2>/dev/null | grep -q 'JSON-GLib'; then
+	SHOWCASE_JSON_MENU='<input file format="json">'"$script_dir"'/showcase_menu.json</input>'
 	SHOWCASE_JSON_PAGE='
 			<vbox border-width="10" spacing="8">
 				<infobar message-type="info">
-					<text><label>This separate tree is loaded from versioned JSON. Expand the release row to inspect nested children.</label></text>
+					<text><label>This JSON tree remembers selection, expanded branches and scroll position by row ID. Change them, then click Reload JSON. The Publish release toggle is disabled per cell.</label></text>
 				</infobar>
 				<tree show-expanders="true" headers-visible="true" rules-hint="true"
+					preserve-state="true"
 					context-menu="SHOWCASE_JSON_CONTEXT_MENU"
 					column-renderer="icon-text|combo|toggle|progress|spin|accel|spinner|color"
 					column-editable="true|true|true|false|true|true|false|false"
@@ -354,6 +359,7 @@ if "$GTKDIALOG" --version 2>/dev/null | grep -q 'JSON-GLib'; then
 				</hbuttonbox>
 			</vbox>'
 else
+	SHOWCASE_JSON_MENU=
 	SHOWCASE_JSON_PAGE='
 			<vbox border-width="10" spacing="10">
 				<infobar message-type="warning">
@@ -369,6 +375,7 @@ else
 			</vbox>'
 fi
 export SHOWCASE_JSON_PAGE
+export SHOWCASE_JSON_MENU
 
 if "$GTKDIALOG" --version 2>/dev/null | grep -q 'VTE'; then
 	SHOWCASE_TERMINAL_PAGE='
@@ -379,6 +386,10 @@ if "$GTKDIALOG" --version 2>/dev/null | grep -q 'VTE'; then
 				<terminal argv0="/bin/sh" current-directory-uri="'"$script_dir"'"
 					font-name="Monospace 9" text-background-color="#1d2021"
 					text-foreground-color="#ebdbb2" cursor-background-color="#fabd2f"
+					palette="#282828,#cc241d,#98971a,#d79921,#458588,#b16286,#689d6a,#a89984,#928374,#fb4934,#b8bb26,#fabd2f,#83a598,#d3869b,#8ec07c,#ebdbb2"
+					scrollback-lines="2000" cursor-shape="ibeam" cursor-blink="system"
+					audible-bell="false" visible-bell="false"
+					scroll-on-output="true" scroll-on-keystroke="true"
 					hscrollbar-policy="2" vscrollbar-policy="1"
 					space-expand="true" space-fill="true">
 					<width>96</width>
@@ -505,6 +516,8 @@ if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSourceView 2'; then
 								<height>360</height>
 							</edit>
 							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Undo</label><action function="undo">SHOWCASE_SOURCE_C</action></button>
+								<button><label>Redo</label><action function="redo">SHOWCASE_SOURCE_C</action></button>
 								<button><label>Clear</label><action>clear:SHOWCASE_SOURCE_C</action></button>
 								<button><label>Reload C</label><action>refresh:SHOWCASE_SOURCE_C</action></button>
 								<button><label>Save</label><action>save:SHOWCASE_SOURCE_C</action></button>
@@ -527,6 +540,8 @@ if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSourceView 2'; then
 								<height>360</height>
 							</edit>
 							<hbuttonbox layout-style="spread" spacing="6">
+								<button><label>Undo</label><action function="undo">SHOWCASE_SOURCE_XML</action></button>
+								<button><label>Redo</label><action function="redo">SHOWCASE_SOURCE_XML</action></button>
 								<button><label>Clear</label><action>clear:SHOWCASE_SOURCE_XML</action></button>
 								<button><label>Reload XML</label><action>refresh:SHOWCASE_SOURCE_XML</action></button>
 								<button><label>Save</label><action>save:SHOWCASE_SOURCE_XML</action></button>
@@ -546,6 +561,38 @@ else
 			</vbox>'
 fi
 export SHOWCASE_SOURCE_PAGE
+
+if "$GTKDIALOG" --version 2>/dev/null | grep -q 'VTE' &&
+   "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSourceView 2'; then
+	SHOWCASE_DYNAMIC_NOTEBOOK_PAGE='
+			<vbox border-width="10" spacing="8">
+				<infobar message-type="info">
+					<text><label>Each tab is built from a separate XML fragment. Add terminal or source-editor tabs at runtime; closing a terminal tab also ends its child process.</label></text>
+				</infobar>
+				<hbuttonbox layout-style="start" spacing="8" space-expand="false">
+					<button><label>+ Terminal</label><action>appendtabauto:SHOWCASE_NOTEBOOK_TERMINAL_TAB:SHOWCASE_DYNAMIC_PAGES:Terminal @INDEX@</action></button>
+					<button><label>+ Source editor</label><action>appendtabauto:SHOWCASE_NOTEBOOK_SOURCE_TAB:SHOWCASE_DYNAMIC_PAGES:Source @INDEX@</action></button>
+				</hbuttonbox>
+				<notebook scrollable="true" tab-close-buttons="true"
+					space-expand="true" space-fill="true">
+					<variable>SHOWCASE_DYNAMIC_PAGES</variable>
+				</notebook>
+				<timer milliseconds="true" interval="50" visible="false">
+					<variable export="false">SHOWCASE_DYNAMIC_START</variable>
+					<action>appendtabauto:SHOWCASE_NOTEBOOK_TERMINAL_TAB:SHOWCASE_DYNAMIC_PAGES:Terminal @INDEX@</action>
+					<action>appendtabauto:SHOWCASE_NOTEBOOK_SOURCE_TAB:SHOWCASE_DYNAMIC_PAGES:Source @INDEX@</action>
+					<action>disable:SHOWCASE_DYNAMIC_START</action>
+				</timer>
+			</vbox>'
+else
+	SHOWCASE_DYNAMIC_NOTEBOOK_PAGE='
+			<vbox border-width="10" spacing="10">
+				<infobar message-type="warning">
+					<text><label>The mixed notebook needs both GTK2 VTE and GtkSourceView 2. The core showcase remains available without these optional libraries.</label></text>
+				</infobar>
+			</vbox>'
+fi
+export SHOWCASE_DYNAMIC_NOTEBOOK_PAGE
 
 if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GooCanvas 1'; then
 	SHOWCASE_OBJECT_PAGE='
@@ -836,7 +883,7 @@ if "$GTKDIALOG" --version 2>/dev/null | grep -q 'GDL 2'; then
 							<default>"#!/bin/sh
 
 echo GTKDialog-docking-workspace
-gtkdialog --program=MAIN_DIALOG"</default>
+gdlg2 --program=MAIN_DIALOG"</default>
 							<variable>SHOWCASE_DOCK_EDITOR</variable>
 						</edit>
 						<label>Editor</label>
@@ -1648,7 +1695,7 @@ SHOWCASE_ASSISTANT='
 export SHOWCASE_ASSISTANT
 
 SHOWCASE_ABOUT='
-<aboutdialog program-name="GTKDialog GTK2 widget showcase" version="0.9.1"
+<aboutdialog program-name="GTKDialog GTK2 widget showcase" version="0.9.2"
 	comments="A GTK2-only demonstration of gtkdialog widgets."
 	copyright="Copyright (C) GTKDialog contributors and Artur Bednarek"
 	license="GNU General Public License version 2 or later"
@@ -1758,6 +1805,7 @@ MAIN_DIALOG='
 					<action>launch:SHOWCASE_MESSAGE</action>
 				</menuitem>
 			</menu>
+			'"$SHOWCASE_JSON_MENU"'
 		</menubar>
 
 		<toolbar toolbar-style="both-horizontal" show-arrow="true"
@@ -1816,7 +1864,7 @@ MAIN_DIALOG='
 			</toolitem>
 		</toolbar>
 
-		<notebook labels="Text and files|Spell checking|Source editing|Selection|Icon input|Image viewer|Tree renderers|Tree styling|Tree images|Tree states|Tree JSON|Popup menus|Classic controls|State actions|Paned layout|Choosers|Drawing areas|Object scenes|Numeric plots|Spreadsheets|Docking workspace|Desktop task lists|Workspace pagers|Window selector|Off-screen rendering|Page setup|Print settings|File chooser dialogs|Layout canvas|Live logs|Scrolling|Toolbars|Menu state|Tool palette|Terminal|XEmbed socket|Dialogs|Colour selector|Font selector|HSV selector|Transfer curves|Status and accelerators"
+		<notebook labels="Text and files|Spell checking|Source editing|Selection|Icon input|Image viewer|Tree renderers|Tree styling|Tree images|Tree states|Tree JSON|Popup menus|Classic controls|State actions|Paned layout|Choosers|Drawing areas|Object scenes|Numeric plots|Spreadsheets|Docking workspace|Desktop task lists|Workspace pagers|Window selector|Off-screen rendering|Page setup|Print settings|File chooser dialogs|Layout canvas|Live logs|Scrolling|Toolbars|Menu state|Tool palette|Terminal|Dynamic notebook|XEmbed socket|Dialogs|Colour selector|Font selector|HSV selector|Transfer curves|Status and accelerators"
 			scrollable="true" space-expand="true" space-fill="true">
 			<vbox border-width="10" spacing="8">
 				<infobar message-type="info" default-response="ok">
@@ -1843,11 +1891,17 @@ MAIN_DIALOG='
 						<label>Author</label>
 					</text>
 					<entry row="1" column="1" completion="true"
-						completion-minimum-key-length="1">
-						<default>GTK2 user</default>
-						<item>GTK2 user</item>
-						<item>Application developer</item>
-						<item>Shell script author</item>
+						completion-model="rich" completion-icon-size="16"
+						completion-minimum-key-length="1"
+						completion-match="contains" completion-case-sensitive="false">
+						<default>gtk2-user</default>
+						<item value="gtk2-user" stock="gtk-about"
+							description="Builds desktop interfaces with GTK2">GTK2 user</item>
+						<item value="application-developer" stock="gtk-execute"
+							markup="true" foreground="#204a87" font="Sans Bold 8"
+							description="Uses stable exported values">"<b>Application developer</b>"</item>
+						<item value="shell-script-author" stock="gtk-edit"
+							description="Creates declarative dialogs">Shell script author</item>
 						<variable>SHOWCASE_AUTHOR</variable>
 					</entry>
 					<text row="2" column="0" x-options="fill" y-options="none"
@@ -1893,20 +1947,25 @@ The labels share their width through a named GTK2 size group."
 				child2-resize="true" child2-shrink="false" border-width="10">
 				<vbox spacing="8">
 					<frame>
-						<iconview selection-mode="single" icon-size="48" columns="3"
-							item-width="105" space-expand="true" space-fill="true">
-							<item stock="gtk-directory">Projects</item>
-							<item stock="gtk-preferences">Settings</item>
-							<item stock="gtk-help">Help</item>
-							<item stock="gtk-about">About</item>
-							<item stock="gtk-network">Network</item>
-							<item stock="gtk-print">Print</item>
+						<iconview item-model="rich" selection-mode="single"
+							icon-size="48" columns="3" item-width="125"
+							space-expand="true" space-fill="true">
+							<item value="projects-id" stock="gtk-directory"
+								description="Local work" tooltip="Open projects">Projects</item>
+							<item value="settings-id" stock="gtk-preferences"
+								markup="true" foreground="#204a87" font="Sans Bold 8"
+								description="Options" tooltip="Configure the application">"<b>Settings</b>"</item>
+							<item value="help-id" stock="gtk-help" foreground="#4e9a06"
+								description="Guide" tooltip="Read documentation">Help</item>
+							<item value="about-id" stock="gtk-about" description="Details">About</item>
+							<item value="network-id" stock="gtk-network" description="Connections">Network</item>
+							<item value="print-id" stock="gtk-print" description="Output">Print</item>
 							<height>245</height>
 							<variable>SHOWCASE_ICON</variable>
-							<default>Projects</default>
+							<default>projects-id</default>
 							<action>echo "Icon: $SHOWCASE_ICON"</action>
 						</iconview>
-						<label>Icon view with labels</label>
+						<label>Rich flat icon view · stable values and metadata</label>
 					</frame>
 					<frame>
 						<iconview selection-mode="multiple" icon-size="48" columns="4"
@@ -2090,11 +2149,15 @@ The labels share their width through a named GTK2 size group."
 			<vbox border-width="10" spacing="8">
 				<infobar message-type="info">
 					<text>
-						<label>Edit text, combo, toggle, spin and accelerator cells while progress and spinner cells render live state.</label>
+						<label>Edit text, typed combo, toggle, spin and accelerator cells; task and owner editors also demonstrate completion.</label>
 					</text>
 				</infobar>
 				<tree '"$SHOWCASE_TREE_ATTRIBUTES"' column-renderer="text|combo|toggle|progress|spin|accel|spinner"
 					column-editable="true|true|true|false|true|true|false"
+					column-combo-has-entry="false|true|||||"
+					column-completion="true|true|false|false|false|false|false"
+					column-completion-minimum-key-length="1|1|||||"
+					completion-match="contains" completion-case-sensitive="false"
 					column-type="string|string|string|double|int64|string|string"
 					column-progress-text-xalign="|||0.5|||"
 					column-spin-min="0|0|0|0|0"
@@ -2107,6 +2170,8 @@ The labels share their width through a named GTK2 size group."
 					exported-column="0" space-expand="true" space-fill="true">
 					<variable>SHOWCASE_TASK</variable>
 					<label>Task|Owner|Enabled|Progress|Retries|Shortcut|Busy</label>
+					<input completion-column="0">printf "%s\n" "Review changes" "Run GTK2 checks" "Prepare package"</input>
+					<input file completion-column="1">'"$script_dir"'/../tree/tree_completion.txt</input>
 					<item combo-column="1">Ada</item>
 					<item combo-column="1">Linus</item>
 					<item combo-column="1">Grace</item>
@@ -2295,11 +2360,28 @@ The labels share their width through a named GTK2 size group."
 								<label>Performance mode</label>
 								<variable>SHOWCASE_MODE_FAST</variable>
 							</radiobutton>
-							<comboboxtext active="1">
-								<item>Low priority</item>
-								<item>Normal priority</item>
-								<item>High priority</item>
+							<comboboxtext item-model="rich" icon-size="16" active="1">
+								<item value="low" stock="gtk-go-down" foreground="#4e9a06">Low priority</item>
+								<item value="normal" stock="gtk-yes" font="Sans Bold 8">Normal priority</item>
+								<item value="high" stock="gtk-go-up" foreground="#a40000">High priority</item>
+								<item value="paused" stock="gtk-media-pause" sensitive="false">Paused (unavailable)</item>
 								<variable>SHOWCASE_PRIORITY</variable>
+							</comboboxtext>
+							<text xalign="0"><label>Editable rich action</label></text>
+							<comboboxentry item-model="rich" icon-size="16"
+								completion="true" completion-minimum-key-length="1"
+								completion-match="contains" completion-case-sensitive="false">
+								<item value="open" stock="gtk-open">Open document</item>
+								<item value="save" stock="gtk-save" foreground="#204a87">Save document</item>
+								<item value="review" stock="gtk-apply" markup="true">"<b>Review changes</b>"</item>
+								<default>save</default>
+								<variable>SHOWCASE_EDITABLE_ACTION</variable>
+							</comboboxentry>
+							<text xalign="0"><label>Hierarchical action</label></text>
+							<comboboxtext item-model="rich-tree" icon-size="16">
+								<input file format="json">'"$script_dir"'/../comboboxtext/comboboxtext_rich_tree.json</input>
+								<default>system-preferences</default>
+								<variable>SHOWCASE_TREE_CHOICE</variable>
 							</comboboxtext>
 							</vbox>
 							<vscrollbar range-min="0" range-max="100" range-step="1"
@@ -2367,7 +2449,7 @@ The labels share their width through a named GTK2 size group."
 						<table exported-column="0" selected-row="0"
 							column-header-active="true|true|true">
 							<label>Package|Version|State</label>
-							<item>gtkdialog|0.9.1|ready</item>
+							<item>gtkdialog|0.9.2|ready</item>
 							<item>GTK+|2.24|linked</item>
 							<item>GLib|runtime|linked</item>
 							<variable>SHOWCASE_PACKAGE</variable>
@@ -2946,6 +3028,7 @@ The labels share their width through a named GTK2 size group."
 			</vbox>
 
 			'"$SHOWCASE_TERMINAL_PAGE"'
+			'"$SHOWCASE_DYNAMIC_NOTEBOOK_PAGE"'
 
 			<vbox border-width="10" spacing="8">
 				<infobar message-type="info">

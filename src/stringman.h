@@ -67,7 +67,16 @@ typedef enum {
 	CommandFit               = 25,
 	CommandFitWidth          = 26,
 	CommandFitHeight         = 27,
-	CommandUnknown           = 28
+	CommandUndo              = 28,
+	CommandRedo              = 29,
+	CommandReparentWidget    = 30,
+	CommandAppendTab         = 31,
+	CommandRemoveTab         = 32,
+	CommandReplaceBox        = 33,
+	CommandSelectTab         = 34,
+	CommandAppendTabAuto     = 35,
+	CommandHangupTerminal    = 36,
+	CommandUnknown           = 37
 } CommandType;
 
 #ifdef G_OS_WIN32

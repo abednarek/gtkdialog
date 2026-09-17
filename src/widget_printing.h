@@ -20,13 +20,11 @@
 
 #include "tag_attributes.h"
 
-#if GTK_CHECK_VERSION(2,10,0)
 void widget_printing_apply_page_attributes(GtkPageSetup *setup,
 	tag_attr *attributes);
 GtkPageSetup *widget_printing_load_page_setup(const gchar *filename);
 GtkPrintSettings *widget_printing_load_print_settings(const gchar *filename);
 gboolean widget_printing_save_print_settings(GtkPrintSettings *settings,
 	const gchar *filename, GError **error);
-#endif
 
 #endif

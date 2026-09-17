@@ -4,7 +4,7 @@
 # The historical action attribute when="type" remains accepted as an alias
 # for signal="type".
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
 <window title="Chooser Widget Example" resizable="false">

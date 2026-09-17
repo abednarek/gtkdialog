@@ -35,13 +35,13 @@ does not add a container or change the XML hierarchy.</p>
 <p>The following attributes can be placed on any native gtkdialog widget:</p>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Default</b></th></tr>
-<tr><td class="wiki">size-group</td><td class="wiki">Named group joined by the widget</td><td class="wiki">Non-empty name</td><td class="wiki">No group</td></tr>
-<tr><td class="wiki">size-group-mode</td><td class="wiki">Dimension shared by the group</td><td class="wiki"><code>horizontal</code>, <code>vertical</code> or <code>both</code></td><td class="wiki"><code>both</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Default</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">size-group</td><td class="wiki">Named group joined by the widget</td><td class="wiki">Non-empty name</td><td class="wiki">No group</td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">size-group-mode</td><td class="wiki">Dimension shared by the group</td><td class="wiki"><code>horizontal</code>, <code>vertical</code> or <code>both</code></td><td class="wiki"><code>both</code></td><td class="wiki">0.9.0</td></tr>
 </table>
 
-<p>Size groups require GTK+ 2.4 or later. Names are local to one constructed
-window. Repeated executions of a launched window receive a new registry and
+<p>Size-group names are local to one constructed window. Repeated executions
+of a launched window receive a new registry and
 cannot retain widgets from an earlier instance.</p>
 
 <p>The first member of a named group selects its mode. If a later member uses

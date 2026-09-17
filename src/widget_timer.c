@@ -61,8 +61,6 @@ gboolean widget_timer_timer_callback(gpointer data);
 
 void widget_timer_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -120,11 +118,7 @@ gchar *widget_timer_envvar_construct(GtkWidget *widget)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-#if GTK_CHECK_VERSION(2,18,0)
 	if (gtk_widget_get_sensitive(widget))
-#else
-	if (GTK_WIDGET_SENSITIVE(widget))
-#endif
 	{
 		string = g_strdup("true");
 	} else {
@@ -145,8 +139,6 @@ gchar *widget_timer_envvar_construct(GtkWidget *widget)
 void widget_timer_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -308,8 +300,6 @@ static guint widget_timer_parse_interval(const gchar *value,
 
 void widget_timer_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -329,8 +319,6 @@ void widget_timer_removeselected(variable *var)
 
 void widget_timer_save(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -362,7 +350,7 @@ static void widget_timer_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			is_active = widget_parse_legacy_input_boolean(line);
@@ -395,7 +383,7 @@ static void widget_timer_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			is_active = widget_parse_legacy_input_boolean(line);
@@ -420,8 +408,6 @@ static void widget_timer_input_by_file(variable *var, char *filename)
 
 static void widget_timer_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -441,7 +427,9 @@ static void widget_timer_input_by_items(variable *var)
 gboolean widget_timer_timer_callback(gpointer data)
 {
 	gchar             retval = TRUE;
+#ifdef DEBUG_CONTENT
 	GList            *element;
+#endif
 	variable         *var = (variable*)data;
 
 #ifdef DEBUG_TRANSITS
@@ -459,11 +447,7 @@ gboolean widget_timer_timer_callback(gpointer data)
 #endif
 
 		/* Generate a custom signal if sensitive is true */
-#if GTK_CHECK_VERSION(2,18,0)
 		if (gtk_widget_get_sensitive(var->Widget))
-#else
-		if (GTK_WIDGET_SENSITIVE(var->Widget))
-#endif
 		{
 			widget_signal_executor(var->Widget, var->Attributes, "tick");
 		}

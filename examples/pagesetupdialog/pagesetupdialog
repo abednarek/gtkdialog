@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 PAGE_SETUP_OUTPUT=${GTKDIALOG_PAGE_SETUP_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-page-setup.ini}
 export PAGE_SETUP_OUTPUT

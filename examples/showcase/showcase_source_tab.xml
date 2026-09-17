@@ -1,0 +1,26 @@
+<vbox border-width="8" spacing="6">
+  <text xalign="0"><label>A GtkSourceView editor loaded from another XML fragment; every new tab has an independent edit variable.</label></text>
+  <edit sourceview="true" language="c" style-scheme="classic"
+    highlight-syntax="true" highlight-matching-brackets="true"
+    show-line-numbers="true" highlight-current-line="true"
+    auto-indent="true" insert-spaces-instead-of-tabs="true"
+    tab-width="4" show-right-margin="true" right-margin-position="72"
+    space-expand="true" space-fill="true">
+    <default>"static int square(int value)
+{
+    return value * value;
+}
+
+int main(void)
+{
+    int result = square(7);
+    return result == 49 ? 0 : 1;
+}"</default>
+    <variable export="false">@INSTANCE@_EDITOR</variable>
+  </edit>
+  <hbuttonbox layout-style="end" spacing="6" space-expand="false">
+    <button><label>Undo</label><action>undo:@INSTANCE@_EDITOR</action></button>
+    <button><label>Redo</label><action>redo:@INSTANCE@_EDITOR</action></button>
+  </hbuttonbox>
+  <variable export="false">@INSTANCE@_PAGE</variable>
+</vbox>

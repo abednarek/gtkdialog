@@ -1,0 +1,25 @@
+#!/bin/sh
+
+case $0 in
+	*/*) launcher=$0 ;;
+	*) launcher=$(command -v "$0") || exit 1 ;;
+esac
+
+link_count=0
+while [ -L "$launcher" ]; do
+	link_count=$((link_count + 1))
+	[ "$link_count" -le 16 ] || exit 1
+	link_target=$(readlink "$launcher") || exit 1
+	case $link_target in
+		/*) launcher=$link_target ;;
+		*) launcher=$(dirname "$launcher")/$link_target ;;
+	esac
+done
+
+bundle_root=$(CDPATH= cd -P "$(dirname "$launcher")/.." && pwd) || exit 1
+
+LD_LIBRARY_PATH="$bundle_root/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+XDG_DATA_DIRS="$bundle_root/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+export LD_LIBRARY_PATH XDG_DATA_DIRS
+
+exec "$bundle_root/libexec/gdlg2" "$@"

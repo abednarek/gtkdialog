@@ -34,25 +34,25 @@ or <code>tree</code> widgets.</p><hr>
 	&lt;output file&gt;filename&lt;/output&gt;
 &lt;/sheet&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">columns</td><td class="wiki">Number of columns</td><td class="wiki">1 to 256; default 3</td></tr>
-<tr><td class="wiki">rows</td><td class="wiki">Initial editable row capacity</td><td class="wiki">1 to 100000; default 10</td></tr>
-<tr><td class="wiki">title</td><td class="wiki">Sheet title</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">column-labels</td><td class="wiki">Column header labels</td><td class="wiki">Pipe-separated text</td></tr>
-<tr><td class="wiki">column-widths</td><td class="wiki">Column widths</td><td class="wiki">Pipe-separated pixel counts</td></tr>
-<tr><td class="wiki">row-titles</td><td class="wiki">Show numbered row headers</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">column-titles</td><td class="wiki">Show column headers</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">editable</td><td class="wiki">Allow cell editing</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td></tr>
-<tr><td class="wiki">autoresize-columns</td><td class="wiki">Resize columns to their content</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">autoresize-rows</td><td class="wiki">Resize rows to their content</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">clip-text</td><td class="wiki">Clip text at cell boundaries</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">selection-mode</td><td class="wiki">Cell or range selection policy</td><td class="wiki"><code>none</code>, <code>single</code>, <code>browse</code> or <code>multiple</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">columns</td><td class="wiki">Number of columns</td><td class="wiki">1 to 256; default 3</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">rows</td><td class="wiki">Initial editable row capacity</td><td class="wiki">1 to 100000; default 10</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">title</td><td class="wiki">Sheet title</td><td class="wiki">Text</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">column-labels</td><td class="wiki">Column header labels</td><td class="wiki">Pipe-separated text</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">column-widths</td><td class="wiki">Column widths</td><td class="wiki">Pipe-separated pixel counts</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">row-titles</td><td class="wiki">Show numbered row headers</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">column-titles</td><td class="wiki">Show column headers</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">editable</td><td class="wiki">Allow cell editing</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">autoresize-columns</td><td class="wiki">Resize columns to their content</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">autoresize-rows</td><td class="wiki">Resize rows to their content</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">clip-text</td><td class="wiki">Clip text at cell boundaries</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">selection-mode</td><td class="wiki">Cell or range selection policy</td><td class="wiki"><code>none</code>, <code>single</code>, <code>browse</code> or <code>multiple</code></td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>Other writable scalar GtkSheet properties can be supplied as normal tag
 attributes. Object-valued properties remain managed internally.</p>
-<h2> Data and value </h2>
+<h2> Data and Value </h2>
 <p>Each <code>item</code> or input line is one row of pipe-separated cell text.
 Rows may contain fewer fields than the declared column count; missing cells are
 empty. A row with too many fields or an unavailable input rejects the complete
@@ -70,7 +70,7 @@ current cell is committed before another cell becomes active. Explicit
 <code>activate</code> and <code>changed</code> actions are also available.
 GtkSheet emits <code>changed</code> while typing and again while committing, so
 it is intended for live feedback and can execute more than once per edit.</p>
-<h2> Optional dependency </h2>
+<h2> Optional Dependency </h2>
 <p>The tag uses GtkSheet 3.5.1, the GTK2 branch of GtkSheet. Configure with
 <code>--with-gtksheet</code> to enable the <code>gtksheet-3.0</code> package. A
 build without the library still parses the tag, displays a diagnostic
@@ -94,7 +94,7 @@ tag.</p>
   &lt;action&gt;echo "Committed: $INVENTORY_CELL"&lt;/action&gt;
 &lt;/sheet&gt;
 </pre>
-<p>This widget was introduced in gtkdialog version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

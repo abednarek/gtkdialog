@@ -1,0 +1,39 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
+
+MAIN_DIALOG='
+<window title="Flat rich GTK2 icon view" width-request="620" height-request="380">
+	<vbox border-width="10" spacing="8">
+		<text><label>Labels, descriptions and tooltips remain a flat icon collection.</label></text>
+		<iconview item-model="rich" selection-mode="single" icon-size="48"
+			columns="3" item-width="170" row-spacing="10"
+			space-expand="true" space-fill="true">
+			<item value="projects-id" stock="gtk-directory"
+				description="Local work" tooltip="Open the project list">Projects</item>
+			<item value="settings-id" stock="gtk-preferences" markup="true"
+				foreground="#204a87" background="#eef5ff" font="Sans Bold 9"
+				description="Application options"
+				tooltip="Configure the application">"<b>Settings</b>"</item>
+			<item value="help-id" stock="gtk-help" foreground="#4e9a06"
+				font="Sans Italic 9" description="Documentation"
+				tooltip="Read the user guide">Help centre</item>
+			<item value="print-id" stock="gtk-print" description="Output tools"
+				tooltip="Open printing tools">Print</item>
+			<variable>SELECTED_ICON</variable>
+			<default>settings-id</default>
+			<action>echo "Activated stable value: $SELECTED_ICON"</action>
+		</iconview>
+		<hbuttonbox>
+			<button ok></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case $1 in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

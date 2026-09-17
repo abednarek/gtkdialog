@@ -103,6 +103,7 @@ widget contract</a>. The sections below document this tag's specific surface.</p
 	&lt;height&gt;value&lt;/height&gt;
 	&lt;width&gt;value&lt;/width&gt;
 	&lt;input&gt;command&lt;/input&gt;
+	&lt;input file format="json"&gt;filename&lt;/input&gt;
 	&lt;sensitive&gt;state&lt;/sensitive&gt;
 	&lt;action&gt;activity&lt;/action&gt;...
 	&lt;action signal="type"&gt;activity&lt;/action&gt;...
@@ -134,17 +135,18 @@ widget contract</a>. The sections below document this tag's specific surface.</p
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Contents</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> label </td><td class="wiki"> Initial text </td><td class="wiki"> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> label </td><td class="wiki"> Initial text </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> variable export="false" </td><td class="wiki"> Variable name, not exported to shell </td><td class="wiki"> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> height </td><td class="wiki"> Image scaling dimension </td><td class="wiki"> An integer &gt; <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> width </td><td class="wiki"> Image scaling dimension </td><td class="wiki"> An integer &gt; <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> input file format="json" </td><td class="wiki"> Append submenu items from a JSON document; refresh replaces only JSON-generated items </td><td class="wiki"> Filename </td><td class="wiki"> 0.9.2 </td></tr>
 <tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Execute command on default signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
@@ -152,6 +154,43 @@ widget contract</a>. The sections below document this tag's specific surface.</p
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 </table>
+
+<h2 id="json-input"> JSON menu input </h2>
+
+<p>JSON input is opt-in and requires JSON-GLib. The document has an integer
+<code>version</code> of <code>1</code> and an <code>items</code> array. On a
+<code>&lt;menubar&gt;</code>, the array contains top-level menus; on a
+<code>&lt;menu&gt;</code>, it contains submenu items. Existing XML items are kept.
+A successful refresh replaces only JSON-generated items. A missing or invalid
+file leaves the previous JSON items in place.</p>
+
+<pre>
+{
+  "version": 1,
+  "items": [
+    { "label": "Tools", "items": [
+      { "label": "&lt;b&gt;Open settings&lt;/b&gt;", "markup": true,
+        "stock": "gtk-preferences", "foreground": "#204a87",
+        "font": "Sans 9", "action": "launch:SETTINGS" },
+      { "type": "separator" },
+      { "label": "Unavailable", "sensitive": false }
+    ] }
+  ]
+}
+</pre>
+
+<p>An item is an object. <code>type</code> can be <code>item</code>,
+<code>menu</code>, or <code>separator</code>; an <code>items</code> array
+infers <code>menu</code>. Non-separator items require <code>label</code>.
+Optional fields are <code>markup</code>, <code>stock</code>,
+<code>icon-name</code>, <code>foreground</code>, <code>font</code>,
+<code>tooltip</code>, <code>sensitive</code>, <code>visible</code>,
+<code>action</code>, and <code>actions</code> (an ordered array of action
+strings). Actions use the same executor as XML menuitem actions. The icon is
+used only when <code>stock</code> or <code>icon-name</code> is supplied;
+<code>stock</code> takes precedence. Text styling applies to the normal menu
+state. GTK2 menus are not cell views, so these presentation fields do not
+create tree-style cell renderers.</p>
 
 <h2> Signals </h2>
 
@@ -169,8 +208,8 @@ widget contract</a>. The sections below document this tag's specific surface.</p
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> show </td><td class="wiki"> Show widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> hide </td><td class="wiki"> Hide widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> activate </td><td class="wiki"> Activate widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
@@ -182,10 +221,10 @@ widget contract</a>. The sections below document this tag's specific surface.</p
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
 <tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 </table>
 

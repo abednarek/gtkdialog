@@ -31,17 +31,17 @@ It adds a new tag and does not alter any historical gtkdialog widget.</p><hr>
 	&lt;output file&gt;filename&lt;/output&gt;
 &lt;/tasklist&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">screen</td><td class="wiki">X11 screen whose windows are shown</td><td class="wiki">Zero-based integer; default 0</td></tr>
-<tr><td class="wiki">grouping</td><td class="wiki">Combine buttons belonging to one application</td><td class="wiki"><code>never</code>, <code>auto</code> or <code>always</code></td></tr>
-<tr><td class="wiki">grouping-limit</td><td class="wiki">Approximate button width below which automatic grouping begins</td><td class="wiki">Non-negative integer</td></tr>
-<tr><td class="wiki">include-all-workspaces</td><td class="wiki">Include windows outside the active workspace</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>false</code></td></tr>
-<tr><td class="wiki">switch-workspace-on-unminimize</td><td class="wiki">Switch to a minimized window's workspace when activating it</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td></tr>
-<tr><td class="wiki">button-relief</td><td class="wiki">Relief of native task buttons</td><td class="wiki"><code>normal</code>, <code>half</code> or <code>none</code></td></tr>
-<tr><td class="wiki">minimum-width</td><td class="wiki">Retained libwnck 2 minimum-width control</td><td class="wiki">Non-negative pixels</td></tr>
-<tr><td class="wiki">minimum-height</td><td class="wiki">Retained libwnck 2 minimum-height control</td><td class="wiki">Non-negative pixels</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">screen</td><td class="wiki">X11 screen whose windows are shown</td><td class="wiki">Zero-based integer; default 0</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">grouping</td><td class="wiki">Combine buttons belonging to one application</td><td class="wiki"><code>never</code>, <code>auto</code> or <code>always</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">grouping-limit</td><td class="wiki">Approximate button width below which automatic grouping begins</td><td class="wiki">Non-negative integer</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">include-all-workspaces</td><td class="wiki">Include windows outside the active workspace</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">switch-workspace-on-unminimize</td><td class="wiki">Switch to a minimized window's workspace when activating it</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">button-relief</td><td class="wiki">Relief of native task buttons</td><td class="wiki"><code>normal</code>, <code>half</code> or <code>none</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">minimum-width</td><td class="wiki">Retained libwnck 2 minimum-width control</td><td class="wiki">Non-negative pixels</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">minimum-height</td><td class="wiki">Retained libwnck 2 minimum-height control</td><td class="wiki">Non-negative pixels</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>The two minimum-size functions are deprecated by libwnck but remain useful
 for GTK2 panel layouts. Standard writable scalar GtkWidget properties, such as
@@ -85,7 +85,7 @@ tag.</p>
 </pre>
 <p>See <code>examples/tasklist/tasklist</code> for a complete runnable
 desktop-panel example. This widget was introduced in gtkdialog version
-0.9.0.</p>
+0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

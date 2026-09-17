@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 funcRandom() {
 	od -An -N2 -tu2 < /dev/urandom

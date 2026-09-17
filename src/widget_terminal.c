@@ -23,6 +23,12 @@
 /* Includes */
 #define _GNU_SOURCE
 #include <gtk/gtk.h>
+#include <errno.h>
+#ifndef G_OS_WIN32
+#include <signal.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
 #include "config.h"
 #include "gtkdialog.h"
 #include "widget_terminal.h"
@@ -42,11 +48,80 @@
 #define VTE_WARNING "The terminal (VteTerminal) widget requires \
 a version of gtkdialog built with libvte."
 
-/* Local function prototypes, located at file bottom */
+/* Local functions */
 static void widget_terminal_input_by_command(variable *var, char *command);
 static void widget_terminal_input_by_file(variable *var, char *filename);
 static void widget_terminal_input_by_items(variable *var);
 #if HAVE_VTE
+static void widget_terminal_set_palette(VteTerminal *terminal,
+	const gchar *value)
+{
+	GdkColor colors[16];
+	gchar **parts;
+	guint i, count;
+	gboolean valid = TRUE;
+
+	parts = g_strsplit(value, ",", -1);
+	count = g_strv_length(parts);
+	if (count != 8 && count != 16)
+		valid = FALSE;
+	for (i = 0; valid && i < count; ++i)
+		if (!gdk_color_parse(g_strstrip(parts[i]), &colors[i]))
+			valid = FALSE;
+	if (valid)
+		vte_terminal_set_colors(terminal, NULL, NULL, colors, count);
+	else
+		gtkdialog_warning("Invalid terminal palette; expected 8 or 16 comma-separated colors.");
+	g_strfreev(parts);
+}
+
+static void widget_terminal_set_scrollback(VteTerminal *terminal,
+	const gchar *value)
+{
+	const gchar *start = value;
+	gchar *end;
+	gint64 lines;
+	gboolean has_digits;
+
+	while (g_ascii_isspace(*start))
+		++start;
+	errno = 0;
+	lines = g_ascii_strtoll(start, &end, 10);
+	has_digits = end != start;
+	while (g_ascii_isspace(*end))
+		++end;
+	if (errno != 0 || !has_digits || *end != '\0' ||
+		lines < 0 || lines > G_MAXINT) {
+		gtkdialog_warning("Invalid terminal scrollback-lines '%s'; ignored.", value);
+		return;
+	}
+	vte_terminal_set_scrollback_lines(terminal, (glong)lines);
+}
+
+static void widget_terminal_set_boolean(VteTerminal *terminal,
+	tag_attr *attr, const gchar *name)
+{
+	const gchar *value = get_tag_attribute(attr, name);
+	gboolean enabled;
+
+	if (value == NULL)
+		return;
+	if (!widget_parse_boolean(value, &enabled)) {
+		gtkdialog_warning("Invalid terminal %s value '%s'; ignored.", name, value);
+		kill_tag_attribute(attr, name);
+		return;
+	}
+	if (strcmp(name, "audible-bell") == 0)
+		vte_terminal_set_audible_bell(terminal, enabled);
+	else if (strcmp(name, "visible-bell") == 0)
+		vte_terminal_set_visible_bell(terminal, enabled);
+	else if (strcmp(name, "scroll-on-output") == 0)
+		vte_terminal_set_scroll_on_output(terminal, enabled);
+	else if (strcmp(name, "scroll-on-keystroke") == 0)
+		vte_terminal_set_scroll_on_keystroke(terminal, enabled);
+	kill_tag_attribute(attr, name);
+}
+
 static gint widget_terminal_pixel_dimension(GtkWidget *widget,
 	gint requested_cells, gint default_cells, gboolean horizontal,
 	gint *actual_cells);
@@ -116,6 +191,52 @@ GtkWidget *widget_terminal_create(
 	vte_terminal_set_default_colors(VTE_TERMINAL(widget));
 
 	if (attr) {
+		if ((value = get_tag_attribute(attr, "palette"))) {
+			widget_terminal_set_palette(VTE_TERMINAL(widget), value);
+			kill_tag_attribute(attr, "palette");
+		}
+		if ((value = get_tag_attribute(attr, "scrollback-lines"))) {
+			widget_terminal_set_scrollback(VTE_TERMINAL(widget), value);
+			kill_tag_attribute(attr, "scrollback-lines");
+		}
+		if ((value = get_tag_attribute(attr, "cursor-shape"))) {
+			VteTerminalCursorShape shape;
+
+			if (g_ascii_strcasecmp(value, "block") == 0)
+				shape = VTE_CURSOR_SHAPE_BLOCK;
+			else if (g_ascii_strcasecmp(value, "ibeam") == 0)
+				shape = VTE_CURSOR_SHAPE_IBEAM;
+			else if (g_ascii_strcasecmp(value, "underline") == 0)
+				shape = VTE_CURSOR_SHAPE_UNDERLINE;
+			else {
+				gtkdialog_warning("Invalid terminal cursor-shape '%s'; ignored.", value);
+				shape = VTE_CURSOR_SHAPE_BLOCK;
+			}
+			if (g_ascii_strcasecmp(value, "block") == 0 ||
+				g_ascii_strcasecmp(value, "ibeam") == 0 ||
+				g_ascii_strcasecmp(value, "underline") == 0)
+				vte_terminal_set_cursor_shape(VTE_TERMINAL(widget), shape);
+			kill_tag_attribute(attr, "cursor-shape");
+		}
+		if ((value = get_tag_attribute(attr, "cursor-blink"))) {
+			if (g_ascii_strcasecmp(value, "system") == 0)
+				vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(widget),
+					VTE_CURSOR_BLINK_SYSTEM);
+			else if (g_ascii_strcasecmp(value, "on") == 0)
+				vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(widget),
+					VTE_CURSOR_BLINK_ON);
+			else if (g_ascii_strcasecmp(value, "off") == 0)
+				vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(widget),
+					VTE_CURSOR_BLINK_OFF);
+			else
+				gtkdialog_warning("Invalid terminal cursor-blink '%s'; ignored.", value);
+			kill_tag_attribute(attr, "cursor-blink");
+		}
+		widget_terminal_set_boolean(VTE_TERMINAL(widget), attr, "audible-bell");
+		widget_terminal_set_boolean(VTE_TERMINAL(widget), attr, "visible-bell");
+		widget_terminal_set_boolean(VTE_TERMINAL(widget), attr, "scroll-on-output");
+		widget_terminal_set_boolean(VTE_TERMINAL(widget), attr, "scroll-on-keystroke");
+
 		/* The gtk property "font-desc" requires a pointer to a
 		 * PangoFontDescription but the application developer can't pass
 		 * anything other than a string here, so we'll convert it using
@@ -420,6 +541,28 @@ void widget_terminal_fork_command(GtkWidget *widget, tag_attr *attr)
 #endif
 }
 
+gboolean widget_terminal_hangup(GtkWidget *widget)
+{
+#if HAVE_VTE && !defined(G_OS_WIN32)
+	pid_t pid;
+
+	if (!VTE_IS_TERMINAL(widget))
+		return FALSE;
+	pid = (pid_t)GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), "_pid"));
+	if (pid <= 0)
+		return TRUE;
+	if (kill(pid, SIGHUP) == 0 || errno == ESRCH)
+		return TRUE;
+	gtkdialog_warning("Cannot hang up terminal child %ld: %s",
+		(long)pid, g_strerror(errno));
+	return FALSE;
+#else
+	(void)widget;
+	gtkdialog_warning("hangupterminal requires VTE support.");
+	return FALSE;
+#endif
+}
+
 /***********************************************************************
  * Environment Variable Construct                                      *
  ***********************************************************************/
@@ -453,8 +596,6 @@ gchar *widget_terminal_envvar_construct(GtkWidget *widget)
 void widget_terminal_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -539,8 +680,6 @@ void widget_terminal_refresh(variable *var)
 
 void widget_terminal_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -560,8 +699,6 @@ void widget_terminal_removeselected(variable *var)
 
 void widget_terminal_save(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -595,7 +732,7 @@ static void widget_terminal_input_by_command(variable *var, char *command)
 
 #if HAVE_VTE
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		text = widget_read_all(infile);
 
 		vte_terminal_feed_child(VTE_TERMINAL(var->Widget), text, strlen(text));
@@ -630,7 +767,7 @@ static void widget_terminal_input_by_file(variable *var, char *filename)
 #endif
 
 #if HAVE_VTE
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		text = widget_read_all(infile);
 
 		vte_terminal_feed_child(VTE_TERMINAL(var->Widget), text, strlen(text));
@@ -655,8 +792,6 @@ static void widget_terminal_input_by_file(variable *var, char *filename)
 
 static void widget_terminal_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

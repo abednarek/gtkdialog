@@ -33,5 +33,7 @@ void widget_edit_fileselect(
 void widget_edit_refresh(variable *var);
 void widget_edit_removeselected(variable *var);
 void widget_edit_save(variable *var);
+void widget_edit_undo(variable *var);
+void widget_edit_redo(variable *var);
 
 #endif

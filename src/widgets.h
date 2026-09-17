@@ -39,6 +39,11 @@
 #include "variables.h"
 #include "automaton.h"
 
+typedef enum {
+	WIDGET_COMPLETION_MATCH_PREFIX,
+	WIDGET_COMPLETION_MATCH_CONTAINS
+} WidgetCompletionMatch;
+
 /* The caller owns the returned string and must release it with g_free(). */
 char *widget_get_text_value(GtkWidget *widget, int type);
 gint widget_parse_bounded_integer(const gchar *value, gint minimum,
@@ -46,6 +51,12 @@ gint widget_parse_bounded_integer(const gchar *value, gint minimum,
 gboolean widget_parse_finite_double(const gchar *value, gdouble *result,
 	const gchar *attribute);
 gboolean widget_parse_boolean(const gchar *value, gboolean *result);
+WidgetCompletionMatch widget_parse_completion_match(const gchar *value,
+	const gchar *attribute);
+gboolean widget_parse_completion_case_sensitive(const gchar *value,
+	const gchar *attribute);
+void widget_entry_completion_set_matching(GtkEntryCompletion *completion,
+	gint text_column, WidgetCompletionMatch match, gboolean case_sensitive);
 gboolean widget_parse_legacy_input_boolean(const gchar *value);
 gboolean widget_attribute_is_true(const gchar *value);
 gboolean widget_attribute_is_false(const gchar *value);

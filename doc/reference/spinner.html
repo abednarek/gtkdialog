@@ -51,17 +51,17 @@ values control that state.</p>
 <h2> Tag Attributes </h2>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">active</td><td class="wiki">Initial animation state</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">block-function-signals</td><td class="wiki">Do not run actions for programmatic changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">file-monitor</td><td class="wiki">Emit a signal when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">auto-refresh</td><td class="wiki">Refresh when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">active</td><td class="wiki">Initial animation state</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">block-function-signals</td><td class="wiki">Do not run actions for programmatic changes</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">file-monitor</td><td class="wiki">Emit a signal when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">auto-refresh</td><td class="wiki">Refresh when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 
 <p>Writable GtkSpinner and ancestor properties can also be supplied as tag
 attributes. Availability follows the installed GTK+ 2 version.</p>
 
-<h2> Actions and signals </h2>
+<h2> Actions and Signals </h2>
 
 <p>A spinner has no widget-specific default action signal. Common widget
 signals such as <code>realize</code>, <code>show</code>,
@@ -88,8 +88,7 @@ tag.</p>
 &lt;/spinner&gt;
 </pre>
 
-<p>This widget requires GTK+ 2.20 or later and was introduced in gtkdialog
-version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.0.</p>
 
 <hr>
 <!-- reference-navigation-start -->

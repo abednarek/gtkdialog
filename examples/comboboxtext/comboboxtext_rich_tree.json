@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "rows": [
+    {
+      "stock-id": "gtk-directory",
+      "values": ["Project actions", "project-actions"],
+      "style": {"font": "Sans Bold 9"},
+      "children": [
+        {
+          "stock-id": "gtk-open",
+          "values": ["Open project", "project-open"]
+        },
+        {
+          "stock-id": "gtk-save",
+          "values": ["<b>Save project</b>", "project-save"],
+          "markup": true,
+          "style": {"foreground": "#204a87"}
+        },
+        {
+          "stock-id": "gtk-disconnect",
+          "values": ["Offline action", "project-offline"],
+          "sensitive": false
+        }
+      ]
+    },
+    {
+      "stock-id": "gtk-preferences",
+      "values": ["System", "system"],
+      "children": [
+        {
+          "stock-id": "gtk-preferences",
+          "values": ["Preferences", "system-preferences"]
+        },
+        {
+          "stock-id": "gtk-quit",
+          "values": ["Quit", "system-quit"],
+          "style": {"foreground": "#a40000"}
+        }
+      ]
+    }
+  ]
+}

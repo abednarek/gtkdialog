@@ -21,7 +21,6 @@
 #include "tag_attributes.h"
 #include "size_groups.h"
 
-#if GTK_CHECK_VERSION(2,4,0)
 static GHashTable *size_group_registry;
 
 static gboolean size_group_mode_parse(
@@ -42,15 +41,12 @@ static gboolean size_group_mode_parse(
 
 	return FALSE;
 }
-#endif
 
 void size_groups_begin(void)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	g_assert(size_group_registry == NULL);
 	size_group_registry = g_hash_table_new_full(
 		g_str_hash, g_str_equal, g_free, g_object_unref);
-#endif
 }
 
 void size_groups_add_widget(GtkWidget *widget, tag_attr *attr)
@@ -63,7 +59,6 @@ void size_groups_add_widget(GtkWidget *widget, tag_attr *attr)
 	if (group_name == NULL || *group_name == '\0')
 		return;
 
-#if GTK_CHECK_VERSION(2,4,0)
 	{
 		GtkSizeGroup *group;
 		GtkSizeGroupMode mode;
@@ -90,18 +85,12 @@ void size_groups_add_widget(GtkWidget *widget, tag_attr *attr)
 		g_object_set_data_full(G_OBJECT(widget), "gtkdialog-size-group",
 			g_object_ref(group), g_object_unref);
 	}
-#else
-	gtkdialog_warning("Size group '%s' requires GTK+ 2.4 or later.",
-		group_name);
-#endif
 }
 
 void size_groups_end(void)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	if (size_group_registry == NULL)
 		return;
 	g_hash_table_destroy(size_group_registry);
 	size_group_registry = NULL;
-#endif
 }

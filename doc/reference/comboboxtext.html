@@ -88,7 +88,11 @@
 action conditions are summarized in the <a href="syntax.html#common-widget-contract">common
 widget contract</a>. The sections below document this tag's specific surface.</p>
 
-A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboBox</a>
+A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboBox</a>.
+The established text-only model remains the default. An opt-in rich model can
+display per-item icons, markup and styling while exporting stable values that
+do not have to match the visible labels. Its hierarchical variant presents
+children as native GTK2 submenus.
 
 <hr>
 
@@ -99,13 +103,16 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboB
 	&lt;default&gt;text&lt;/default&gt;
 	&lt;variable&gt;varname&lt;/variable&gt;
 	&lt;input&gt;command&lt;/input&gt;...
+	&lt;input format="json"&gt;command&lt;/input&gt;...
 	&lt;input file&gt;filename&lt;/input&gt;...
+	&lt;input file format="json"&gt;filename&lt;/input&gt;...
 	&lt;sensitive&gt;state&lt;/sensitive&gt;
 	&lt;action&gt;activity&lt;/action&gt;...
 	&lt;action signal="type"&gt;activity&lt;/action&gt;...
 	&lt;action function="type"&gt;parameter&lt;/action&gt;...
 	&lt;item&gt;data&lt;/item&gt;...
 	&lt;output file&gt;filename&lt;/output&gt;
+	&lt;output file format="json"&gt;filename&lt;/output&gt;
 &lt;/comboboxtext&gt;
 </pre>
 
@@ -119,16 +126,18 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboB
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Value</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> space-expand </td><td class="wiki"> Pack widget expanding into space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> space-fill </td><td class="wiki"> Pack widget filling space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> block-function-signals </td><td class="wiki"> Block signal emissions from functions </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> space-expand </td><td class="wiki"> Pack widget expanding into space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> space-fill </td><td class="wiki"> Pack widget filling space </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> block-function-signals </td><td class="wiki"> Block signal emissions from functions </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> file-monitor </td><td class="wiki"> Emit signal when input file(s) change </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> auto-refresh </td><td class="wiki"> Auto refresh when input file(s) change </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> fs-action </td><td class="wiki"> fileselect function action type </td><td class="wiki"> <code>file</code>, <code>newfile</code>, <code>folder</code> or <code>newfolder</code> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> fs-filters </td><td class="wiki"> fileselect function pattern file filters </td><td class="wiki"> <i>pattern</i><code>|</code><i>pattern</i><code>|</code>... </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> fs-filters-mime </td><td class="wiki"> fileselect function mime-type file filters </td><td class="wiki"> <i>mime/type</i><code>|</code><i>mime/type</i><code>|</code>... (<a href="https://en.wikipedia.org/wiki/Internet_media_type#List_of_common_media_types">common types</a>) </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> fs-folder </td><td class="wiki"> fileselect function current folder </td><td class="wiki"> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> fs-title </td><td class="wiki"> fileselect function dialog title </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> item-model </td><td class="wiki"> Item model type; the default text model is unchanged </td><td class="wiki"> <code>text</code>, <code>rich</code> or <code>rich-tree</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> icon-size </td><td class="wiki"> Width and height of rich-model item icons </td><td class="wiki"> Positive integer; default <code>16</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> fs-action </td><td class="wiki"> fileselect function action type </td><td class="wiki"> <code>file</code>, <code>newfile</code>, <code>folder</code> or <code>newfolder</code> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> fs-filters </td><td class="wiki"> fileselect function pattern file filters </td><td class="wiki"> <i>pattern</i><code>|</code><i>pattern</i><code>|</code>... </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> fs-filters-mime </td><td class="wiki"> fileselect function mime-type file filters </td><td class="wiki"> <i>mime/type</i><code>|</code><i>mime/type</i><code>|</code>... (<a href="https://en.wikipedia.org/wiki/Internet_media_type#List_of_common_media_types">common types</a>) </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> fs-folder </td><td class="wiki"> fileselect function current folder </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> fs-title </td><td class="wiki"> fileselect function dialog title </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
 </table>
 
 <h2> Directives </h2>
@@ -137,25 +146,64 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboB
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Contents</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> default </td><td class="wiki"> Initial selection </td><td class="wiki"> Text </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> default </td><td class="wiki"> Initial selection </td><td class="wiki"> Text </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> variable export="false" </td><td class="wiki"> Variable name, not exported to shell </td><td class="wiki"> </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input format="json" </td><td class="wiki"> Hierarchical rich-tree input source </td><td class="wiki"> Shell command; requires JSON-GLib support </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input file format="json" </td><td class="wiki"> Hierarchical rich-tree input source </td><td class="wiki"> Filename; requires JSON-GLib support </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Execute command on default signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Execute command on signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> item </td><td class="wiki"> Input data </td><td class="wiki"> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> output file </td><td class="wiki"> Data output target </td><td class="wiki"> Filename </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> item </td><td class="wiki"> Input data and visible label </td><td class="wiki"> Text, or Pango markup when its <code>markup</code> attribute is true </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> item value="<i>text</i>" </td><td class="wiki"> Stable value exported for this rich-model item </td><td class="wiki"> Text; defaults to the visible label </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item stock="<i>id</i>" </td><td class="wiki"> Rich-model stock icon </td><td class="wiki"> GTK+ 2 stock ID </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item icon-name="<i>name</i>" </td><td class="wiki"> Rich-model themed icon </td><td class="wiki"> Icon-theme name </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item image-file="<i>filename</i>" </td><td class="wiki"> Rich-model image file </td><td class="wiki"> Filename </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item markup="<i>state</i>" </td><td class="wiki"> Interpret this rich-model label as Pango markup </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item sensitive="<i>state</i>" </td><td class="wiki"> Whether this rich-model item can be selected by the user </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item foreground="<i>colour</i>" </td><td class="wiki"> Rich-model label foreground </td><td class="wiki"> GTK+ colour specification </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item background="<i>colour</i>" </td><td class="wiki"> Rich-model label background </td><td class="wiki"> GTK+ colour specification </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item font="<i>description</i>" </td><td class="wiki"> Rich-model label font </td><td class="wiki"> Pango font description </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> output file </td><td class="wiki"> Data output target </td><td class="wiki"> Filename </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> output file format="json" </td><td class="wiki"> Hierarchical rich-tree output target </td><td class="wiki"> Filename; requires JSON-GLib support </td><td class="wiki"> 0.9.2 </td></tr>
 </table>
+
+<p>With <code>item-model="rich"</code>, <code>&lt;default&gt;</code>, the
+widget variable and saved output use each item's <code>value</code>. A missing
+value falls back to the visible label, so ordinary items remain useful in the
+rich model. Command and file inputs similarly create unstyled items whose label
+and value are the input line. If more than one icon source is supplied, stock,
+themed and file icons are considered in that order. The rich model is not
+applied to <code>comboboxentry</code>, whose editable text contract remains
+unchanged.</p>
+
+<p><code>item-model="rich-tree"</code> uses a <code>GtkTreeStore</code>.
+Rows with children open native GTK2 submenus; only leaf rows are selected by
+automatic defaults. Plain saved output contains leaf values in depth-first
+order. Add <code>format="json"</code> to preserve the hierarchy and row
+presentation when loading or saving.</p>
+
+<p>The JSON document deliberately follows the existing <a href="tree.html">tree
+widget</a> structure. Its root object contains integer <code>version</code> 1
+and a <code>rows</code> array. Every row has a <code>values</code> array whose
+first value is the visible label and optional second value is exported; a
+missing second value falls back to the label. Optional members are
+<code>children</code>, <code>stock-id</code>, <code>icon-name</code>,
+<code>markup</code>, <code>sensitive</code>, and <code>style</code>. The style
+object accepts <code>foreground</code>, <code>background</code>,
+<code>font</code> and <code>pixbuf-file</code>. Setting
+<code>sensitive</code> false on a parent also makes its submenu inaccessible,
+so it is normally used on leaf rows.</p>
 
 <h2> Signals </h2>
 
@@ -173,16 +221,16 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboB
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> show </td><td class="wiki"> Show widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> hide </td><td class="wiki"> Hide widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> grabfocus </td><td class="wiki"> Grab input focus </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> save </td><td class="wiki"> Save widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> fileselect </td><td class="wiki"> Launch file selection dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> removeselected </td><td class="wiki"> Remove selected widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> save </td><td class="wiki"> Save widget data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> fileselect </td><td class="wiki"> Launch file selection dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> removeselected </td><td class="wiki"> Remove selected widget data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 </table>
 
 <p>The following general functions can be performed by any widget capable of emitting signals:</p>
@@ -190,10 +238,10 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboB
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
 <tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 </table>
 
@@ -221,7 +269,23 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkComboBox.html">GtkComboB
 
 <h2> Notes </h2>
 
-<p>This widget was introduced in version 0.7.21.</p>
+<p>This widget was introduced in version 0.7.21. Rich items were added in
+version 0.9.2, including hierarchical rich-tree models.</p>
+
+<h2> Example </h2>
+
+<pre>
+&lt;comboboxtext item-model="rich" icon-size="20"&gt;
+	&lt;variable&gt;ACTION_ID&lt;/variable&gt;
+	&lt;default&gt;open&lt;/default&gt;
+	&lt;item value="open" stock="gtk-open" font="Sans Bold 9"&gt;Open document&lt;/item&gt;
+	&lt;item value="save" stock="gtk-save" foreground="#204a87"&gt;Save document&lt;/item&gt;
+	&lt;item value="offline" stock="gtk-disconnect" sensitive="false"&gt;Offline&lt;/item&gt;
+&lt;/comboboxtext&gt;
+</pre>
+<p>See <code>examples/comboboxtext/comboboxtext_rich</code> for a runnable
+example. The <code>comboboxtext_rich_tree</code> example in the same directory
+loads nested rows from <code>comboboxtext_rich_tree.json</code>.</p>
 
 <hr>
 <!-- reference-navigation-start -->

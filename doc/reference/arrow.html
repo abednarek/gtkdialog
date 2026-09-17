@@ -25,18 +25,18 @@ direction indicator.</p><hr>
 	&lt;action signal="type"&gt;activity&lt;/action&gt;...
 &lt;/arrow&gt;
 </pre>
-<h2> Tag attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">arrow-type</td><td class="wiki">Direction or indicator shape</td><td class="wiki"><code>up</code>, <code>down</code>, <code>left</code>, <code>right</code> or <code>none</code></td></tr>
-<tr><td class="wiki">shadow-type</td><td class="wiki">Relief around the arrow</td><td class="wiki"><code>none</code>, <code>in</code>, <code>out</code>, <code>etched-in</code> or <code>etched-out</code></td></tr>
-<tr><td class="wiki">xalign, yalign</td><td class="wiki">Alignment inherited from GtkMisc</td><td class="wiki">Floating point from 0 to 1</td></tr>
-<tr><td class="wiki">xpad, ypad</td><td class="wiki">Padding inherited from GtkMisc</td><td class="wiki">Non-negative integer</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">arrow-type</td><td class="wiki">Direction or indicator shape</td><td class="wiki"><code>up</code>, <code>down</code>, <code>left</code>, <code>right</code> or <code>none</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">shadow-type</td><td class="wiki">Relief around the arrow</td><td class="wiki"><code>none</code>, <code>in</code>, <code>out</code>, <code>etched-in</code> or <code>etched-out</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">xalign, yalign</td><td class="wiki">Alignment inherited from GtkMisc</td><td class="wiki">Floating point from 0 to 1</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">xpad, ypad</td><td class="wiki">Padding inherited from GtkMisc</td><td class="wiki">Non-negative integer</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>The defaults are a right-pointing arrow with no shadow. All writable scalar
 properties inherited from GtkArrow, GtkMisc and GtkWidget remain available as
 normal tag attributes.</p>
-<h2> Value, signals and functions </h2>
+<h2> Value, Signals and Functions </h2>
 <p>The arrow is decorative and has no type-specific value, input, output or
 default action signal. An optional variable exports an empty string and gives
 the widget a name for common state functions, conditions and explicit

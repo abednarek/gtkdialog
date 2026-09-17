@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 PRINT_SETTINGS_OUTPUT=${GTKDIALOG_PRINT_SETTINGS_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-print-settings.ini}
 PRINT_PAGE_OUTPUT=${GTKDIALOG_PRINT_PAGE_OUTPUT:-${TMPDIR:-/tmp}/gtkdialog-print-page.ini}

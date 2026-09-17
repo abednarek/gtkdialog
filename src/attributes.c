@@ -138,7 +138,6 @@ gchar *attributeset_set_if_unset(
 	AttributeSet *set, gint attribute, const gchar *value)
 {
 	GList *element;
-	Attribute *a;
 
 	g_assert(set != NULL);
 	g_assert(attribute >= 0 && attribute < ATTRNUMBER);

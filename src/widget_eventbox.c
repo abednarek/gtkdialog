@@ -48,8 +48,6 @@ static void widget_eventbox_input_by_items(variable *var);
 
 void widget_eventbox_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -118,8 +116,6 @@ gchar *widget_eventbox_envvar_construct(GtkWidget *widget)
 void widget_eventbox_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -201,8 +197,6 @@ void widget_eventbox_refresh(variable *var)
 
 void widget_eventbox_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -243,8 +237,6 @@ void widget_eventbox_save(variable *var)
 
 static void widget_eventbox_input_by_command(variable *var, char *command)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -283,8 +275,6 @@ static void widget_eventbox_input_by_file(variable *var, char *filename)
 
 static void widget_eventbox_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

@@ -107,8 +107,6 @@ static void widget_hscale_validate_range(gdouble *minimum, gdouble *maximum,
 
 void widget_hscale_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -212,8 +210,6 @@ gchar *widget_hscale_envvar_construct(GtkWidget *widget)
 void widget_hscale_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -263,9 +259,7 @@ void widget_hscale_refresh(variable *var)
 
 	/* The <item> tags... */
 	if (attributeset_is_avail(var->Attributes, ATTR_ITEM)) {
-#if GTK_CHECK_VERSION(2,16,0)
 		gtk_scale_clear_marks(GTK_SCALE(var->Widget));
-#endif
 		widget_hscale_input_by_items(var);
 	}
 
@@ -313,8 +307,6 @@ void widget_hscale_refresh(variable *var)
 
 void widget_hscale_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -452,7 +444,7 @@ static void widget_hscale_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			gdouble value;
@@ -487,7 +479,7 @@ static void widget_hscale_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			gdouble value;
@@ -525,7 +517,6 @@ static void widget_hscale_input_by_items(variable *var)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-#if GTK_CHECK_VERSION(2,16,0)
 
 	g_assert(var->Attributes != NULL && var->Widget != NULL);
 
@@ -547,7 +538,6 @@ static void widget_hscale_input_by_items(variable *var)
 		g_strfreev(parts);
 		text = attributeset_get_next(&element, var->Attributes, ATTR_ITEM);
 	}
-#endif
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Exiting.\n", __func__);

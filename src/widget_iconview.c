@@ -21,10 +21,17 @@
 #include "widgets.h"
 #include "widget_iconview.h"
 
-#if GTK_CHECK_VERSION(2,6,0)
 enum {
 	ICONVIEW_PIXBUF,
 	ICONVIEW_TEXT,
+	ICONVIEW_PLAIN_TEXT,
+	ICONVIEW_VALUE,
+	ICONVIEW_MARKUP,
+	ICONVIEW_FOREGROUND,
+	ICONVIEW_BACKGROUND,
+	ICONVIEW_FONT,
+	ICONVIEW_DESCRIPTION,
+	ICONVIEW_TOOLTIP,
 	ICONVIEW_COLUMNS
 };
 
@@ -39,12 +46,77 @@ static void widget_iconview_tree_path_free(gpointer data, gpointer user_data)
 	gtk_tree_path_free(data);
 }
 
+static gboolean widget_iconview_is_rich(GtkWidget *widget)
+{
+	return GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget),
+		"gtkdialog-iconview-rich"));
+}
+
+static void widget_iconview_text_cell_data(
+	GtkCellLayout *layout, GtkCellRenderer *renderer,
+	GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+{
+	gchar *background;
+	gchar *font;
+	gchar *foreground;
+	gchar *text;
+	gboolean markup;
+
+	(void)layout;
+	(void)data;
+	gtk_tree_model_get(model, iter,
+		ICONVIEW_TEXT, &text,
+		ICONVIEW_MARKUP, &markup,
+		ICONVIEW_FOREGROUND, &foreground,
+		ICONVIEW_BACKGROUND, &background,
+		ICONVIEW_FONT, &font,
+		-1);
+	if (markup)
+		g_object_set(G_OBJECT(renderer), "markup", text, NULL);
+	else
+		g_object_set(G_OBJECT(renderer), "attributes", NULL,
+			"text", text, NULL);
+	g_object_set(G_OBJECT(renderer),
+		"foreground", foreground,
+		"foreground-set", foreground != NULL && foreground[0] != '\0',
+		"background", background,
+		"background-set", background != NULL && background[0] != '\0',
+		"font", font,
+		NULL);
+	g_free(background);
+	g_free(font);
+	g_free(foreground);
+	g_free(text);
+}
+
+static void widget_iconview_description_cell_data(
+	GtkCellLayout *layout, GtkCellRenderer *renderer,
+	GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+{
+	gchar *description;
+
+	(void)layout;
+	(void)data;
+	gtk_tree_model_get(model, iter,
+		ICONVIEW_DESCRIPTION, &description,
+		-1);
+	g_object_set(G_OBJECT(renderer),
+		"text", description != NULL ? description : "",
+		"visible", description != NULL && description[0] != '\0',
+		NULL);
+	g_free(description);
+}
+
 static void widget_iconview_append(GtkWidget *widget, const gchar *text,
-	const gchar *stock_name, const gchar *icon_name, const gchar *image_name)
+	const gchar *value, const gchar *stock_name, const gchar *icon_name,
+	const gchar *image_name, gboolean markup, const gchar *foreground,
+	const gchar *background, const gchar *font, const gchar *description,
+	const gchar *tooltip)
 {
 	GdkPixbuf *pixbuf;
 	GtkListStore *store;
 	GtkTreeIter iter;
+	gchar *plain_text = NULL;
 	gint icon_size;
 
 	store = GTK_LIST_STORE(gtk_icon_view_get_model(GTK_ICON_VIEW(widget)));
@@ -52,13 +124,37 @@ static void widget_iconview_append(GtkWidget *widget, const gchar *text,
 		G_OBJECT(widget), "gtkdialog-icon-size"));
 	pixbuf = widget_load_pixbuf(widget, stock_name, icon_name, image_name,
 		icon_size);
+	if (markup && !pango_parse_markup(text, -1, 0, NULL, &plain_text,
+		NULL, NULL)) {
+		gtkdialog_warning("Invalid icon view item markup; displaying it "
+			"as plain text.");
+		markup = FALSE;
+	}
+	if (plain_text == NULL)
+		plain_text = g_strdup(text);
 	gtk_list_store_append(store, &iter);
 	gtk_list_store_set(store, &iter,
 		ICONVIEW_PIXBUF, pixbuf,
 		ICONVIEW_TEXT, text,
+		ICONVIEW_PLAIN_TEXT, plain_text,
+		ICONVIEW_VALUE, value != NULL ? value : plain_text,
+		ICONVIEW_MARKUP, markup,
+		ICONVIEW_FOREGROUND, foreground,
+		ICONVIEW_BACKGROUND, background,
+		ICONVIEW_FONT, font,
+		ICONVIEW_DESCRIPTION, description,
+		ICONVIEW_TOOLTIP, tooltip,
 		-1);
 	if (pixbuf != NULL)
 		g_object_unref(pixbuf);
+	g_free(plain_text);
+}
+
+static void widget_iconview_append_plain(GtkWidget *widget,
+	const gchar *text, const gchar *image_name)
+{
+	widget_iconview_append(widget, text, text, NULL, NULL, image_name,
+		FALSE, NULL, NULL, NULL, NULL, NULL);
 }
 
 static void widget_iconview_populate_stream(
@@ -71,7 +167,7 @@ static void widget_iconview_populate_stream(
 		G_OBJECT(var->Widget), "gtkdialog-iconview-input-mode"));
 
 	while ((line = widget_read_line(input)) != NULL) {
-		widget_iconview_append(var->Widget, line, NULL, NULL,
+		widget_iconview_append_plain(var->Widget, line,
 			input_mode == ICONVIEW_INPUT_IMAGE ? line : NULL);
 		g_free(line);
 	}
@@ -119,15 +215,55 @@ static void widget_iconview_input_by_items(variable *var)
 	while (text != NULL) {
 		stock_name = attributeset_get_this_tagattr(&element,
 			var->Attributes, ATTR_ITEM, "stock");
+		if (stock_name == NULL)
+			stock_name = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "stock-id");
 		icon_name = attributeset_get_this_tagattr(&element,
 			var->Attributes, ATTR_ITEM, "icon-name");
+		if (icon_name == NULL)
+			icon_name = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "icon");
 		image_name = attributeset_get_this_tagattr(&element,
 			var->Attributes, ATTR_ITEM, "image-name");
 		if (image_name == NULL)
 			image_name = attributeset_get_this_tagattr(&element,
 				var->Attributes, ATTR_ITEM, "image-file");
-		widget_iconview_append(var->Widget, text,
-			stock_name, icon_name, image_name);
+		if (widget_iconview_is_rich(var->Widget)) {
+			gchar *background;
+			gchar *description;
+			gchar *font;
+			gchar *foreground;
+			gchar *markup_text;
+			gchar *tooltip;
+			gchar *value;
+			gboolean markup = FALSE;
+
+			value = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "value");
+			markup_text = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "markup");
+			if (markup_text != NULL &&
+				!widget_parse_boolean(markup_text, &markup))
+				gtkdialog_warning("Invalid icon view item markup value '%s'; "
+					"using false.", markup_text);
+			foreground = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "foreground");
+			background = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "background");
+			font = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "font");
+			description = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "description");
+			tooltip = attributeset_get_this_tagattr(&element,
+				var->Attributes, ATTR_ITEM, "tooltip");
+			widget_iconview_append(var->Widget, text, value,
+				stock_name, icon_name, image_name, markup, foreground,
+				background, font, description, tooltip);
+		} else {
+			widget_iconview_append(var->Widget, text, text,
+				stock_name, icon_name, image_name, FALSE, NULL, NULL,
+				NULL, NULL, NULL);
+		}
 		text = attributeset_get_next(&element, var->Attributes, ATTR_ITEM);
 	}
 }
@@ -146,7 +282,9 @@ static void widget_iconview_select_value(
 	model = gtk_icon_view_get_model(GTK_ICON_VIEW(widget));
 	valid = gtk_tree_model_get_iter_first(model, &iter);
 	while (valid) {
-		gtk_tree_model_get(model, &iter, ICONVIEW_TEXT, &text, -1);
+		gtk_tree_model_get(model, &iter,
+			widget_iconview_is_rich(widget) ? ICONVIEW_VALUE : ICONVIEW_TEXT,
+			&text, -1);
 		if (strcmp(text, value) == 0) {
 			GtkTreePath *path = gtk_tree_model_get_path(model, &iter);
 
@@ -183,18 +321,29 @@ GtkWidget *widget_iconview_create(
 	GtkSelectionMode mode = GTK_SELECTION_SINGLE;
 	GtkWidget *widget;
 	gchar *value;
+	gboolean rich = FALSE;
+	gboolean rich_show_pixbuf = TRUE;
+	gboolean rich_show_text = TRUE;
 	gint icon_size = 48;
 	IconViewInputMode input_mode = ICONVIEW_INPUT_TEXT;
 
 	(void)Attr;
 	(void)Type;
 	store = gtk_list_store_new(ICONVIEW_COLUMNS,
-		GDK_TYPE_PIXBUF, G_TYPE_STRING);
+		GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
+		G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
+		G_TYPE_STRING, G_TYPE_STRING);
 	widget = gtk_icon_view_new_with_model(GTK_TREE_MODEL(store));
 	g_object_unref(store);
-	gtk_icon_view_set_pixbuf_column(GTK_ICON_VIEW(widget), ICONVIEW_PIXBUF);
-	gtk_icon_view_set_text_column(GTK_ICON_VIEW(widget), ICONVIEW_TEXT);
 	if (attr != NULL) {
+		value = get_tag_attribute(attr, "item-model");
+		if (value != NULL) {
+			if (strcasecmp(value, "rich") == 0)
+				rich = TRUE;
+			else if (strcasecmp(value, "text") != 0)
+				gtkdialog_warning("Invalid icon view item-model value '%s'; "
+					"using text.", value);
+		}
 		value = get_tag_attribute(attr, "selection-mode");
 		if (value != NULL)
 			mode = widget_parse_selection_mode(value, TRUE,
@@ -211,9 +360,58 @@ GtkWidget *widget_iconview_create(
 				gtkdialog_warning("Invalid icon view input-mode value '%s'; "
 					"using text.", value);
 		}
+		if (rich) {
+			value = get_tag_attribute(attr, "pixbuf-column");
+			if (value != NULL)
+				rich_show_pixbuf = widget_parse_bounded_integer(value, -1,
+					G_MAXINT, ICONVIEW_PIXBUF,
+					"rich icon view pixbuf-column") >= 0;
+			value = get_tag_attribute(attr, "text-column");
+			if (value != NULL)
+				rich_show_text = widget_parse_bounded_integer(value, -1,
+					G_MAXINT, ICONVIEW_TEXT,
+					"rich icon view text-column") >= 0;
+			kill_tag_attribute(attr, "pixbuf-column");
+			kill_tag_attribute(attr, "text-column");
+		}
+		kill_tag_attribute(attr, "item-model");
 		kill_tag_attribute(attr, "selection-mode");
 		kill_tag_attribute(attr, "icon-size");
 		kill_tag_attribute(attr, "input-mode");
+	}
+	if (rich) {
+		GtkCellRenderer *renderer;
+
+		if (rich_show_pixbuf) {
+			renderer = gtk_cell_renderer_pixbuf_new();
+			g_object_set(G_OBJECT(renderer), "xalign", 0.5, NULL);
+			gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(widget), renderer, FALSE);
+			gtk_cell_layout_add_attribute(GTK_CELL_LAYOUT(widget), renderer,
+				"pixbuf", ICONVIEW_PIXBUF);
+		}
+		if (rich_show_text) {
+			renderer = gtk_cell_renderer_text_new();
+			g_object_set(G_OBJECT(renderer), "xalign", 0.5, NULL);
+			gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(widget), renderer, TRUE);
+			gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(widget), renderer,
+				widget_iconview_text_cell_data, NULL, NULL);
+			renderer = gtk_cell_renderer_text_new();
+			g_object_set(G_OBJECT(renderer),
+				"xalign", 0.5,
+				"foreground", "#666666",
+				"font", "Sans 8",
+				NULL);
+			gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(widget), renderer, FALSE);
+			gtk_cell_layout_set_cell_data_func(GTK_CELL_LAYOUT(widget), renderer,
+				widget_iconview_description_cell_data, NULL, NULL);
+		}
+		gtk_icon_view_set_tooltip_column(GTK_ICON_VIEW(widget),
+			ICONVIEW_TOOLTIP);
+		g_object_set_data(G_OBJECT(widget), "gtkdialog-iconview-rich",
+			GINT_TO_POINTER(TRUE));
+	} else {
+		gtk_icon_view_set_pixbuf_column(GTK_ICON_VIEW(widget), ICONVIEW_PIXBUF);
+		gtk_icon_view_set_text_column(GTK_ICON_VIEW(widget), ICONVIEW_TEXT);
 	}
 	gtk_icon_view_set_selection_mode(GTK_ICON_VIEW(widget), mode);
 	g_object_set_data(G_OBJECT(widget), "gtkdialog-icon-size",
@@ -239,7 +437,9 @@ gchar *widget_iconview_envvar_construct(GtkWidget *widget)
 	for (element = paths; element != NULL; element = element->next) {
 		if (!gtk_tree_model_get_iter(model, &iter, element->data))
 			continue;
-		gtk_tree_model_get(model, &iter, ICONVIEW_TEXT, &text, -1);
+		gtk_tree_model_get(model, &iter,
+			widget_iconview_is_rich(widget) ? ICONVIEW_VALUE : ICONVIEW_TEXT,
+			&text, -1);
 		if (!first)
 			g_string_append_c(values, '\n');
 		g_string_append(values, text);
@@ -359,7 +559,9 @@ void widget_iconview_save(variable *var)
 	model = gtk_icon_view_get_model(GTK_ICON_VIEW(var->Widget));
 	valid = gtk_tree_model_get_iter_first(model, &iter);
 	while (valid) {
-		gtk_tree_model_get(model, &iter, ICONVIEW_TEXT, &text, -1);
+		gtk_tree_model_get(model, &iter,
+			widget_iconview_is_rich(var->Widget) ? ICONVIEW_VALUE : ICONVIEW_TEXT,
+			&text, -1);
 		if (!first)
 			fputc('\n', output);
 		fputs(text, output);
@@ -369,4 +571,3 @@ void widget_iconview_save(variable *var)
 	}
 	widget_close_output(output, filename);
 }
-#endif

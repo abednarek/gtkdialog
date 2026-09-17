@@ -26,7 +26,6 @@
 #include <errno.h>
 #include <math.h>
 
-#if GTK_CHECK_VERSION(2,4,0)
 
 #include "config.h"
 #if HAVE_JSON_GLIB
@@ -57,6 +56,7 @@ typedef enum {
 
 typedef struct {
 	gint column;
+	gboolean sensitive;
 	gboolean background_set;
 	GdkColor *background;
 	gfloat xalign;
@@ -91,11 +91,38 @@ typedef struct {
 } TreeCellData;
 
 typedef struct {
+	GtkTreeModel *model;
+	gint minimum_key_length;
+	WidgetCompletionMatch match;
+	gboolean case_sensitive;
+} TreeCompletionData;
+
+typedef struct {
+	GPtrArray *stores;
+} TreeCompletionRegistry;
+
+#define TREE_COMPLETION_REGISTRY_DATA "gtkdialog-tree-completion-registry"
+
+typedef struct {
 	const gchar *icon_name;
 	const gchar *stock_id;
 	gint icon_column;
 	gint stock_column;
 } TreeInputContext;
+
+#if HAVE_JSON_GLIB
+typedef struct {
+	gboolean selected;
+	gboolean expanded;
+	gboolean anchor;
+} TreePreservedRow;
+
+typedef struct {
+	GtkWidget *tree_view;
+	GHashTable *rows;
+	GtkTreePath *anchor_path;
+} TreePreservedState;
+#endif
 
 typedef struct {
 	list_t *background;
@@ -201,13 +228,11 @@ static void widget_tree_renderer_caches_clear(GtkWidget *tree_view)
 		g_hash_table_remove_all(g_ptr_array_index(caches, index));
 }
 
-#if GTK_CHECK_VERSION(2,20,0)
 typedef struct {
 	GtkWidget *tree_view;
 	GtkCellRenderer *renderer;
 	guint pulse;
 } TreeSpinnerData;
-#endif
 
 /* Local function prototypes, located at file bottom */
 static GtkTreeStore *widget_tree_create_tree_store(AttributeSet *Attr,
@@ -222,6 +247,12 @@ static void widget_tree_input_by_items(variable *var,
 	const TreeInputContext *context);
 static void widget_tree_input_json(variable *var, const gchar *source,
 	gboolean is_command, const TreeInputContext *context);
+#if HAVE_JSON_GLIB
+static TreePreservedState *widget_tree_preserve_state(GtkWidget *tree_view);
+static gboolean widget_tree_restore_state(TreePreservedState *state,
+	variable *var);
+static void widget_tree_preserved_state_free(TreePreservedState *state);
+#endif
 static void widget_tree_save_json(variable *var, const gchar *filename);
 static void widget_tree_pixmap_column_cell_layout_function(
 	GtkCellLayout *cell_layout, GtkCellRenderer *cell,
@@ -982,12 +1013,9 @@ static void widget_tree_apply_column_style(GtkCellRenderer *renderer,
 	if (value != NULL)
 		g_object_set(G_OBJECT(renderer), "strikethrough",
 			widget_attribute_is_true(value), NULL);
-#if GTK_CHECK_VERSION(2,6,0)
 	value = widget_tree_column_value(styles->ellipsize, column);
 	if (value != NULL && widget_tree_parse_ellipsize(value, &ellipsize))
 		g_object_set(G_OBJECT(renderer), "ellipsize", ellipsize, NULL);
-#endif
-#if GTK_CHECK_VERSION(2,8,0)
 	value = widget_tree_column_value(styles->wrap_mode, column);
 	if (value != NULL && widget_tree_parse_wrap_mode(value, &wrap_mode))
 		g_object_set(G_OBJECT(renderer), "wrap-mode", wrap_mode, NULL);
@@ -997,13 +1025,10 @@ static void widget_tree_apply_column_style(GtkCellRenderer *renderer,
 			"tree column-wrap-width");
 		g_object_set(G_OBJECT(renderer), "wrap-width", padding, NULL);
 	}
-#endif
-#if GTK_CHECK_VERSION(2,10,0)
 	value = widget_tree_column_value(styles->text_align, column);
 	if (value != NULL &&
 		widget_tree_parse_alignment(value, &text_alignment))
 		g_object_set(G_OBJECT(renderer), "alignment", text_alignment, NULL);
-#endif
 }
 
 #if HAVE_JSON_GLIB
@@ -1029,6 +1054,7 @@ static TreeRendererStyle *widget_tree_renderer_style_new(
 	style->column = column;
 	style->text_renderer = GTK_IS_CELL_RENDERER_TEXT(renderer);
 	g_object_get(G_OBJECT(renderer),
+		"sensitive", &style->sensitive,
 		"cell-background-set", &style->background_set,
 		"cell-background-gdk", &style->background,
 		"xalign", &style->xalign,
@@ -1048,21 +1074,15 @@ static TreeRendererStyle *widget_tree_renderer_style_new(
 			"underline-set", &style->underline_set,
 			"strikethrough", &style->strikethrough,
 			"strikethrough-set", &style->strikethrough_set, NULL);
-#if GTK_CHECK_VERSION(2,6,0)
 		g_object_get(G_OBJECT(renderer),
 			"ellipsize", &style->ellipsize,
 			"ellipsize-set", &style->ellipsize_set, NULL);
-#endif
-#if GTK_CHECK_VERSION(2,8,0)
 		g_object_get(G_OBJECT(renderer),
 			"wrap-mode", &style->wrap_mode,
 			"wrap-width", &style->wrap_width, NULL);
-#endif
-#if GTK_CHECK_VERSION(2,10,0)
 		g_object_get(G_OBJECT(renderer),
 			"alignment", &style->text_align,
 			"align-set", &style->text_align_set, NULL);
-#endif
 	}
 	return style;
 }
@@ -1071,6 +1091,7 @@ static void widget_tree_restore_renderer_style(GtkCellRenderer *renderer,
 	TreeRendererStyle *style)
 {
 	g_object_set(G_OBJECT(renderer),
+		"sensitive", style->sensitive,
 		"xalign", style->xalign,
 		"yalign", style->yalign,
 		"xpad", style->xpad,
@@ -1097,21 +1118,15 @@ static void widget_tree_restore_renderer_style(GtkCellRenderer *renderer,
 		"underline-set", style->underline_set,
 		"strikethrough", style->strikethrough,
 		"strikethrough-set", style->strikethrough_set, NULL);
-#if GTK_CHECK_VERSION(2,6,0)
 	g_object_set(G_OBJECT(renderer),
 		"ellipsize", style->ellipsize,
 		"ellipsize-set", style->ellipsize_set, NULL);
-#endif
-#if GTK_CHECK_VERSION(2,8,0)
 	g_object_set(G_OBJECT(renderer),
 		"wrap-mode", style->wrap_mode,
 		"wrap-width", style->wrap_width, NULL);
-#endif
-#if GTK_CHECK_VERSION(2,10,0)
 	g_object_set(G_OBJECT(renderer),
 		"alignment", style->text_align,
 		"align-set", style->text_align_set, NULL);
-#endif
 }
 
 static void widget_tree_apply_json_style_object(GtkCellRenderer *renderer,
@@ -1128,6 +1143,9 @@ static void widget_tree_apply_json_style_object(GtkCellRenderer *renderer,
 	if (json_object_has_member(object, "background"))
 		g_object_set(G_OBJECT(renderer), "cell-background",
 			json_object_get_string_member(object, "background"), NULL);
+	if (json_object_has_member(object, "sensitive"))
+		g_object_set(G_OBJECT(renderer), "sensitive",
+			json_object_get_boolean_member(object, "sensitive"), NULL);
 	if (json_object_has_member(object, "xalign"))
 		g_object_set(G_OBJECT(renderer), "xalign", (gfloat)
 			json_object_get_double_member(object, "xalign"), NULL);
@@ -1173,14 +1191,11 @@ static void widget_tree_apply_json_style_object(GtkCellRenderer *renderer,
 	if (json_object_has_member(object, "strikethrough"))
 		g_object_set(G_OBJECT(renderer), "strikethrough",
 			json_object_get_boolean_member(object, "strikethrough"), NULL);
-#if GTK_CHECK_VERSION(2,6,0)
 	if (json_object_has_member(object, "ellipsize")) {
 		string = json_object_get_string_member(object, "ellipsize");
 		if (widget_tree_parse_ellipsize(string, &ellipsize))
 			g_object_set(G_OBJECT(renderer), "ellipsize", ellipsize, NULL);
 	}
-#endif
-#if GTK_CHECK_VERSION(2,8,0)
 	if (json_object_has_member(object, "wrap-mode")) {
 		string = json_object_get_string_member(object, "wrap-mode");
 		if (widget_tree_parse_wrap_mode(string, &wrap_mode))
@@ -1189,14 +1204,11 @@ static void widget_tree_apply_json_style_object(GtkCellRenderer *renderer,
 	if (json_object_has_member(object, "wrap-width"))
 		g_object_set(G_OBJECT(renderer), "wrap-width",
 			(gint)json_object_get_int_member(object, "wrap-width"), NULL);
-#endif
-#if GTK_CHECK_VERSION(2,10,0)
 	if (json_object_has_member(object, "text-align")) {
 		string = json_object_get_string_member(object, "text-align");
 		if (widget_tree_parse_alignment(string, &text_alignment))
 			g_object_set(G_OBJECT(renderer), "alignment", text_alignment, NULL);
 	}
-#endif
 }
 
 static gboolean widget_tree_iter_is_selected(GtkWidget *tree_view,
@@ -1417,6 +1429,50 @@ static TreeCellData *widget_tree_cell_data_new(GtkWidget *tree_view,
 	return data;
 }
 
+static gboolean widget_tree_json_cell_sensitive(GtkTreeModel *model,
+	GtkTreeIter *iter, gint model_column)
+{
+#if HAVE_JSON_GLIB
+	GValue value = { 0 };
+	JsonArray *cells;
+	JsonNode *metadata;
+	JsonNode *node;
+	JsonObject *object;
+	gboolean sensitive = TRUE;
+	guint column = model_column - FirstDataColumn;
+
+	gtk_tree_model_get_value(model, iter, ColumnJsonStyle, &value);
+	metadata = g_value_get_boxed(&value);
+	if (metadata != NULL && JSON_NODE_HOLDS_OBJECT(metadata)) {
+		object = json_node_get_object(metadata);
+		node = json_object_get_member(object, "style");
+		if (node != NULL && JSON_NODE_HOLDS_OBJECT(node) &&
+			json_object_has_member(json_node_get_object(node), "sensitive"))
+			sensitive = json_object_get_boolean_member(
+				json_node_get_object(node), "sensitive");
+		node = json_object_get_member(object, "cells");
+		if (node != NULL && JSON_NODE_HOLDS_ARRAY(node)) {
+			cells = json_node_get_array(node);
+			if (column < json_array_get_length(cells)) {
+				node = json_array_get_element(cells, column);
+				if (JSON_NODE_HOLDS_OBJECT(node) &&
+					json_object_has_member(json_node_get_object(node),
+						"sensitive"))
+					sensitive = json_object_get_boolean_member(
+						json_node_get_object(node), "sensitive");
+			}
+		}
+	}
+	g_value_unset(&value);
+	return sensitive;
+#else
+	(void)model;
+	(void)iter;
+	(void)model_column;
+	return TRUE;
+#endif
+}
+
 static void widget_tree_text_edited_callback(GtkCellRendererText *renderer,
 	gchar *path, gchar *new_text, TreeCellData *data)
 {
@@ -1426,6 +1482,8 @@ static void widget_tree_text_edited_callback(GtkCellRendererText *renderer,
 	(void)renderer;
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(data->tree_view));
 	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
+		return;
+	if (!widget_tree_json_cell_sensitive(model, &iter, data->model_column))
 		return;
 
 	widget_tree_set_column_value(GTK_TREE_STORE(model), &iter,
@@ -1446,7 +1504,116 @@ static void widget_tree_enable_text_editing(GtkCellRenderer *renderer,
 		G_CALLBACK(widget_tree_text_edited_callback), data);
 }
 
-#if GTK_CHECK_VERSION(2,10,0)
+static void widget_tree_completion_registry_free(gpointer user_data)
+{
+	TreeCompletionRegistry *registry = user_data;
+	guint index;
+
+	for (index = 0; index < registry->stores->len; ++index) {
+		if (g_ptr_array_index(registry->stores, index) != NULL)
+			g_object_unref(g_ptr_array_index(registry->stores, index));
+	}
+	g_ptr_array_free(registry->stores, TRUE);
+	g_free(registry);
+}
+
+static void widget_tree_completion_registry_add(GtkWidget *tree_view,
+	gint column, GtkListStore *store)
+{
+	TreeCompletionRegistry *registry;
+
+	registry = g_object_get_data(G_OBJECT(tree_view),
+		TREE_COMPLETION_REGISTRY_DATA);
+	if (registry == NULL) {
+		registry = g_new(TreeCompletionRegistry, 1);
+		registry->stores = g_ptr_array_new();
+		g_object_set_data_full(G_OBJECT(tree_view),
+			TREE_COMPLETION_REGISTRY_DATA, registry,
+			widget_tree_completion_registry_free);
+	}
+	while (registry->stores->len <= (guint)column)
+		g_ptr_array_add(registry->stores, NULL);
+	if (g_ptr_array_index(registry->stores, column) != NULL)
+		g_object_unref(g_ptr_array_index(registry->stores, column));
+	g_ptr_array_index(registry->stores, column) = g_object_ref(store);
+}
+
+static GtkListStore *widget_tree_completion_registry_get(
+	GtkWidget *tree_view, gint column)
+{
+	TreeCompletionRegistry *registry;
+
+	registry = g_object_get_data(G_OBJECT(tree_view),
+		TREE_COMPLETION_REGISTRY_DATA);
+	if (registry == NULL || column < 0 ||
+		(guint)column >= registry->stores->len)
+		return NULL;
+	return g_ptr_array_index(registry->stores, column);
+}
+
+static void widget_tree_completion_data_free(gpointer user_data)
+{
+	TreeCompletionData *data = user_data;
+
+	g_object_unref(data->model);
+	g_free(data);
+}
+
+static void widget_tree_completion_editing_started(
+	GtkCellRenderer *renderer, GtkCellEditable *editable,
+	const gchar *path, TreeCompletionData *data)
+{
+	GtkEntryCompletion *completion;
+	GtkWidget *child;
+	GtkWidget *entry = NULL;
+	GtkWidget *widget;
+
+	(void)renderer;
+	(void)path;
+	if (!GTK_IS_WIDGET(editable))
+		return;
+	widget = GTK_WIDGET(editable);
+	if (GTK_IS_ENTRY(widget)) {
+		entry = widget;
+	} else if (GTK_IS_BIN(widget)) {
+		child = gtk_bin_get_child(GTK_BIN(widget));
+		if (GTK_IS_ENTRY(child))
+			entry = child;
+	}
+	if (entry == NULL)
+		return;
+
+	completion = gtk_entry_completion_new();
+	gtk_entry_completion_set_model(completion, data->model);
+	gtk_entry_completion_set_text_column(completion, 0);
+	widget_entry_completion_set_matching(completion, 0, data->match,
+		data->case_sensitive);
+	gtk_entry_completion_set_minimum_key_length(completion,
+		data->minimum_key_length);
+	gtk_entry_set_completion(GTK_ENTRY(entry), completion);
+	g_object_unref(completion);
+}
+
+static void widget_tree_enable_completion(GtkCellRenderer *renderer,
+	GtkWidget *tree_view, gint column, GtkListStore *store,
+	gint minimum_key_length, WidgetCompletionMatch match,
+	gboolean case_sensitive)
+{
+	TreeCompletionData *data;
+
+	data = g_new(TreeCompletionData, 1);
+	data->model = GTK_TREE_MODEL(g_object_ref(store));
+	data->minimum_key_length = minimum_key_length;
+	data->match = match;
+	data->case_sensitive = case_sensitive;
+	g_object_set_data_full(G_OBJECT(renderer),
+		"_gtkdialog-tree-completion-data", data,
+		widget_tree_completion_data_free);
+	g_signal_connect(G_OBJECT(renderer), "editing-started",
+		G_CALLBACK(widget_tree_completion_editing_started), data);
+	widget_tree_completion_registry_add(tree_view, column, store);
+}
+
 static gchar *widget_tree_accel_to_gtk_name(const gchar *accelerator)
 {
 	GString *name;
@@ -1532,6 +1699,8 @@ static void widget_tree_accel_edited_callback(GtkCellRendererAccel *renderer,
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(data->tree_view));
 	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
 		return;
+	if (!widget_tree_json_cell_sensitive(model, &iter, data->model_column))
+		return;
 
 	accelerator = gtk_accelerator_name(key, modifiers);
 	gtk_name = widget_tree_accel_from_gtk_name(accelerator);
@@ -1551,6 +1720,8 @@ static void widget_tree_accel_cleared_callback(GtkCellRendererAccel *renderer,
 	(void)renderer;
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(data->tree_view));
 	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
+		return;
+	if (!widget_tree_json_cell_sensitive(model, &iter, data->model_column))
 		return;
 
 	widget_tree_set_column_value(GTK_TREE_STORE(model), &iter,
@@ -1572,9 +1743,7 @@ static void widget_tree_enable_accel(GtkCellRenderer *renderer,
 	g_signal_connect(G_OBJECT(renderer), "accel-cleared",
 		G_CALLBACK(widget_tree_accel_cleared_callback), data);
 }
-#endif
 
-#if GTK_CHECK_VERSION(2,10,0)
 static gdouble widget_tree_get_spin_double(list_t *values, gint column,
 	gdouble fallback, const gchar *attribute)
 {
@@ -1587,7 +1756,6 @@ static gdouble widget_tree_get_spin_double(list_t *values, gint column,
 	widget_parse_finite_double(values->line[column], &value, attribute);
 	return value;
 }
-#endif
 
 static gboolean widget_tree_get_combo_item_column(GList **element,
 	AttributeSet *attributes, gint ncolumns, gint *column, gboolean warn)
@@ -1616,7 +1784,60 @@ static gboolean widget_tree_get_combo_item_column(GList **element,
 	return TRUE;
 }
 
-#if GTK_CHECK_VERSION(2,6,0)
+static gboolean widget_tree_get_completion_item_column(GList **element,
+	AttributeSet *attributes, gint ncolumns, gint *column, gboolean warn)
+{
+	gchar completion_column_name[] = "completion-column";
+	gchar *end;
+	gchar *value;
+	gint64 parsed_column;
+
+	value = attributeset_get_this_tagattr(element, attributes, ATTR_ITEM,
+		completion_column_name);
+	if (value == NULL)
+		return FALSE;
+
+	errno = 0;
+	parsed_column = g_ascii_strtoll(value, &end, 10);
+	if (!widget_tree_number_is_valid(value, end) ||
+		parsed_column < 0 || parsed_column >= ncolumns) {
+		*column = -1;
+		if (warn)
+			gtkdialog_warning("Invalid tree item completion-column value '%s'; "
+				"ignoring the completion option.", value);
+	} else {
+		*column = (gint)parsed_column;
+	}
+	return TRUE;
+}
+
+static gboolean widget_tree_get_completion_input_column(GList **element,
+	AttributeSet *attributes, gint ncolumns, gint *column, gboolean warn)
+{
+	gchar completion_column_name[] = "completion-column";
+	gchar *end;
+	gchar *value;
+	gint64 parsed_column;
+
+	value = attributeset_get_this_tagattr(element, attributes, ATTR_INPUT,
+		completion_column_name);
+	if (value == NULL)
+		return FALSE;
+
+	errno = 0;
+	parsed_column = g_ascii_strtoll(value, &end, 10);
+	if (!widget_tree_number_is_valid(value, end) ||
+		parsed_column < 0 || parsed_column >= ncolumns) {
+		*column = -1;
+		if (warn)
+			gtkdialog_warning("Invalid tree input completion-column value '%s'; "
+				"ignoring the completion source.", value);
+	} else {
+		*column = (gint)parsed_column;
+	}
+	return TRUE;
+}
+
 static GtkListStore *widget_tree_create_combo_store(AttributeSet *attributes,
 	gint combo_column, gint ncolumns)
 {
@@ -1639,7 +1860,88 @@ static GtkListStore *widget_tree_create_combo_store(AttributeSet *attributes,
 
 	return store;
 }
-#endif
+
+static void widget_tree_populate_completion_store(GtkListStore *store,
+	AttributeSet *attributes, gint completion_column, gint ncolumns)
+{
+	GList *element;
+	GtkTreeIter iter;
+	gchar *item;
+	gboolean combo_option;
+	gboolean completion_option;
+	gint combo_column;
+	gint item_column;
+
+	item = attributeset_get_first(&element, attributes, ATTR_ITEM);
+	while (item != NULL) {
+		completion_option = widget_tree_get_completion_item_column(&element,
+			attributes, ncolumns, &item_column, FALSE);
+		combo_option = widget_tree_get_combo_item_column(&element, attributes,
+			ncolumns, &combo_column, FALSE);
+		if ((completion_option && item_column == completion_column) ||
+			(combo_option && combo_column == completion_column)) {
+			gtk_list_store_append(store, &iter);
+			gtk_list_store_set(store, &iter, 0, item, -1);
+		}
+		item = attributeset_get_next(&element, attributes, ATTR_ITEM);
+	}
+}
+
+static GtkListStore *widget_tree_create_completion_store(
+	AttributeSet *attributes, gint completion_column, gint ncolumns)
+{
+	GtkListStore *store;
+
+	store = gtk_list_store_new(1, G_TYPE_STRING);
+	widget_tree_populate_completion_store(store, attributes,
+		completion_column, ncolumns);
+	return store;
+}
+
+static void widget_tree_reset_completion_stores(GtkWidget *tree_view,
+	AttributeSet *attributes, gint ncolumns)
+{
+	TreeCompletionRegistry *registry;
+	GtkListStore *store;
+	guint index;
+
+	registry = g_object_get_data(G_OBJECT(tree_view),
+		TREE_COMPLETION_REGISTRY_DATA);
+	if (registry == NULL)
+		return;
+	for (index = 0; index < registry->stores->len; ++index) {
+		store = g_ptr_array_index(registry->stores, index);
+		if (store == NULL)
+			continue;
+		gtk_list_store_clear(store);
+		widget_tree_populate_completion_store(store, attributes,
+			(gint)index, ncolumns);
+	}
+}
+
+static void widget_tree_input_completion(GtkListStore *store,
+	const gchar *source, gboolean is_command)
+{
+	FILE *stream;
+	GtkTreeIter iter;
+	gchar *line;
+
+	stream = is_command ? widget_opencommand(source) : fopen(source, "r");
+	if (stream == NULL) {
+		fprintf(stderr, "%s(): Couldn't open '%s' for reading.\n",
+			__func__, source);
+		return;
+	}
+	while ((line = widget_read_line(stream)) != NULL) {
+		gtk_list_store_append(store, &iter);
+		gtk_list_store_set(store, &iter, 0, line, -1);
+		g_free(line);
+	}
+	if (is_command)
+		widget_closecommand(stream, source);
+	else
+		fclose(stream);
+}
 
 static void widget_tree_toggle_cell_data_function(
 	GtkTreeViewColumn *column, GtkCellRenderer *renderer,
@@ -1671,6 +1973,8 @@ static void widget_tree_toggle_callback(GtkCellRendererToggle *renderer,
 	g_object_ref(tree_view);
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(tree_view));
 	if (!gtk_tree_model_get_iter_from_string(model, &iter, path))
+		goto done;
+	if (!widget_tree_json_cell_sensitive(model, &iter, data->model_column))
 		goto done;
 
 	if (data->radio) {
@@ -1717,7 +2021,6 @@ static void widget_tree_enable_toggle(GtkCellRenderer *renderer,
 		G_CALLBACK(widget_tree_toggle_callback), data);
 }
 
-#if GTK_CHECK_VERSION(2,20,0)
 static void widget_tree_spinner_cell_data_function(
 	GtkTreeViewColumn *column, GtkCellRenderer *renderer,
 	GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data)
@@ -1761,9 +2064,7 @@ static void widget_tree_enable_spinner(GtkCellRenderer *renderer,
 	g_signal_connect(G_OBJECT(tree_view), "destroy",
 		G_CALLBACK(widget_tree_spinner_stop), GUINT_TO_POINTER(source_id));
 }
-#endif
 
-#if GTK_CHECK_VERSION(2,6,0)
 static gint widget_tree_get_column_progress(GtkTreeModel *model,
 	GtkTreeIter *iter, gint column)
 {
@@ -1823,7 +2124,6 @@ static void widget_tree_progress_cell_data_function(
 		widget_tree_get_column_progress(model, iter, model_column), NULL);
 	widget_tree_apply_json_cell_style(renderer, model, iter);
 }
-#endif
 
 static void widget_tree_path_free(gpointer data, gpointer user_data)
 {
@@ -1941,7 +2241,6 @@ gchar *widget_tree_envvar_construct(GtkWidget *widget)
 	gchar             *string;
 	gchar             *text;
 	gdouble            valdouble;
-	gint               column;
 	gint               index;
 	gint               initialrow;
 	gint               selectionmode;
@@ -2099,8 +2398,6 @@ gchar *widget_tree_envvar_construct(GtkWidget *widget)
 void widget_tree_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -2120,12 +2417,16 @@ void widget_tree_fileselect(
 void widget_tree_refresh(variable *var)
 {
 	GList            *element;
+	GtkListStore     *completion_store;
 	GtkTreeIter       iter;
 	GtkTreeSelection *selection;
 	GtkTreeModel     *model;
 	gchar            *act;
 	gchar            *tmp;
 	gchar            *value;
+	gboolean          completion_input;
+	gboolean          restore_json_state = FALSE;
+	gint              completion_column;
 	gint              index;
 	gint              initialised = FALSE;
 	gint              n_columns;
@@ -2134,6 +2435,9 @@ void widget_tree_refresh(variable *var)
 	gint              sort_column;
 	gint              sort_type;
 	TreeInputContext  context = { NULL, NULL, -1, -1 };
+#if HAVE_JSON_GLIB
+	TreePreservedState *preserved = NULL;
+#endif
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -2154,6 +2458,18 @@ void widget_tree_refresh(variable *var)
 		initialised = GPOINTER_TO_INT(g_object_get_data(
 			G_OBJECT(var->Widget), "_initialised"));
 
+#if HAVE_JSON_GLIB
+	if (initialised && var->widget_tag_attr &&
+		(value = get_tag_attribute(var->widget_tag_attr, "preserve-state")) &&
+		widget_attribute_is_true(value)) {
+		preserved = widget_tree_preserve_state(var->Widget);
+		if (g_hash_table_size(preserved->rows) == 0) {
+			widget_tree_preserved_state_free(preserved);
+			preserved = NULL;
+		}
+	}
+#endif
+
 	/* We drop all the lines here */
 	/* Thunor: I'd like to stop doing this but some applications (pbackup,
 	 * pcd, petget, pfind, pmusic, pprocess, psip) are refreshing without
@@ -2163,10 +2479,38 @@ void widget_tree_refresh(variable *var)
 	widget_tree_clear(var);
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(var->Widget));
 	n_columns = gtk_tree_model_get_n_columns(model) - FirstDataColumn;
+	widget_tree_reset_completion_stores(var->Widget, var->Attributes,
+		n_columns);
 
 	/* The <input> tag... */
 	act = attributeset_get_first(&element, var->Attributes, ATTR_INPUT);
 	while (act) {
+		completion_input = widget_tree_get_completion_input_column(&element,
+			var->Attributes, n_columns, &completion_column, !initialised);
+		if (completion_input) {
+			if (completion_column >= 0) {
+				completion_store = widget_tree_completion_registry_get(
+					var->Widget, completion_column);
+				if (completion_store == NULL) {
+					if (!initialised)
+						gtkdialog_warning("Tree input completion-column %d "
+							"requires completion to be enabled for that column; "
+							"ignoring the completion source.", completion_column);
+				} else if (input_is_shell_command(act)) {
+					widget_tree_input_completion(completion_store, act + 8, TRUE);
+				} else if (strncasecmp(act, "file:", 5) == 0 &&
+					strlen(act) > 5) {
+					if (!initialised)
+						widget_file_monitor_try_create(var, act + 5);
+					widget_tree_input_completion(completion_store, act + 5,
+						FALSE);
+				} else {
+					widget_tree_input_completion(completion_store, act, TRUE);
+				}
+			}
+			act = attributeset_get_next(&element, var->Attributes, ATTR_INPUT);
+			continue;
+		}
 		value = attributeset_get_this_tagattr(&element, var->Attributes,
 			ATTR_INPUT, "format");
 		/* Get stock-column from the input tag if available */
@@ -2288,8 +2632,16 @@ void widget_tree_refresh(variable *var)
 			gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model),
 				sort_column + FirstDataColumn, sort_type);
 		}
+#if HAVE_JSON_GLIB
+		if (preserved != NULL) {
+			restore_json_state = widget_tree_restore_state(preserved, var);
+			widget_tree_preserved_state_free(preserved);
+			preserved = NULL;
+		}
+#endif
 		/* Get selected-row (custom) */
-		if ((value = get_tag_attribute(var->widget_tag_attr, "selected-row"))) {
+		if (!restore_json_state &&
+			(value = get_tag_attribute(var->widget_tag_attr, "selected-row"))) {
 			selected_row = widget_parse_nonnegative_integer(value, -1,
 				"tree selected-row");
 			if (selected_row >= 0) {
@@ -2312,7 +2664,6 @@ void widget_tree_refresh(variable *var)
 			}
 		}
 	}
-
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Exiting.\n", __func__);
 #endif
@@ -2611,9 +2962,12 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 	GtkWidget         *tree_view;
 	gchar             *headline = NULL;
 	gchar             *value;
-#if GTK_CHECK_VERSION(2,6,0)
 	GtkListStore      *combo_store;
-#endif
+	GtkListStore      *completion_store;
+	gboolean            column_completion_compatible;
+	gboolean            completion_case_sensitive = FALSE;
+	WidgetCompletionMatch completion_match = WIDGET_COMPLETION_MATCH_PREFIX;
+	gboolean            column_has_completion;
 	gboolean            column_is_editable;
 	gboolean            column_is_accel;
 	gboolean            column_is_combo;
@@ -2622,27 +2976,25 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 	gboolean            column_is_markup;
 	gboolean            column_is_pixbuf;
 	gboolean            column_is_radio;
-#if GTK_CHECK_VERSION(2,6,0)
 	gboolean            column_combo_has_entry;
-#endif
 	gboolean            column_is_progress;
 	gboolean            column_is_spin;
 	gboolean            column_is_spinner;
 	gboolean            column_is_toggle;
 	gint               index;
 	gint               function;
-#if GTK_CHECK_VERSION(2,10,0)
 	gdouble             spin_maximum;
 	gdouble             spin_minimum;
 	gdouble             spin_step;
 	gint                spin_digits;
 	GtkObject          *spin_adjustment;
-#endif
 	GtkCellRenderer   *image_renderer;
 	list_t            *column_sizing = NULL;
 	list_t            *column_resizeable = NULL;
 	list_t            *column_header_active = NULL;
 	list_t            *column_editable = NULL;
+	list_t            *column_completion = NULL;
+	list_t            *column_completion_minimum_key_length = NULL;
 	list_t            *column_combo_has_entry_values = NULL;
 	list_t            *column_renderer = NULL;
 	list_t            *column_spin_digits = NULL;
@@ -2667,6 +3019,12 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 	widget_tree_renderer_options_init(&renderer_options, attr);
 
 	if (attr) {
+		completion_match = widget_parse_completion_match(
+			get_tag_attribute(attr, "completion-match"),
+			"tree completion-match");
+		completion_case_sensitive = widget_parse_completion_case_sensitive(
+			get_tag_attribute(attr, "completion-case-sensitive"),
+			"tree completion-case-sensitive");
 		/* Get column-sizing (custom) */
 		if ((value = get_tag_attribute(attr, "column-sizing")))
 			column_sizing = linecutter(g_strdup(value), '|');
@@ -2679,6 +3037,13 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 		/* Get column-editable (custom) */
 		if ((value = get_tag_attribute(attr, "column-editable")))
 			column_editable = linecutter(g_strdup(value), '|');
+		/* Get per-column editing completion settings (custom) */
+		if ((value = get_tag_attribute(attr, "column-completion")))
+			column_completion = linecutter(g_strdup(value), '|');
+		if ((value = get_tag_attribute(attr,
+			"column-completion-minimum-key-length")))
+			column_completion_minimum_key_length =
+				linecutter(g_strdup(value), '|');
 		/* Get column-combo-has-entry (custom) */
 		if ((value = get_tag_attribute(attr, "column-combo-has-entry")))
 			column_combo_has_entry_values = linecutter(g_strdup(value), '|');
@@ -2717,6 +3082,9 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 		column_is_editable = column_editable &&
 			index < column_editable->n_lines &&
 			widget_attribute_is_true(column_editable->line[index]);
+		column_has_completion = column_completion &&
+			index < column_completion->n_lines &&
+			widget_attribute_is_true(column_completion->line[index]);
 		column_is_radio = column_renderer &&
 			index < column_renderer->n_lines &&
 			strcasecmp(column_renderer->line[index], "radio") == 0;
@@ -2749,7 +3117,6 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 				"using text instead.");
 			column_is_markup = FALSE;
 		}
-#if GTK_CHECK_VERSION(2,6,0)
 		column_is_combo = column_renderer &&
 			index < column_renderer->n_lines &&
 			strcasecmp(column_renderer->line[index], "combo") == 0;
@@ -2760,11 +3127,6 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 		column_is_progress = column_renderer &&
 			index < column_renderer->n_lines &&
 			strcasecmp(column_renderer->line[index], "progress") == 0;
-#else
-		column_is_combo = FALSE;
-		column_is_progress = FALSE;
-#endif
-#if GTK_CHECK_VERSION(2,10,0)
 		column_is_accel = column_renderer &&
 			index < column_renderer->n_lines &&
 			strcasecmp(column_renderer->line[index], "accel") == 0;
@@ -2778,17 +3140,15 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 		column_is_spin = column_renderer &&
 			index < column_renderer->n_lines &&
 			strcasecmp(column_renderer->line[index], "spin") == 0;
-#else
-		column_is_accel = FALSE;
-		column_is_spin = FALSE;
-#endif
-#if GTK_CHECK_VERSION(2,20,0)
 		column_is_spinner = column_renderer &&
 			index < column_renderer->n_lines &&
 			strcasecmp(column_renderer->line[index], "spinner") == 0;
-#else
-		column_is_spinner = FALSE;
-#endif
+		column_completion_compatible = column_is_icon_text || column_is_markup ||
+			(!column_is_color && !column_is_pixbuf && !column_is_progress &&
+			 !column_is_toggle && !column_is_combo && !column_is_accel &&
+			 !column_is_spin && !column_is_spinner);
+		if (column_is_combo && column_combo_has_entry)
+			column_completion_compatible = TRUE;
 
 		if (index == 0 && !column_is_color && !column_is_pixbuf &&
 			!column_is_icon_text) {
@@ -2829,7 +3189,6 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 				widget_tree_enable_text_editing(renderer, tree_view, Attr,
 					index + FirstDataColumn);
 		} else if (column_is_progress) {
-#if GTK_CHECK_VERSION(2,6,0)
 			renderer = gtk_cell_renderer_progress_new();
 			value = (gchar *)widget_tree_column_value(
 				renderer_options.progress_text, index);
@@ -2862,7 +3221,6 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 			gtk_tree_view_column_set_cell_data_func(column, renderer,
 				widget_tree_progress_cell_data_function,
 				GINT_TO_POINTER(index + FirstDataColumn), NULL);
-#endif
 		} else if (column_is_toggle) {
 			renderer = gtk_cell_renderer_toggle_new();
 			g_object_set(G_OBJECT(renderer), "activatable", FALSE,
@@ -2880,7 +3238,6 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 				widget_tree_enable_toggle(renderer, tree_view, Attr,
 					index + FirstDataColumn, column_is_radio);
 		} else if (column_is_combo) {
-#if GTK_CHECK_VERSION(2,6,0)
 			combo_store = widget_tree_create_combo_store(Attr, index,
 				columns->n_lines);
 			renderer = gtk_cell_renderer_combo_new();
@@ -2894,9 +3251,7 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 			if (column_is_editable)
 				widget_tree_enable_text_editing(renderer, tree_view, Attr,
 					index + FirstDataColumn);
-#endif
 		} else if (column_is_accel) {
-#if GTK_CHECK_VERSION(2,10,0)
 			renderer = gtk_cell_renderer_accel_new();
 			value = (gchar *)widget_tree_column_value(
 				renderer_options.accel_mode, index);
@@ -2918,9 +3273,7 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 			if (column_is_editable)
 				widget_tree_enable_accel(renderer, tree_view, Attr,
 					index + FirstDataColumn);
-#endif
 		} else if (column_is_spin) {
-#if GTK_CHECK_VERSION(2,10,0)
 			spin_minimum = widget_tree_get_spin_double(column_spin_min, index,
 				0.0, "tree column-spin-min");
 			spin_maximum = widget_tree_get_spin_double(column_spin_max, index,
@@ -2968,9 +3321,7 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 			if (column_is_editable)
 				widget_tree_enable_text_editing(renderer, tree_view, Attr,
 					index + FirstDataColumn);
-#endif
 		} else if (column_is_spinner) {
-#if GTK_CHECK_VERSION(2,20,0)
 			renderer = gtk_cell_renderer_spinner_new();
 			value = (gchar *)widget_tree_column_value(
 				renderer_options.spinner_size, index);
@@ -2983,7 +3334,6 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 				widget_tree_spinner_cell_data_function,
 				GINT_TO_POINTER(index + FirstDataColumn), NULL);
 			widget_tree_enable_spinner(renderer, tree_view);
-#endif
 		} else {
 			renderer = gtk_cell_renderer_text_new();
 			gtk_tree_view_column_pack_start(column, renderer, index != 0);
@@ -2992,6 +3342,35 @@ static GtkWidget *widget_tree_create_tree_view(AttributeSet *Attr,
 			if (column_is_editable)
 				widget_tree_enable_text_editing(renderer, tree_view, Attr,
 					index + FirstDataColumn);
+		}
+		if (column_has_completion) {
+			if (!column_is_editable) {
+				gtkdialog_warning("Tree column-completion requires an editable "
+					"column; ignoring column %d.", index);
+			} else if (gtk_tree_model_get_column_type(GTK_TREE_MODEL(store),
+				index + FirstDataColumn) != G_TYPE_STRING) {
+				gtkdialog_warning("Tree column-completion requires a string "
+					"column; ignoring column %d.", index);
+			} else if (!column_completion_compatible) {
+				gtkdialog_warning("Tree column-completion is available for text "
+					"renderers and combo renderers with an entry; ignoring column "
+					"%d.", index);
+			} else {
+				function = 1;
+				if (column_completion_minimum_key_length &&
+					index < column_completion_minimum_key_length->n_lines &&
+					column_completion_minimum_key_length->line[index][0] != '\0')
+					function = widget_parse_bounded_integer(
+						column_completion_minimum_key_length->line[index], 0,
+						G_MAXINT, 1,
+						"tree column-completion-minimum-key-length");
+				completion_store = widget_tree_create_completion_store(Attr,
+					index, columns->n_lines);
+				widget_tree_enable_completion(renderer, tree_view, index,
+					completion_store, function, completion_match,
+					completion_case_sensitive);
+				g_object_unref(completion_store);
+			}
 		}
 		widget_tree_apply_column_style(renderer, &column_styles, index);
 		widget_tree_attach_json_style(renderer, tree_view, index,
@@ -3066,6 +3445,9 @@ sorting is compatible only with columns of type string.\n", __func__);
 	if (column_resizeable) list_t_free(column_resizeable);
 	if (column_header_active) list_t_free(column_header_active);
 	if (column_editable) list_t_free(column_editable);
+	if (column_completion) list_t_free(column_completion);
+	if (column_completion_minimum_key_length)
+		list_t_free(column_completion_minimum_key_length);
 	if (column_combo_has_entry_values)
 		list_t_free(column_combo_has_entry_values);
 	if (column_renderer) list_t_free(column_renderer);
@@ -3088,6 +3470,156 @@ sorting is compatible only with columns of type string.\n", __func__);
 }
 
 #if HAVE_JSON_GLIB
+static gchar *widget_tree_json_row_id(GtkTreeModel *model, GtkTreeIter *iter)
+{
+	GValue value = { 0 };
+	JsonNode *metadata;
+	JsonNode *member;
+	gchar *id = NULL;
+
+	gtk_tree_model_get_value(model, iter, ColumnJsonStyle, &value);
+	metadata = g_value_get_boxed(&value);
+	if (metadata != NULL && JSON_NODE_HOLDS_OBJECT(metadata)) {
+		member = json_object_get_member(json_node_get_object(metadata), "id");
+		if (member != NULL && JSON_NODE_HOLDS_VALUE(member) &&
+			json_node_get_value_type(member) == G_TYPE_STRING &&
+			json_node_get_string(member)[0] != '\0')
+			id = g_strdup(json_node_get_string(member));
+	}
+	g_value_unset(&value);
+	return id;
+}
+
+static gboolean widget_tree_capture_row(GtkTreeModel *model,
+	GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	TreePreservedState *state = user_data;
+	TreePreservedRow *row;
+	GtkTreeSelection *selection;
+	gchar *id;
+
+	id = widget_tree_json_row_id(model, iter);
+	if (id == NULL)
+		return FALSE;
+	if (g_hash_table_lookup_extended(state->rows, id, NULL, NULL)) {
+		/* An ambiguous ID must not restore the state of either row. */
+		g_hash_table_replace(state->rows, id, NULL);
+		return FALSE;
+	}
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(state->tree_view));
+	row = g_new0(TreePreservedRow, 1);
+	row->selected = gtk_tree_selection_path_is_selected(selection, path);
+	row->expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(state->tree_view),
+		path);
+	row->anchor = state->anchor_path != NULL &&
+		gtk_tree_path_compare(state->anchor_path, path) == 0;
+	g_hash_table_insert(state->rows, id, row);
+	return FALSE;
+}
+
+static TreePreservedState *widget_tree_preserve_state(GtkWidget *tree_view)
+{
+	TreePreservedState *state;
+	GtkTreeModel *model;
+
+	state = g_new0(TreePreservedState, 1);
+	state->tree_view = tree_view;
+	state->rows = g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
+		g_free);
+	gtk_tree_view_get_visible_range(GTK_TREE_VIEW(tree_view),
+		&state->anchor_path, NULL);
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(tree_view));
+	gtk_tree_model_foreach(model, widget_tree_capture_row, state);
+	return state;
+}
+
+static gboolean widget_tree_index_row(GtkTreeModel *model,
+	GtkTreePath *path, GtkTreeIter *iter, gpointer user_data)
+{
+	GHashTable *paths = user_data;
+	gchar *id;
+
+	id = widget_tree_json_row_id(model, iter);
+	if (id == NULL)
+		return FALSE;
+	if (g_hash_table_lookup_extended(paths, id, NULL, NULL))
+		g_hash_table_replace(paths, id, NULL);
+	else
+		g_hash_table_insert(paths, id, gtk_tree_path_copy(path));
+	return FALSE;
+}
+
+static gboolean widget_tree_restore_state(TreePreservedState *state,
+	variable *var)
+{
+	GHashTable *paths;
+	GHashTableIter rows;
+	GtkTreeModel *model;
+	GtkTreePath *anchor = NULL;
+	GtkTreePath *path;
+	GtkTreeSelection *selection;
+	GList *selected = NULL;
+	GList *item;
+	TreePreservedRow *row;
+	gboolean matched = FALSE;
+	gpointer key;
+	gpointer value;
+
+	paths = g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
+		(GDestroyNotify)gtk_tree_path_free);
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(state->tree_view));
+	gtk_tree_model_foreach(model, widget_tree_index_row, paths);
+	g_hash_table_iter_init(&rows, state->rows);
+	while (g_hash_table_iter_next(&rows, &key, &value)) {
+		row = value;
+		path = g_hash_table_lookup(paths, key);
+		if (row == NULL || path == NULL)
+			continue;
+		matched = TRUE;
+		if (row->expanded)
+			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(state->tree_view), path);
+		if (row->selected)
+			selected = g_list_prepend(selected, path);
+		if (row->anchor)
+			anchor = path;
+	}
+	/* Expanding a descendant can expand its parent; restore collapsed
+	 * parents only after all expanded descendants have been handled. */
+	g_hash_table_iter_init(&rows, state->rows);
+	while (g_hash_table_iter_next(&rows, &key, &value)) {
+		row = value;
+		path = g_hash_table_lookup(paths, key);
+		if (row != NULL && path != NULL && !row->expanded)
+			gtk_tree_view_collapse_row(GTK_TREE_VIEW(state->tree_view), path);
+	}
+	if (matched) {
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(state->tree_view));
+		/* Rebuilding the same logical selection must not run actions for
+		 * the temporary unselect/select steps. */
+		g_signal_handlers_block_by_func(selection,
+			G_CALLBACK(widget_tree_changed_callback), var);
+		gtk_tree_selection_unselect_all(selection);
+		for (item = selected; item != NULL; item = item->next)
+			gtk_tree_selection_select_path(selection, item->data);
+		g_signal_handlers_unblock_by_func(selection,
+			G_CALLBACK(widget_tree_changed_callback), var);
+	}
+	if (anchor != NULL)
+		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(state->tree_view), anchor,
+			NULL, TRUE, 0.0, 0.0);
+	g_list_free(selected);
+	g_hash_table_destroy(paths);
+	return matched;
+}
+
+static void widget_tree_preserved_state_free(TreePreservedState *state)
+{
+	if (state->anchor_path != NULL)
+		gtk_tree_path_free(state->anchor_path);
+	g_hash_table_destroy(state->rows);
+	g_free(state);
+}
+
 static gchar *widget_tree_json_scalar_to_string(JsonNode *node,
 	GType column_type);
 
@@ -3258,6 +3790,16 @@ static gboolean widget_tree_json_validate_style(JsonObject *style,
 			g_set_error(error, G_MARKUP_ERROR,
 				G_MARKUP_ERROR_INVALID_CONTENT,
 				"tree JSON %s strikethrough is not Boolean", context);
+			return FALSE;
+		}
+	}
+	if (json_object_has_member(style, "sensitive")) {
+		node = json_object_get_member(style, "sensitive");
+		if (!JSON_NODE_HOLDS_VALUE(node) ||
+			json_node_get_value_type(node) != G_TYPE_BOOLEAN) {
+			g_set_error(error, G_MARKUP_ERROR,
+				G_MARKUP_ERROR_INVALID_CONTENT,
+				"tree JSON %s sensitive is not Boolean", context);
 			return FALSE;
 		}
 	}
@@ -3525,6 +4067,11 @@ static void widget_tree_json_append_rows(variable *var, JsonArray *rows,
 		row = json_node_get_object(json_array_get_element(rows, index));
 		gtk_tree_store_append(GTK_TREE_STORE(model), &iter, parent);
 		metadata = json_object_new();
+		member = json_object_get_member(row, "id");
+		if (member != NULL && JSON_NODE_HOLDS_VALUE(member) &&
+			json_node_get_value_type(member) == G_TYPE_STRING &&
+			json_node_get_string(member)[0] != '\0')
+			json_object_set_member(metadata, "id", json_node_copy(member));
 		member = json_object_get_member(row, "style");
 		if (member != NULL)
 			json_object_set_member(metadata, "style", json_node_copy(member));
@@ -3742,6 +4289,12 @@ static void widget_tree_json_build_rows(JsonBuilder *builder,
 		gtk_tree_model_get_value(model, &iter, ColumnJsonStyle, &style_value);
 		metadata = g_value_get_boxed(&style_value);
 		if (metadata != NULL && JSON_NODE_HOLDS_OBJECT(metadata)) {
+			member = json_object_get_member(json_node_get_object(metadata),
+				"id");
+			if (member != NULL) {
+				json_builder_set_member_name(builder, "id");
+				json_builder_add_value(builder, json_node_copy(member));
+			}
 			member = json_object_get_member(json_node_get_object(metadata),
 				"style");
 			if (member != NULL) {
@@ -3986,8 +4539,11 @@ static void widget_tree_input_by_items(variable *var,
 	gchar            *act;
 	gchar           **columns;
 	gchar            *value;
+	gboolean          combo_option;
+	gboolean          completion_option;
 	gint              n, ncolumns;
 	gint              combo_column;
+	gint              completion_column;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -4001,8 +4557,11 @@ static void widget_tree_input_by_items(variable *var,
 	 * although it's not going to be likely within <item>"..."</item> */
 	act = attributeset_get_first(&element, var->Attributes, ATTR_ITEM);
 	while (act != NULL) {
-		if (widget_tree_get_combo_item_column(&element, var->Attributes,
-			ncolumns, &combo_column, TRUE)) {
+		combo_option = widget_tree_get_combo_item_column(&element,
+			var->Attributes, ncolumns, &combo_column, TRUE);
+		completion_option = widget_tree_get_completion_item_column(&element,
+			var->Attributes, ncolumns, &completion_column, TRUE);
+		if (combo_option || completion_option) {
 			act = attributeset_get_next(&element, var->Attributes, ATTR_ITEM);
 			continue;
 		}
@@ -4181,5 +4740,3 @@ static gint _widget_tree_natcmp(GtkTreeModel *model, GtkTreeIter *a,
 
 	return retval;
 }
-
-#endif

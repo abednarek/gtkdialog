@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 if ! "$GTKDIALOG" --version 2>/dev/null | grep -q 'GtkSheet 3'; then
 	echo "This example requires gtkdialog built with GtkSheet 3 support." >&2

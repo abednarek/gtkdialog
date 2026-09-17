@@ -12,7 +12,6 @@
 #ifndef WIDGET_ICONVIEW_H
 #define WIDGET_ICONVIEW_H
 
-#if GTK_CHECK_VERSION(2,6,0)
 void widget_iconview_clear(variable *var);
 GtkWidget *widget_iconview_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type);
@@ -22,6 +21,5 @@ void widget_iconview_fileselect(
 void widget_iconview_refresh(variable *var);
 void widget_iconview_removeselected(variable *var);
 void widget_iconview_save(variable *var);
-#endif
 
 #endif

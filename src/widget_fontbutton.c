@@ -47,8 +47,6 @@ static void widget_fontbutton_input_by_items(variable *var);
 
 void widget_fontbutton_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -110,8 +108,6 @@ gchar *widget_fontbutton_envvar_construct(GtkWidget *widget)
 void widget_fontbutton_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -202,8 +198,6 @@ void widget_fontbutton_refresh(variable *var)
 
 void widget_fontbutton_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -282,7 +276,7 @@ static void widget_fontbutton_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			gtk_font_button_set_font_name(GTK_FONT_BUTTON(var->Widget), line);
@@ -313,7 +307,7 @@ static void widget_fontbutton_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile)) != NULL) {
 			gtk_font_button_set_font_name(GTK_FONT_BUTTON(var->Widget), line);
@@ -337,8 +331,6 @@ static void widget_fontbutton_input_by_file(variable *var, char *filename)
 
 static void widget_fontbutton_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

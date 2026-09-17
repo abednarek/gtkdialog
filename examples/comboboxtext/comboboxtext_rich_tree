@@ -1,0 +1,31 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+MAIN_DIALOG='
+<window title="Hierarchical GTK2 combo box" width-request="440">
+	<vbox border-width="12" spacing="10">
+		<text xalign="0">
+			<label>Categories open as GTK2 submenus; leaf rows export stable values.</label>
+		</text>
+		<comboboxtext item-model="rich-tree" icon-size="20">
+			<variable>TREE_CHOICE</variable>
+			<default>project-save</default>
+			<input file format="json">'"$script_dir"'/comboboxtext_rich_tree.json</input>
+			<action>echo "Selected value: $TREE_CHOICE"</action>
+		</comboboxtext>
+		<hbuttonbox>
+			<button ok></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

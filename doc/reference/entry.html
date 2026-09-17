@@ -130,6 +130,10 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html">GtkEntry</a>
 <tr><td class="wiki"> auto-refresh </td><td class="wiki"> Auto refresh when input file(s) change </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> completion </td><td class="wiki"> Enable completion suggestions </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> completion-minimum-key-length </td><td class="wiki"> Characters required before offering suggestions </td><td class="wiki"> Non-negative integer; default <code>1</code> </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> completion-model </td><td class="wiki"> Completion presentation model; the established text model remains the default </td><td class="wiki"> <code>text</code> or <code>rich</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> completion-icon-size </td><td class="wiki"> Width and height of rich-completion icons </td><td class="wiki"> Positive integer; default <code>16</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> completion-match </td><td class="wiki"> Match typed text at the start or anywhere within a suggestion </td><td class="wiki"> <code>prefix</code> (default) or <code>contains</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> completion-case-sensitive </td><td class="wiki"> Distinguish letter case while matching suggestions </td><td class="wiki"> <code>true</code> or <code>false</code>; default <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
 <tr><td class="wiki"> fs-action </td><td class="wiki"> fileselect function action type </td><td class="wiki"> <code>file</code>, <code>newfile</code>, <code>folder</code> or <code>newfolder</code> </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> fs-filters </td><td class="wiki"> fileselect function pattern file filters </td><td class="wiki"> <i>pattern</i><code>|</code><i>pattern</i><code>|</code>... </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> fs-filters-mime </td><td class="wiki"> fileselect function mime-type file filters </td><td class="wiki"> <i>mime/type</i><code>|</code><i>mime/type</i><code>|</code>... (<a href="https://en.wikipedia.org/wiki/Internet_media_type#List_of_common_media_types">common types</a>) </td><td class="wiki"> 0.7.21 </td></tr>
@@ -143,28 +147,38 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html">GtkEntry</a>
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Name</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Contents</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> default </td><td class="wiki"> Initial data </td><td class="wiki"> Text </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> default </td><td class="wiki"> Initial data </td><td class="wiki"> Text </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> variable </td><td class="wiki"> Variable name </td><td class="wiki"> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> variable export="false" </td><td class="wiki"> Variable name, not exported to shell </td><td class="wiki"> </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> height </td><td class="wiki"> Initial minimum height </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> width </td><td class="wiki"> Initial minimum width </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> height </td><td class="wiki"> Initial minimum height </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> width </td><td class="wiki"> Initial minimum width </td><td class="wiki"> An integer &gt;= <code>0</code> or <code>-1</code> to ignore </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> input </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> input file </td><td class="wiki"> Data input source </td><td class="wiki"> Filename </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> input completion="true" </td><td class="wiki"> Completion data source </td><td class="wiki"> Shell command producing one suggestion per line </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> input file completion="true" </td><td class="wiki"> Completion data source </td><td class="wiki"> File containing one suggestion per line </td><td class="wiki"> 0.9.0 </td></tr>
 <tr><td class="wiki"> item </td><td class="wiki"> Completion suggestion when completion is enabled </td><td class="wiki"> Text </td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki"> item value="<i>text</i>" </td><td class="wiki"> Stable value exported for a selected rich suggestion </td><td class="wiki"> Text; defaults to the plain label </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item description="<i>text</i>" </td><td class="wiki"> Rich suggestion helper text </td><td class="wiki"> Text </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item stock="<i>stock-id</i>" </td><td class="wiki"> Rich suggestion GTK2 stock icon </td><td class="wiki"> Stock identifier </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item icon-name="<i>name</i>" </td><td class="wiki"> Rich suggestion themed icon </td><td class="wiki"> Icon theme name </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item image-file="<i>filename</i>" </td><td class="wiki"> Rich suggestion file icon </td><td class="wiki"> Image filename </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item markup="<i>state</i>" </td><td class="wiki"> Interpret the rich suggestion label as Pango markup </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item sensitive="<i>state</i>" </td><td class="wiki"> Rich suggestion availability </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item foreground="<i>colour</i>" </td><td class="wiki"> Rich suggestion label foreground </td><td class="wiki"> GTK+ colour specification </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item background="<i>colour</i>" </td><td class="wiki"> Rich suggestion label background </td><td class="wiki"> GTK+ colour specification </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> item font="<i>description</i>" </td><td class="wiki"> Rich suggestion label font </td><td class="wiki"> Pango font description </td><td class="wiki"> 0.9.2 </td></tr>
 <tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code>, <code>false</code> or <code>password</code> </td><td class="wiki"> 0.7.21 </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Execute command on default signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" </td><td class="wiki"> Perform function on default signal </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Execute command on default signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Execute command on signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action function="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on default signal conditionally </td><td class="wiki"> <i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> output file </td><td class="wiki"> Data output target </td><td class="wiki"> Filename </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> output file </td><td class="wiki"> Data output target </td><td class="wiki"> Filename </td><td class="wiki"> Legacy </td></tr>
 </table>
 
 <h2> Signals </h2>
@@ -173,7 +187,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html">GtkEntry</a>
 
 <p>The "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html#GtkEntry-activate">activate</a>" signal is emitted when the user activates the entry with the Enter key (since 0.7.21).</p>
 
-<p>For GTK+ 2.16 and later, the "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html#GtkEntry-icon-press">icon-press</a>" and "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html#GtkEntry-icon-release">icon-release</a>" signals are emitted when an activatable icon is pressed or released, but these signal names will be prefixed with either "primary-" or "secondary-" to indicate the source icon (since 0.7.21).</p>
+<p>The "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html#GtkEntry-icon-press">icon-press</a>" and "<a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html#GtkEntry-icon-release">icon-release</a>" signals are emitted when an activatable icon is pressed or released, but these signal names will be prefixed with either "primary-" or "secondary-" to indicate the source icon (since 0.7.21).</p>
 
 <p>The "file-changed" signal is emitted if file-monitor is true and the input file being monitored has changed.</p>
 
@@ -187,17 +201,17 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html">GtkEntry</a>
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> show </td><td class="wiki"> Show widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> hide </td><td class="wiki"> Hide widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> activate </td><td class="wiki"> Activate widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> grabfocus </td><td class="wiki"> Grab input focus </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> refresh </td><td class="wiki"> Reload input data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> save </td><td class="wiki"> Save widget data </td><td class="wiki"> Variable name </td><td class="wiki"> 0.7.21 </td></tr>
-<tr><td class="wiki"> fileselect </td><td class="wiki"> Launch file selection dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> removeselected </td><td class="wiki"> Remove selected widget data </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> fileselect </td><td class="wiki"> Launch file selection dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> clear </td><td class="wiki"> Remove all widget data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> removeselected </td><td class="wiki"> Remove selected widget data </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 </table>
 
 <p>The following general functions can be performed by any widget capable of emitting signals:</p>
@@ -205,10 +219,10 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html">GtkEntry</a>
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
 <tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 </table>
 
@@ -236,21 +250,42 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkEntry.html">GtkEntry</a>
 
 <h2> Notes </h2>
 
-<p>Completion is optional and requires GTK+ 2.4 or later. With
+<p>Completion is optional. With
 <code>completion="true"</code>, each <code>&lt;item&gt;</code> becomes a
 suggestion. Add <code>completion="true"</code> to an input directive to read
 all of its lines as suggestions. An unmarked input keeps its existing
 behavior and sets the entry text from its first line. Refreshing the entry
 rebuilds its completion list.</p>
 
+<p>The default <code>completion-model="text"</code> preserves the established
+plain suggestions and exports the visible entry text. The opt-in
+<code>completion-model="rich"</code> keeps the result list flat while allowing
+each item to have an icon, Pango markup, helper description, sensitivity,
+colours and font. A selected rich item exports and saves its stable
+<code>value</code>; typing afterwards returns to exporting the visible text.
+An initial <code>&lt;default&gt;</code> that matches a stable value selects that item,
+while any unmatched default remains literal entry text. Command and file
+completion sources continue to add plain suggestions.</p>
+
+<p>Completion uses case-insensitive prefix matching by default, preserving the
+native GTK2 behavior. Set <code>completion-match="contains"</code> to match a
+typed fragment anywhere in the visible suggestion text, and set
+<code>completion-case-sensitive="true"</code> when letter case must also
+match. Rich rows are matched against their plain entry text, not their markup,
+description or stable value.</p>
+
 <pre>
-&lt;entry completion="true" completion-minimum-key-length="1"&gt;
+&lt;entry completion="true" completion-minimum-key-length="1"
+	completion-match="contains"&gt;
 	&lt;item&gt;Development&lt;/item&gt;
 	&lt;item&gt;Documentation&lt;/item&gt;
 	&lt;input file completion="true"&gt;/tmp/suggestions&lt;/input&gt;
 	&lt;variable&gt;CATEGORY&lt;/variable&gt;
 &lt;/entry&gt;
 </pre>
+
+<p>See <code>examples/entry/entry_completion</code> and
+<code>examples/entry/entry_completion_rich</code> for runnable examples.</p>
 
 <hr>
 <!-- reference-navigation-start -->

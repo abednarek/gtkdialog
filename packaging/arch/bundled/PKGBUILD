@@ -1,0 +1,35 @@
+# Maintainer: Artur Bednarek <artur@unix.org.pl>
+pkgname=gdlg2-bundled
+pkgver=0.9.2
+pkgrel=1
+pkgdesc='GTK2 dialog builder with private GTK2 and legacy extensions'
+arch=('x86_64')
+url='https://github.com/abednarek/gtkdialog'
+license=('GPL-2.0-or-later' 'LGPL-2.0-or-later' 'LGPL-2.1-or-later')
+depends=('json-glib' 'enchant' 'aspell' 'hspell' 'hunspell' 'hunspell-en_us'
+         'libvoikko' 'nuspell' 'libxml2' 'ncurses' 'fontconfig' 'pango' 'at-spi2-core' 'cairo'
+         'gdk-pixbuf2' 'glib2' 'hicolor-icon-theme' 'libx11' 'libxext'
+         'libxfixes' 'libxrender' 'libxi' 'libxcursor' 'libxrandr'
+         'libxcomposite' 'libxinerama' 'libxdamage' 'libxft' 'libxres')
+makedepends=('autoconf' 'automake' 'libtool' 'gettext' 'intltool' 'flex'
+             'bison' 'pkgconf' 'patch' 'glib2-devel')
+checkdepends=('xorg-server-xvfb' 'xdotool' 'ttf-dejavu')
+conflicts=('gdlg2')
+source=("gtkdialog-$pkgver.tar.gz::$url/releases/download/$pkgver/gtkdialog-$pkgver.tar.gz")
+sha256sums=('27ba33ab0b72cd954890d77da12ce1302b1a839599034e2806890610a81d3d8e')
+
+build() {
+	"$srcdir/gtkdialog-$pkgver/bundled/build-bundle.sh" \
+		"$srcdir/gtkdialog-$pkgver" "$srcdir/bundle-work" \
+		"$srcdir/bundle-package" private-gtk2
+}
+
+check() {
+	LD_LIBRARY_PATH="$srcdir/bundle-work/stage/opt/gldg2/lib" \
+	XDG_DATA_DIRS="$srcdir/bundle-work/stage/opt/gldg2/share:/usr/local/share:/usr/share" \
+		make -C "$srcdir/bundle-work/build/gtkdialog" check
+}
+
+package() {
+	cp -a "$srcdir/bundle-package/." "$pkgdir/"
+}

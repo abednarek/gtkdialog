@@ -243,15 +243,9 @@ GtkWidget *widget_messagedialog_create(
 	gtk_window_set_icon_name(GTK_WINDOW(widget), PACKAGE);
 	g_object_set_data_full(G_OBJECT(widget),
 		"gtkdialog-messagedialog-response", g_strdup(""), g_free);
-#if GTK_CHECK_VERSION(2,6,0)
 	if (secondary != NULL)
 		gtk_message_dialog_format_secondary_text(
 			GTK_MESSAGE_DIALOG(widget), "%s", secondary);
-#else
-	if (secondary != NULL)
-		gtkdialog_warning("Message dialog secondary-text requires GTK+ 2.6 "
-			"or later; ignored.");
-#endif
 	g_free(secondary);
 
 	if (attr != NULL &&

@@ -34,22 +34,22 @@ for a desktop notification area or system tray.</p><hr>
 a zero-size logical widget so that normal variable lookup, window ownership,
 state functions, conditions and destruction remain deterministic. Destroying
 or relaunching the containing window destroys and recreates its status icon.</p>
-<h2> Tag attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">icon-name, icon</td><td class="wiki">Themed icon source</td><td class="wiki">Icon name</td></tr>
-<tr><td class="wiki">image-name, image-file, file</td><td class="wiki">Image file source</td><td class="wiki">Filename</td></tr>
-<tr><td class="wiki">stock-id, stock</td><td class="wiki">GTK stock icon source</td><td class="wiki">Stock ID</td></tr>
-<tr><td class="wiki">tooltip-text, tooltip</td><td class="wiki">Plain tooltip</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">tooltip-markup</td><td class="wiki">Pango-markup tooltip</td><td class="wiki">Markup text</td></tr>
-<tr><td class="wiki">title</td><td class="wiki">Status icon title on supported desktops</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">blinking</td><td class="wiki">Legacy blinking state</td><td class="wiki">Boolean</td></tr>
-<tr><td class="wiki">context-menu</td><td class="wiki">Popup-menu program shown by the native tray popup signal</td><td class="wiki">Environment variable name</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">icon-name, icon</td><td class="wiki">Themed icon source</td><td class="wiki">Icon name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">image-name, image-file, file</td><td class="wiki">Image file source</td><td class="wiki">Filename</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">stock-id, stock</td><td class="wiki">GTK stock icon source</td><td class="wiki">Stock ID</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">tooltip-text, tooltip</td><td class="wiki">Plain tooltip</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">tooltip-markup</td><td class="wiki">Pango-markup tooltip</td><td class="wiki">Markup text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">title</td><td class="wiki">Status icon title on supported desktops</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">blinking</td><td class="wiki">Legacy blinking state</td><td class="wiki">Boolean</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">context-menu</td><td class="wiki">Popup-menu program shown by the native tray popup signal</td><td class="wiki">Environment variable name</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>The common <code>visible</code> and <code>sensitive</code> states apply to the
 logical icon. Hiding it removes it from the notification area; an insensitive
 icon ignores activation and popup actions.</p>
-<h2> Image value and directives </h2>
+<h2> Image Value and Directives </h2>
 <p>The variable, default, command/file input and saved output use one source
 string. <code>icon:name</code> selects a theme icon, <code>stock:name</code>
 selects a GTK stock ID, and <code>file:path</code> loads a file. A bare value is
@@ -57,7 +57,7 @@ treated as an icon name. <code>clear</code> and <code>removeselected</code>
 remove the current image; <code>refresh</code>, <code>save</code> and
 <code>fileselect</code> use the same value format. A <code>label</code> supplies
 a plain tooltip when no tooltip attribute is present.</p>
-<h2> Signals and actions </h2>
+<h2> Signals and Actions </h2>
 <p>The default signal is <code>activate</code>, normally emitted by a primary
 click. It is also emitted by <code>activate:VARIABLE</code>. Explicit
 <code>button-press-event</code>, <code>button-release-event</code>,
@@ -80,8 +80,8 @@ underlying object is not a GtkWidget.</p>
 	&lt;action signal="popup-menu"&gt;echo "opening menu"&lt;/action&gt;
 &lt;/statusicon&gt;
 </pre>
-<p>The widget requires GTK+ 2.10 or later. Desktop environments may hide status
-icons or require a notification-area host. Introduced in gtkdialog version
+<p>Desktop environments may hide status icons or require a notification-area
+host. Introduced in gtkdialog version
 0.9.0.</p>
 <hr>
 <!-- reference-navigation-start -->

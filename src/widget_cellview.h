@@ -12,7 +12,6 @@
 #ifndef WIDGET_CELLVIEW_H
 #define WIDGET_CELLVIEW_H
 
-#if GTK_CHECK_VERSION(2,6,0)
 void widget_cellview_clear(variable *var);
 GtkWidget *widget_cellview_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type);
@@ -21,6 +20,5 @@ void widget_cellview_fileselect(
 	variable *var, const char *name, const char *value);
 void widget_cellview_refresh(variable *var);
 void widget_cellview_save(variable *var);
-#endif
 
 #endif

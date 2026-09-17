@@ -29,16 +29,16 @@ numeric control.</p><hr>
 	&lt;output file&gt;filename&lt;/output&gt;
 &lt;/scalebutton&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Default</b></th></tr>
-<tr><td class="wiki">range-min / scale-min</td><td class="wiki">Minimum value</td><td class="wiki">0</td></tr>
-<tr><td class="wiki">range-max / scale-max</td><td class="wiki">Maximum value</td><td class="wiki">100</td></tr>
-<tr><td class="wiki">range-step / scale-step</td><td class="wiki">Increment</td><td class="wiki">1</td></tr>
-<tr><td class="wiki">range-value / scale-value</td><td class="wiki">Initial value before input/default</td><td class="wiki">0</td></tr>
-<tr><td class="wiki">digits</td><td class="wiki">Exported decimal places, 0 through 16</td><td class="wiki">2</td></tr>
-<tr><td class="wiki">icon-size</td><td class="wiki">Numeric GTK icon size</td><td class="wiki">small toolbar</td></tr>
-<tr><td class="wiki">icons</td><td class="wiki">Comma- or semicolon-separated themed icon names</td><td class="wiki">none</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Default</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">range-min / scale-min</td><td class="wiki">Minimum value</td><td class="wiki">0</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">range-max / scale-max</td><td class="wiki">Maximum value</td><td class="wiki">100</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">range-step / scale-step</td><td class="wiki">Increment</td><td class="wiki">1</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">range-value / scale-value</td><td class="wiki">Initial value before input/default</td><td class="wiki">0</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">digits</td><td class="wiki">Exported decimal places, 0 through 16</td><td class="wiki">2</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">icon-size</td><td class="wiki">Numeric GTK icon size</td><td class="wiki">small toolbar</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">icons</td><td class="wiki">Comma- or semicolon-separated themed icon names</td><td class="wiki">none</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>The variable, defaults, input and output use numeric values. Values outside
 the range are clamped by GTK. <code>clear</code> and <code>removeselected</code>
@@ -58,8 +58,7 @@ tag.</p>
 	&lt;action&gt;echo "$ZOOM"&lt;/action&gt;
 &lt;/scalebutton&gt;
 </pre>
-<p>This widget requires GTK+ 2.12 or later and was introduced in gtkdialog
-version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.0.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

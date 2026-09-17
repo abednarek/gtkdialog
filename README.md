@@ -7,8 +7,9 @@ application.
 
 This repository contains the maintained GTK+ 2 fork. It keeps the established
 0.8.x interface available while adding GTK2 widgets and compatibility-minded
-extensions. The current version is `0.9.1`; the package and
-executable remain named `gtkdialog`.
+extensions. The current version is `0.9.2`; the project and source package
+remain named `gtkdialog`, while the installed executable is `gdlg2` to avoid
+colliding with other gtkdialog forks.
 
 ![Hierarchical JSON tree in the GTKDialog showcase](screenshots/08-tree-json.png)
 
@@ -17,7 +18,7 @@ executable remain named `gtkdialog`.
 A normal build needs:
 
 - a C compiler, `make` and `pkg-config`;
-- the GTK+ 2 development files.
+- the GTK+ 2.24.33 development files.
 
 The default build contains the GTK2 core and does not enable external widget
 libraries merely because they happen to be installed. Enable only the
@@ -25,7 +26,7 @@ integrations required by the intended installation:
 
 | Configure option | Optional integration |
 | --- | --- |
-| `--with-json-glib` | JSON-GLib 1.0 hierarchical tree input and output |
+| `--with-json-glib` | JSON-GLib 1.0 hierarchical tree data and structured menu input |
 | `--with-vte` | VTE 0.23.5 GTK2 terminal widget |
 | `--with-gtkspell` | GtkSpell 2 inline spelling and correction menu |
 | `--with-gtksourceview` | GtkSourceView 2 source editing and highlighting |
@@ -44,6 +45,25 @@ summary records exactly which integrations will be compiled. Excluding
 JSON-GLib from the complete set also disables its dependent GooCanvas
 integration; a direct `--with-goocanvas` without `--with-json-glib` is an
 error.
+
+Dialogs remain parseable when most external integrations were not selected,
+but the runtime fallback depends on the kind of extension:
+
+| Requested feature in a build without it | Runtime behaviour |
+| --- | --- |
+| JSON tree input or output | Keep the ordinary tree and report that JSON-GLib is required |
+| JSON menu or menubar input | Keep XML-defined items and report that JSON-GLib is required |
+| VTE terminal | Display an explanatory label in place of the terminal |
+| GtkSpell or GtkSourceView editing | Keep an ordinary `GtkTextView` and report a warning |
+| GooCanvas or GtkDatabox drawing area | Display a blank drawing-area placeholder and report a warning |
+| GtkSheet or libwnck widget | Display a diagnostic label and report a warning |
+| GDL dock | Keep its children in labelled, non-rearrangeable GTK2 frames and report a warning |
+| Unix page-setup or print dialog | Stop with a diagnostic because there is no equivalent top-level dialog |
+
+These behaviours are part of the compatibility contract rather than a promise
+that every unavailable widget has the same fallback. Portable scripts can use
+`gdlg2 --version` to check the compiled feature list before requesting an
+optional mode.
 
 From a release archive, build outside the source directory:
 
@@ -67,9 +87,17 @@ Use the usual `DESTDIR` or `--prefix` options when packaging or installing to
 a non-default location. Run `../configure --help` to see all configuration
 options.
 
-A Git checkout also needs Autoconf and Automake. Flex and Bison are needed
-when regenerating the lexer or parser. Generate the build system first, then
-use the same out-of-tree procedure:
+APKBUILD, PKGBUILD and xbps-src recipes for this release are kept
+[in the project repository](https://github.com/abednarek/gtkdialog/tree/main/packaging),
+outside the generated source archive whose checksum they verify. The
+`make dist` archive includes the pinned `bundled/` sources needed by the
+private GTK2 and optional-extension package variants.
+
+A Git checkout also needs Autoconf, Automake, Flex and Bison. The latter two
+generate the lexer and parser during the build; release archives already
+include those generated C sources. This public Git snapshot omits the test
+suite; use the release archive for `make check`. Generate the build system
+first, then use the same out-of-tree procedure:
 
 ```sh
 NOCONFIGURE=1 ./autogen.sh
@@ -77,7 +105,6 @@ mkdir build
 cd build
 ../configure
 make
-make check
 ```
 
 The Texinfo manual is not built by default. Pass `--enable-texinfo` to
@@ -97,7 +124,7 @@ export MAIN_DIALOG='<window title="Hello">
   </vbox>
 </window>'
 
-gtkdialog --program=MAIN_DIALOG
+gdlg2 --program=MAIN_DIALOG
 ```
 
 The complete language and widget index starts at
@@ -110,16 +137,22 @@ The fork extends the original interface without changing the default meaning
 of existing widget tags and data formats. Highlights include:
 
 - hierarchical, versioned JSON trees alongside the original flat tree input;
-- editable tree text, combo, toggle, radio, spin and accelerator cells;
+- versioned JSON files for nested menus and menubars, with icons, styled labels
+  and actions alongside existing XML menu items;
+- editable tree text, combo, toggle, radio, spin and accelerator cells, with
+  static, command and monitored-file completion sources;
 - progress, spinner, icon, image, Pango markup and colour renderers, with
   optional row and cell styling;
 - row-aware and keyboard-accessible popup menus, including a standalone
   desktop menu program;
 - scrolling text editors with bottom-following refreshes, optional GtkSpell 2
-  inline checking and optional GtkSourceView 2 source-code editing;
+  inline checking and optional GtkSourceView 2 source-code editing with
+  undo/redo actions;
 - GTK2 layout and container tags including `grid`, paned windows, scrolled
   windows, explicit viewports, fixed positioning, drawing areas and large
   layout canvases;
+- dynamic notebook tabs built from XML fragments, including mixed VTE terminal
+  and GtkSourceView editor tabs with independent close actions;
 - optional GtkDatabox 0.9 plots with multiple line, point and bar series,
   grids, numeric file input, selection and mouse or action-driven zooming;
 - optional GooCanvas 1 object scenes with nested groups, shapes, paths, text,
@@ -160,7 +193,7 @@ of existing widget tags and data formats. Highlights include:
     <th width="50%">Nested JSON tree</th>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/04-tree-renderers.png" alt="Tree combo cell being edited"></td>
+    <td width="50%"><img src="screenshots/04-tree-renderers.png" alt="Tree text cell showing completion suggestions"></td>
     <td width="50%"><img src="screenshots/08-tree-json.png" alt="Expanded JSON tree with typed renderers"></td>
   </tr>
   <tr>
@@ -194,6 +227,14 @@ of existing widget tags and data formats. Highlights include:
   <tr>
     <td width="50%"><img src="screenshots/21-terminal.png" alt="GTK2 VTE terminal"></td>
     <td width="50%"><img src="screenshots/22-xembed-socket.png" alt="XEmbed clients hosted by GtkSocket"></td>
+  </tr>
+  <tr>
+    <th width="50%">Dynamic notebook: source editor</th>
+    <th width="50%">Dynamic notebook: terminal</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/44-dynamic-notebook-source.png" alt="GtkSourceView in a runtime-added notebook tab with its own close button"></td>
+    <td width="50%"><img src="screenshots/45-dynamic-notebook-terminal.png" alt="VTE shell in a runtime-added notebook tab with its own close button"></td>
   </tr>
   <tr>
     <th width="50%">Embedded colour selector</th>
@@ -272,15 +313,16 @@ Every showcase page is included in the
 a freshly built executable:
 
 ```sh
-GTKDIALOG=/path/to/build/src/gtkdialog ./examples/showcase/showcase
+GTKDIALOG=/path/to/build/src/gdlg2 ./examples/showcase/showcase
 ```
 
 ## Compatibility
 
 Existing 0.8.x XML interfaces, widget names and the flat tree format remain
 supported. New behaviour that could reinterpret existing data is opt-in: for
-example, hierarchical tree data requires `format="json"`, custom tree
-renderers require `column-renderer`, and context menus require `context-menu`.
+example, hierarchical tree data and structured menus require
+`format="json"`, custom tree renderers require `column-renderer`, and
+context menus require `context-menu`.
 
 The parser stack and each container's widget list grow dynamically. There is
 no architecture-specific widget-order workaround and no fixed per-container

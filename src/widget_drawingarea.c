@@ -283,6 +283,8 @@ GtkWidget *widget_drawingarea_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type)
 {
 	DrawingAreaData *drawing_data;
+	gboolean canvas_requested;
+	gboolean databox_requested;
 	GList *element;
 	GtkWidget *widget;
 	gint height = -1;
@@ -295,6 +297,16 @@ GtkWidget *widget_drawingarea_create(
 	if (attributeset_is_avail(Attr, ATTR_HEIGHT))
 		height = widget_parse_size(attributeset_get_first(&element, Attr,
 			ATTR_HEIGHT), "drawing area height");
+
+	canvas_requested = attr != NULL && widget_attribute_is_true(
+		get_tag_attribute(attr, "goocanvas"));
+	databox_requested = attr != NULL && widget_attribute_is_true(
+		get_tag_attribute(attr, "databox"));
+	if (canvas_requested && databox_requested) {
+		gtkdialog_warning("Both GooCanvas and GtkDatabox drawing area modes "
+			"were requested; using GooCanvas.");
+		widget_databox_discard_mode_attributes(attr);
+	}
 
 	widget = widget_canvas_create(Attr, attr, width, height);
 	if (widget != NULL)

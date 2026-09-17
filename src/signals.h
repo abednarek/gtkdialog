@@ -57,12 +57,10 @@ gboolean on_any_widget_focus_in_event(GtkWidget *widget,
 gboolean on_any_widget_focus_out_event(GtkWidget *widget,
 	GdkEventFocus *event, AttributeSet *Attr);
 void on_any_widget_hide(GtkWidget *widget, AttributeSet *Attr);
-#if GTK_CHECK_VERSION(2,16,0)
 void on_any_widget_icon_press_event(GtkWidget *widget,
 	GtkEntryIconPosition pos, GdkEvent *event, AttributeSet *Attr);
 void on_any_widget_icon_release_event(GtkWidget *widget,
 	GtkEntryIconPosition pos, GdkEvent *event, AttributeSet *Attr);
-#endif
 void on_any_widget_child_exited_event(GtkWidget *widget, AttributeSet *Attr);
 gboolean on_any_widget_key_press_event(GtkWidget *widget,
 	GdkEventKey *event, AttributeSet *Attr);

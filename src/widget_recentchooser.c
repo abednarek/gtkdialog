@@ -21,7 +21,6 @@
 #include "widget_menuitem.h"
 #include "widget_recentchooser.h"
 
-#if GTK_CHECK_VERSION(2,10,0)
 #define RECENT_CHOOSER_MENU_DATA "gtkdialog-recent-chooser-menu"
 #define RECENT_CHOOSER_MENU_OWNER_DATA "gtkdialog-recent-chooser-menu-owner"
 
@@ -472,4 +471,3 @@ void widget_recentchooser_save(variable *var)
 	g_free(selection);
 	widget_close_output(output, filename);
 }
-#endif

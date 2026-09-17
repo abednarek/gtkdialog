@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 # This example requires bash.
 

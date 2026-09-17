@@ -34,12 +34,12 @@ for numeric plots without changing the established raster mode.</p><hr>
 	&lt;output file&gt;image filename&lt;/output&gt;
 &lt;/drawingarea&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">scale-mode</td><td class="wiki">How the image occupies the canvas</td><td class="wiki"><code>none</code>, <code>fit</code> or <code>stretch</code></td></tr>
-<tr><td class="wiki">interpolation</td><td class="wiki">Filter used while scaling</td><td class="wiki"><code>nearest</code>, <code>tiles</code>, <code>bilinear</code> or <code>hyper</code></td></tr>
-<tr><td class="wiki">background</td><td class="wiki">Canvas background</td><td class="wiki">GTK colour specification</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">scale-mode</td><td class="wiki">How the image occupies the canvas</td><td class="wiki"><code>none</code>, <code>fit</code> or <code>stretch</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">interpolation</td><td class="wiki">Filter used while scaling</td><td class="wiki"><code>nearest</code>, <code>tiles</code>, <code>bilinear</code> or <code>hyper</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">background</td><td class="wiki">Canvas background</td><td class="wiki">GTK colour specification</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p><code>scale-mode</code> defaults to <code>none</code> and
 <code>interpolation</code> defaults to <code>bilinear</code>. In
@@ -53,12 +53,12 @@ mode requires <code>--with-goocanvas</code> and
 <code>--with-json-glib</code> at configure time. Builds without both create a
 blank placeholder and report the unavailable feature. The
 attribute is opt-in, so raster drawing areas and GtkDatabox plots retain their
-existing behaviour.</p>
+existing behaviour. This mode was introduced in gtkdialog version 0.9.1.</p>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">goocanvas</td><td class="wiki">Enable object-scene mode</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">canvas-left, canvas-top, canvas-right, canvas-bottom</td><td class="wiki">Scrollable scene bounds</td><td class="wiki">Finite numbers; default <code>0, 0, 640, 400</code></td></tr>
-<tr><td class="wiki">scale</td><td class="wiki">Initial scene magnification</td><td class="wiki"><code>0.1</code> to <code>16</code>; default <code>1</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">goocanvas</td><td class="wiki">Enable object-scene mode</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">canvas-left, canvas-top, canvas-right, canvas-bottom</td><td class="wiki">Scrollable scene bounds</td><td class="wiki">Finite numbers; default <code>0, 0, 640, 400</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">scale</td><td class="wiki">Initial scene magnification</td><td class="wiki"><code>0.1</code> to <code>16</code>; default <code>1</code></td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>A file or command input is a complete document of the form
 <code>{"version":1,"items":[...]}</code>. Each <code>&lt;item&gt;</code> is one
@@ -87,27 +87,31 @@ the previous scene intact. <code>clear</code> releases the scene tree and JSON,
 while <code>save</code> writes versioned JSON to the first output file. The
 existing <code>zoomin</code>, <code>zoomout</code> and <code>zoomreset</code>
 functions change whole-scene magnification.</p>
-<h2> Optional GtkDatabox plot mode </h2>
+<h2> Optional GtkDatabox Plot Mode </h2>
 <p>Set <code>databox="true"</code> to create a GtkDatabox 0.9 GTK2 plot. This
 mode is available when gtkdialog was configured with
 <code>--with-gtkdatabox</code>. A build without that package creates a blank
 placeholder and reports the missing optional feature; ordinary drawing areas
-are unaffected.</p>
+are unaffected. This mode was introduced in gtkdialog version 0.9.1.</p>
+<p>GooCanvas and GtkDatabox modes are mutually exclusive. If both
+<code>goocanvas="true"</code> and <code>databox="true"</code> are present,
+gtkdialog reports a warning and uses GooCanvas, preserving the precedence of
+earlier releases.</p>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">databox</td><td class="wiki">Enable numeric plot mode</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">series-types</td><td class="wiki">Renderer for each Y series</td><td class="wiki">Pipe-separated <code>lines</code>, <code>points</code> or <code>bars</code></td></tr>
-<tr><td class="wiki">series-colors</td><td class="wiki">Colour for each Y series</td><td class="wiki">Pipe-separated GTK colour specifications</td></tr>
-<tr><td class="wiki">series-sizes</td><td class="wiki">Line width, point size or bar width</td><td class="wiki">Pipe-separated integers from 1 to 64</td></tr>
-<tr><td class="wiki">show-grid</td><td class="wiki">Draw a plot grid</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td></tr>
-<tr><td class="wiki">grid-color</td><td class="wiki">Grid colour</td><td class="wiki">GTK colour specification</td></tr>
-<tr><td class="wiki">grid-horizontal-lines</td><td class="wiki">Horizontal grid divisions</td><td class="wiki">0 to 100; default 5</td></tr>
-<tr><td class="wiki">grid-vertical-lines</td><td class="wiki">Vertical grid divisions</td><td class="wiki">0 to 100; default 5</td></tr>
-<tr><td class="wiki">grid-line-style</td><td class="wiki">Grid stroke style</td><td class="wiki"><code>dashed</code>, <code>solid</code> or <code>dotted</code></td></tr>
-<tr><td class="wiki">grid-line-width</td><td class="wiki">Grid stroke width</td><td class="wiki">1 to 64</td></tr>
-<tr><td class="wiki">auto-rescale</td><td class="wiki">Fit limits to loaded series</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td></tr>
-<tr><td class="wiki">rescale-border</td><td class="wiki">Relative margin around automatic limits</td><td class="wiki">0.0 to 1.0; default 0.05</td></tr>
-<tr><td class="wiki">min-x, max-x, min-y, max-y</td><td class="wiki">Explicit complete plot limits</td><td class="wiki">Finite numbers</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">databox</td><td class="wiki">Enable numeric plot mode</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">series-types</td><td class="wiki">Renderer for each Y series</td><td class="wiki">Pipe-separated <code>lines</code>, <code>points</code> or <code>bars</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">series-colors</td><td class="wiki">Colour for each Y series</td><td class="wiki">Pipe-separated GTK colour specifications</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">series-sizes</td><td class="wiki">Line width, point size or bar width</td><td class="wiki">Pipe-separated integers from 1 to 64</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">show-grid</td><td class="wiki">Draw a plot grid</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">grid-color</td><td class="wiki">Grid colour</td><td class="wiki">GTK colour specification</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">grid-horizontal-lines</td><td class="wiki">Horizontal grid divisions</td><td class="wiki">0 to 100; default 5</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">grid-vertical-lines</td><td class="wiki">Vertical grid divisions</td><td class="wiki">0 to 100; default 5</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">grid-line-style</td><td class="wiki">Grid stroke style</td><td class="wiki"><code>dashed</code>, <code>solid</code> or <code>dotted</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">grid-line-width</td><td class="wiki">Grid stroke width</td><td class="wiki">1 to 64</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">auto-rescale</td><td class="wiki">Fit limits to loaded series</td><td class="wiki"><code>true</code> or <code>false</code>; default <code>true</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">rescale-border</td><td class="wiki">Relative margin around automatic limits</td><td class="wiki">0.0 to 1.0; default 0.05</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">min-x, max-x, min-y, max-y</td><td class="wiki">Explicit complete plot limits</td><td class="wiki">Finite numbers</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>Native GtkDatabox properties are also tag attributes. The most useful are
 <code>enable-selection</code>, <code>enable-zoom</code>,
@@ -132,7 +136,7 @@ action signal is <code>selection-finalized</code>; explicit
 The existing <code>zoomin</code>, <code>zoomout</code> and
 <code>zoomreset</code> functions respectively zoom to the current selection,
 step out and restore the complete limits.</p>
-<h2> Value and functions </h2>
+<h2> Value and Functions </h2>
 <p>A file input names an image to load. A command input reads an image filename
 from its first output line. Several inputs are evaluated in order and the last
 successfully loaded image wins. The variable contains the original filename,

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
 <window title="Signals" icon-name="gtk-dialog-warning">

@@ -2,7 +2,7 @@
 
 # This example requires bash.
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 window_width=800
 icon_names=(echo `<icon_names.txt`)

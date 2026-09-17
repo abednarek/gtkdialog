@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -z "$GTKDIALOG" ] && GTKDIALOG=gtkdialog
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
 
 socket_demo_dir=$(mktemp -d "${TMPDIR:-/tmp}/gtkdialog-socket.XXXXXX") || exit 1
 SOCKET_PID_FILE=$socket_demo_dir/client.pid

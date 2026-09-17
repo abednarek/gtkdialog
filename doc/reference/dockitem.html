@@ -32,17 +32,17 @@ gtkdialog widget.</p><hr>
 </pre>
 <p>The child widget precedes the directives. Names must be unique within a dock;
 explicit names are required when a saved layout will be loaded later.</p>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">name</td><td class="wiki">Stable identity in targets and layout files</td><td class="wiki">Unique text name; generated when omitted</td></tr>
-<tr><td class="wiki">stock-id</td><td class="wiki">Panel and switcher icon</td><td class="wiki">GTK2 stock identifier</td></tr>
-<tr><td class="wiki">position</td><td class="wiki">Initial placement</td><td class="wiki"><code>center</code>, <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code> or <code>floating</code></td></tr>
-<tr><td class="wiki">target</td><td class="wiki">Named panel relative to which this item is placed</td><td class="wiki">Dockitem name; XML order is not significant</td></tr>
-<tr><td class="wiki">docking-param</td><td class="wiki">Initial splitter size passed to GDL</td><td class="wiki">Non-negative integer</td></tr>
-<tr><td class="wiki">behavior</td><td class="wiki">Grip and placement restrictions</td><td class="wiki">Flags separated by spaces, commas or <code>|</code></td></tr>
-<tr><td class="wiki">floating-x, floating-y</td><td class="wiki">Initial detached-window position</td><td class="wiki">Signed pixel coordinates</td></tr>
-<tr><td class="wiki">floating-width, floating-height</td><td class="wiki">Initial detached-window size</td><td class="wiki">Positive pixel counts; defaults 320 and 240</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">name</td><td class="wiki">Stable identity in targets and layout files</td><td class="wiki">Unique text name; generated when omitted</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">stock-id</td><td class="wiki">Panel and switcher icon</td><td class="wiki">GTK2 stock identifier</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">position</td><td class="wiki">Initial placement</td><td class="wiki"><code>center</code>, <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code> or <code>floating</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">target</td><td class="wiki">Named panel relative to which this item is placed</td><td class="wiki">Dockitem name; XML order is not significant</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">docking-param</td><td class="wiki">Initial splitter size passed to GDL</td><td class="wiki">Non-negative integer</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">behavior</td><td class="wiki">Grip and placement restrictions</td><td class="wiki">Flags separated by spaces, commas or <code>|</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">floating-x, floating-y</td><td class="wiki">Initial detached-window position</td><td class="wiki">Signed pixel coordinates</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">floating-width, floating-height</td><td class="wiki">Initial detached-window size</td><td class="wiki">Positive pixel counts; defaults 320 and 240</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>The behavior flags are <code>normal</code>, <code>never-floating</code>,
 <code>never-vertical</code>, <code>never-horizontal</code>, <code>locked</code>,
@@ -61,7 +61,7 @@ later in the XML. Other target dependencies are resolved before attachment, so
 a dockitem may refer to another item declared later. A missing target or a
 target cycle produces a warning and leaves the affected panel attached to the
 main dock instead of discarding its content.</p>
-<h2> Value and signals </h2>
+<h2> Value and Signals </h2>
 <p>The exported variable contains the dockitem's stable name. The default action
 signal is <code>selected</code>, emitted when the item becomes the selected page
 of a GDL switcher. Dockitems have no type-specific input, output, refresh, save
@@ -81,7 +81,7 @@ widget contract</a>. Common state functions address the complete panel.</p>
   &lt;action&gt;echo "Selected $OUTPUT_PANEL"&lt;/action&gt;
 &lt;/dockitem&gt;
 </pre>
-<p>This widget was introduced in gtkdialog version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

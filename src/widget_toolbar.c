@@ -26,7 +26,6 @@
 #include "signals.h"
 #include "tag_attributes.h"
 
-#if GTK_CHECK_VERSION(2,4,0)
 static gboolean widget_toolbar_type_is_toggle(gint Type)
 {
 	return Type == WIDGET_TOGGLETOOLBUTTON ||
@@ -169,16 +168,13 @@ static void widget_toolitem_set_layout(GtkToolItem *item, tag_attr *attr)
 		kill_tag_attribute(attr, "palette-new-row");
 	}
 }
-#endif
 
 void widget_toolbar_clear(variable *var)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	if (widget_toolbar_type_is_toggle(var->Type))
 		gtk_toggle_tool_button_set_active(
 			GTK_TOGGLE_TOOL_BUTTON(var->Widget), FALSE);
 	else
-#endif
 		fprintf(stderr, "%s(): Clear not implemented for this widget.\n",
 			__func__);
 }
@@ -186,7 +182,6 @@ void widget_toolbar_clear(variable *var)
 GtkWidget *widget_toolbar_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	GtkOrientation orientation;
 	GtkToolbarStyle style;
 	GtkWidget *widget;
@@ -227,19 +222,11 @@ GtkWidget *widget_toolbar_create(
 	}
 	stackelement_clear(&children);
 	return widget;
-#else
-	(void)Attr;
-	(void)attr;
-	(void)Type;
-	g_error("gtkdialog: <toolbar> requires GTK+ 2.4 or later.");
-	return NULL;
-#endif
 }
 
 GtkWidget *widget_toolitem_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	GList *element;
 	const gchar *label;
 	GtkToolItem *item;
@@ -276,7 +263,6 @@ GtkWidget *widget_toolitem_create(
 			item = gtk_radio_tool_button_new_from_widget(
 				GTK_RADIO_TOOL_BUTTON(lasttoolradiowidget));
 	} else if (Type == WIDGET_MENUTOOLBUTTON) {
-#if GTK_CHECK_VERSION(2,6,0)
 		GtkWidget *menu;
 
 		item = gtk_menu_tool_button_new(NULL, label);
@@ -286,10 +272,6 @@ GtkWidget *widget_toolitem_create(
 		g_object_ref_sink(menu);
 		gtk_menu_tool_button_set_menu(GTK_MENU_TOOL_BUTTON(item), menu);
 		g_object_unref(menu);
-#else
-		g_error("gtkdialog: <menutoolbutton> requires GTK+ 2.6 or later.");
-		return NULL;
-#endif
 	} else
 		item = gtk_tool_button_new(NULL, label);
 
@@ -297,24 +279,13 @@ GtkWidget *widget_toolitem_create(
 		gtk_tool_button_set_label(GTK_TOOL_BUTTON(item), label);
 	widget_toolitem_set_layout(item, attr);
 	return GTK_WIDGET(item);
-#else
-	(void)Attr;
-	(void)attr;
-	(void)Type;
-	g_error("gtkdialog: tool items require GTK+ 2.4 or later.");
-	return NULL;
-#endif
 }
 
 gchar *widget_toolbar_envvar_construct(GtkWidget *widget)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	if (GTK_IS_TOGGLE_TOOL_BUTTON(widget))
 		return g_strdup(gtk_toggle_tool_button_get_active(
 			GTK_TOGGLE_TOOL_BUTTON(widget)) ? "true" : "false");
-#else
-	(void)widget;
-#endif
 	return g_strdup("");
 }
 
@@ -322,11 +293,9 @@ void widget_toolbar_fileselect(
 	variable *var, const char *name, const char *value)
 {
 	(void)name;
-#if GTK_CHECK_VERSION(2,4,0)
 	if (widget_toolbar_type_is_toggle(var->Type))
 		widget_toolbar_set_active(var->Widget, value);
 	else
-#endif
 		fprintf(stderr, "%s(): Fileselect not implemented for this widget.\n",
 			__func__);
 }
@@ -335,16 +304,13 @@ void widget_toolbar_refresh(variable *var)
 {
 	GList *element;
 	gchar *input;
-#if GTK_CHECK_VERSION(2,4,0)
 	gchar *value;
-#endif
 	gboolean initialised;
 
 	initialised = GPOINTER_TO_INT(g_object_get_data(
 		G_OBJECT(var->Widget), "_initialised"));
 	input = attributeset_get_first(&element, var->Attributes, ATTR_INPUT);
 	while (input != NULL) {
-#if GTK_CHECK_VERSION(2,4,0)
 		if (widget_toolbar_type_is_toggle(var->Type)) {
 			if (input_is_shell_command(input))
 				widget_toolbar_input_by_command(var, input + 8);
@@ -355,7 +321,6 @@ void widget_toolbar_refresh(variable *var)
 				widget_toolbar_input_by_file(var, input + 5);
 			}
 		} else
-#endif
 			fprintf(stderr,
 				"%s(): <input> not implemented for this widget.\n",
 				__func__);
@@ -373,13 +338,11 @@ void widget_toolbar_refresh(variable *var)
 		fprintf(stderr,
 			"%s(): <item> not implemented for this widget.\n", __func__);
 	if (attributeset_is_avail(var->Attributes, ATTR_DEFAULT)) {
-#if GTK_CHECK_VERSION(2,4,0)
 		if (widget_toolbar_type_is_toggle(var->Type)) {
 			value = attributeset_get_first(&element, var->Attributes,
 				ATTR_DEFAULT);
 			widget_toolbar_set_active(var->Widget, value);
 		} else
-#endif
 			fprintf(stderr,
 				"%s(): <default> not implemented for this widget.\n",
 				__func__);
@@ -394,12 +357,10 @@ void widget_toolbar_refresh(variable *var)
 		var->Type == WIDGET_MENUTOOLBUTTON)
 		g_signal_connect(G_OBJECT(var->Widget), "clicked",
 			G_CALLBACK(button_clicked_attr), (gpointer)var->Attributes);
-#if GTK_CHECK_VERSION(2,4,0)
 	else if (widget_toolbar_type_is_toggle(var->Type))
 		g_signal_connect(G_OBJECT(var->Widget), "toggled",
 			G_CALLBACK(on_any_widget_toggled_event),
 			(gpointer)var->Attributes);
-#endif
 }
 
 void widget_toolbar_removeselected(variable *var)
@@ -411,7 +372,6 @@ void widget_toolbar_removeselected(variable *var)
 
 void widget_toolbar_save(variable *var)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	FILE *output;
 	GList *element;
 	gchar *directive;
@@ -446,9 +406,4 @@ void widget_toolbar_save(variable *var)
 	fputs(gtk_toggle_tool_button_get_active(
 		GTK_TOGGLE_TOOL_BUTTON(var->Widget)) ? "true" : "false", output);
 	widget_close_output(output, filename);
-#else
-	(void)var;
-	fprintf(stderr, "%s(): Save not implemented for this widget.\n",
-		__func__);
-#endif
 }

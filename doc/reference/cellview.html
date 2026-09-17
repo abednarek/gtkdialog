@@ -31,22 +31,22 @@ for presenting one compact model row as text with an optional image.</p><hr>
 	&lt;output file&gt;filename&lt;/output&gt;
 &lt;/cellview&gt;
 </pre>
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">stock</td><td class="wiki">GTK stock image displayed before the text</td><td class="wiki">Stock identifier</td></tr>
-<tr><td class="wiki">icon-name</td><td class="wiki">Themed image displayed before the text</td><td class="wiki">Icon theme name</td></tr>
-<tr><td class="wiki">image-name</td><td class="wiki">Image file displayed before the text</td><td class="wiki">Filename</td></tr>
-<tr><td class="wiki">image-file</td><td class="wiki">Alias of <code>image-name</code></td><td class="wiki">Filename</td></tr>
-<tr><td class="wiki">icon-size</td><td class="wiki">Loaded image size</td><td class="wiki">Positive pixel count; default 24</td></tr>
-<tr><td class="wiki">use-markup</td><td class="wiki">Render the text as Pango markup</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">stock</td><td class="wiki">GTK stock image displayed before the text</td><td class="wiki">Stock identifier</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">icon-name</td><td class="wiki">Themed image displayed before the text</td><td class="wiki">Icon theme name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">image-name</td><td class="wiki">Image file displayed before the text</td><td class="wiki">Filename</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">image-file</td><td class="wiki">Alias of <code>image-name</code></td><td class="wiki">Filename</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">icon-size</td><td class="wiki">Loaded image size</td><td class="wiki">Positive pixel count; default 24</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">use-markup</td><td class="wiki">Render the text as Pango markup</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>Normal writable scalar GtkCellView properties, including
 <code>background</code>, <code>background-set</code> and
 <code>fit-model</code>, are also available. The object-valued
 <code>model</code> and tree-path-valued <code>displayed-row</code> properties
 are managed internally and cannot be supplied as textual attributes.</p>
-<h2> Value and functions </h2>
+<h2> Value and Functions </h2>
 <p>The widget owns a one-row <code>GtkListStore</code>, a pixbuf renderer and
 a text renderer. <code>default</code> overrides <code>label</code>. Each input
 command or file replaces the current text with its complete output; if several
@@ -75,8 +75,7 @@ tag.</p>
 	&lt;output file&gt;/tmp/saved-status&lt;/output&gt;
 &lt;/cellview&gt;
 </pre>
-<p>This widget requires GTK+ 2.6 or later and was introduced in gtkdialog
-version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.0.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

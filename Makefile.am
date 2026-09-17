@@ -5,6 +5,9 @@ endif
 DIST_SUBDIRS = src doc data
 
 DIST_GLOBS = \
+	bundled/* \
+	bundled/distfiles/* \
+	bundled/patches/*/*.patch \
 	doc/reference/* \
 	screenshots/* \
 	examples/accellabel/* \

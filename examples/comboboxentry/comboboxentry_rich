@@ -1,0 +1,35 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
+
+MAIN_DIALOG='
+<window title="Rich editable GTK2 combo box" width-request="440">
+	<vbox border-width="12" spacing="10">
+		<text xalign="0">
+			<label>Select a styled command, or type to filter and complete it.</label>
+		</text>
+		<comboboxentry item-model="rich" icon-size="20"
+			completion="true" completion-minimum-key-length="1"
+			completion-match="contains" completion-case-sensitive="false">
+			<variable>COMMAND</variable>
+			<default>open</default>
+			<item value="open" stock="gtk-open" font="Sans Bold 9">Open document</item>
+			<item value="save" stock="gtk-save" foreground="#204a87">Save document</item>
+			<item value="review" stock="gtk-apply" markup="true">"<b>Review changes</b>"</item>
+			<item value="offline" stock="gtk-disconnect" sensitive="false">Offline action</item>
+			<action>echo "Current value: $COMMAND"</action>
+			<action signal="activate">echo "Entered value: $COMMAND"</action>
+		</comboboxentry>
+		<hbuttonbox>
+			<button ok></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

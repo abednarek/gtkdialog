@@ -1,4 +1,4 @@
-#! /usr/local/bin/gtkdialog -f 
+<!-- Run with: gdlg2 --file examples/miscellaneous/standalone_file -->
 
 <window>
 	<vbox>

@@ -24,7 +24,6 @@
 #include "widgets.h"
 #include "widget_offscreenwindow.h"
 
-#if GTK_CHECK_VERSION(2,20,0)
 static gboolean widget_offscreenwindow_damaged(GtkWidget *widget,
 	GdkEventExpose *event, AttributeSet *attributes)
 {
@@ -32,30 +31,25 @@ static gboolean widget_offscreenwindow_damaged(GtkWidget *widget,
 	widget_signal_executor(widget, attributes, "damage-event");
 	return FALSE;
 }
-#endif
 
 GtkWidget *widget_offscreenwindow_create(AttributeSet *attributes,
 	tag_attr *tag_attributes, gint type)
 {
-#if GTK_CHECK_VERSION(2,20,0)
 	GtkWidget *widget;
 	stackelement children;
-#endif
 
 	(void)attributes;
 	(void)tag_attributes;
 	(void)type;
-#if GTK_CHECK_VERSION(2,20,0)
-	widget = gtk_offscreen_window_new();
 	children = pop();
-	if (children.nwidgets > 0)
-		gtk_container_add(GTK_CONTAINER(widget), children.widgets[0]);
+	if (children.nwidgets != 1) {
+		stackelement_clear(&children);
+		g_error("gtkdialog: <offscreenwindow> requires exactly one direct child widget.");
+	}
+	widget = gtk_offscreen_window_new();
+	gtk_container_add(GTK_CONTAINER(widget), children.widgets[0]);
 	stackelement_clear(&children);
 	return widget;
-#else
-	g_error("The offscreenwindow widget requires GTK+ 2.20 or later.");
-	return NULL;
-#endif
 }
 
 gchar *widget_offscreenwindow_envvar_construct(GtkWidget *widget)
@@ -67,7 +61,6 @@ gchar *widget_offscreenwindow_envvar_construct(GtkWidget *widget)
 
 void widget_offscreenwindow_refresh(variable *var)
 {
-#if GTK_CHECK_VERSION(2,20,0)
 	GList *element;
 	GtkWidget *child;
 	gboolean initialised;
@@ -100,14 +93,10 @@ void widget_offscreenwindow_refresh(variable *var)
 		gtk_widget_queue_draw(child);
 	else
 		gtk_widget_queue_draw(var->Widget);
-#else
-	(void)var;
-#endif
 }
 
 void widget_offscreenwindow_save(variable *var)
 {
-#if GTK_CHECK_VERSION(2,20,0)
 	GError *error = NULL;
 	GList *element;
 	GdkPixbuf *pixbuf;
@@ -154,9 +143,6 @@ void widget_offscreenwindow_save(variable *var)
 	}
 	g_object_unref(pixbuf);
 	g_free(format);
-#else
-	(void)var;
-#endif
 }
 
 void widget_offscreenwindow_clear(variable *var)

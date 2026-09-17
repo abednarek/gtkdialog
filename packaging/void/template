@@ -1,0 +1,33 @@
+# Template file for 'gdlg2'
+pkgname=gdlg2
+version=0.9.2
+revision=1
+hostmakedepends="pkg-config"
+makedepends="gtk+-devel json-glib-devel"
+checkdepends="xvfb-run xdotool dejavu-fonts-ttf"
+depends="hicolor-icon-theme"
+short_desc="GTK2 dialog builder for shell scripts"
+maintainer="Artur Bednarek <artur@unix.org.pl>"
+license="GPL-2.0-or-later"
+homepage="https://github.com/abednarek/gtkdialog"
+distfiles="${homepage}/releases/download/${version}/gtkdialog-${version}.tar.gz"
+wrksrc="gtkdialog-${version}"
+checksum="27ba33ab0b72cd954890d77da12ce1302b1a839599034e2806890610a81d3d8e"
+
+do_configure() {
+	mkdir -p build
+	cd build
+	../configure --prefix=/usr --with-json-glib
+}
+
+do_build() {
+	make -C build
+}
+
+do_check() {
+	make -C build check
+}
+
+do_install() {
+	make -C build DESTDIR="$DESTDIR" install
+}

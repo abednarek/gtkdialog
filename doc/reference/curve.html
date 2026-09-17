@@ -38,20 +38,20 @@ by vertical bars. Samples cover the complete X range, including both endpoints,
 and must remain inside the configured Y range. The <code>samples</code>
 attribute controls the exported and saved sample count. If it is omitted, an
 accepted default or input vector supplies that count.</p>
-<h2> Tag attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">controls</td><td class="wiki">Show the native spline, linear, free, gamma and reset controls</td><td class="wiki"><code>true</code> or <code>false</code>; default false</td></tr>
-<tr><td class="wiki">curve-type</td><td class="wiki">Editing/interpolation mode</td><td class="wiki"><code>linear</code>, <code>spline</code> or <code>free</code></td></tr>
-<tr><td class="wiki">min-x, max-x</td><td class="wiki">Finite horizontal range</td><td class="wiki">Numbers with min-x less than max-x</td></tr>
-<tr><td class="wiki">min-y, max-y</td><td class="wiki">Finite sample range</td><td class="wiki">Numbers with min-y less than max-y</td></tr>
-<tr><td class="wiki">gamma</td><td class="wiki">Initial gamma curve</td><td class="wiki">Positive finite number</td></tr>
-<tr><td class="wiki">samples</td><td class="wiki">Exported and saved vector length</td><td class="wiki">Integer from 2 to 4096; default 32</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">controls</td><td class="wiki">Show the native spline, linear, free, gamma and reset controls</td><td class="wiki"><code>true</code> or <code>false</code>; default false</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">curve-type</td><td class="wiki">Editing/interpolation mode</td><td class="wiki"><code>linear</code>, <code>spline</code> or <code>free</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">min-x, max-x</td><td class="wiki">Finite horizontal range</td><td class="wiki">Numbers with min-x less than max-x</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">min-y, max-y</td><td class="wiki">Finite sample range</td><td class="wiki">Numbers with min-y less than max-y</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">gamma</td><td class="wiki">Initial gamma curve</td><td class="wiki">Positive finite number</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">samples</td><td class="wiki">Exported and saved vector length</td><td class="wiki">Integer from 2 to 4096; default 32</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>The native initial size is 256 by 160 pixels. Common GtkWidget scalar
 properties, including width-request and height-request, remain available as
 normal tag attributes.</p>
-<h2> Directives and initialisation </h2>
+<h2> Directives and Initialisation </h2>
 <p><code>default</code>, command input and file input set the curve from the
 same vector representation. As with established gtkdialog data widgets,
 <code>default</code> is applied after initial input. A default or input vector
@@ -59,7 +59,7 @@ takes precedence over <code>gamma</code>. An explicitly requested curve type
 is applied after the initial vector. <code>output file</code> is written by
 <code>save</code>; file input supports <code>file-monitor</code> and
 <code>auto-refresh</code>.</p>
-<h2> Signals and functions </h2>
+<h2> Signals and Functions </h2>
 <p>The logical default <code>changed</code> signal runs after the user releases
 the pointer following an edit. The native <code>curve-type-changed</code>
 signal can be selected explicitly, including mode changes made with the
@@ -80,7 +80,7 @@ widget contract</a>.</p>
   &lt;action&gt;echo "$TRANSFER"&lt;/action&gt;
 &lt;/curve&gt;
 </pre>
-<p>Introduced in gtkdialog version 0.9.0.</p>
+<p>Introduced in gtkdialog version 0.9.1.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

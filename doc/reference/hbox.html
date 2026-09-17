@@ -153,6 +153,18 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkHBox.html">GtkHBox</a> o
 
 <h2> Functions </h2>
 
+<p>Since 0.9.2, <code>reparentwidget:CHILD:BOX</code> can move an already-created
+direct box/notebook child into a named hbox. To replace a panel, first move its
+current child to a holding box, then move the replacement into this hbox. The
+child's state is preserved. See <a href="syntax.html">syntax</a>.</p>
+
+<p>Since 0.9.2, <code>replacebox:TEMPLATE:BOX:INSTANCE</code> can instead
+build a new child from a named XML fragment and replace all direct children
+of this hbox. The old widgets and their state are destroyed only after the
+new fragment has been built. Use <code>@INSTANCE@</code> in the template's
+variable names and action parameters. See <a href="syntax.html">syntax</a>
+and <a href="../../examples/vbox/vbox_template">the working example</a>.</p>
+
 <p>The following functions can be performed upon this widget by any widget capable of emitting signals:</p>
 
 <table class="wiki" border="1" cellpadding="5px">
@@ -170,7 +182,7 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkHBox.html">GtkHBox</a> o
 <tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> 0.8.1 </td></tr>
-<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8 1 </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 </table>

@@ -125,6 +125,8 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkNotebook.html">GtkNotebo
 <tr><td class="wiki"> tab-labels </td><td class="wiki"> Tab labels </td><td class="wiki"> <i>label0</i> <code>|</code> <i>label1</i> <code>|</code> ... </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> tab-prefix </td><td class="wiki"> Tab label prefix </td><td class="wiki"> </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> tab-suffix </td><td class="wiki"> Tab label suffix </td><td class="wiki"> </td><td class="wiki"> 0.7.21 </td></tr>
+<tr><td class="wiki"> tab-close-buttons </td><td class="wiki"> Show a close button on all pages </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.9.2 </td></tr>
+<tr><td class="wiki"> tab-close-action </td><td class="wiki"> Optional action before closing a dynamic page; <code>@INSTANCE@</code> is replaced with its identifier </td><td class="wiki"> An action command </td><td class="wiki"> 0.9.2 </td></tr>
 </table>
 
 <h2> Directives </h2>
@@ -138,8 +140,8 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkNotebook.html">GtkNotebo
 <tr><td class="wiki"> input<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Data input source </td><td class="wiki"> Shell command producing a page index from <code>-1</code> (last) to the last page; invalid values retain the current page </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> input file<sup><a href="#note1">[1]</a></sup> </td><td class="wiki"> Data input source </td><td class="wiki"> Filename containing a page index from <code>-1</code> (last) to the last page; invalid values retain the current page </td><td class="wiki"> 0.7.21 </td></tr>
 <tr><td class="wiki"> sensitive </td><td class="wiki"> Sensitive state </td><td class="wiki"> <code>true</code> or <code>false</code> </td><td class="wiki"> 0.7.21 </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Execute command on signal </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> action signal="<i>type</i>" </td><td class="wiki"> Perform function on signal </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Execute command on signal conditionally </td><td class="wiki"> Shell command </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> action signal="<i>type</i>" condition="<i>type</i>" </td><td class="wiki"> Perform function on signal conditionally </td><td class="wiki"> <i>function</i>:<i>parameter</i> </td><td class="wiki"> 0.8.3 </td></tr>
 <tr><td class="wiki"> output file </td><td class="wiki"> Data output target </td><td class="wiki"> Filename </td><td class="wiki"> 0.7.21 </td></tr>
@@ -157,12 +159,73 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkNotebook.html">GtkNotebo
 
 <h2> Functions </h2>
 
+<p>Since 0.9.2, <code>reparentwidget:PAGE:NOTEBOOK[:LABEL]</code> can append an
+already-created page to a named notebook. <code>PAGE</code> must name a direct
+child of a box or notebook in the same window. Moving that page back to a
+named box removes its tab without destroying the page. This does not parse a
+new XML fragment or alter the meaning of <code>refresh</code>. See
+<a href="syntax.html">syntax</a> for the general action and
+<a href="../../examples/notebook/notebook_dynamic">the working example</a>.</p>
+
+<p>Since 0.9.2, <code>appendtab:TEMPLATE:NOTEBOOK:INSTANCE:LABEL</code> can
+create a new page from a named XML fragment while the application runs.
+The fragment must contain exactly one widget tree, without a surrounding
+<code>&lt;window&gt;</code>. Use <code>@INSTANCE@</code> in its variable names
+and action parameters; gtkdialog replaces it with the requested instance
+identifier. <code>removetab:INSTANCE</code> destroys that page and releases
+its variables. A removed instance name may then be reused. These functions
+do not affect pages declared in the original notebook XML. See
+<a href="syntax.html">syntax</a> for the action contract and
+<a href="../../examples/notebook/notebook_template">the template example</a>.</p>
+
+<p>Since 0.9.2, <code>selecttab:INSTANCE</code> selects a live page created
+by <code>appendtab</code>. Selection is explicit: appending a page does not
+switch the current page. A missing or removed instance leaves the current
+selection unchanged.</p>
+
+<p>The template environment variable may contain the XML fragment itself
+or <code>file:/path/to/fragment.xml</code>. A file is read anew on each
+<code>appendtab</code> call and must contain one root widget, such as
+<code>&lt;hbox&gt;</code> or <code>&lt;vbox&gt;</code>, without a surrounding
+window. Relative file paths use gtkdialog's current working directory.</p>
+
+<p><code>appendtabauto:TEMPLATE:NOTEBOOK:LABEL</code> creates a new instance
+without a caller-supplied identifier and selects the new page. Each call
+assigns a fresh identifier, substituted for <code>@INSTANCE@</code> in
+variable names and action parameters inside the template. For example, a
+template can close its own page with
+<code>&lt;action&gt;removetab:@INSTANCE@&lt;/action&gt;</code>. The generated
+identifier is not stable across runs; scripts should not depend on its
+spelling. This action accepts the same inline or file-backed XML templates
+as <code>appendtab</code>. In its label, <code>@INDEX@</code> is replaced by
+the generated sequence number, for example <code>Shell @INDEX@</code>.</p>
+
+<p>Set <code>tab-close-buttons="true"</code> on a notebook to display a
+close button within every tab label, including pages defined in the initial
+XML. An optional <code>tab-close-action</code> is run before a dynamic page
+is destroyed; its <code>@INSTANCE@</code> placeholder names the clicked
+instance. Initial XML pages have no instance and close without that action.
+This can end a terminal's child process before closing a dynamic tab.
+For a notebook mixing page types, the root widget of a dynamic XML fragment
+may set its own <code>tab-close-action</code>. It overrides the notebook's
+action for that page only; other pages still use the notebook action. A
+terminal fragment can therefore use
+<code>tab-close-action="hangupterminal:@INSTANCE@_TERMINAL"</code> while an
+editor fragment closes without sending a terminal signal.
+If the action already removed the clicked page, the close button will not
+remove a subsequently created page with the same identifier.</p>
+
+<p>Since 0.9.2, a notebook may start with no child pages. Its value is
+<code>-1</code> until the first page is appended. This permits a dialog to
+create every page at runtime with <code>appendtab</code> or
+<code>appendtabauto</code>, without a placeholder page.</p>
+
 <p>The following functions can be performed upon this widget by any widget capable of emitting signals:</p>
 
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
-<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> enable </td><td class="wiki"> Sensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> disable </td><td class="wiki"> Desensitise widget </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> show </td><td class="wiki"> Show widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> hide </td><td class="wiki"> Hide widget </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 <tr><td class="wiki"> grabfocus </td><td class="wiki"> Grab input focus </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
@@ -175,10 +238,10 @@ A <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkNotebook.html">GtkNotebo
 <table class="wiki" border="1" cellpadding="5px">
 <tr><th class="wiki"> <b>Type</b> </th><th class="wiki"> <b>Description</b> </th><th class="wiki"> <b>Parameter</b> </th><th class="wiki"> <b>Since</b> </th></tr>
 <tr><td class="wiki"> break </td><td class="wiki"> Break out of actions list </td><td class="wiki"> None </td><td class="wiki"> 0.8.3 </td></tr>
-<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
-<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> </td></tr>
+<tr><td class="wiki"> command </td><td class="wiki"> Execute command </td><td class="wiki"> Shell command </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> exit </td><td class="wiki"> Exit dialog </td><td class="wiki"> A value for the <code>EXIT</code> variable </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> closewindow </td><td class="wiki"> Close dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
+<tr><td class="wiki"> launch </td><td class="wiki"> Launch dialog </td><td class="wiki"> Variable name </td><td class="wiki"> Legacy </td></tr>
 <tr><td class="wiki"> presentwindow </td><td class="wiki"> <a href="https://www.csparks.com/gtk2-html-2.24.33/GtkWindow.html#gtk-window-present">Present</a> dialog </td><td class="wiki"> Variable name </td><td class="wiki"> 0.8.1 </td></tr>
 </table>
 

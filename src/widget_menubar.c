@@ -29,6 +29,7 @@
 #include "automaton.h"
 #include "widgets.h"
 #include "signals.h"
+#include "widget_menu_json.h"
 
 /* Defines */
 //#define DEBUG_CONTENT
@@ -47,8 +48,6 @@ static void widget_menubar_input_by_items(variable *var);
 
 void widget_menubar_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -120,8 +119,6 @@ gchar *widget_menubar_envvar_construct(GtkWidget *widget)
 void widget_menubar_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -141,6 +138,7 @@ void widget_menubar_refresh(variable *var)
 {
 	GList            *element;
 	gchar            *act;
+	gchar            *format;
 	gint              initialised = FALSE;
 
 #ifdef DEBUG_TRANSITS
@@ -155,11 +153,17 @@ void widget_menubar_refresh(variable *var)
 	/* The <input> tag... */
 	act = attributeset_get_first(&element, var->Attributes, ATTR_INPUT);
 	while (act) {
-		if (input_is_shell_command(act))
-			widget_menubar_input_by_command(var, act + 8);
-		/* input file stock = "File:", input file = "File:/path/to/file" */
-		if (strncasecmp(act, "file:", 5) == 0 && strlen(act) > 5)
-			widget_menubar_input_by_file(var, act + 5);
+		format = attributeset_get_this_tagattr(&element, var->Attributes,
+			ATTR_INPUT, "format");
+		if (format && g_ascii_strcasecmp(format, "json") == 0)
+			widget_menu_json_refresh(var, var->Widget, act, initialised);
+		else {
+			if (input_is_shell_command(act))
+				widget_menubar_input_by_command(var, act + 8);
+			/* input file stock = "File:", input file = "File:/path/to/file" */
+			if (strncasecmp(act, "file:", 5) == 0 && strlen(act) > 5)
+				widget_menubar_input_by_file(var, act + 5);
+		}
 		act = attributeset_get_next(&element, var->Attributes, ATTR_INPUT);
 	}
 
@@ -203,8 +207,6 @@ void widget_menubar_refresh(variable *var)
 
 void widget_menubar_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -224,8 +226,6 @@ void widget_menubar_removeselected(variable *var)
 
 void widget_menubar_save(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -244,8 +244,6 @@ void widget_menubar_save(variable *var)
 
 static void widget_menubar_input_by_command(variable *var, char *command)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -264,8 +262,6 @@ static void widget_menubar_input_by_command(variable *var, char *command)
 
 static void widget_menubar_input_by_file(variable *var, char *filename)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -284,8 +280,6 @@ static void widget_menubar_input_by_file(variable *var, char *filename)
 
 static void widget_menubar_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

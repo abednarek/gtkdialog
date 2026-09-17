@@ -87,7 +87,7 @@ widget definitions.</p>
 Comment markers inside a double-quoted string are treated as ordinary
 text.</p>
 
-<h2> GTK property attributes </h2>
+<h2> GTK Property Attributes </h2>
 
 <p>Standard writable GTK properties can be set as widget tag attributes.
 Scalar values must be complete numbers within the range accepted by the GTK
@@ -115,7 +115,20 @@ internal helper widgets are exposed only when the individual widget page names
 a dedicated Gtkdialog attribute or directive. Consequently the XML language
 does not claim to expose every item in the GTK2 C API.</p>
 
-<h2> Visibility and sensitivity </h2>
+<p>Text formatting is widget-specific rather than a global XML feature.
+For example, <a href="text.html">text</a> and
+<a href="accellabel.html">accellabel</a> can use the GTK2
+<code>use-markup</code> label property, while
+<a href="cellview.html">cellview</a> has its own renderer option.
+Rich-model items in <a href="entry.html">entry</a>,
+<a href="comboboxtext.html">comboboxtext</a> and
+<a href="iconview.html">iconview</a> use per-item <code>markup</code>;
+<a href="tree.html">tree</a> selects a markup column renderer, and JSON
+<a href="menu.html">menu</a> items use a Boolean <code>markup</code> field.
+These settings do not turn all directives or all exported values into
+markup. See each widget page for its input and output rules.</p>
+
+<h2> Visibility and Sensitivity </h2>
 
 <p>The <code>visible="false"</code> widget attribute controls initial
 visibility. The <code>&lt;sensitive&gt;false&lt;/sensitive&gt;</code> directive
@@ -169,6 +182,68 @@ Boolean state, and for radio controls it selects the requested member.</li>
 <code>exit</code>, <code>closewindow</code>, <code>launch</code> and
 <code>presentwindow</code>. The last three window functions require a window
 variable where applicable.</li>
+<li><code>reparentwidget:CHILD:DESTINATION[:TAB_LABEL]</code> moves an already
+created, named direct child of a box or notebook into another named box or
+notebook in the same window. A notebook destination appends a tab; its label
+defaults to the child's variable name. The child and all its state are kept.
+Move a displayed box child to a holding box, then move another child into the
+displayed box to replace a panel. It does not create or clone widgets, and
+<code>refresh</code> retains its original meaning.</li>
+<li><code>appendtab:TEMPLATE:NOTEBOOK:INSTANCE:LABEL</code> builds one new
+notebook page from the XML fragment stored in the exported environment
+variable <code>TEMPLATE</code>. The fragment must have exactly one root widget.
+Every occurrence of <code>@INSTANCE@</code> is replaced with the unique
+identifier <code>INSTANCE</code> before parsing. Use it in widget variable
+names and action parameters to keep repeated pages independent. The label
+may contain colons; the instance name may contain ASCII letters, digits and
+underscores, and must not start with a digit. A live instance cannot be
+created twice. <code>removetab:INSTANCE</code> destroys only that dynamically
+created page, releasing its widget variables, timers and file monitors.
+Neither function changes an XML-defined page or the meaning of
+<code>refresh</code>.</li>
+<li>For <code>appendtab</code> and <code>replacebox</code>, the named
+<code>TEMPLATE</code> environment variable may contain either XML or
+<code>file:/path/to/fragment.xml</code>. The latter reads the file when the
+action runs; the file must have one XML widget root and include
+<code>@INSTANCE@</code>. Relative paths are resolved from the process's
+current working directory.</li>
+<li><code>appendtabauto:TEMPLATE:NOTEBOOK:LABEL</code> creates and selects a
+new notebook page without a preallocated instance name. A fresh identifier
+replaces <code>@INSTANCE@</code> in its single-root XML fragment, so actions
+inside the fragment can refer to their own page. Repeated calls do not reuse
+identifiers, and the generated spelling is not a public API. In the label,
+<code>@INDEX@</code> expands to the generated sequence number. This does not
+alter the selection behavior of <code>appendtab</code>.</li>
+<li>A notebook may start with no pages. Its value is <code>-1</code> until a
+page is appended. When <code>tab-close-buttons="true"</code>, both initial
+XML pages and dynamic pages have a close button. An optional
+<code>tab-close-action</code> runs before removing a dynamic page and may use
+<code>@INSTANCE@</code> to identify it. Initial pages close without that
+action because they have no template instance.</li>
+<li><code>hangupterminal:VARIABLE</code> sends SIGHUP to the direct child
+recorded by a live VTE terminal widget. Use it before removing a terminal
+page when the child should be asked to stop. It does not manage descendants
+or guarantee that a child which ignores SIGHUP will exit.</li>
+<li><code>selecttab:INSTANCE</code> selects a live notebook page created with
+<code>appendtab</code>. It does not affect XML-defined pages. An unknown or
+removed instance leaves the current selection intact. Use
+<code>grabfocus:VARIABLE</code> afterward if its child should receive input
+focus.</li>
+<li><code>replacebox:TEMPLATE:BOX:INSTANCE</code> builds the same kind of
+named, single-root XML fragment for a named <code>&lt;hbox&gt;</code> or
+<code>&lt;vbox&gt;</code>. Only after the new tree has been built are all direct
+children of the destination box destroyed and the new child packed into it.
+Their variable mappings, timers and file monitors are released. Unlike
+<code>reparentwidget</code>, this discards the old widgets and their state.
+The same instance identifier may be reused when its previous fragment is a
+direct child of that box. If an action originates inside the replaced
+content, its remaining actions are skipped after the source is destroyed.
+Normal <code>space-expand</code> and <code>space-fill</code> packing settings
+on the box and new child still apply.</li>
+<li>A well-formed template with zero or multiple root widgets is rejected;
+<code>replacebox</code> leaves its old content intact. Syntactically invalid
+XML remains a fatal gtkdialog parser error, as it is for a normal dialog
+description.</li>
 <li><code>sensitive_is_true</code>/<code>sensitive_is_false</code>,
 <code>visible_is_true</code>/<code>visible_is_false</code> and
 <code>variable_is_true</code>/<code>variable_is_false</code> accept any live
@@ -191,7 +266,7 @@ only functions that can change widget state and emit a signal.</p>
 <code>fitheight</code> likewise require an <code>imageview</code> variable and
 are documented on that widget's reference page.</p>
 
-<h2> Widget variables </h2>
+<h2> Widget Variables </h2>
 
 <p>A declared <code>&lt;variable&gt;</code> name is not length-limited by
 Gtkdialog. Names that are printed or exported must be valid shell identifiers:
@@ -205,7 +280,7 @@ makes the previous active declaration addressable again. Output contains one
 value per name, from that same active widget. Unique names remain recommended
 when widgets are addressed by actions.</p>
 
-<h2> Action conditions </h2>
+<h2> Action Conditions </h2>
 
 <p>The <code>condition</code> attribute accepts
 <code>active_is_true</code>/<code>active_is_false</code>,
@@ -225,7 +300,7 @@ state of the widget emitting the signal. When a prefixed action also has a
 <code>condition</code> attribute, the explicit condition is evaluated last and
 its result takes precedence for historical compatibility.</p>
 
-<h2> Shell redirection </h2>
+<h2> Shell Redirection </h2>
 
 <p>The contents of <code>&lt;action&gt;</code> and shell
 <code>&lt;input&gt;</code> directives are passed to the shell. Input
@@ -264,14 +339,14 @@ numeric text is neither.</p>
 one enables the state; every other value disables it. This intentionally
 differs from the non-zero rule used by action conditions.</p>
 
-<h2> Keyboard event variables </h2>
+<h2> Keyboard Event Variables </h2>
 
 <p>Actions handling key press and release events receive <code>KEY_VAL</code>,
 <code>KEY_SYM</code>, <code>KEY_UNI</code>, <code>KEY_MOD</code> and
 <code>KEY_RAW</code>. <code>KEY_SYM</code> is an empty string when GDK has no
 symbolic name for the key value.</p>
 
-<h2> Imperative construction </h2>
+<h2> Imperative Construction </h2>
 
 <p>The legacy imperative directives execute while the dialog's widget tree is
 being constructed. Assignments store numeric values in process environment
@@ -304,7 +379,7 @@ gtkdialog, including validation and child-command status warnings. Fatal
 parser and runtime errors are still reported, as is text written directly to
 standard error by a child command.</p>
 
-<h2> File monitoring </h2>
+<h2> File Monitoring </h2>
 
 <p>Widgets supporting the <code>file-monitor</code> or
 <code>auto-refresh</code> tag attribute may also specify
@@ -315,7 +390,7 @@ the file with <code>rename()</code>, including repeated replacements. A
 monitor may also be established before the named file exists and notices its
 later creation.</p>
 
-<h2> Event-driven files </h2>
+<h2> Event-driven Files </h2>
 
 <p><code>--event-driven FILE</code> loads <code>FILE</code> with
 <code>/bin/sh</code>, then starts a new gtkdialog process with the variables
@@ -335,7 +410,7 @@ is started, including <code>--file</code>, <code>--program</code>,
 <code>false</code>, <code>no</code> or <code>0</code>. An invalid state is
 ignored with a warning.</p>
 
-<h2> Error locations </h2>
+<h2> Error Locations </h2>
 
 <p>Line numbers in parser errors include newlines inside comments,
 double-quoted directive contents and double-quoted tag attributes.</p>

@@ -45,6 +45,7 @@
 #include "widgets.h"
 #include "automaton.h"
 #include "stringman.h"
+#include "actions.h"
 #include "attributes.h"
 #include "widgets.h"
 #include "size_groups.h"
@@ -144,6 +145,418 @@ instruction *program = NULL;
 int instruction_counter = 0;		/* The first available memory cell */
 size_t memory_counter = 0;			/* The size of program memory */
 
+typedef struct {
+	GtkWidget *container;
+	gint target_window_id;
+	gchar *instance;
+	gchar *label;
+	gboolean replace_box;
+	gboolean destroyed;
+	gulong destroy_handler;
+} FragmentTarget;
+
+static FragmentTarget *fragment_target = NULL;
+static GHashTable *live_template_instances = NULL;
+static gboolean fragment_attach_succeeded = FALSE;
+
+typedef struct {
+	GtkWidget *host;
+	GSList *groups;
+} FragmentAccelerators;
+
+static void fragment_accelerators_free(gpointer data)
+{
+	FragmentAccelerators *accelerators = data;
+	GSList *element;
+
+	if (accelerators->host != NULL) {
+		if (!(GTK_OBJECT_FLAGS(accelerators->host) & GTK_IN_DESTRUCTION)) {
+			for (element = accelerators->groups; element != NULL;
+				element = element->next)
+				gtk_window_remove_accel_group(GTK_WINDOW(accelerators->host),
+					GTK_ACCEL_GROUP(element->data));
+		}
+		g_object_remove_weak_pointer(G_OBJECT(accelerators->host),
+			(gpointer *)&accelerators->host);
+	}
+	for (element = accelerators->groups; element != NULL;
+		element = element->next)
+		g_object_unref(element->data);
+	g_slist_free(accelerators->groups);
+	g_free(accelerators);
+}
+
+static void fragment_target_destroyed(GtkWidget *widget, gpointer data)
+{
+	(void)widget;
+	((FragmentTarget *)data)->destroyed = TRUE;
+}
+
+gboolean program_fragment_instance_is_live(const gchar *instance)
+{
+	return live_template_instances != NULL &&
+		g_hash_table_lookup(live_template_instances, instance) != NULL;
+}
+
+gboolean program_remove_tab_instance(const gchar *instance,
+	GtkWidget *source, gboolean *source_removed)
+{
+	GtkWidget *page = live_template_instances == NULL ? NULL :
+		g_hash_table_lookup(live_template_instances, instance);
+
+	*source_removed = FALSE;
+	if (page == NULL ||
+		!GTK_IS_NOTEBOOK(gtk_widget_get_parent(page)))
+		return FALSE;
+	if (GTK_IS_WIDGET(source))
+		*source_removed = source == page ||
+			gtk_widget_is_ancestor(source, page);
+	gtk_widget_destroy(page);
+	return TRUE;
+}
+
+gboolean program_select_tab_instance(const gchar *instance)
+{
+	GtkWidget *page = live_template_instances == NULL ? NULL :
+		g_hash_table_lookup(live_template_instances, instance);
+	GtkWidget *notebook;
+	gint index;
+
+	if (page == NULL)
+		return FALSE;
+	notebook = gtk_widget_get_parent(page);
+	if (!GTK_IS_NOTEBOOK(notebook))
+		return FALSE;
+	index = gtk_notebook_page_num(GTK_NOTEBOOK(notebook), page);
+	if (index < 0)
+		return FALSE;
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), index);
+	return TRUE;
+}
+
+gboolean program_fragment_template_active(void)
+{
+	return fragment_target != NULL;
+}
+
+gboolean program_fragment_was_attached(void)
+{
+	return fragment_attach_succeeded;
+}
+
+gboolean program_set_tab_target(GtkWidget *notebook, gint target_window_id,
+	const gchar *instance, const gchar *label)
+{
+	if (fragment_target != NULL || !GTK_IS_NOTEBOOK(notebook) ||
+		program_fragment_instance_is_live(instance))
+		return FALSE;
+	fragment_target = g_new0(FragmentTarget, 1);
+	fragment_attach_succeeded = FALSE;
+	fragment_target->container = g_object_ref(notebook);
+	fragment_target->target_window_id = target_window_id;
+	fragment_target->instance = g_strdup(instance);
+	fragment_target->label = g_strdup(label);
+	fragment_target->destroy_handler = g_signal_connect(notebook, "destroy",
+		G_CALLBACK(fragment_target_destroyed), fragment_target);
+	return TRUE;
+}
+
+gboolean program_set_box_target(GtkWidget *box, gint target_window_id,
+	const gchar *instance)
+{
+	GtkWidget *previous;
+
+	if (fragment_target != NULL || !GTK_IS_BOX(box))
+		return FALSE;
+	previous = live_template_instances == NULL ? NULL :
+		g_hash_table_lookup(live_template_instances, instance);
+	/* Rebuilding a current child with the same instance is safe: its old
+	 * variable mappings are dropped before the new child is attached. */
+	if (previous != NULL && gtk_widget_get_parent(previous) != box)
+		return FALSE;
+	fragment_target = g_new0(FragmentTarget, 1);
+	fragment_attach_succeeded = FALSE;
+	fragment_target->container = g_object_ref(box);
+	fragment_target->target_window_id = target_window_id;
+	fragment_target->instance = g_strdup(instance);
+	fragment_target->replace_box = TRUE;
+	fragment_target->destroy_handler = g_signal_connect(box, "destroy",
+		G_CALLBACK(fragment_target_destroyed), fragment_target);
+	return TRUE;
+}
+
+void program_clear_fragment_target(void)
+{
+	if (fragment_target == NULL)
+		return;
+	if (!fragment_target->destroyed && g_signal_handler_is_connected(
+		fragment_target->container, fragment_target->destroy_handler))
+		g_signal_handler_disconnect(fragment_target->container,
+			fragment_target->destroy_handler);
+	g_object_unref(fragment_target->container);
+	g_free(fragment_target->instance);
+	g_free(fragment_target->label);
+	g_free(fragment_target);
+	fragment_target = NULL;
+}
+
+static void fragment_page_destroyed(GtkWidget *page, gpointer data)
+{
+	const gchar *instance = g_object_get_data(G_OBJECT(page),
+		"gtkdialog-fragment-instance");
+
+	(void)data;
+	variables_drop_subtree(page);
+	if (live_template_instances != NULL && instance != NULL) {
+		g_hash_table_remove(live_template_instances, instance);
+		if (g_hash_table_size(live_template_instances) == 0) {
+			g_hash_table_destroy(live_template_instances);
+			live_template_instances = NULL;
+		}
+	}
+}
+
+static void fragment_tab_close_clicked(GtkButton *button, gpointer data)
+{
+	GtkWidget *page = data;
+	gchar *instance = g_strdup(g_object_get_data(G_OBJECT(button),
+		"gtkdialog-tab-close-instance"));
+	gchar *action = g_strdup(g_object_get_data(G_OBJECT(button),
+		"gtkdialog-tab-close-action"));
+
+	/* The action may itself remove the page (and this button). Keep copies
+	 * of its arguments and never act on a newly created same-name page. */
+	g_object_ref(page);
+	if (instance != NULL && action != NULL && *action != '\0')
+		execute_action(GTK_WIDGET(button), action, NULL);
+	if (instance == NULL && GTK_IS_NOTEBOOK(gtk_widget_get_parent(page))) {
+		variables_drop_subtree(page);
+		gtk_widget_destroy(page);
+	} else if (instance != NULL && live_template_instances != NULL &&
+		g_hash_table_lookup(live_template_instances, instance) == page)
+		gtk_widget_destroy(page);
+	g_object_unref(page);
+	g_free(action);
+	g_free(instance);
+}
+
+GtkWidget *program_notebook_tab_label(GtkWidget *page, const gchar *label,
+	const gchar *instance, const gchar *close_enabled,
+	const gchar *close_action)
+{
+	GtkWidget *tab_label;
+	GtkWidget *button;
+	GtkWidget *image;
+	gchar **pieces;
+	gchar *expanded;
+
+	if (close_enabled == NULL || !widget_attribute_is_true(close_enabled)) {
+		tab_label = gtk_label_new(label);
+		gtk_widget_show(tab_label);
+		return tab_label;
+	}
+
+	tab_label = gtk_hbox_new(FALSE, 4);
+	gtk_box_pack_start(GTK_BOX(tab_label), gtk_label_new(label),
+		FALSE, FALSE, 0);
+	button = gtk_button_new();
+	gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+	gtk_button_set_focus_on_click(GTK_BUTTON(button), FALSE);
+	gtk_container_set_border_width(GTK_CONTAINER(button), 0);
+	gtk_widget_set_tooltip_text(button, "Close tab");
+	image = gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+	gtk_container_add(GTK_CONTAINER(button), image);
+	gtk_box_pack_end(GTK_BOX(tab_label), button, FALSE, FALSE, 0);
+	if (instance != NULL)
+		g_object_set_data_full(G_OBJECT(button),
+			"gtkdialog-tab-close-instance", g_strdup(instance), g_free);
+	if (instance != NULL && close_action != NULL) {
+		pieces = g_strsplit(close_action, "@INSTANCE@", -1);
+		expanded = g_strjoinv(instance, pieces);
+		g_strfreev(pieces);
+		g_object_set_data_full(G_OBJECT(button), "gtkdialog-tab-close-action",
+			expanded, g_free);
+	}
+	g_signal_connect(button, "clicked",
+		G_CALLBACK(fragment_tab_close_clicked), page);
+	gtk_widget_show_all(tab_label);
+	return tab_label;
+}
+
+static void program_fragment_box_packing(GtkWidget *fragment,
+	gboolean *expand, gboolean *fill)
+{
+	GtkWidget *logical = fragment;
+	variable *var = find_variable_by_widget(logical);
+	variable *box_var = find_variable_by_widget(fragment_target->container);
+	int type;
+	int space_expand = project_space_expand;
+	int space_fill = project_space_fill;
+	const gchar *value;
+	gboolean default_pack;
+
+	while (var == NULL && GTK_IS_BIN(logical)) {
+		logical = gtk_bin_get_child(GTK_BIN(logical));
+		if (logical == NULL)
+			break;
+		var = find_variable_by_widget(logical);
+	}
+	type = var == NULL ? 0 : var->Type;
+	default_pack = fragment != logical ||
+		type == WIDGET_ALIGNMENT || type == WIDGET_EDIT ||
+		type == WIDGET_FIXED || type == WIDGET_FRAME ||
+		type == WIDGET_GRID || type == WIDGET_HPANED ||
+		type == WIDGET_VPANED || type == WIDGET_SCROLLEDW ||
+		type == WIDGET_SCROLLEDWINDOW ||
+		type == WIDGET_HANDLEBOX || type == WIDGET_TOOLPALETTE;
+	if (box_var != NULL && box_var->Type == WIDGET_HBOX &&
+		type == WIDGET_ENTRY)
+		default_pack = TRUE;
+	if (box_var != NULL && box_var->widget_tag_attr != NULL) {
+		value = get_tag_attribute(box_var->widget_tag_attr, "space-expand");
+		if (value != NULL)
+			space_expand = widget_attribute_is_true(value);
+		value = get_tag_attribute(box_var->widget_tag_attr, "space-fill");
+		if (value != NULL)
+			space_fill = widget_attribute_is_true(value);
+	}
+	*expand = space_expand == -1 ? default_pack : space_expand;
+	*fill = space_fill == -1 ? default_pack : space_fill;
+	if (var != NULL && var->widget_tag_attr != NULL) {
+		value = get_tag_attribute(var->widget_tag_attr, "space-expand");
+		if (value != NULL)
+			*expand = widget_attribute_is_true(value);
+		value = get_tag_attribute(var->widget_tag_attr, "space-fill");
+		if (value != NULL)
+			*fill = widget_attribute_is_true(value);
+	}
+}
+
+static GtkWidget *program_attach_fragment(GtkWidget *root,
+	gint staged_window_id)
+{
+	GtkWidget *page = NULL;
+	GtkWidget *tab_label;
+	GtkWidget *host;
+	variable *root_var;
+	FragmentAccelerators *accelerators;
+	GSList *element;
+	GList *children;
+	GList *child;
+	gboolean expand;
+	gboolean fill;
+
+	accelerators = g_new0(FragmentAccelerators, 1);
+	for (element = gtk_accel_groups_from_object(G_OBJECT(root));
+		element != NULL; element = element->next)
+		accelerators->groups = g_slist_prepend(accelerators->groups,
+			g_object_ref(element->data));
+	accelerators->groups = g_slist_reverse(accelerators->groups);
+
+	if (GTK_IS_WINDOW(root))
+		page = gtk_bin_get_child(GTK_BIN(root));
+	if (page != NULL)
+		g_object_ref(page);
+	if (page != NULL)
+		gtk_container_remove(GTK_CONTAINER(root), page);
+	root_var = find_variable_by_widget(root);
+	if (root_var != NULL)
+		variables_drop_by_window_id(root_var, staged_window_id);
+	gtk_widget_destroy(root);
+
+	if (page == NULL || fragment_target->destroyed) {
+		gtkdialog_warning("Template must contain one widget tree and a live "
+			"destination container.");
+		if (page != NULL) {
+			variables_drop_subtree(page);
+			gtk_widget_destroy(page);
+			g_object_unref(page);
+		}
+		fragment_accelerators_free(accelerators);
+		return NULL;
+	}
+	if (fragment_target->replace_box) {
+		/* The new subtree is fully built before any old child is touched.
+		 * Dropping each old subtree first cancels its timers and monitors. */
+		children = gtk_container_get_children(
+			GTK_CONTAINER(fragment_target->container));
+		for (child = children; child != NULL; child = child->next) {
+			if (fragment_target->destroyed)
+				break;
+			variables_drop_subtree(GTK_WIDGET(child->data));
+			gtk_widget_destroy(GTK_WIDGET(child->data));
+		}
+		g_list_free(children);
+		if (fragment_target->destroyed) {
+			variables_drop_subtree(page);
+			gtk_widget_destroy(page);
+			g_object_unref(page);
+			fragment_accelerators_free(accelerators);
+			return NULL;
+		}
+	}
+
+	variables_reassign_subtree(page, staged_window_id,
+		fragment_target->target_window_id);
+	if (live_template_instances == NULL)
+		live_template_instances = g_hash_table_new_full(g_str_hash, g_str_equal,
+			g_free, NULL);
+	g_object_set_data_full(G_OBJECT(page), "gtkdialog-fragment-instance",
+		g_strdup(fragment_target->instance), g_free);
+	host = gtk_widget_get_toplevel(fragment_target->container);
+	if (GTK_IS_WINDOW(host) && accelerators->groups != NULL) {
+		accelerators->host = host;
+		g_object_add_weak_pointer(G_OBJECT(host),
+			(gpointer *)&accelerators->host);
+		for (element = accelerators->groups; element != NULL;
+			element = element->next)
+			gtk_window_add_accel_group(GTK_WINDOW(host),
+				GTK_ACCEL_GROUP(element->data));
+	}
+	g_object_set_data_full(G_OBJECT(page), "gtkdialog-fragment-accelerators",
+		accelerators, fragment_accelerators_free);
+	g_signal_connect(page, "destroy", G_CALLBACK(fragment_page_destroyed), NULL);
+	g_hash_table_insert(live_template_instances,
+		g_strdup(fragment_target->instance),
+		page);
+	if (fragment_target->replace_box) {
+		program_fragment_box_packing(page, &expand, &fill);
+		if (GTK_IS_HBOX(fragment_target->container))
+			gtk_box_pack_end(GTK_BOX(fragment_target->container), page,
+				expand, fill, 0);
+		else
+			gtk_box_pack_start(GTK_BOX(fragment_target->container), page,
+				expand, fill, 0);
+	} else {
+		tag_attr *page_attributes = g_object_get_data(G_OBJECT(page),
+			"gtkdialog-tag-attributes");
+		tag_attr *notebook_attributes = g_object_get_data(
+			G_OBJECT(fragment_target->container),
+			"gtkdialog-tag-attributes");
+		const gchar *close_enabled = g_object_get_data(
+			G_OBJECT(fragment_target->container), "tab-close-buttons");
+		const gchar *close_action = page_attributes == NULL ? NULL :
+			get_tag_attribute(page_attributes, "tab-close-action");
+
+		if (close_enabled == NULL && notebook_attributes != NULL)
+			close_enabled = get_tag_attribute(notebook_attributes,
+				"tab-close-buttons");
+		if (close_action == NULL)
+			close_action = g_object_get_data(
+				G_OBJECT(fragment_target->container), "tab-close-action");
+		if (close_action == NULL && notebook_attributes != NULL)
+			close_action = get_tag_attribute(notebook_attributes,
+				"tab-close-action");
+		tab_label = program_notebook_tab_label(page,
+			fragment_target->label, fragment_target->instance,
+			close_enabled, close_action);
+		gtk_notebook_append_page(GTK_NOTEBOOK(fragment_target->container), page,
+			tab_label);
+	}
+	fragment_attach_succeeded = TRUE;
+	return page;
+}
+
 /* This records the last window widget created */
 GtkWidget *window = NULL;
 
@@ -177,7 +590,6 @@ void print_command(instruction command)
     int Instr_Code;
     int Widget_Type;
     int Attribute_Number;
-    static AttributeSet *Attr = NULL;
 
     Token = command.command;
     Argument = command.argument;
@@ -469,11 +881,9 @@ void print_command(instruction command)
 		case WIDGET_TOGGLEBUTTON:
 			printf("(new togglebutton())");
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			printf("(new tree())");
 			break;
-#endif
 		case WIDGET_VBOX:
 			printf("(new vbox(pop()))");
 			break;
@@ -607,7 +1017,9 @@ void run_program()
 	variable         *var;
 	gchar            *progname;
 	GtkWidget        *root_widget;
+	GtkWidget        *fragment_root;
 	gboolean          popup_program;
+	gboolean          is_fragment_template = fragment_target != NULL;
 
 	PIP_DEBUG("Program starting.");
 
@@ -653,6 +1065,23 @@ void run_program()
 	if (s.nwidgets != 1)
 		g_error("A program must create exactly one top-level widget.");
 	root_widget = s.widgets[0];
+	if (is_fragment_template) {
+		/* The parser has compiled a private window around a widget tree.
+		 * Transfer its child before visibility processing can show that
+		 * staging window or connect it to the running application. */
+		g_object_ref(root_widget);
+		stackelement_clear(&s);
+		fragment_root = program_attach_fragment(root_widget, window_id);
+		g_object_unref(root_widget);
+		widget_show_all();
+		if (fragment_root != NULL) {
+			variables_initialize_subtree(fragment_root);
+			g_object_unref(fragment_root);
+		}
+		window = NULL;
+		program_clear_fragment_target();
+		goto cleanup_program;
+	}
 	/* A synchronous show action may destroy its complete top-level before
 	 * widget_show_all() returns. Keep the type and popup finalisation target
 	 * alive without changing the historical action order. */
@@ -693,6 +1122,7 @@ is a requirement of the launch action.", progname, progname);
 
 	}
 
+cleanup_program:
 	for (q = 0; q < instruction_counter; q++) {
 		g_free(program[q].argument);
 		program[q].argument = NULL;
@@ -705,7 +1135,7 @@ is a requirement of the launch action.", progname, progname);
 	/* A launch action parses and builds another window while the original
 	 * GTK loop is already running. Reuse that loop instead of nesting one
 	 * more level for every close/relaunch cycle. */
-	if (gtk_main_level() == 0) {
+	if (!is_fragment_template && gtk_main_level() == 0) {
 #ifdef DEBUG
 		fprintf(stderr, "%s(): Calling gtk_main()\n", __func__);
 #endif
@@ -738,6 +1168,9 @@ void print_token(token Token)
 			goto finalize;
 		case RGROUP_POP:
 			printf("leave radio group scope");
+			goto finalize;
+		case EMPTY_WIDGETS:
+			printf("push empty widget list");
 			goto finalize;
 		default:
 			printf(" %s(): unknown instruction: '%d' ", __func__, Instr_Code);
@@ -1011,11 +1444,9 @@ void print_token(token Token)
 		case WIDGET_SPINNER:
 			printf("(SPINNER)");
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			printf("(TREE)");
 			break;
-#endif
 		case WIDGET_VBOX:
 			printf("(VBOX)");
 			break;
@@ -1171,6 +1602,12 @@ instruction_execute(instruction command)
 
 			stackelement_append(&destination, &source);
 			push(destination);
+		}
+		break;
+	case EMPTY_WIDGETS:
+		{
+			stackelement empty = { 0 };
+			push(empty);
 		}
 		break;
 	/*
@@ -1562,7 +1999,7 @@ attributeset_destroy_idle(gpointer data)
 	return FALSE;
 }
 
-static void
+void
 attributeset_destroy(gpointer data)
 {
 	/* An action can destroy its own window while its signal callback is still
@@ -1589,15 +2026,11 @@ instruction_execute_push(
 		AttributeSet  *Attr,
 		tag_attr      *tag_attributes)
 {
-	GList            *accel_group = NULL;
 	GList            *element;
 	GtkWidget        *scrolled_window = NULL;
 	GtkWidget        *Widget = NULL;
 	gchar            *value;
-	gint              Widget_Type, n, border_width;
-	gint              original_expand, original_fill;
-	gint              space_expand, space_fill;
-	variable         *var;
+	gint              Widget_Type;
 
 	PIP_DEBUG("token: %d", Token);
 	
@@ -1605,13 +2038,9 @@ instruction_execute_push(
 
 	switch (Widget_Type) {
 		case WIDGET_ABOUTDIALOG:
-#if GTK_CHECK_VERSION(2,6,0)
 			Widget = window = widget_aboutdialog_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("About dialog requires GTK+ 2.6 or later.\n");
-#endif
 			break;
 		case WIDGET_ALIGNMENT:
 			Widget = widget_alignment_create(
@@ -1619,13 +2048,9 @@ instruction_execute_push(
 			push_widget(Widget, Widget_Type);
 			break;
 		case WIDGET_ASSISTANT:
-#if GTK_CHECK_VERSION(2,10,0)
 			Widget = window = widget_assistant_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Assistant requires GTK+ 2.10 or later.\n");
-#endif
 			break;
 		case WIDGET_ASPECTFRAME:
 			Widget = widget_aspectframe_create(
@@ -1696,14 +2121,9 @@ instruction_execute_push(
 			lastradiowidget = NULL;
 			break;
 		case WIDGET_FILECHOOSERBUTTON:
-#if GTK_CHECK_VERSION(2,6,0)
 			Widget = widget_filechooserbutton_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple(
-				"File chooser button requires GTK+ 2.6 or later.\n");
-#endif
 			break;
 		case WIDGET_FIXED:
 			Widget = widget_fixed_create(Attr, tag_attributes, Widget_Type);
@@ -1795,14 +2215,9 @@ instruction_execute_push(
 			push_widget(Widget, Widget_Type);
 			break;
 		case WIDGET_FILECHOOSERDIALOG:
-#if GTK_CHECK_VERSION(2,4,0)
 			Widget = window = widget_filechooserdialog_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple(
-				"File chooser dialog requires GTK+ 2.4 or later.\n");
-#endif
 			break;
 		case WIDGET_CURVE:
 			Widget = widget_curve_create(Attr, tag_attributes, Widget_Type);
@@ -1829,12 +2244,8 @@ instruction_execute_push(
 			push_widget(Widget, Widget_Type);
 			break;
 		case WIDGET_INFOBAR:
-#if GTK_CHECK_VERSION(2,18,0)
 			Widget = widget_infobar_create(Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Info bar requires GTK+ 2.18 or later.\n");
-#endif
 			break;
 		case WIDGET_LAYOUT:
 			Widget = widget_layout_create(Attr, tag_attributes, Widget_Type);
@@ -1843,22 +2254,14 @@ instruction_execute_push(
 			push_widget(scrolled_window, WIDGET_SCROLLEDW);
 			break;
 		case WIDGET_ICONVIEW:
-#if GTK_CHECK_VERSION(2,6,0)
 			Widget = widget_iconview_create(Attr, tag_attributes, Widget_Type);
 			scrolled_window = put_in_the_scrolled_window(Widget, Attr,
 				tag_attributes, Widget_Type);
 			push_widget(scrolled_window, WIDGET_SCROLLEDW);
-#else
-			yyerror_simple("Icon view requires GTK+ 2.6 or later.\n");
-#endif
 			break;
 		case WIDGET_CELLVIEW:
-#if GTK_CHECK_VERSION(2,6,0)
 			Widget = widget_cellview_create(Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Cell view requires GTK+ 2.6 or later.\n");
-#endif
 			break;
 		case WIDGET_DRAWINGAREA:
 			Widget = widget_drawingarea_create(Attr, tag_attributes, Widget_Type);
@@ -1896,13 +2299,9 @@ instruction_execute_push(
 			push_widget(scrolled_window, WIDGET_SCROLLEDW);		
 			break;
 		case WIDGET_LINKBUTTON:
-#if GTK_CHECK_VERSION(2,18,0)
 			Widget = widget_linkbutton_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Link button requires GTK+ 2.18 or later.\n");
-#endif
 			break;
 		case WIDGET_MENU:
 			Widget = widget_menu_create(Attr, tag_attributes, Widget_Type);
@@ -1957,42 +2356,26 @@ instruction_execute_push(
 			push_widget(Widget, Widget_Type);
 			break;
 		case WIDGET_RECENTCHOOSER:
-#if GTK_CHECK_VERSION(2,10,0)
 			Widget = widget_recentchooser_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Recent chooser requires GTK+ 2.10 or later.\n");
-#endif
 			break;
 		case WIDGET_RECENTCHOOSERMENU:
-#if GTK_CHECK_VERSION(2,10,0)
 			Widget = widget_recentchoosermenu_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
 			lastradiowidget = NULL;
-#else
-			yyerror_simple("Recent chooser menu requires GTK+ 2.10 or later.\n");
-#endif
 			break;
 		case WIDGET_STATUSICON:
-#if GTK_CHECK_VERSION(2,10,0)
 			Widget = widget_statusicon_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Status icon requires GTK+ 2.10 or later.\n");
-#endif
 			break;
 		case WIDGET_SCALEBUTTON:
 		case WIDGET_VOLUMEBUTTON:
-#if GTK_CHECK_VERSION(2,12,0)
 			Widget = widget_scalebutton_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Scale and volume buttons require GTK+ 2.12 or later.\n");
-#endif
 			break;
 		case WIDGET_SCROLLEDWINDOW:
 			Widget = widget_scrolledwindow_create(
@@ -2014,13 +2397,9 @@ instruction_execute_push(
 			push_widget(Widget, Widget_Type);
 			break;
 		case WIDGET_SPINNER:
-#if GTK_CHECK_VERSION(2,20,0)
 			Widget = widget_spinner_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Spinner requires GTK+ 2.20 or later.\n");
-#endif
 			break;
 		case WIDGET_SEPARATORTOOLITEM:
 		case WIDGET_TOGGLETOOLBUTTON:
@@ -2071,22 +2450,16 @@ instruction_execute_push(
 			break;
 		case WIDGET_TOOLITEMGROUP:
 		case WIDGET_TOOLPALETTE:
-#if GTK_CHECK_VERSION(2,20,0)
 			Widget = widget_toolpalette_create(
 				Attr, tag_attributes, Widget_Type);
 			push_widget(Widget, Widget_Type);
-#else
-			yyerror_simple("Tool palettes require GTK+ 2.20 or later.\n");
-#endif
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			Widget = widget_tree_create(Attr, tag_attributes, Widget_Type);
 			scrolled_window = put_in_the_scrolled_window(Widget, Attr,
 				tag_attributes, Widget_Type);
 			push_widget(scrolled_window, WIDGET_SCROLLEDW);
 			break;
-#endif
 		case WIDGET_VBOX:
 			Widget = widget_vbox_create(Attr, tag_attributes, Widget_Type);
 			/* Thunor: If the custom attribute "scrollable" is true
@@ -2112,14 +2485,8 @@ instruction_execute_push(
 
 
 	case WIDGET_CHOOSER:
-#if GTK_CHECK_VERSION(2,4,0)
 		Widget = widget_chooser_create(Attr, tag_attributes, Widget_Type);
 		push_widget(Widget, Widget_Type);
-#else
-		yyerror_simple("Chooser widget is not supported by"
-				"this version of GTK+, you need at"
-				"least GTK+ 2.4.0\n");
-#endif
 		break;
 		
 	case WIDGET_GVIM:

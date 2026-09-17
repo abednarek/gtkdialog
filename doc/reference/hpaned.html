@@ -59,25 +59,25 @@ can be used as tag attributes. The most useful GtkPaned property is
 <p>The hpaned tag additionally accepts these custom packing attributes:</p>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Default</b></th></tr>
-<tr><td class="wiki">child1-resize</td><td class="wiki">Resize the left pane when the complete hpaned is resized</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>false</code></td></tr>
-<tr><td class="wiki">child1-shrink</td><td class="wiki">Allow the left pane to become smaller than its requested size</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>true</code></td></tr>
-<tr><td class="wiki">child2-resize</td><td class="wiki">Resize the right pane when the complete hpaned is resized</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>true</code></td></tr>
-<tr><td class="wiki">child2-shrink</td><td class="wiki">Allow the right pane to become smaller than its requested size</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>true</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Default</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">child1-resize</td><td class="wiki">Resize the left pane when the complete hpaned is resized</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>false</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">child1-shrink</td><td class="wiki">Allow the left pane to become smaller than its requested size</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>true</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">child2-resize</td><td class="wiki">Resize the right pane when the complete hpaned is resized</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>true</code></td><td class="wiki">0.9.0</td></tr>
+<tr><td class="wiki">child2-shrink</td><td class="wiki">Allow the right pane to become smaller than its requested size</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"><code>true</code></td><td class="wiki">0.9.0</td></tr>
 </table>
 
 <h2> Directives </h2>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Contents</b></th></tr>
-<tr><td class="wiki">variable</td><td class="wiki">Name used to export the current divider position</td><td class="wiki">Shell variable name</td></tr>
-<tr><td class="wiki">variable export="false"</td><td class="wiki">Variable name not exported to the shell</td><td class="wiki">Shell variable name</td></tr>
-<tr><td class="wiki">default</td><td class="wiki">Initial divider position</td><td class="wiki">Non-negative pixel position</td></tr>
-<tr><td class="wiki">input</td><td class="wiki">Read the divider position from the first output line</td><td class="wiki">Shell command</td></tr>
-<tr><td class="wiki">input file</td><td class="wiki">Read the divider position from the first line</td><td class="wiki">Filename</td></tr>
-<tr><td class="wiki">sensitive</td><td class="wiki">Sensitive state</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">action signal="type"</td><td class="wiki">Execute a command or function for a GTK signal</td><td class="wiki">Activity</td></tr>
-<tr><td class="wiki">output file</td><td class="wiki">Target used by the <code>save</code> function</td><td class="wiki">Filename</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Contents</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">variable</td><td class="wiki">Name used to export the current divider position</td><td class="wiki">Shell variable name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">variable export="false"</td><td class="wiki">Variable name not exported to the shell</td><td class="wiki">Shell variable name</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">default</td><td class="wiki">Initial divider position</td><td class="wiki">Non-negative pixel position</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">input</td><td class="wiki">Read the divider position from the first output line</td><td class="wiki">Shell command</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">input file</td><td class="wiki">Read the divider position from the first line</td><td class="wiki">Filename</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">sensitive</td><td class="wiki">Sensitive state</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">action signal="type"</td><td class="wiki">Execute a command or function for a GTK signal</td><td class="wiki">Activity</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">output file</td><td class="wiki">Target used by the <code>save</code> function</td><td class="wiki">Filename</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 
 <h2> Signals and Functions </h2>

@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT([gtkdialog], [0.9.1], [artur@unix.org.pl], [gtkdialog],
+AC_INIT([gtkdialog], [0.9.2], [artur@unix.org.pl], [gtkdialog],
 	[https://github.com/abednarek/gtkdialog])
 AM_INIT_AUTOMAKE([foreign])
 #AM_CONFIG_HEADER([config.h]) Obsolete.
@@ -41,7 +41,7 @@ AC_PROG_LEX([noyywrap])
 AC_PROG_YACC
 AC_SUBST(YACC)
 
-pkg_modules="gtk+-2.0 >= 2.0.0"
+pkg_modules="gtk+-2.0 >= 2.24.33 fontconfig"
 PKG_CHECK_MODULES(GTK, [$pkg_modules])
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)

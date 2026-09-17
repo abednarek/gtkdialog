@@ -36,12 +36,12 @@ for non-modal information, warnings, questions and errors.</p>
 Direct button children with that attribute are placed in the action area.</p>
 <h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">message-type</td><td class="wiki">Visual message category</td><td class="wiki"><code>info</code>, <code>warning</code>, <code>question</code>, <code>error</code> or <code>other</code></td></tr>
-<tr><td class="wiki">default-response</td><td class="wiki">Response activated by the default action</td><td class="wiki">Named response or integer</td></tr>
-<tr><td class="wiki">response</td><td class="wiki">Response assigned to a direct button child</td><td class="wiki"><code>ok</code>, <code>cancel</code>, <code>close</code>, <code>yes</code>, <code>no</code>, <code>apply</code>, <code>help</code>, <code>accept</code>, <code>reject</code>, <code>none</code>, <code>delete-event</code> or integer</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">message-type</td><td class="wiki">Visual message category</td><td class="wiki"><code>info</code>, <code>warning</code>, <code>question</code>, <code>error</code> or <code>other</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">default-response</td><td class="wiki">Response activated by the default action</td><td class="wiki">Named response or integer</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">response</td><td class="wiki">Response assigned to a direct button child</td><td class="wiki"><code>ok</code>, <code>cancel</code>, <code>close</code>, <code>yes</code>, <code>no</code>, <code>apply</code>, <code>help</code>, <code>accept</code>, <code>reject</code>, <code>none</code>, <code>delete-event</code> or integer</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
-<h2> Actions and signals </h2>
+<h2> Actions and Signals </h2>
 <p>The default action signal is <code>response</code>. The variable is updated
 before actions run. <code>refresh</code>, <code>save</code>, <code>clear</code>
 and <code>removeselected</code> manage the response value.</p>
@@ -61,8 +61,7 @@ tag.</p>
 	&lt;variable&gt;INFO_RESPONSE&lt;/variable&gt;
 &lt;/infobar&gt;
 </pre>
-<p>This widget requires GTK+ 2.18 or later and was introduced in gtkdialog
-version 0.9.0.</p>
+<p>This widget was introduced in gtkdialog version 0.9.0.</p>
 <hr>
 <!-- reference-navigation-start -->
 <p class="reference-navigation">

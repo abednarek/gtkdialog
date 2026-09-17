@@ -53,6 +53,18 @@ static void widget_databox_kill_custom_attributes(tag_attr *attr)
 		kill_tag_attribute(attr, databox_custom_attributes[index]);
 }
 
+void widget_databox_discard_mode_attributes(tag_attr *attr)
+{
+	gint index;
+
+	if (attr == NULL)
+		return;
+	for (index = 0; databox_custom_attributes[index] != NULL; ++index) {
+		if (strcmp(databox_custom_attributes[index], "background") != 0)
+			kill_tag_attribute(attr, databox_custom_attributes[index]);
+	}
+}
+
 static gboolean widget_databox_requested(tag_attr *attr)
 {
 	gchar *value;

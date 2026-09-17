@@ -43,24 +43,24 @@ be nested or contain child widgets. The existing embedded
 <a href="filechooserbutton.html"><code>filechooserbutton</code></a> and
 <code>fileselect</code> action keep their established behaviour.</p>
 
-<h2> Custom Attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">action</td><td class="wiki">Chooser mode</td><td class="wiki"><code>open</code>, <code>save</code>, <code>select-folder</code> or <code>create-folder</code></td></tr>
-<tr><td class="wiki">accept-label</td><td class="wiki">Text or stock ID for the accepting button</td><td class="wiki">Text; defaults to the native Open or Save stock button</td></tr>
-<tr><td class="wiki">cancel-label</td><td class="wiki">Text or stock ID for the cancelling button</td><td class="wiki">Text; defaults to the native Cancel stock button</td></tr>
-<tr><td class="wiki">selection-format</td><td class="wiki">Representation used by input and selection output</td><td class="wiki"><code>filename</code> (default) or <code>uri</code></td></tr>
-<tr><td class="wiki">current-folder</td><td class="wiki">Initially displayed local folder</td><td class="wiki">Pathname</td></tr>
-<tr><td class="wiki">current-folder-uri</td><td class="wiki">Initially displayed folder URI</td><td class="wiki">URI</td></tr>
-<tr><td class="wiki">current-name</td><td class="wiki">Suggested name in save or create-folder mode</td><td class="wiki">Basename</td></tr>
-<tr><td class="wiki">default-file</td><td class="wiki">Initial selection applied after input and <code>default</code></td><td class="wiki">Pathname or URI in the selected format</td></tr>
-<tr><td class="wiki">filter-name</td><td class="wiki">Display name of one combined filter</td><td class="wiki">Text</td></tr>
-<tr><td class="wiki">filter-pattern</td><td class="wiki">Patterns in the combined filter</td><td class="wiki">Semicolon- or comma-separated patterns</td></tr>
-<tr><td class="wiki">filter-mime-type</td><td class="wiki">MIME types in the combined filter</td><td class="wiki">Semicolon- or comma-separated types</td></tr>
-<tr><td class="wiki">fs-filters</td><td class="wiki">Additional separately displayed pattern filters</td><td class="wiki">Pipe-separated patterns</td></tr>
-<tr><td class="wiki">fs-filters-mime</td><td class="wiki">Additional separately displayed MIME filters</td><td class="wiki">Pipe-separated MIME types</td></tr>
-<tr><td class="wiki">shortcut-folders</td><td class="wiki">Additional local places in the chooser sidebar</td><td class="wiki">Pipe-separated pathnames</td></tr>
-<tr><td class="wiki">shortcut-folder-uris</td><td class="wiki">Additional URI places in the chooser sidebar</td><td class="wiki">Pipe-separated URIs</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">action</td><td class="wiki">Chooser mode</td><td class="wiki"><code>open</code>, <code>save</code>, <code>select-folder</code> or <code>create-folder</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">accept-label</td><td class="wiki">Text or stock ID for the accepting button</td><td class="wiki">Text; defaults to the native Open or Save stock button</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">cancel-label</td><td class="wiki">Text or stock ID for the cancelling button</td><td class="wiki">Text; defaults to the native Cancel stock button</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">selection-format</td><td class="wiki">Representation used by input and selection output</td><td class="wiki"><code>filename</code> (default) or <code>uri</code></td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">current-folder</td><td class="wiki">Initially displayed local folder</td><td class="wiki">Pathname</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">current-folder-uri</td><td class="wiki">Initially displayed folder URI</td><td class="wiki">URI</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">current-name</td><td class="wiki">Suggested name in save or create-folder mode</td><td class="wiki">Basename</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">default-file</td><td class="wiki">Initial selection applied after input and <code>default</code></td><td class="wiki">Pathname or URI in the selected format</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">filter-name</td><td class="wiki">Display name of one combined filter</td><td class="wiki">Text</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">filter-pattern</td><td class="wiki">Patterns in the combined filter</td><td class="wiki">Semicolon- or comma-separated patterns</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">filter-mime-type</td><td class="wiki">MIME types in the combined filter</td><td class="wiki">Semicolon- or comma-separated types</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">fs-filters</td><td class="wiki">Additional separately displayed pattern filters</td><td class="wiki">Pipe-separated patterns</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">fs-filters-mime</td><td class="wiki">Additional separately displayed MIME filters</td><td class="wiki">Pipe-separated MIME types</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">shortcut-folders</td><td class="wiki">Additional local places in the chooser sidebar</td><td class="wiki">Pipe-separated pathnames</td><td class="wiki"> 0.9.1 </td></tr>
+<tr><td class="wiki">shortcut-folder-uris</td><td class="wiki">Additional URI places in the chooser sidebar</td><td class="wiki">Pipe-separated URIs</td><td class="wiki"> 0.9.1 </td></tr>
 </table>
 <p>Writable GtkFileChooser and GtkWindow properties are also accepted. Useful
 examples include <code>select-multiple</code>, <code>local-only</code>,
@@ -123,8 +123,7 @@ The sections above describe facilities specific to this tag.</p>
 &lt;/filechooserdialog&gt;
 </pre>
 <p>See <code>examples/filechooserdialog/filechooserdialog</code> for a runnable
-example. This widget requires GTK+ 2.4 or later and was introduced in
-gtkdialog version 0.9.0.</p>
+example. This widget was introduced in gtkdialog version 0.9.1.</p>
 
 <hr>
 <!-- reference-navigation-start -->

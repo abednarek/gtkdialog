@@ -19,7 +19,6 @@
 #include "tag_attributes.h"
 #include "widget_cellview.h"
 
-#if GTK_CHECK_VERSION(2,6,0)
 enum {
 	CELLVIEW_PIXBUF,
 	CELLVIEW_TEXT,
@@ -308,4 +307,3 @@ void widget_cellview_save(variable *var)
 	g_free(text);
 	widget_close_output(output, filename);
 }
-#endif

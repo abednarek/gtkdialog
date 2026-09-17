@@ -55,13 +55,13 @@ an empty string when no file is selected.</p>
 <h2> Tag Attributes </h2>
 
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">default-file</td><td class="wiki">Initial selected file; overrides the default folder and initial input selection</td><td class="wiki">Pathname</td></tr>
-<tr><td class="wiki">fs-filters-mime</td><td class="wiki">Pipe-separated MIME filters, each displayed separately</td><td class="wiki"><code>text/plain|image/png</code></td></tr>
-<tr><td class="wiki">fs-filters</td><td class="wiki">Pipe-separated shell-pattern filters, each displayed separately</td><td class="wiki"><code>*.txt|*.png</code></td></tr>
-<tr><td class="wiki">block-function-signals</td><td class="wiki">Do not run actions for programmatic selection</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">file-monitor</td><td class="wiki">Emit a signal when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
-<tr><td class="wiki">auto-refresh</td><td class="wiki">Refresh when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">default-file</td><td class="wiki">Initial selected file; overrides the default folder and initial input selection</td><td class="wiki">Pathname</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">fs-filters-mime</td><td class="wiki">Pipe-separated MIME filters, each displayed separately</td><td class="wiki"><code>text/plain|image/png</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">fs-filters</td><td class="wiki">Pipe-separated shell-pattern filters, each displayed separately</td><td class="wiki"><code>*.txt|*.png</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">block-function-signals</td><td class="wiki">Do not run actions for programmatic selection</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">file-monitor</td><td class="wiki">Emit a signal when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">auto-refresh</td><td class="wiki">Refresh when an input file changes</td><td class="wiki"><code>true</code> or <code>false</code></td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 
 <p>Writable GtkFileChooserWidget and ancestor properties, including
@@ -70,7 +70,7 @@ an empty string when no file is selected.</p>
 The embedded chooser remains in GTK's open-existing-file mode for
 backward compatibility.</p>
 
-<h2> Actions and signals </h2>
+<h2> Actions and Signals </h2>
 
 <p>The default action signal is <code>file-activated</code>. Explicit
 signals include <code>selection-changed</code>, <code>update-preview</code>
@@ -100,8 +100,8 @@ tag.</p>
 &lt;/chooser&gt;
 </pre>
 
-<p>This widget requires GTK+ 2.4 or later. Extended input, output, filtering
-and action support is compatible with gtkdialog 0.8.5.</p>
+<p>Extended input, output, filtering and action support is compatible with
+gtkdialog 0.8.5.</p>
 
 <hr>
 <!-- reference-navigation-start -->

@@ -579,11 +579,9 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_ASPECTFRAME:
 			widget_aspectframe_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_ASSISTANT:
 			widget_assistant_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_SEPARATORTOOLITEM:
 		case WIDGET_TOOLBAR:
 		case WIDGET_TOOLBUTTON:
@@ -599,11 +597,9 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_ACCELLABEL:
 			widget_accellabel_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_CELLVIEW:
 			widget_cellview_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_HBUTTONBOX:
 		case WIDGET_VBUTTONBOX:
 			widget_buttonbox_fileselect(toset, name, value);
@@ -620,11 +616,9 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_CHECKBOX:
 			widget_checkbox_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_CHOOSER:
 			widget_chooser_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_COLORBUTTON:
 			widget_colorbutton_fileselect(toset, name, value);
 			break;
@@ -694,11 +688,9 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_EXPANDER:
 			widget_expander_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_FILECHOOSERBUTTON:
 			widget_filechooserbutton_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_FIXED:
 			widget_fixed_fileselect(toset, name, value);
 			break;
@@ -733,16 +725,12 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_VSEPARATOR:
 			widget_hseparator_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_ICONVIEW:
 			widget_iconview_fileselect(toset, name, value);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_INFOBAR:
 			widget_infobar_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_LAYOUT:
 			widget_layout_fileselect(toset, name, value);
 			break;
@@ -752,11 +740,9 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_MESSAGEDIALOG:
 			widget_messagedialog_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_LINKBUTTON:
 			widget_linkbutton_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_MENUBAR:
 		case WIDGET_POPUPMENU:
 			widget_menubar_fileselect(toset, name, value);
@@ -778,18 +764,14 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_RADIOBUTTON:
 			widget_radiobutton_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_RECENTCHOOSERMENU:
 		case WIDGET_RECENTCHOOSER:
 			widget_recentchooser_fileselect(toset, name, value);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,12,0)
 		case WIDGET_SCALEBUTTON:
 		case WIDGET_VOLUMEBUTTON:
 			widget_scalebutton_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_SCROLLEDWINDOW:
 			widget_scrolledwindow_fileselect(toset, name, value);
 			break;
@@ -806,19 +788,15 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_SPINBUTTON:
 			widget_spinbutton_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,20,0)
 		case WIDGET_SPINNER:
 			widget_spinner_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_STATUSBAR:
 			widget_statusbar_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_STATUSICON:
 			widget_statusicon_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_TABLE:
 			widget_table_fileselect(toset, name, value);
 			break;
@@ -831,11 +809,9 @@ variable *variables_set_value(const char *name, const char *value)
 		case WIDGET_TIMER:
 			widget_timer_fileselect(toset, name, value);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			widget_tree_fileselect(toset, name, value);
 			break;
-#endif
 		case WIDGET_VBOX:
 			widget_vbox_fileselect(toset, name, value);
 			break;
@@ -876,11 +852,9 @@ variable *variables_save(const char *name)
 		case WIDGET_ASPECTFRAME:
 			widget_aspectframe_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_ASSISTANT:
 			widget_assistant_save(var);
 			break;
-#endif
 		case WIDGET_SEPARATORTOOLITEM:
 		case WIDGET_TOOLBAR:
 		case WIDGET_TOOLBUTTON:
@@ -896,11 +870,9 @@ variable *variables_save(const char *name)
 		case WIDGET_ACCELLABEL:
 			widget_accellabel_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_CELLVIEW:
 			widget_cellview_save(var);
 			break;
-#endif
 		case WIDGET_HBUTTONBOX:
 		case WIDGET_VBUTTONBOX:
 			widget_buttonbox_save(var);
@@ -917,11 +889,9 @@ variable *variables_save(const char *name)
 		case WIDGET_CHECKBOX:
 			widget_checkbox_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_CHOOSER:
 			widget_chooser_save(var);
 			break;
-#endif
 		case WIDGET_COLORBUTTON:
 			widget_colorbutton_save(var);
 			break;
@@ -994,11 +964,9 @@ variable *variables_save(const char *name)
 		case WIDGET_EXPANDER:
 			widget_expander_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_FILECHOOSERBUTTON:
 			widget_filechooserbutton_save(var);
 			break;
-#endif
 		case WIDGET_FIXED:
 			widget_fixed_save(var);
 			break;
@@ -1033,16 +1001,12 @@ variable *variables_save(const char *name)
 		case WIDGET_VSEPARATOR:
 			widget_hseparator_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_ICONVIEW:
 			widget_iconview_save(var);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_INFOBAR:
 			widget_infobar_save(var);
 			break;
-#endif
 		case WIDGET_LAYOUT:
 			widget_layout_save(var);
 			break;
@@ -1052,11 +1016,9 @@ variable *variables_save(const char *name)
 		case WIDGET_MESSAGEDIALOG:
 			widget_messagedialog_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_LINKBUTTON:
 			widget_linkbutton_save(var);
 			break;
-#endif
 		case WIDGET_MENUBAR:
 		case WIDGET_POPUPMENU:
 			widget_menubar_save(var);
@@ -1078,18 +1040,14 @@ variable *variables_save(const char *name)
 		case WIDGET_RADIOBUTTON:
 			widget_radiobutton_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_RECENTCHOOSERMENU:
 		case WIDGET_RECENTCHOOSER:
 			widget_recentchooser_save(var);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,12,0)
 		case WIDGET_SCALEBUTTON:
 		case WIDGET_VOLUMEBUTTON:
 			widget_scalebutton_save(var);
 			break;
-#endif
 		case WIDGET_SCROLLEDWINDOW:
 			widget_scrolledwindow_save(var);
 			break;
@@ -1106,19 +1064,15 @@ variable *variables_save(const char *name)
 		case WIDGET_SPINBUTTON:
 			widget_spinbutton_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,20,0)
 		case WIDGET_SPINNER:
 			widget_spinner_save(var);
 			break;
-#endif
 		case WIDGET_STATUSBAR:
 			widget_statusbar_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_STATUSICON:
 			widget_statusicon_save(var);
 			break;
-#endif
 		case WIDGET_TABLE:
 			widget_table_save(var);
 			break;
@@ -1131,11 +1085,9 @@ variable *variables_save(const char *name)
 		case WIDGET_TIMER:
 			widget_timer_save(var);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			widget_tree_save(var);
 			break;
-#endif
 		case WIDGET_VBOX:
 			widget_vbox_save(var);
 			break;
@@ -1220,11 +1172,9 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_ASPECTFRAME:
 			widget_aspectframe_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_ASSISTANT:
 			widget_assistant_refresh(var);
 			break;
-#endif
 		case WIDGET_SEPARATORTOOLITEM:
 		case WIDGET_TOOLBAR:
 		case WIDGET_TOOLBUTTON:
@@ -1240,11 +1190,9 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_ACCELLABEL:
 			widget_accellabel_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_CELLVIEW:
 			widget_cellview_refresh(var);
 			break;
-#endif
 		case WIDGET_HBUTTONBOX:
 		case WIDGET_VBUTTONBOX:
 			widget_buttonbox_refresh(var);
@@ -1261,11 +1209,9 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_CHECKBOX:
 			widget_checkbox_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_CHOOSER:
 			widget_chooser_refresh(var);
 			break;
-#endif
 		case WIDGET_COLORBUTTON:
 			widget_colorbutton_refresh(var);
 			break;
@@ -1338,11 +1284,9 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_EXPANDER:
 			widget_expander_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_FILECHOOSERBUTTON:
 			widget_filechooserbutton_refresh(var);
 			break;
-#endif
 		case WIDGET_FIXED:
 			widget_fixed_refresh(var);
 			break;
@@ -1377,16 +1321,12 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_VSEPARATOR:
 			widget_hseparator_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_ICONVIEW:
 			widget_iconview_refresh(var);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_INFOBAR:
 			widget_infobar_refresh(var);
 			break;
-#endif
 		case WIDGET_LAYOUT:
 			widget_layout_refresh(var);
 			break;
@@ -1396,11 +1336,9 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_MESSAGEDIALOG:
 			widget_messagedialog_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_LINKBUTTON:
 			widget_linkbutton_refresh(var);
 			break;
-#endif
 		case WIDGET_MENUBAR:
 		case WIDGET_POPUPMENU:
 			widget_menubar_refresh(var);
@@ -1422,18 +1360,14 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_RADIOBUTTON:
 			widget_radiobutton_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_RECENTCHOOSERMENU:
 		case WIDGET_RECENTCHOOSER:
 			widget_recentchooser_refresh(var);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,12,0)
 		case WIDGET_SCALEBUTTON:
 		case WIDGET_VOLUMEBUTTON:
 			widget_scalebutton_refresh(var);
 			break;
-#endif
 		case WIDGET_SCROLLEDWINDOW:
 			widget_scrolledwindow_refresh(var);
 			break;
@@ -1450,19 +1384,15 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_SPINBUTTON:
 			widget_spinbutton_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,20,0)
 		case WIDGET_SPINNER:
 			widget_spinner_refresh(var);
 			break;
-#endif
 		case WIDGET_STATUSBAR:
 			widget_statusbar_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_STATUSICON:
 			widget_statusicon_refresh(var);
 			break;
-#endif
 		case WIDGET_TABLE:
 			widget_table_refresh(var);
 			break;
@@ -1475,11 +1405,9 @@ variable *variables_refresh_widget(variable *registry_var)
 		case WIDGET_TIMER:
 			widget_timer_refresh(var);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			widget_tree_refresh(var);
 			break;
-#endif
 		case WIDGET_VBOX:
 			widget_vbox_refresh(var);
 			break;
@@ -1689,7 +1617,6 @@ variable *variables_activate(const char *name)
 	} else if (widget_statusicon_is_proxy(var->Widget)) {
 		retval = widget_statusicon_activate(var->Widget);
 	}
-#if GTK_CHECK_VERSION(2,4,0)
 	else if (GTK_IS_RADIO_TOOL_BUTTON(var->Widget)) {
 		if (!gtk_toggle_tool_button_get_active(
 			GTK_TOGGLE_TOOL_BUTTON(var->Widget)))
@@ -1706,7 +1633,6 @@ variable *variables_activate(const char *name)
 		g_signal_emit_by_name(var->Widget, "clicked");
 		retval = TRUE;
 	} else
-#endif
 		retval = gtk_widget_activate(var->Widget);
 
 	if (!retval)
@@ -1779,7 +1705,6 @@ static variable *variables_set_tree_expanded(const char *name,
 	if (var == NULL || var->Widget == NULL)
 		return NULL;
 
-#if GTK_CHECK_VERSION(2,4,0)
 	if (var->Type != WIDGET_TREE || !GTK_IS_TREE_VIEW(var->Widget)) {
 		gtkdialog_warning("%s is not a tree widget.", name);
 		return var;
@@ -1789,9 +1714,6 @@ static variable *variables_set_tree_expanded(const char *name,
 		gtk_tree_view_expand_all(GTK_TREE_VIEW(var->Widget));
 	else
 		gtk_tree_view_collapse_all(GTK_TREE_VIEW(var->Widget));
-#else
-	(void)expanded;
-#endif
 
 	return var;
 }
@@ -1804,6 +1726,50 @@ variable *variables_expand_all(const char *name)
 variable *variables_collapse_all(const char *name)
 {
 	return variables_set_tree_expanded(name, FALSE);
+}
+
+/***********************************************************************
+ * Source editing history                                               *
+ ***********************************************************************/
+
+static variable *variables_edit_history(const char *name, gboolean undo)
+{
+	gchar *value;
+	variable *var;
+
+	g_assert(name != NULL);
+	var = _tree_find(name, NULL);
+	if (var == NULL || var->Widget == NULL)
+		return NULL;
+
+	if (var->Type != WIDGET_EDIT || !GTK_IS_TEXT_VIEW(var->Widget)) {
+		gtkdialog_warning("%s is not an edit widget.", name);
+		return var;
+	}
+
+	if (var->widget_tag_attr &&
+		(value = get_tag_attribute(var->widget_tag_attr,
+			"block-function-signals")) &&
+		widget_attribute_is_true(value))
+		GTKD_FUNCTION_SIGNALS_BLOCK;
+
+	if (undo)
+		widget_edit_undo(var);
+	else
+		widget_edit_redo(var);
+
+	GTKD_FUNCTION_SIGNALS_RESET;
+	return var;
+}
+
+variable *variables_edit_undo(const char *name)
+{
+	return variables_edit_history(name, TRUE);
+}
+
+variable *variables_edit_redo(const char *name)
+{
+	return variables_edit_history(name, FALSE);
 }
 
 /***********************************************************************
@@ -2084,6 +2050,57 @@ void variables_drop_by_window_id(variable *actual, gint window_id)
 #ifdef DEBUG
 	fprintf(stderr, "%s(): Exiting.\n", __func__);
 #endif
+}
+
+typedef struct {
+	gint from_id;
+	gint to_id;
+	enum { SUBTREE_REASSIGN, SUBTREE_DROP, SUBTREE_INITIALIZE } operation;
+} VariableSubtreeOperation;
+
+static void variables_visit_subtree(GtkWidget *widget, gpointer user_data)
+{
+	VariableSubtreeOperation *operation = user_data;
+	variable *var;
+
+	if (GTK_IS_CONTAINER(widget))
+		gtk_container_foreach(GTK_CONTAINER(widget),
+			variables_visit_subtree, operation);
+	var = find_variable_by_widget(widget);
+	if (var == NULL || var->Widget == NULL)
+		return;
+	if (operation->operation == SUBTREE_DROP)
+		variables_drop_by_window_id(var, var->window_id);
+	else if (operation->operation == SUBTREE_INITIALIZE)
+		_variables_initialize(var);
+	else if (var->window_id == operation->from_id)
+		var->window_id = operation->to_id;
+}
+
+void variables_reassign_subtree(GtkWidget *root, gint from_id, gint to_id)
+{
+	VariableSubtreeOperation operation = {
+		from_id, to_id, SUBTREE_REASSIGN
+	};
+
+	if (GTK_IS_WIDGET(root))
+		variables_visit_subtree(root, &operation);
+}
+
+void variables_drop_subtree(GtkWidget *root)
+{
+	VariableSubtreeOperation operation = { 0, 0, SUBTREE_DROP };
+
+	if (GTK_IS_WIDGET(root))
+		variables_visit_subtree(root, &operation);
+}
+
+void variables_initialize_subtree(GtkWidget *root)
+{
+	VariableSubtreeOperation operation = { 0, 0, SUBTREE_INITIALIZE };
+
+	if (GTK_IS_WIDGET(root))
+		variables_visit_subtree(root, &operation);
 }
 
 /***********************************************************************
@@ -2384,11 +2401,9 @@ variable *variables_clear(const char *name)
 		case WIDGET_ASPECTFRAME:
 			widget_aspectframe_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_ASSISTANT:
 			widget_assistant_clear(toclear);
 			break;
-#endif
 		case WIDGET_SEPARATORTOOLITEM:
 		case WIDGET_TOOLBAR:
 		case WIDGET_TOOLBUTTON:
@@ -2404,11 +2419,9 @@ variable *variables_clear(const char *name)
 		case WIDGET_ACCELLABEL:
 			widget_accellabel_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_CELLVIEW:
 			widget_cellview_clear(toclear);
 			break;
-#endif
 		case WIDGET_HBUTTONBOX:
 		case WIDGET_VBUTTONBOX:
 			widget_buttonbox_clear(toclear);
@@ -2425,11 +2438,9 @@ variable *variables_clear(const char *name)
 		case WIDGET_CHECKBOX:
 			widget_checkbox_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_CHOOSER:
 			widget_chooser_clear(toclear);
 			break;
-#endif
 		case WIDGET_COLORBUTTON:
 			widget_colorbutton_clear(toclear);
 			break;
@@ -2502,11 +2513,9 @@ variable *variables_clear(const char *name)
 		case WIDGET_EXPANDER:
 			widget_expander_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_FILECHOOSERBUTTON:
 			widget_filechooserbutton_clear(toclear);
 			break;
-#endif
 		case WIDGET_FIXED:
 			widget_fixed_clear(toclear);
 			break;
@@ -2541,16 +2550,12 @@ variable *variables_clear(const char *name)
 		case WIDGET_VSEPARATOR:
 			widget_hseparator_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_ICONVIEW:
 			widget_iconview_clear(toclear);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_INFOBAR:
 			widget_infobar_clear(toclear);
 			break;
-#endif
 		case WIDGET_LAYOUT:
 			widget_layout_clear(toclear);
 			break;
@@ -2560,11 +2565,9 @@ variable *variables_clear(const char *name)
 		case WIDGET_MESSAGEDIALOG:
 			widget_messagedialog_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_LINKBUTTON:
 			widget_linkbutton_clear(toclear);
 			break;
-#endif
 		case WIDGET_MENUBAR:
 		case WIDGET_POPUPMENU:
 			widget_menubar_clear(toclear);
@@ -2586,18 +2589,14 @@ variable *variables_clear(const char *name)
 		case WIDGET_RADIOBUTTON:
 			widget_radiobutton_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_RECENTCHOOSERMENU:
 		case WIDGET_RECENTCHOOSER:
 			widget_recentchooser_clear(toclear);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,12,0)
 		case WIDGET_SCALEBUTTON:
 		case WIDGET_VOLUMEBUTTON:
 			widget_scalebutton_clear(toclear);
 			break;
-#endif
 		case WIDGET_SCROLLEDWINDOW:
 			widget_scrolledwindow_clear(toclear);
 			break;
@@ -2614,19 +2613,15 @@ variable *variables_clear(const char *name)
 		case WIDGET_SPINBUTTON:
 			widget_spinbutton_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,20,0)
 		case WIDGET_SPINNER:
 			widget_spinner_clear(toclear);
 			break;
-#endif
 		case WIDGET_STATUSBAR:
 			widget_statusbar_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_STATUSICON:
 			widget_statusicon_clear(toclear);
 			break;
-#endif
 		case WIDGET_TABLE:
 			widget_table_clear(toclear);
 			break;
@@ -2639,11 +2634,9 @@ variable *variables_clear(const char *name)
 		case WIDGET_TIMER:
 			widget_timer_clear(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			widget_tree_clear(toclear);
 			break;
-#endif
 		case WIDGET_VBOX:
 			widget_vbox_clear(toclear);
 			break;
@@ -2703,11 +2696,9 @@ int remove_selected_variable(const char *name)
 		case WIDGET_ASPECTFRAME:
 			widget_aspectframe_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_ASSISTANT:
 			widget_assistant_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_SEPARATORTOOLITEM:
 		case WIDGET_TOOLBAR:
 		case WIDGET_TOOLBUTTON:
@@ -2773,11 +2764,9 @@ int remove_selected_variable(const char *name)
 		case WIDGET_VRULER:
 			widget_ruler_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_CHOOSER:
 			widget_chooser_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_DIALOG:
 			widget_dialog_removeselected(toclear);
 			break;
@@ -2803,11 +2792,9 @@ int remove_selected_variable(const char *name)
 		case WIDGET_EXPANDER:
 			widget_expander_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_FILECHOOSERBUTTON:
 			widget_filechooserbutton_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_FIXED:
 			widget_fixed_removeselected(toclear);
 			break;
@@ -2842,16 +2829,12 @@ int remove_selected_variable(const char *name)
 		case WIDGET_VSEPARATOR:
 			widget_hseparator_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_ICONVIEW:
 			widget_iconview_removeselected(toclear);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_INFOBAR:
 			widget_infobar_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_LAYOUT:
 			widget_layout_removeselected(toclear);
 			break;
@@ -2861,11 +2844,9 @@ int remove_selected_variable(const char *name)
 		case WIDGET_MESSAGEDIALOG:
 			widget_messagedialog_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_LINKBUTTON:
 			widget_linkbutton_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_MENUBAR:
 		case WIDGET_POPUPMENU:
 			widget_menubar_removeselected(toclear);
@@ -2887,18 +2868,14 @@ int remove_selected_variable(const char *name)
 		case WIDGET_RADIOBUTTON:
 			widget_radiobutton_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_RECENTCHOOSERMENU:
 		case WIDGET_RECENTCHOOSER:
 			widget_recentchooser_removeselected(toclear);
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,12,0)
 		case WIDGET_SCALEBUTTON:
 		case WIDGET_VOLUMEBUTTON:
 			widget_scalebutton_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_SCROLLEDWINDOW:
 			widget_scrolledwindow_removeselected(toclear);
 			break;
@@ -2915,19 +2892,15 @@ int remove_selected_variable(const char *name)
 		case WIDGET_SPINBUTTON:
 			widget_spinbutton_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,20,0)
 		case WIDGET_SPINNER:
 			widget_spinner_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_STATUSBAR:
 			widget_statusbar_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_STATUSICON:
 			widget_statusicon_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_TABLE:
 			widget_table_removeselected(toclear);
 			break;
@@ -2940,11 +2913,9 @@ int remove_selected_variable(const char *name)
 		case WIDGET_TIMER:
 			widget_timer_removeselected(toclear);
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			widget_tree_removeselected(toclear);
 			break;
-#endif
 		case WIDGET_VBOX:
 			widget_vbox_removeselected(toclear);
 			break;

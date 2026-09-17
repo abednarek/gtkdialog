@@ -1,0 +1,9 @@
+--- a/gtksourceview/gtksourceview.c
++++ b/gtksourceview/gtksourceview.c
+@@ -1766,7 +1766,7 @@ gtk_source_view_set_buffer (GtkTextView   *text_view,
+ 	if (buffer && GTK_IS_SOURCE_BUFFER (buffer))
+ 	{
+-		view->priv->source_buffer = g_object_ref (buffer);
++		view->priv->source_buffer = GTK_SOURCE_BUFFER (g_object_ref (buffer));
+ 
+ 		g_signal_connect (buffer,

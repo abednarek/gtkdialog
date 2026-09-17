@@ -38,6 +38,7 @@
 #include <locale.h>
 #include <getopt.h>
 #include <gtk/gtk.h>
+#include <fontconfig/fontconfig.h>
 
 #include "config.h"
 #include "gtkdialog.h"
@@ -376,6 +377,62 @@ void get_program_from_variable(const gchar *name)
 
 	source = PRG_MEMORY;
 }
+
+gboolean get_program_from_template_variable(const gchar *name,
+	const gchar *instance)
+{
+	const gchar *description;
+	gchar *file_contents = NULL;
+	gchar **pieces;
+	gchar *expanded;
+	gsize length;
+	GError *error = NULL;
+
+	g_return_val_if_fail(name != NULL && instance != NULL, FALSE);
+	description = g_getenv(name);
+	if (description == NULL || *description == '\0') {
+		gtkdialog_warning("Template description '%s' is not present in the "
+			"environment.", name);
+		return FALSE;
+	}
+	if (g_str_has_prefix(description, "file:")) {
+		const gchar *path = description + strlen("file:");
+
+		if (*path == '\0' || !g_file_get_contents(path, &file_contents,
+				&length, &error)) {
+			gtkdialog_warning("Cannot read template file '%s': %s", path,
+				error != NULL ? error->message : "empty path");
+			if (error != NULL)
+				g_error_free(error);
+			return FALSE;
+		}
+		if (memchr(file_contents, '\0', length) != NULL) {
+			gtkdialog_warning("Template file '%s' contains a NUL byte.", path);
+			g_free(file_contents);
+			return FALSE;
+		}
+		description = file_contents;
+	}
+	if (strstr(description, "@INSTANCE@") == NULL) {
+		gtkdialog_warning("Template '%s' must contain @INSTANCE@.", name);
+		g_free(file_contents);
+		return FALSE;
+	}
+
+	/* A template is one ordinary gtkdialog widget tree. The private window
+	 * wrapper lets the existing grammar compile it without changing the
+	 * syntax or execution path of historical window descriptions. */
+	pieces = g_strsplit(description, "@INSTANCE@", -1);
+	expanded = g_strjoinv(instance, pieces);
+	g_strfreev(pieces);
+	g_free(file_contents);
+	gtkdialog_lexer_reset();
+	set_program_name(name);
+	program_src = g_strdup_printf("<window>%s</window>", expanded);
+	g_free(expanded);
+	source = PRG_MEMORY;
+	return TRUE;
+}
 	
 static void
 get_program_from_file(const gchar *name)
@@ -691,6 +748,8 @@ main(int argc, char *argv[])
 	get_program_from_variable("MAIN_DIALOG");
 
 gtkdialog_initialized:
+	/* Fontconfig 2.17 expects explicit initialization before GTK2 uses it. */
+	FcInit();
 	gtk_init(&argc, &argv);
 	
 	if (option_styles_file)

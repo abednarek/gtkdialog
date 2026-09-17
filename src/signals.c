@@ -219,7 +219,6 @@ static void widget_context_menu_select_item(GtkWidget *widget,
 		return;
 	}
 
-#if GTK_CHECK_VERSION(2,6,0)
 	if (GTK_IS_ICON_VIEW(widget)) {
 		GtkTreePath *path = gtk_icon_view_get_path_at_pos(
 			GTK_ICON_VIEW(widget), (gint)event->x, (gint)event->y);
@@ -235,7 +234,6 @@ static void widget_context_menu_select_item(GtkWidget *widget,
 		gtk_tree_path_free(path);
 		return;
 	}
-#endif
 
 	if (GTK_IS_CLIST(widget)) {
 		gint row;
@@ -478,6 +476,8 @@ void on_any_widget_font_set_event(GtkWidget *widget, AttributeSet *Attr)
 gboolean on_any_widget_configure_event(GtkWidget *widget,
 	GdkEventConfigure *event, AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -498,6 +498,8 @@ gboolean on_any_widget_configure_event(GtkWidget *widget,
 gboolean on_any_widget_delete_event(GtkWidget *widget, GdkEvent *event,
 	AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -518,6 +520,8 @@ gboolean on_any_widget_delete_event(GtkWidget *widget, GdkEvent *event,
 gboolean on_any_widget_destroy_event(GtkWidget *widget, GdkEvent *event,
 	AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -538,6 +542,8 @@ gboolean on_any_widget_destroy_event(GtkWidget *widget, GdkEvent *event,
 gboolean on_any_widget_enter_notify_event(GtkWidget *widget,
 	GdkEventCrossing *event, AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -558,6 +564,8 @@ gboolean on_any_widget_enter_notify_event(GtkWidget *widget,
 gboolean on_any_widget_focus_in_event(GtkWidget *widget,
 	GdkEventFocus *event, AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -578,6 +586,8 @@ gboolean on_any_widget_focus_in_event(GtkWidget *widget,
 gboolean on_any_widget_focus_out_event(GtkWidget *widget,
 	GdkEventFocus *event, AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -608,7 +618,6 @@ void on_any_widget_hide(GtkWidget *widget, AttributeSet *Attr)
 #endif
 }
 
-#if GTK_CHECK_VERSION(2,16,0)
 /***********************************************************************
  *                                                                     *
  ***********************************************************************/
@@ -616,6 +625,8 @@ void on_any_widget_hide(GtkWidget *widget, AttributeSet *Attr)
 void on_any_widget_icon_press_event(GtkWidget *widget,
 	GtkEntryIconPosition pos, GdkEvent *event, AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -637,6 +648,8 @@ void on_any_widget_icon_press_event(GtkWidget *widget,
 void on_any_widget_icon_release_event(GtkWidget *widget,
 	GtkEntryIconPosition pos, GdkEvent *event, AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -650,7 +663,6 @@ void on_any_widget_icon_release_event(GtkWidget *widget,
 	fprintf(stderr, "%s(): Exiting.\n", __func__);
 #endif
 }
-#endif
 
 /***********************************************************************
  *                                                                     *
@@ -771,6 +783,8 @@ gboolean on_any_widget_key_release_event(GtkWidget*widget,
 gboolean on_any_widget_leave_notify_event(GtkWidget *widget,
 	GdkEventCrossing *event, AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -791,6 +805,8 @@ gboolean on_any_widget_leave_notify_event(GtkWidget *widget,
 gboolean on_any_widget_map_event(GtkWidget *widget, GdkEvent *event,
 	AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -879,6 +895,8 @@ void on_any_widget_toggled_event(GtkWidget *widget, AttributeSet *Attr)
 gboolean on_any_widget_unmap_event(GtkWidget *widget, GdkEvent *event,
 	AttributeSet *Attr)
 {
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -916,6 +934,10 @@ void on_any_widget_value_changed_event(GtkWidget *widget, AttributeSet *Attr)
 void on_any_widget_select_row_event(GtkWidget *widget, gint row,
 	gint column, GdkEvent *event, gpointer Attr)
 {
+	(void)row;
+	(void)column;
+	(void)event;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -955,6 +977,9 @@ void on_any_widget_selection_changed_event(GtkWidget *widget, AttributeSet *Attr
 void on_any_widget_row_activated_event(GtkWidget *widget,
 	GtkTreePath *path, GtkTreeViewColumn *column, AttributeSet *Attr)
 {
+	(void)path;
+	(void)column;
+
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
@@ -1064,6 +1089,8 @@ void on_any_widget_file_changed_event(GFileMonitor *monitor, GFile *file,
 {
 #if HAVE_SYS_INOTIFY_H
 	variable         *var = (variable*)data;
+#else
+	(void)other_file;
 #endif
 
 #ifdef DEBUG_TRANSITS
@@ -1106,6 +1133,8 @@ void on_any_widget_auto_refresh_event(GFileMonitor *monitor, GFile *file,
 {
 #if HAVE_SYS_INOTIFY_H
 	variable         *var = (variable*)data;
+#else
+	(void)other_file;
 #endif
 
 #ifdef DEBUG_TRANSITS
@@ -1181,9 +1210,7 @@ void on_any_widget_auto_refresh_event(GFileMonitor *monitor, GFile *file,
 		case WIDGET_TERMINAL:
 		case WIDGET_TEXT:
 		case WIDGET_TIMER:
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
-#endif
 		case WIDGET_VOLUMEBUTTON:
 		case WIDGET_PLUG:
 		case WIDGET_WINDOW:
@@ -1207,6 +1234,8 @@ gboolean window_delete_event_handler(GtkWidget *widget, GtkWidget *event,
 	gpointer data)
 {
 	variable         *var;
+	(void)event;
+	(void)data;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -1328,12 +1357,10 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkButton--->GtkToggleButton */
 			if (GTK_IS_TOGGLE_BUTTON(widget)) {
 				is_active = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-#if GTK_CHECK_VERSION(2,4,0)
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkToolItem--->GtkToolButton--->GtkToggleToolButton */
 			} else if (GTK_IS_TOGGLE_TOOL_BUTTON(widget)) {
 				is_active = gtk_toggle_tool_button_get_active(
 					GTK_TOGGLE_TOOL_BUTTON(widget));
-#endif
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkExpander */
 			} else if (GTK_IS_EXPANDER(widget)) {
 				is_active = gtk_expander_get_expanded(GTK_EXPANDER(widget));
@@ -1390,12 +1417,9 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 				if (strcasecmp(signal_name, "toggled") == 0) {
 					is_active = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
 				}
-#if GTK_CHECK_VERSION(2,12,0)
 			} else if (GTK_IS_SCALE_BUTTON(widget)) {
 				if (strcasecmp(signal_name, "value-changed") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
-#endif
-#if GTK_CHECK_VERSION(2,10,0)
 			} else if (GTK_IS_ASSISTANT(widget)) {
 				if (strcasecmp(signal_name, "apply") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
@@ -1406,15 +1430,12 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 				if (strcasecmp(signal_name, "item-activated") == 0 ||
 					strcasecmp(signal_name, "selection-changed") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
-#endif
-#if GTK_CHECK_VERSION(2,4,0)
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkToolItem--->GtkToolButton--->GtkToggleToolButton */
 			} else if (GTK_IS_TOGGLE_TOOL_BUTTON(widget)) {
 				if (strcasecmp(signal_name, "toggled") == 0) {
 					is_active = gtk_toggle_tool_button_get_active(
 						GTK_TOGGLE_TOOL_BUTTON(widget));
 				}
-#endif
 			} else if (GTK_IS_COLOR_SELECTION(widget)) {
 				if (strcasecmp(signal_name, "color-changed") == 0) {
 					execute = widget_signal_executor_eval_condition(condition);
@@ -1441,19 +1462,14 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 				if (strcasecmp(signal_name, "clicked") == 0) {
 					execute = widget_signal_executor_eval_condition(condition);
 				}
-#if GTK_CHECK_VERSION(2,4,0)
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkToolItem--->GtkToolButton */
 			} else if (GTK_IS_TOOL_BUTTON(widget)) {
 				if (strcasecmp(signal_name, "clicked") == 0) {
 					execute = widget_signal_executor_eval_condition(condition);
 				}
-#endif
-#if GTK_CHECK_VERSION(2,4,0)
 			} else if (GTK_IS_FILE_CHOOSER_WIDGET(widget)) {
 				if (strcasecmp(signal_name, "file-activated") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
-#endif
-#if GTK_CHECK_VERSION(2,6,0)
 /* GtkWidget--->GtkContainer--->GtkBox--->GtkHBox--->GtkFileChooserButton */
 			} else if (GTK_IS_FILE_CHOOSER_BUTTON(widget)) {
 				if (strcasecmp(signal_name, "file-set") == 0) {
@@ -1462,7 +1478,6 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 			} else if (GTK_IS_ICON_VIEW(widget)) {
 				if (strcasecmp(signal_name, "item-activated") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
-#endif
 			} else if (GTK_IS_CALENDAR(widget)) {
 				if (strcasecmp(signal_name, "day-selected") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
@@ -1475,11 +1490,9 @@ void widget_signal_executor(GtkWidget *widget, AttributeSet *Attr,
 			} else if (GTK_IS_SOCKET(widget)) {
 				if (strcasecmp(signal_name, "plug-added") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
-#if GTK_CHECK_VERSION(2,18,0)
 			} else if (GTK_IS_INFO_BAR(widget)) {
 				if (strcasecmp(signal_name, "response") == 0)
 					execute = widget_signal_executor_eval_condition(condition);
-#endif
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkExpander */
 			} else if (GTK_IS_EXPANDER(widget)) {
 				if (strcasecmp(signal_name, "activate") == 0) {
@@ -1669,17 +1682,13 @@ gboolean widget_signal_executor_eval_condition(gchar *condition)
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkButton--->GtkToggleButton */
 					if (GTK_IS_TOGGLE_BUTTON(var->Widget)) {
 						state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(var->Widget));
-#if GTK_CHECK_VERSION(2,4,0)
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkToolItem--->GtkToolButton--->GtkToggleToolButton */
 					} else if (GTK_IS_TOGGLE_TOOL_BUTTON(var->Widget)) {
 						state = gtk_toggle_tool_button_get_active(
 							GTK_TOGGLE_TOOL_BUTTON(var->Widget));
-#endif
-#if GTK_CHECK_VERSION(2,20,0)
 /* GtkWidget--->GtkSpinner */
 					} else if (GTK_IS_SPINNER(var->Widget)) {
 						g_object_get(G_OBJECT(var->Widget), "active", &state, NULL);
-#endif
 /* GtkWidget--->GtkContainer--->GtkBin--->GtkExpander */
 					} else if (GTK_IS_EXPANDER(var->Widget)) {
 						state = gtk_expander_get_expanded(GTK_EXPANDER(var->Widget));

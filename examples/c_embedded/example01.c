@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 	/* end of put environment - MAIN_DIALOG */
 
 	/* open gtkdialog as stream */
-	stream = popen("gtkdialog --program=MAIN_DIALOG", "r");
+	stream = popen("gdlg2 --program=MAIN_DIALOG", "r");
 	fgets(line, 255, stream);
 	printf("Last window-widget is: %s\n", line);
 

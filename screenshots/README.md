@@ -2,16 +2,18 @@
 
 These screenshots cover every page of `examples/showcase/showcase`. They were
 captured from the current GTK+ 2 implementation at the showcase's standard
-8-point font size during one desktop session, with the same window-manager
-frame included throughout. Interactive views show native GtkSpell corrections,
-two syntax-highlighted GtkSourceView editors, a combo cell in edit mode, an
-open row-aware popup menu, an edited transfer curve, a running GTK2 VTE
-terminal, and both an `xterm` and a gtkdialog `GtkPlug` attached to XEmbed
-sockets. Optional-library pages compare GtkDatabox plots, editable GtkSheet
-views, a rearrangeable GDL workspace and an interactive GooCanvas object
-scene. The final views show the native GTK2 Unix page-setup, print-settings and
-file-chooser dialogs, including an exact multiple-file selection and reusable
-page- and print-settings key files.
+8-point font size on the same desktop, with the same window-manager
+frame included throughout. Interactive views show rich entry suggestions,
+native GtkSpell corrections, two syntax-highlighted GtkSourceView editors, a
+tree cell completion popup, a hierarchical combo menu, an open row-aware popup
+menu, an edited transfer curve, a running GTK2 VTE terminal, and both an
+`xterm` and a gtkdialog `GtkPlug` attached to XEmbed
+sockets. A mixed dynamic notebook shows a VTE shell and a GtkSourceView editor
+in independently closeable tabs. Optional-library pages compare GtkDatabox
+plots, editable GtkSheet views, a rearrangeable GDL workspace and an
+interactive GooCanvas object scene. The final views show the native GTK2 Unix
+page-setup, print-settings and file-chooser dialogs, including an exact
+multiple-file selection and reusable page- and print-settings key files.
 The desktop-integration pages show three live libwnck 2 task lists, three
 workspace pagers comparing content, name and active-only modes, and a compact
 window-selector menu with live application icons and titles.
@@ -24,7 +26,7 @@ root and provides a control that saves, refreshes, closes and relaunches it.
     <th width="50%">Spell checking</th>
   </tr>
   <tr>
-    <td width="50%"><img src="01-text-and-files.png" alt="Text and files"></td>
+    <td width="50%"><img src="01-text-and-files.png" alt="Text and files with rich entry completion"></td>
     <td width="50%"><img src="30-spell-checking.png" alt="GtkSpell correction menu and plain editor comparison"></td>
   </tr>
   <tr>
@@ -32,7 +34,7 @@ root and provides a control that saves, refreshes, closes and relaunches it.
     <th width="50%">Icon input</th>
   </tr>
   <tr>
-    <td width="50%"><img src="02-selection.png" alt="Selection widgets"></td>
+    <td width="50%"><img src="02-selection.png" alt="Rich icon view and selection widgets"></td>
     <td width="50%"><img src="03-icon-input.png" alt="Image-list input"></td>
   </tr>
   <tr>
@@ -41,7 +43,7 @@ root and provides a control that saves, refreshes, closes and relaunches it.
   </tr>
   <tr>
     <td width="50%"><img src="29-image-viewer.png" alt="Image viewer scaling and interpolation modes"></td>
-    <td width="50%"><img src="04-tree-renderers.png" alt="Editable tree renderers"></td>
+    <td width="50%"><img src="04-tree-renderers.png" alt="Editable tree renderer with cell completion"></td>
   </tr>
   <tr>
     <th width="50%">Tree styling</th>
@@ -65,7 +67,7 @@ root and provides a control that saves, refreshes, closes and relaunches it.
   </tr>
   <tr>
     <td width="50%"><img src="09-popup-menus.png" alt="Open row-aware popup menu"></td>
-    <td width="50%"><img src="10-classic-controls.png" alt="Classic GTK2 controls and directional arrows"></td>
+    <td width="50%"><img src="10-classic-controls.png" alt="Classic GTK2 controls with rich and hierarchical combo models"></td>
   </tr>
   <tr>
     <th width="50%">State actions</th>
@@ -114,6 +116,14 @@ root and provides a control that saves, refreshes, closes and relaunches it.
   <tr>
     <td width="50%"><img src="21-terminal.png" alt="Running GTK2 VTE terminal"></td>
     <td width="50%"><img src="22-xembed-socket.png" alt="xterm and gtkdialog GtkPlug hosted by GtkSocket"></td>
+  </tr>
+  <tr>
+    <th width="50%">Dynamic notebook: source editor</th>
+    <th width="50%">Dynamic notebook: terminal</th>
+  </tr>
+  <tr>
+    <td width="50%"><img src="44-dynamic-notebook-source.png" alt="Runtime GtkSourceView editor tab with syntax highlighting and a close button"></td>
+    <td width="50%"><img src="45-dynamic-notebook-terminal.png" alt="Runtime VTE terminal tab with a live shell and a close button"></td>
   </tr>
   <tr>
     <th width="50%">Dialogs</th>

@@ -100,6 +100,15 @@ static gchar *prefixes[] = {
 	"fit",
 	"fitwidth",
 	"fitheight",
+	"undo",
+	"redo",
+	"reparentwidget",
+	"appendtab",
+	"removetab",
+	"replacebox",
+	"selecttab",
+	"appendtabauto",
+	"hangupterminal",
 	NULL
 };
 

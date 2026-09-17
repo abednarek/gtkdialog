@@ -33,18 +33,18 @@ for standard messages, warnings, errors and questions.</p><hr>
 </pre>
 <p>This element replaces the normal top-level <code>window</code> and cannot
 be nested. Its variable contains the latest named response.</p>
-<h2> Tag attributes </h2>
+<h2> Tag Attributes </h2>
 <table class="wiki" border="1" cellpadding="5px">
-<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th></tr>
-<tr><td class="wiki">message-type</td><td class="wiki">Message icon and role</td><td class="wiki"><code>info</code>, <code>warning</code>, <code>question</code>, <code>error</code> or <code>other</code></td></tr>
-<tr><td class="wiki">buttons</td><td class="wiki">Standard response buttons</td><td class="wiki"><code>none</code>, <code>ok</code>, <code>close</code>, <code>cancel</code>, <code>yes-no</code> or <code>ok-cancel</code></td></tr>
-<tr><td class="wiki">secondary-text</td><td class="wiki">Additional explanatory text</td><td class="wiki">Text; requires GTK+ 2.6 or later</td></tr>
-<tr><td class="wiki">default-response</td><td class="wiki">Response activated by Enter</td><td class="wiki"><code>ok</code>, <code>cancel</code>, <code>close</code>, <code>yes</code>, <code>no</code>, <code>apply</code>, <code>help</code>, <code>accept</code>, <code>reject</code> or an integer</td></tr>
+<tr><th class="wiki"><b>Name</b></th><th class="wiki"><b>Description</b></th><th class="wiki"><b>Value</b></th><th class="wiki"><b>Since</b></th></tr>
+<tr><td class="wiki">message-type</td><td class="wiki">Message icon and role</td><td class="wiki"><code>info</code>, <code>warning</code>, <code>question</code>, <code>error</code> or <code>other</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">buttons</td><td class="wiki">Standard response buttons</td><td class="wiki"><code>none</code>, <code>ok</code>, <code>close</code>, <code>cancel</code>, <code>yes-no</code> or <code>ok-cancel</code></td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">secondary-text</td><td class="wiki">Additional explanatory text</td><td class="wiki">Text</td><td class="wiki"> 0.9.0 </td></tr>
+<tr><td class="wiki">default-response</td><td class="wiki">Response activated by Enter</td><td class="wiki"><code>ok</code>, <code>cancel</code>, <code>close</code>, <code>yes</code>, <code>no</code>, <code>apply</code>, <code>help</code>, <code>accept</code>, <code>reject</code> or an integer</td><td class="wiki"> 0.9.0 </td></tr>
 </table>
 <p>Standard writable GtkWindow properties, including <code>title</code>, are
 also accepted. The <code>label</code> directive is the primary message, not
 the title.</p>
-<h2> Actions and values </h2>
+<h2> Actions and Values </h2>
 <p>The default action signal is <code>response</code>. The response value is
 stored before actions run. Responses do not implicitly close the dialog;
 use <code>exit</code> for a root dialog or <code>closewindow</code> for a

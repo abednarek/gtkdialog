@@ -47,8 +47,6 @@ static void widget_radiobutton_input_by_items(variable *var);
 
 void widget_radiobutton_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -125,8 +123,6 @@ gchar *widget_radiobutton_envvar_construct(GtkWidget *widget)
 void widget_radiobutton_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -219,8 +215,6 @@ void widget_radiobutton_refresh(variable *var)
 
 void widget_radiobutton_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -301,7 +295,7 @@ static void widget_radiobutton_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			is_active = widget_parse_legacy_input_boolean(line);
@@ -334,7 +328,7 @@ static void widget_radiobutton_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			is_active = widget_parse_legacy_input_boolean(line);
@@ -359,8 +353,6 @@ static void widget_radiobutton_input_by_file(variable *var, char *filename)
 
 static void widget_radiobutton_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

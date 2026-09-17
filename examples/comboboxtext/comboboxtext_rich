@@ -1,0 +1,32 @@
+#!/bin/sh
+
+[ -z "$GTKDIALOG" ] && GTKDIALOG=gdlg2
+
+MAIN_DIALOG='
+<window title="Rich GTK2 combo box" width-request="420">
+	<vbox border-width="12" spacing="10">
+		<text xalign="0">
+			<label>Visible labels can have icons and styles while the variable contains a stable value.</label>
+		</text>
+		<comboboxtext item-model="rich" icon-size="20">
+			<variable>RICH_CHOICE</variable>
+			<default>open</default>
+			<item value="open" stock="gtk-open" font="Sans Bold 9">Open document</item>
+			<item value="save" stock="gtk-save" foreground="#204a87">Save document</item>
+			<item value="review" stock="gtk-apply" background="#e6f2ff">Review changes</item>
+			<item value="offline" stock="gtk-disconnect" sensitive="false">Offline action</item>
+			<action>echo "Selected value: $RICH_CHOICE"</action>
+		</comboboxtext>
+		<hbuttonbox>
+			<button ok></button>
+			<button cancel></button>
+		</hbuttonbox>
+	</vbox>
+</window>
+'
+export MAIN_DIALOG
+
+case ${1:-} in
+	-d | --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+	*) "$GTKDIALOG" --program=MAIN_DIALOG ;;
+esac

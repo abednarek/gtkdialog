@@ -48,8 +48,6 @@ static void widget_hseparator_input_by_items(variable *var);
 
 void widget_hseparator_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -118,8 +116,6 @@ gchar *widget_hseparator_envvar_construct(GtkWidget *widget)
 void widget_hseparator_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -207,8 +203,6 @@ void widget_hseparator_refresh(variable *var)
 
 void widget_hseparator_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -228,8 +222,6 @@ void widget_hseparator_removeselected(variable *var)
 
 void widget_hseparator_save(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -248,8 +240,6 @@ void widget_hseparator_save(variable *var)
 
 static void widget_hseparator_input_by_command(variable *var, char *command)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -268,8 +258,6 @@ static void widget_hseparator_input_by_command(variable *var, char *command)
 
 static void widget_hseparator_input_by_file(variable *var, char *filename)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -288,8 +276,6 @@ static void widget_hseparator_input_by_file(variable *var, char *filename)
 
 static void widget_hseparator_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

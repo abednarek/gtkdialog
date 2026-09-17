@@ -3,7 +3,7 @@
 # Thunor: The FILE_BROWSE_NEWDIRECTORY example crashes if a directory
 # name isn't supplied.
 
-[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+[ -z $GTKDIALOG ] && GTKDIALOG=gdlg2
 
 MAIN_DIALOG='
 <window>

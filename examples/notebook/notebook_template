@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Build independent notebook pages from one gtkdialog XML fragment.
+GTKDIALOG=${GTKDIALOG:-gtkdialog}
+
+TAB_TEMPLATE='
+<vbox>
+  <text><label>@INSTANCE@ has its own entry value</label></text>
+  <entry><default>Editable @INSTANCE@ text</default><variable>@INSTANCE@_ENTRY</variable></entry>
+  <button><label>Remove this page</label><action>removetab:@INSTANCE@</action></button>
+  <variable>@INSTANCE@_PAGE</variable>
+</vbox>'
+export TAB_TEMPLATE
+
+MAIN_DIALOG='
+<window title="Notebook XML templates" width-request="460">
+  <vbox>
+    <notebook>
+      <vbox><text><label>Each new tab is built when clicked.</label></text></vbox>
+      <variable>DEMO_NOTEBOOK</variable>
+    </notebook>
+    <hbox>
+      <button><label>Add Alpha</label><action>appendtab:TAB_TEMPLATE:DEMO_NOTEBOOK:ALPHA:Alpha</action></button>
+      <button><label>Add Beta</label><action>appendtab:TAB_TEMPLATE:DEMO_NOTEBOOK:BETA:Beta</action></button>
+      <button><label>Remove Alpha</label><action>removetab:ALPHA</action></button>
+      <button><label>Remove Beta</label><action>removetab:BETA</action></button>
+    </hbox>
+    <button><label>Close</label><action>exit:OK</action></button>
+  </vbox>
+</window>'
+export MAIN_DIALOG
+
+case ${1:-} in
+  --dump) printf '%s\n' "$MAIN_DIALOG" ;;
+  *) "$GTKDIALOG" --program MAIN_DIALOG ;;
+esac

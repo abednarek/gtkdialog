@@ -60,8 +60,6 @@ static GtkWidget *widget_edit_create_text_view(tag_attr *attr);
 
 void widget_edit_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -73,6 +71,38 @@ void widget_edit_clear(variable *var)
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Exiting.\n", __func__);
+#endif
+}
+
+/***********************************************************************
+ * Source editing history                                               *
+ ***********************************************************************/
+
+void widget_edit_undo(variable *var)
+{
+#if HAVE_GTKSOURCEVIEW
+	GtkTextBuffer *buffer;
+
+	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(var->Widget));
+	if (GTK_IS_SOURCE_BUFFER(buffer) &&
+		gtk_source_buffer_can_undo(GTK_SOURCE_BUFFER(buffer)))
+		gtk_source_buffer_undo(GTK_SOURCE_BUFFER(buffer));
+#else
+	(void)var;
+#endif
+}
+
+void widget_edit_redo(variable *var)
+{
+#if HAVE_GTKSOURCEVIEW
+	GtkTextBuffer *buffer;
+
+	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(var->Widget));
+	if (GTK_IS_SOURCE_BUFFER(buffer) &&
+		gtk_source_buffer_can_redo(GTK_SOURCE_BUFFER(buffer)))
+		gtk_source_buffer_redo(GTK_SOURCE_BUFFER(buffer));
+#else
+	(void)var;
 #endif
 }
 
@@ -227,18 +257,10 @@ GtkWidget *widget_edit_create(
 #endif
 
 	/* Thunor: This is all original code moved across when refactoring */
-#if GTK_CHECK_VERSION(2, 4, 0)
 
 	widget = widget_edit_create_text_view(attr);
 	widget_edit_setup_spell_check(widget, attr);
 
-#else
-
-	yyerror_simple("Editor widget is not supported by"
-		"this version of GTK+, you need at"
-		"least GTK+ 2.4.0\n");
-
-#endif
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Exiting.\n", __func__);
@@ -282,8 +304,6 @@ gchar *widget_edit_envvar_construct(GtkWidget *widget)
 void widget_edit_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -376,8 +396,6 @@ void widget_edit_refresh(variable *var)
 
 void widget_edit_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -454,8 +472,6 @@ void widget_edit_save(variable *var)
 
 static void widget_edit_input_by_command(variable *var, char *command)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -512,8 +528,6 @@ static void widget_edit_input_by_file(variable *var, char *filename)
 
 static void widget_edit_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);

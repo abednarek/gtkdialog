@@ -12,7 +12,6 @@
 #ifndef WIDGET_RECENTCHOOSER_H
 #define WIDGET_RECENTCHOOSER_H
 
-#if GTK_CHECK_VERSION(2,10,0)
 void widget_recentchooser_clear(variable *var);
 GtkWidget *widget_recentchooser_create(
 	AttributeSet *Attr, tag_attr *attr, gint Type);
@@ -25,6 +24,5 @@ void widget_recentchooser_fileselect(
 void widget_recentchooser_refresh(variable *var);
 void widget_recentchooser_removeselected(variable *var);
 void widget_recentchooser_save(variable *var);
-#endif
 
 #endif

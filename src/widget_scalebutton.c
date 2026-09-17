@@ -21,7 +21,6 @@
 #include "widgets.h"
 #include "widget_scalebutton.h"
 
-#if GTK_CHECK_VERSION(2,12,0)
 static void widget_scalebutton_validate_range(
 	gdouble *minimum, gdouble *maximum, gdouble *step)
 {
@@ -317,4 +316,3 @@ void widget_scalebutton_save(variable *var)
 	g_free(value);
 	widget_close_output(output, filename);
 }
-#endif

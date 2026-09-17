@@ -227,6 +227,109 @@ gboolean widget_parse_boolean(const gchar *value, gboolean *result)
 	return TRUE;
 }
 
+WidgetCompletionMatch widget_parse_completion_match(const gchar *value,
+	const gchar *attribute)
+{
+	if (value == NULL || strcasecmp(value, "prefix") == 0)
+		return WIDGET_COMPLETION_MATCH_PREFIX;
+	if (strcasecmp(value, "contains") == 0)
+		return WIDGET_COMPLETION_MATCH_CONTAINS;
+
+	gtkdialog_warning("Invalid %s value '%s'; using prefix.", attribute,
+		value);
+	return WIDGET_COMPLETION_MATCH_PREFIX;
+}
+
+gboolean widget_parse_completion_case_sensitive(const gchar *value,
+	const gchar *attribute)
+{
+	gboolean case_sensitive = FALSE;
+
+	if (value != NULL && !widget_parse_boolean(value, &case_sensitive)) {
+		gtkdialog_warning("Invalid %s value '%s'; using false.", attribute,
+			value);
+		case_sensitive = FALSE;
+	}
+	return case_sensitive;
+}
+
+typedef struct {
+	gint text_column;
+	WidgetCompletionMatch match;
+	gboolean case_sensitive;
+} WidgetCompletionMatchData;
+
+static gchar *widget_completion_normalize(const gchar *text,
+	gboolean case_sensitive)
+{
+	gchar *folded;
+	gchar *normalized;
+
+	normalized = g_utf8_normalize(text != NULL ? text : "", -1,
+		G_NORMALIZE_ALL);
+	if (normalized == NULL)
+		normalized = g_strdup(text != NULL ? text : "");
+	if (case_sensitive)
+		return normalized;
+
+	folded = g_utf8_casefold(normalized, -1);
+	g_free(normalized);
+	return folded != NULL ? folded : g_strdup("");
+}
+
+static gboolean widget_entry_completion_match_func(
+	GtkEntryCompletion *completion, const gchar *key, GtkTreeIter *iter,
+	gpointer user_data)
+{
+	WidgetCompletionMatchData *data = user_data;
+	GtkTreeModel *model;
+	GtkWidget *entry;
+	const gchar *entry_text;
+	gchar *candidate;
+	gchar *normalized_candidate;
+	gchar *normalized_key;
+	gboolean matches;
+
+	(void)key;
+	model = gtk_entry_completion_get_model(completion);
+	entry = gtk_entry_completion_get_entry(completion);
+	if (model == NULL || !GTK_IS_ENTRY(entry))
+		return FALSE;
+
+	gtk_tree_model_get(model, iter, data->text_column, &candidate, -1);
+	entry_text = gtk_entry_get_text(GTK_ENTRY(entry));
+	normalized_candidate = widget_completion_normalize(candidate,
+		data->case_sensitive);
+	normalized_key = widget_completion_normalize(entry_text,
+		data->case_sensitive);
+	if (data->match == WIDGET_COMPLETION_MATCH_CONTAINS)
+		matches = strstr(normalized_candidate, normalized_key) != NULL;
+	else
+		matches = g_str_has_prefix(normalized_candidate, normalized_key);
+
+	g_free(candidate);
+	g_free(normalized_candidate);
+	g_free(normalized_key);
+	return matches;
+}
+
+void widget_entry_completion_set_matching(GtkEntryCompletion *completion,
+	gint text_column, WidgetCompletionMatch match, gboolean case_sensitive)
+{
+	WidgetCompletionMatchData *data;
+
+	/* Leave GTK's established matching path untouched for the default. */
+	if (match == WIDGET_COMPLETION_MATCH_PREFIX && !case_sensitive)
+		return;
+
+	data = g_new(WidgetCompletionMatchData, 1);
+	data->text_column = text_column;
+	data->match = match;
+	data->case_sensitive = case_sensitive;
+	gtk_entry_completion_set_match_func(completion,
+		widget_entry_completion_match_func, data, g_free);
+}
+
 gboolean widget_parse_legacy_input_boolean(const gchar *value)
 {
 	const gchar *start;
@@ -510,12 +613,10 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_aspectframe_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_ASSISTANT:
 			string = widget_assistant_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_CANCELBUTTON:
 		case WIDGET_HELPBUTTON:
 		case WIDGET_NOBUTTON:
@@ -538,12 +639,10 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_arrow_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_CELLVIEW:
 			string = widget_cellview_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_CHECKBOX:
 			string = widget_checkbox_envvar_construct(widget);
 			return string;
@@ -597,12 +696,10 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_expander_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_FILECHOOSERBUTTON:
 			string = widget_filechooserbutton_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_FIXED:
 			string = widget_fixed_envvar_construct(widget);
 			return string;
@@ -682,18 +779,14 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_hseparator_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,6,0)
 		case WIDGET_ICONVIEW:
 			string = widget_iconview_envvar_construct(widget);
 			return string;
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_INFOBAR:
 			string = widget_infobar_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_LAYOUT:
 			string = widget_layout_envvar_construct(widget);
 			return string;
@@ -706,12 +799,10 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_messagedialog_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,18,0)
 		case WIDGET_LINKBUTTON:
 			string = widget_linkbutton_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_MENUBAR:
 		case WIDGET_POPUPMENU:
 			string = widget_menubar_envvar_construct(widget);
@@ -739,20 +830,16 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_radiobutton_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_RECENTCHOOSERMENU:
 		case WIDGET_RECENTCHOOSER:
 			string = widget_recentchooser_envvar_construct(widget);
 			return string;
 			break;
-#endif
-#if GTK_CHECK_VERSION(2,12,0)
 		case WIDGET_SCALEBUTTON:
 		case WIDGET_VOLUMEBUTTON:
 			string = widget_scalebutton_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_SCROLLEDWINDOW:
 			string = widget_scrolledwindow_envvar_construct(widget);
 			return string;
@@ -773,12 +860,10 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_spinbutton_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,20,0)
 		case WIDGET_SPINNER:
 			string = widget_spinner_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_SOCKET:
 			return widget_socket_envvar_construct(widget);
 			break;
@@ -796,12 +881,10 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_statusbar_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,10,0)
 		case WIDGET_STATUSICON:
 			string = widget_statusicon_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_TABLE:
 			string = widget_table_envvar_construct(widget);
 			return string;
@@ -818,12 +901,10 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			string = widget_timer_envvar_construct(widget);
 			return string;
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			string = widget_tree_envvar_construct(widget);
 			return string;
 			break;
-#endif
 		case WIDGET_VBOX:
 			string = widget_vbox_envvar_construct(widget);
 			return string;
@@ -835,11 +916,9 @@ char *widget_get_text_value(GtkWidget *widget, int type)
 			break;
 
 
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_CHOOSER:
 			return widget_chooser_envvar_construct(widget);
 			break;
-#endif
 
 
 		default:
@@ -1226,11 +1305,9 @@ char *widgets_to_str(int itype)
 		case WIDGET_TOGGLEBUTTON:
 			type = "TOGGLEBUTTON";
 			break;
-#if GTK_CHECK_VERSION(2,4,0)
 		case WIDGET_TREE:
 			type = "TREE";
 			break;
-#endif
 		case WIDGET_VBOX:
 			type = "VBOX";
 			break;
@@ -1276,7 +1353,6 @@ char *widgets_to_str(int itype)
  *  Widget Connect Signals                                             *
  ***********************************************************************/
 
-#if GTK_CHECK_VERSION(2,4,0)
 typedef struct {
 	GtkWidget *owner;
 	AttributeSet *attributes;
@@ -1417,7 +1493,6 @@ static void widget_tool_button_realized(GtkWidget *widget, AttributeSet *Attr)
 {
 	widget_connect_tool_button_input_signals(widget, widget, Attr);
 }
-#endif
 
 gboolean widget_connect_signals(GtkWidget *widget, AttributeSet *Attr)
 {
@@ -1433,7 +1508,6 @@ gboolean widget_connect_signals(GtkWidget *widget, AttributeSet *Attr)
 	 * private GtkButton descendants, so forward those events while keeping
 	 * the tool item as the action source. This is important for actions such
 	 * as launch which inspect the originating widget. */
-#if GTK_CHECK_VERSION(2,4,0)
 	if (GTK_IS_TOOL_BUTTON(widget)) {
 		widget_connect_tool_button_input_signals(widget, widget, Attr);
 		/* GtkMenuToolButton creates its private arrow button only when it is
@@ -1446,7 +1520,6 @@ gboolean widget_connect_signals(GtkWidget *widget, AttributeSet *Attr)
 		g_signal_connect(G_OBJECT(widget), "realize",
 			G_CALLBACK(widget_tool_button_realized), (gpointer)Attr);
 	} else
-#endif
 	{
 		g_signal_connect(G_OBJECT(widget), "event",
 			G_CALLBACK(on_any_widget_context_event), (gpointer)Attr);

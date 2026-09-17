@@ -14,6 +14,7 @@
 
 GtkWidget *widget_databox_create(AttributeSet *attributes, tag_attr *attr,
 	gint width, gint height);
+void widget_databox_discard_mode_attributes(tag_attr *attr);
 gboolean widget_databox_is_requested(GtkWidget *widget);
 gboolean widget_databox_is_widget(GtkWidget *widget);
 void widget_databox_clear(variable *var);

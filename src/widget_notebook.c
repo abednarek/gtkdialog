@@ -49,8 +49,6 @@ static void widget_notebook_set_page_from_text(variable *var,
 
 void widget_notebook_clear(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -77,6 +75,8 @@ GtkWidget *widget_notebook_create(
 	gchar            *tab_suffix = NULL;
 	gchar            *text;
 	gchar            *value;
+	const gchar      *close_enabled = NULL;
+	const gchar      *close_action = NULL;
 	gint              count;
 	gint              tab_base_index = 1;
 	gint64            tab_number;
@@ -95,6 +95,8 @@ GtkWidget *widget_notebook_create(
 			labels = linecutter(strdup(value), '|');
 		tab_prefix = get_tag_attribute(attr, "tab-prefix");
 		tab_suffix = get_tag_attribute(attr, "tab-suffix");
+		close_enabled = get_tag_attribute(attr, "tab-close-buttons");
+		close_action = get_tag_attribute(attr, "tab-close-action");
 		if ((value = get_tag_attribute(attr, "tab-base-index")))
 			tab_base_index = widget_parse_bounded_integer(value, G_MININT,
 				G_MAXINT, 1, "notebook tab-base-index");
@@ -116,7 +118,8 @@ GtkWidget *widget_notebook_create(
 		else
 			text = g_strdup_printf("Page %" G_GINT64_FORMAT, tab_number);
 		/* Create the label and append the notebook page with label */
-		label = gtk_label_new(text);
+		label = program_notebook_tab_label(elements.widgets[count],
+			text, NULL, close_enabled, close_action);
 		gtk_notebook_append_page(GTK_NOTEBOOK(widget),
 			elements.widgets[count], label);
 		g_free(text);
@@ -164,8 +167,6 @@ gchar *widget_notebook_envvar_construct(GtkWidget *widget)
 void widget_notebook_fileselect(
 	variable *var, const char *name, const char *value)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -252,8 +253,6 @@ void widget_notebook_refresh(variable *var)
 
 void widget_notebook_removeselected(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
@@ -345,7 +344,7 @@ static void widget_notebook_input_by_command(variable *var, char *command)
 #endif
 
 	/* Opening pipe for reading... */
-	if (infile = widget_opencommand(command)) {
+	if ((infile = widget_opencommand(command))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			/* From the GTK+ 2 Reference Manual:
@@ -384,7 +383,7 @@ static void widget_notebook_input_by_file(variable *var, char *filename)
 	fprintf(stderr, "%s(): Entering.\n", __func__);
 #endif
 
-	if (infile = fopen(filename, "r")) {
+	if ((infile = fopen(filename, "r"))) {
 		/* Just one line */
 		if ((line = widget_read_line(infile))) {
 			/* From the GTK+ 2 Reference Manual:
@@ -416,8 +415,6 @@ static void widget_notebook_input_by_file(variable *var, char *filename)
 
 static void widget_notebook_input_by_items(variable *var)
 {
-	gchar            *var1;
-	gint              var2;
 
 #ifdef DEBUG_TRANSITS
 	fprintf(stderr, "%s(): Entering.\n", __func__);
